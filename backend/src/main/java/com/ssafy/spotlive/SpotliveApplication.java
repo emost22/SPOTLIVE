@@ -3,6 +3,7 @@ package com.ssafy.spotlive;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @SpringBootApplication
@@ -18,5 +19,10 @@ public class SpotliveApplication {
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
+    }
+
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
     }
 }
