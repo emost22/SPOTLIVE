@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div> 메인이다 </div>
 </template>
 
 <script>

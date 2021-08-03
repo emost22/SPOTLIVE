@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div> 프로필이다 </div>
 </template>
 
 <script>

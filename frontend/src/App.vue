@@ -1,24 +1,60 @@
 <template>
-  <div id="app">
+  <div>
     <div v-if="isLogin">
       <Login/>
     </div>
-    <div v-else></div>
+    <div v-else id="nav">
+      <MainHeader/>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
+
 <script>
+import MainHeader from './views/MainHeader.vue'
 import Login from './views/login/Login.vue'
-export default {
+
+export default ({
+  name: "App",
   components: {
-    Login
+    Login,
+    MainHeader,
   },
   data: function () {
     return {
-      isLogin: true
+      isLogin: false,
     }
-  }
-}
+  },methods: {
+    logout: function () {
+      this.isLogin = false
+      this.$store.dispatch('logout', this.isLogin)
+      localStorage.removeItem('jwt')
+      this.$router.push({ name: 'Login' })
+    },
+    getVideos() {
+      this.$store.dispatch('getVideos')
+    },
+  },
+  computed: {
+    isLogin: function () {
+      return this.$store.getters.isLogin
+    },
+  },
+  created: function () {
+    const token = localStorage.getItem('jwt')
+    if (token) {
+      this.isLogin = true
+    }
+  },
+  mounted: function () {
+    this.getVideos()
+    this.$router.push({ name: "Main" })
+  },
+})
+
 </script>
+
+>>>>>>> 83fa496 (🔧Add MainHeader.vue navbar)
 <style>
 body {
   /* 메인 배경 */
