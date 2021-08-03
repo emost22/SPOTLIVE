@@ -1,7 +1,6 @@
 package com.ssafy.spotlive.api.response;
 
 import com.ssafy.spotlive.db.entity.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -58,7 +57,7 @@ public class KakaoUserRes {
 
     public User toUser(String accessToken, String refreshToken) {
         User user = new User();
-        user.setAccessToken(this.kakao_account.email);
+        user.setAccountEmail(this.kakao_account.email);
         user.setUserName(this.kakao_account.profile.nickname);
         user.setProfileImageUrl(this.kakao_account.profile.profile_image_url);
         user.setGender(this.kakao_account.gender);
