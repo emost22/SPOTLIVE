@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 class CategoryRepositoryTest {
@@ -16,20 +15,17 @@ class CategoryRepositoryTest {
     CategoryRepository categoryRepository;
 
     @Test
-    void findAll() {
-        List<Category> categoryList = categoryRepository.findAll();
-
-        assertEquals(categoryList.size(), 6);
-    }
-
-    @Test
     void findCategoryByCategoryName(){
+        // given
         String categoryName = "소통";
+
+        // when
         Optional<Category> category = categoryRepository.findCategoryByCategoryName(categoryName);
 
+        // then
         if (category.isPresent())
-            assertEquals(category.get().getCategoryName(), categoryName);
+            assertThat(category.get().getCategoryName()).isEqualTo(categoryName);
         else
-            assertEquals(category, Optional.empty());
+            assertThat(category).isEqualTo(Optional.empty());
     }
 }
