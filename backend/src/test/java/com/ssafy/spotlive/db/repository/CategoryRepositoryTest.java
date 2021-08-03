@@ -16,9 +16,13 @@ class CategoryRepositoryTest {
 
     @Test
     void findCategoryByCategoryName(){
+        // given
         String categoryName = "소통";
+
+        // when
         Optional<Category> category = categoryRepository.findCategoryByCategoryName(categoryName);
 
+        // then
         if (category.isPresent())
             assertThat(category.get().getCategoryName()).isEqualTo(categoryName);
         else
