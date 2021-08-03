@@ -1,4 +1,4 @@
-package com.ssafy.spotlive.api.response;
+package com.ssafy.spotlive.api.response.user;
 
 import com.ssafy.spotlive.db.entity.User;
 import lombok.Builder;

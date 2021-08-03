@@ -1,18 +1,14 @@
 package com.ssafy.spotlive.api.controller;
 
-import com.ssafy.spotlive.api.response.KakaoUserRes;
-import com.ssafy.spotlive.api.response.UserRes;
+import com.ssafy.spotlive.api.response.user.KakaoUserRes;
+import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 

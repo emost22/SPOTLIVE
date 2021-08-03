@@ -1,7 +1,7 @@
 package com.ssafy.spotlive.api.service;
 
-import com.ssafy.spotlive.api.response.KakaoUserRes;
-import com.ssafy.spotlive.api.response.UserRes;
+import com.ssafy.spotlive.api.response.user.KakaoUserRes;
+import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
