@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
@@ -40,6 +41,8 @@ public class UserServiceImpl implements UserService {
     private String kakaoUserInfoUrl;
 
     private final String KAKAO_URL = "https://kauth.kakao.com";
+    private final String TOKEN_TYPE = "Bearer";
+
 
     @Autowired
     private UserRepository userRepository;
@@ -141,6 +144,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String accessTokenUpdate(String accountEmail) {
+        /**
+         * @Method Name : accessTokenUpdate
+         * @작성자 : 김민권
+         * @Method 설명 : accessToken을 Refresh Token을 통해 Update한다.
+         */
         User userForUpdate = userRepository.findUserByAccountEmail(accountEmail);
         if(userForUpdate == null) return null;
 
@@ -165,5 +173,20 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userForUpdate);
 
         return newToken;
+    }
+
+    @Override
+    public ResponseEntity<HashMap> isValidToken(String accessToken) {
+        String vaildCheckHost = "https://kapi.kakao.com/v1/user/access_token_info";
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        httpHeaders.add("Authorization", TOKEN_TYPE + " " + accessToken);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoVaildTokenReq = new HttpEntity<>(httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<HashMap> isValidEntity = restTemplate.exchange(vaildCheckHost, HttpMethod.GET, kakaoVaildTokenReq, HashMap.class);
+
+        return isValidEntity;
     }
 }

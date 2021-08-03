@@ -1,8 +1,10 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
+import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 
@@ -19,7 +21,6 @@ public interface UserService {
     UserRes findUserByAccountEmail(String accountEmail);
     UserRes refreshTokensForExistUser(String email, String accessToken, String refreshToken);
     UserRes insertUser(User newUser);
-
     String accessTokenUpdate(String accountEmail);
-    // User insertUser(UserPostReq userPostReq);
+    ResponseEntity<HashMap> isValidToken(String accessToken);
 }
