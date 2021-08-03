@@ -3,9 +3,7 @@ package com.ssafy.spotlive.api.controller;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +26,9 @@ public class UserController {
 
     @GetMapping("/kakao/showlogin")
     @ApiOperation(value = "카카오 로그인을 위한 요청 URL 전송", notes = "카카오 로그인을 위한 요청 URL을 전송한다. 해당 URL로 GET 요청을 보내면 된다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적인 URL 전송 완료"),
+    })
     public ResponseEntity<String> showLogin() {
         /**
          * @Method Name : showLogin
@@ -39,6 +40,9 @@ public class UserController {
 
     @GetMapping("/kakao/login")
     @ApiOperation(value = "kakao token을 얻어와 유저정보 조회 후, 회원가입 혹은 로그인 수행 후 정보 반환", notes = "Token은 매 실행 시 갱신된다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적으로 User의 JSON이 반환되었음"),
+    })
     public ResponseEntity<UserRes> getTokenAndJoinOrLogin(@ApiParam(value="Token 생성에 사용될 Code", required = true) @RequestParam("code") String code) {
         /**
          * @Method Name : getTokenAndJoinOrLogin
@@ -69,6 +73,10 @@ public class UserController {
 
     @GetMapping("/kakao/update/{accountEmail}")
     @ApiOperation(value = "Access Token을 재발급한다.", notes = "재발급 된 Token을 반환한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적인 URL 전송 완료"),
+            @ApiResponse(code = 400, message = "전송된 이메일로 유저정보를 찾을 수 없음"),
+    })
     public ResponseEntity<String> accessTokenUpdate(@ApiParam(value="Token을 재발급할 User email", required = true) @PathVariable("accountEmail") String accountEmail) {
         /**
          * @Method Name : accessTokenUpdate
@@ -76,7 +84,8 @@ public class UserController {
          * @Method 설명 : AccessToken이 만료되었음을 확인 시, refresh token을 통해 재발급을 요청하는 Method
          */
         String newToken = userService.accessTokenUpdate(accountEmail);
-
-        return new ResponseEntity<>(newToken, HttpStatus.OK);
+        if(newToken == null) {
+            return new ResponseEntity<>("Fail", HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(newToken, HttpStatus.OK);
     }
 }
