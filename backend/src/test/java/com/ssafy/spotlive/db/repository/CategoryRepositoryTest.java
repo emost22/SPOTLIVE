@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,5 +20,16 @@ class CategoryRepositoryTest {
         List<Category> categoryList = categoryRepository.findAll();
 
         assertEquals(categoryList.size(), 6);
+    }
+
+    @Test
+    void findCategoryByCategoryName(){
+        String categoryName = "소통";
+        Optional<Category> category = categoryRepository.findCategoryByCategoryName(categoryName);
+
+        if (category.isPresent())
+            assertEquals(category.get().getCategoryName(), categoryName);
+        else
+            assertEquals(category, Optional.empty());
     }
 }
