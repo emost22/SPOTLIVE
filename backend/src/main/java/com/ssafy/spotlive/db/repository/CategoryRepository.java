@@ -15,13 +15,6 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     /**
-     * @Method Name : findAll
-     * @작성자 : 강용수
-     * @Method 설명 : 모든 카테고리를 조회하는 메소드
-     */
-    List<Category> findAll();
-
-    /**
      * @Method Name : findCategoryByCategoryName
      * @작성자 : 강용수
      * @Method 설명 : 카테고리를 카테고리 이름으로 조회하는 메소드
