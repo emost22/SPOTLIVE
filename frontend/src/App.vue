@@ -8,6 +8,7 @@
       <router-view></router-view>
     </div>
   </div>
+  
 </template>
 
 <script>
@@ -25,12 +26,6 @@ export default ({
       isLogin: false,
     }
   },methods: {
-    logout: function () {
-      this.isLogin = false
-      this.$store.dispatch('logout', this.isLogin)
-      localStorage.removeItem('jwt')
-      this.$router.push({ name: 'Login' })
-    },
     getVideos() {
       this.$store.dispatch('getVideos')
     },
@@ -74,8 +69,6 @@ body {
 /* 헤더, 사이드바, 필터, 모달 배경 */
 .bgcolor-deep-grey {
   background-color: #242424;
-  width: 500px;
-  height: 500px;
 }
 /* 검색창, 알림 */
 .bgcolor-mid-deep-grey {
@@ -157,15 +150,6 @@ body {
     0 0 12px #C752FE;
 }
 #nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+  height: 80px;
 }
 </style>
