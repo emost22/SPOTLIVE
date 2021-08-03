@@ -71,4 +71,16 @@ public class UserController {
         return new ResponseEntity<>(userRes, HttpStatus.OK);
     }
 
+    @GetMapping("/kakao/update/{accountEmail}")
+    @ApiOperation(value = "Access Token을 재발급한다.", notes = "재발급 된 Token을 반환한다.")
+    public ResponseEntity<String> accessTokenUpdate(@ApiParam(value="Token을 재발급할 User email", required = true) @PathVariable("accountEmail") String accountEmail) {
+        /**
+         * @Method Name : accessTokenUpdate
+         * @작성자 : 김민권
+         * @Method 설명 : AccessToken이 만료되었음을 확인 시, refresh token을 통해 재발급을 요청하는 Method
+         */
+        String newToken = userService.accessTokenUpdate(accountEmail);
+
+        return new ResponseEntity<>(newToken, HttpStatus.OK);
+    }
 }
