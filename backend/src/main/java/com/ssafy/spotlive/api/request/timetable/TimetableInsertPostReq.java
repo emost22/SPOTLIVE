@@ -25,7 +25,7 @@ public class TimetableInsertPostReq {
      * @작성자 : 금아현
      * @Method 설명 : Timetable DTO를 Entity로 변환
      */
-    @ApiModelProperty(name = "dateTime", example = "공연 날짜, 시간")
+    @ApiModelProperty(name = "dateTime", example = "2222-11-12T16:34:30.388")
     LocalDateTime dateTime;
     Long showInfoId;
 
