@@ -25,6 +25,8 @@ public class VideoRepositoryTest {
 
     @Test
     void 스트리밍시작_영상저장테스트() {
+
+        // 테스트 객체 생성 and 셋팅
         VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
         videoInsertPostReq.setVideoTitle("뮤지컬 [캣츠]");
         videoInsertPostReq.setVideoDescription("캣츠 단돈 5천원!");
@@ -34,10 +36,12 @@ public class VideoRepositoryTest {
         videoInsertPostReq.setAccountEmail("sqk8657@naver.com");
         videoInsertPostReq.setSessionId("12341");
 
+        // 위의 객체를 저장
         VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository
                 .save(videoInsertPostReq.toVideo("penguin.png")));
+
+        // 넣은 값을 꺼내 제대로 들어갔는지 확인
         Optional<Video> videoById = videoRepository.findById(videoInsertPostRes.getVideoId());
-        
         assertThat(videoById.get().getVideoTitle()).isEqualTo("뮤지컬 [캣츠]");
     }
 
