@@ -25,20 +25,6 @@ import java.util.HashMap;
 @CrossOrigin( value = {"*"}, maxAge = 6000)
 public class UserController {
 
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String kakaoRestApiKey;
-
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String kakaoRestSecretKey;
-
-    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
-    private String kakaoRedirectUrl;
-
-    @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
-    private String kakaoUserInfoUrl;
-
-    private final String KAKAO_URL = "https://kauth.kakao.com";
-
     @Autowired
     UserService userService;
 
@@ -64,20 +50,7 @@ public class UserController {
          */
 
         // 1. Token을 발급받는다.
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        MultiValueMap<String, String> httpBody = new LinkedMultiValueMap<>();
-        httpBody.add("grant_type", "authorization_code");
-        httpBody.add("client_id", kakaoRestApiKey);
-        httpBody.add("redirect_uri", kakaoRedirectUrl);
-        httpBody.add("code", code);
-        httpBody.add("client_secret", kakaoRestSecretKey);
-
-        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(httpBody, httpHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<HashMap> tokenResponseEntity = restTemplate.exchange(KAKAO_URL + "/oauth/token", HttpMethod.POST, kakaoTokenRequest, HashMap.class);
+        HashMap<String, String> kakaoTokens = userService.getKakaoTokens(code);
 
         // 2. Token 값을 통해 UserInfo를 받아온다.
 
@@ -88,7 +61,7 @@ public class UserController {
 
         // 3-2. 존재하지 않는다면 회원 가입 시키고 반환한다.
 
-        return tokenResponseEntity;
+        return new ResponseEntity<>(kakaoTokens, HttpStatus.OK);
     }
 
 }
