@@ -11,4 +11,5 @@ import java.util.List;
  */
 public interface CategoryService {
     List<CategoryGetRes> findAllCategory();
+    CategoryGetRes findCategoryByCategoryName(String categoryName);
 }
