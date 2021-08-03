@@ -39,15 +39,15 @@ public class VideoController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<VideoInsertPostRes> insertVideo(
-//            @ApiIgnore Authentication authentication,
-            @RequestParam MultipartFile thumbnailImage, VideoInsertPostReq videoInsertPostReq) {
+            @RequestParam("thumbnailImage") MultipartFile thumbnailImage,
+            VideoInsertPostReq videoInsertPostReq) {
         /**
          * @Method Name : insertVideo
          * @작성자 : 권영린
          * @Method 설명 : 비디오를 추가한다.
          */
         VideoInsertPostRes videoInsertPostRes = videoService.insertVideo(videoInsertPostReq, thumbnailImage);
-        return new ResponseEntity<VideoInsertPostRes>(videoInsertPostRes, HttpStatus.CREATED);
+        return new ResponseEntity<>(videoInsertPostRes, HttpStatus.CREATED);
     }
 
 //    @GetMapping("/{videoId}")
