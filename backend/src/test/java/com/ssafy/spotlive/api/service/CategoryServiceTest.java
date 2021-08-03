@@ -20,4 +20,12 @@ class CategoryServiceTest {
 
         assertEquals(categoryGetResList.size(), 6);
     }
+
+    @Test
+    void findCategoryByCategoryName() {
+        String categoryName = "소통";
+        CategoryGetRes categoryGetRes = categoryService.findCategoryByCategoryName(categoryName);
+
+        assertEquals(categoryGetRes.getCategoryName(), categoryName);
+    }
 }
