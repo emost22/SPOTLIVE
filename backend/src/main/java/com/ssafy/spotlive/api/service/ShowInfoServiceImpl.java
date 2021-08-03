@@ -2,6 +2,7 @@ package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
 import com.ssafy.spotlive.api.request.timetable.TimetableInsertPostReq;
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.entity.Timetable;
 import com.ssafy.spotlive.db.repository.ShowInfoRepository;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -72,5 +74,16 @@ public class ShowInfoServiceImpl implements ShowInfoService{
         System.out.println("확인 : " + showInfoInsertPostReq.getTimetableInsertPostReq().get(1));
 //        showInfoInsertPostReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq));
         return null;
+    }
+
+    @Override
+    public ShowInfoFindByIdGetRes findShowInfoById(long id) {
+        /**
+         * @Method Name : findShowInfoById
+         * @작성자 : 금아현
+         * @Method 설명 : 공연 정보를 ID로 조회
+         */
+        Optional<ShowInfo> optionalShowInfo = showInfoRepository.findShowInfoByShowInfoId(id);
+        return optionalShowInfo.map(ShowInfoFindByIdGetRes::of).orElse(null);
     }
 }
