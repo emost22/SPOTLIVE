@@ -34,12 +34,9 @@
 </template>
 
 <script>
-import MainSidebar from '@/views/main/components/MainSidebar.vue'
-
 export default ({
   name: "MainHeader",
   components: {
-    MainSidebar,
   },
   data: function () {
     return {
