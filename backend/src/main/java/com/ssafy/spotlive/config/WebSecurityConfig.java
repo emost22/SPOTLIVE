@@ -10,8 +10,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/oauth2/**").permitAll()
-                .anyRequest().authenticated()
-                .and().oauth2Login();
+                .antMatchers("/api/auth/kakao/**").permitAll()
+                .anyRequest().authenticated();
     }
 }
