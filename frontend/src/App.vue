@@ -150,7 +150,7 @@ body {
     0 0 12px #C752FE;
 }
 #nav {
-  height: 80px;
+  height: 45px;
   display: block;
 }
 #view {

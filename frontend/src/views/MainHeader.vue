@@ -4,6 +4,7 @@
     <nav class="navbar navbar-expand">
       <div class="container-fluid">
         <router-link class="navbar-brand" :to="{ name: 'Main' }">
+          <!-- <img class="logoimg" src="~@/assets/logo.png"> -->
           <span class="txtcolor-ngreen logo">SPOT</span>
           <span class="txtcolor-npink logo">LIVE</span>
         </router-link>
@@ -14,16 +15,16 @@
         <ul class="navbar-nav">
           <!-- 송출자가 라이브인 경우 스트리밍 버튼 제거 -->
           <li class="nav-item">
-            <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png"></router-link></div>
+            <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png" class="iconimg"></router-link></div>
           </li>
           <li class="nav-item">
-            <div><router-link class="nav-link fw-bold" :to="{ name: 'Profile' }"><img src="~@/assets/icon-profile.png"></router-link></div>
+            <div><router-link class="nav-link fw-bold" :to="{ name: 'Profile' }"><img src="~@/assets/icon-profile.png" class="iconimg"></router-link></div>
           </li>
           <li class="nav-item">
-            <div><img src="~@/assets/icon-alarm.png"></div>
+            <div><img src="~@/assets/icon-alarm.png" class="iconimg"></div>
           </li>
           <li class="nav-item">
-            <div><router-link class="nav-link" @click.native="logout" :to="{ name: 'Login' }"><img src="~@/assets/icon-logout.png" alt=""></router-link></div>
+            <div><router-link class="nav-link" @click.native="logout" :to="{ name: 'Login' }"><img src="~@/assets/icon-logout.png" class="iconimg"></router-link></div>
           </li>
         </ul>
       </div>
@@ -62,6 +63,15 @@ export default ({
 </script>
 
 <style>
+.logoimg {
+  width: 180px;
+  height: 80px;
+}
+.logo {
+  font-weight: bold;
+  font-size: 25px;
+  margin: 5px;
+}
 .search {
   display: flex;
   flex-direction: row;
@@ -69,7 +79,7 @@ export default ({
 }
 .searchinput{
   margin: 10px;
-  width: 300px;
+  width: 400px;
 }
 .searchbtn{
   width: 75px;
@@ -79,11 +89,9 @@ export default ({
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 5px;
 }
-.logo {
-  font-weight: bold;
-  font-size: x-large;
-  margin: 5px;
+.iconimg {
+  width: 35px;
+  height: 35px;
 }
 </style>
