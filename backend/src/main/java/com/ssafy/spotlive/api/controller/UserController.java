@@ -1,5 +1,7 @@
 package com.ssafy.spotlive.api.controller;
 
+import com.ssafy.spotlive.api.response.KakaoUserRes;
+import com.ssafy.spotlive.api.response.UserRes;
 import com.ssafy.spotlive.api.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,13 +38,12 @@ public class UserController {
          * @작성자 : 김민권
          * @Method 설명 : 카카오 로그인을 위한 요청 URL을 전송하는 Method, 해당 URL로 GET 요청을 전송 시 카카오톡 로그인 페이지로 이동된다.
          */
-
         return new ResponseEntity<>(userService.getKakaoLoginUrl(), HttpStatus.OK);
     }
 
     @GetMapping("/kakao/login")
-    @ApiOperation(value = "카카오 로그인 이후 token을 얻어온다.", notes = "카카오 로그인 이후 해당 Method로 자동 redirect 된다.")
-    public ResponseEntity<HashMap> getTokenAndJoinOrLogin(@ApiParam(value="Token 생성에 사용될 Code", required = true) @RequestParam("code") String code) {
+    @ApiOperation(value = "kakao token을 얻어와 유저정보 조회 후, 회원가입 혹은 로그인 수행 후 정보 반환", notes = "Token은 매 실행 시 갱신된다.")
+    public ResponseEntity<UserRes> getTokenAndJoinOrLogin(@ApiParam(value="Token 생성에 사용될 Code", required = true) @RequestParam("code") String code) {
         /**
          * @Method Name : getTokenAndJoinOrLogin
          * @작성자 : 김민권
@@ -53,15 +54,21 @@ public class UserController {
         HashMap<String, String> kakaoTokens = userService.getKakaoTokens(code);
 
         // 2. Token 값을 통해 UserInfo를 받아온다.
-
+        KakaoUserRes kakaoUserRes = userService.getKakaoUserInfo(kakaoTokens.get("token_type"), kakaoTokens.get("access_token"));
 
         // 3. UserInfo의 내용이 회원 DB에 존재하는가?
+        UserRes userResForCheck = userService.findUserByAccountEmail(kakaoUserRes.getKakao_account().getEmail());
 
-        // 3-1. 존재한다면 Token 값을 갱신하고 반환한다.
+        UserRes userRes;
+        if(userResForCheck != null) {
+            // 존재한다면 Token 값을 갱신하고 반환한다.
+            userRes = userService.refreshTokensForExistUser(kakaoUserRes.getKakao_account().getEmail(), kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token"));
+        } else {
+            // 존재하지 않는다면 회원 가입 시키고 반환한다.
+            userRes = userService.insertUser(kakaoUserRes.toUser(kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token")));
+        }
 
-        // 3-2. 존재하지 않는다면 회원 가입 시키고 반환한다.
-
-        return new ResponseEntity<>(kakaoTokens, HttpStatus.OK);
+        return new ResponseEntity<>(userRes, HttpStatus.OK);
     }
 
 }
