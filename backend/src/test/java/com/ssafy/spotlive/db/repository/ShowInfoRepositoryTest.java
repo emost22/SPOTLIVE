@@ -27,4 +27,18 @@ class ShowInfoRepositoryTest {
         Optional<ShowInfo> showInfo = showInfoRepository.findShowInfoByShowInfoId(notExistShowInfoId);
         assertThat(showInfo).isEmpty();
     }
+
+    @Test
+    void deleteShowInfoByExistIdTest() {
+        Long existShowInfoId = 1L;
+        Long id = showInfoRepository.deleteShowInfoByShowInfoId(existShowInfoId);
+        assertThat(id).isEqualTo(1);
+    }
+
+    @Test
+    void deleteShowInfoByNotExistIdTest(){
+        Long notExistShowInfoId = -1L;
+        Long id = showInfoRepository.deleteShowInfoByShowInfoId(notExistShowInfoId);
+        assertThat(id).isEqualTo(0);
+    }
 }
