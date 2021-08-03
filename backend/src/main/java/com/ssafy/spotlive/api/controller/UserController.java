@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.controller;
 
+import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.service.UserService;
@@ -87,5 +88,33 @@ public class UserController {
         if(newToken == null) {
             return new ResponseEntity<>("Fail", HttpStatus.BAD_REQUEST);
         } else return new ResponseEntity<>(newToken, HttpStatus.OK);
+    }
+
+    @PatchMapping("/user/update")
+    @ApiOperation(value = "User를 업데이트한다.", notes = "Token의 유효성을 확인 후, User의 정보를 업데이트한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적인 수정 완료"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token"),
+            @ApiResponse(code = 500, message = "전송된 이메일로 유저정보를 찾을 수 없음"),
+    })
+    public ResponseEntity<UserRes> updateUser(
+            @RequestHeader("Authorization") @ApiParam(value="헤더에 담긴 Authorization의 토큰 정보", required = true) String accessToken,
+            @RequestBody @ApiParam(value="수정할 정보", required = true) UserUpdatePatchReq userUpdatePatchReq) {
+        /**
+         * @Method Name : updateUser
+         * @작성자 : 김민권
+         * @Method 설명 : User에 대한 정보를 업데이트한다.
+         */
+        ResponseEntity<HashMap> isValidEntity = userService.isValidToken(accessToken);
+        HttpStatus statusCode = isValidEntity.getStatusCode();
+
+        if(statusCode.value() == 200) {
+            UserRes userRes = userService.updateUser(userUpdatePatchReq);
+            return new ResponseEntity<>(userRes, HttpStatus.OK);
+        } else if(statusCode.value() == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
