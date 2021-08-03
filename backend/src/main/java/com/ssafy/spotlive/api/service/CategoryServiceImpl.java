@@ -34,11 +34,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryGetRes findCategoryByCategoryName(String categoryName){
         /**
-         * @Method Name : findAllCategory
+         * @Method Name : findCategoryByCategoryName
          * @작성자 : 강용수
          * @Method 설명 : 카테고리를 카테고리 이름으로 조회하는 메소드
          */
-
         Optional<Category> optionalCategory = categoryRepository.findCategoryByCategoryName(categoryName);
 
         if (optionalCategory.isPresent())
