@@ -17,6 +17,7 @@ export default {
   },
   methods: {
     Filter: function () {
+    // Main.vue의 axios요청 다시 받아오도록 computed
     },
   },
   computed: {

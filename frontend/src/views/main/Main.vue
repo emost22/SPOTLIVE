@@ -3,6 +3,7 @@
     <MainSidebar/>
     <div>
       상단 카테고리 추천
+      <!-- npm install -S vue-carousel-3d -->
       <VideoCarousel :videos="top_videos"/>
     </div>
     <div>
