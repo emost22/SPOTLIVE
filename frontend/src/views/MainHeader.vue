@@ -9,8 +9,13 @@
           <span class="txtcolor-npink logo">LIVE</span>
         </router-link>
         <div class="search"> 
-          <input class="bgcolor-mid-deep-grey searchinput" type="text" id="">
-          <button class="bgcolor-mid-deep-grey txtcolor-white searchbtn" :disabled="this.validSearch">검색</button>
+          <input class="bgcolor-mid-deep-grey txtcolor-white searchinput" type="text" id="" v-model.trim="input" placeholder="검색할 내용을 입력하세요">
+          <button 
+            class="bgcolor-mid-deep-grey txtcolor-white searchbtn" 
+            :disabled="this.validSearch" 
+            @click="clickSearchBtn">
+            Search
+          </button>
         </div>        
         <ul class="navbar-nav">
           <!-- 송출자가 라이브인 경우 스트리밍 버튼 제거 -->
@@ -41,6 +46,7 @@ export default ({
     return {
       isLogin: false,
       validSearch: false,
+      input: '',
     }
   },methods: {
     logout: function () {
@@ -49,6 +55,16 @@ export default ({
       localStorage.removeItem('jwt')
       this.$router.push({ name: 'Login' })
     },
+    clickSearchBtn: function () {
+      if (this.input) {
+        console.log(this.input)
+        // Search.vue로 이동하고 검색 결과 axios
+        this.$router.push({ name: 'Search', query: { input: this.input } })
+      }
+      else {
+        console.log('검색할 내용을 입력하세요')
+      }
+    }
   },
   computed: {
     isLogin: function () {

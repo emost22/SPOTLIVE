@@ -11,12 +11,16 @@
       <FilterGlide :filters="filter_btns"/>
     </div>
     <div>
-      추천 5개의 줄
-      <VideoGlide :videos="top_videos"/>
-      <VideoGlide :videos="top_videos"/>
-      <VideoGlide :videos="top_videos"/>
-      <VideoGlide :videos="top_videos"/>
-      <VideoGlide :videos="top_videos"/>
+      <p> 소통용 영상</p>
+      <VideoGlide :videos="bottom_communication_videos"/>
+      <p> 공연용 영상</p>
+      <VideoGlide :videos="bottom_show_videos"/>
+      <p> 홍보용 영상</p>
+      <VideoGlide :videos="bottom_ad_videos"/>
+      <p> 조회순 높은 영상</p>
+      <VideoGlide :videos="bottom_views_videos"/>
+      <p> 내 구독자들의 영상</p>
+      <VideoGlide :videos="bottom_follow_videos"/>
     </div>
   </div>
 </template>
