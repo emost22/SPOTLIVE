@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.request.timetable;
 
+import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.entity.Timetable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,10 +27,17 @@ public class TimetableInsertPostReq {
      */
     @ApiModelProperty(name = "dateTime", example = "공연 날짜, 시간")
     LocalDateTime dateTime;
+    Long showInfoId;
 
     public Timetable toTimetable(){
         Timetable timetable = new Timetable();
         timetable.setDateTime(this.dateTime);
+
+        ShowInfo showInfo  = new ShowInfo();
+        showInfo.setShowInfoId(this.showInfoId);
+
+        timetable.setShowInfo(showInfo);
         return timetable;
     }
+
 }
