@@ -35,7 +35,7 @@ public class VideoServiceImpl implements VideoService{
             String rootPath = file.getAbsolutePath().split("backend")[0];
             /* 저장 경로 설정 후 없으면 생성 */
 
-            String savePath = rootPath + "frontend" + separ + "src" + separ + "assets" + separ + "thumbnails" + separ + today;
+            String savePath = rootPath + "frontend" + separ + "src" + separ + "assets" + separ + "thumbnails";
             if (!new File(savePath).exists()) {
                 try {
                     new File(savePath).mkdirs();
