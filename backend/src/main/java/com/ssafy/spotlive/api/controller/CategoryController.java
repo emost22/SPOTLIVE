@@ -1,6 +1,6 @@
 package com.ssafy.spotlive.api.controller;
 
-import com.ssafy.spotlive.api.response.CategoryGetRes;
+import com.ssafy.spotlive.api.response.category.CategoryGetRes;
 import com.ssafy.spotlive.api.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

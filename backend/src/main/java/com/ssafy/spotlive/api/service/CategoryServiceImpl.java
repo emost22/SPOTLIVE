@@ -1,6 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
-import com.ssafy.spotlive.api.response.CategoryGetRes;
+import com.ssafy.spotlive.api.response.category.CategoryGetRes;
 import com.ssafy.spotlive.db.entity.Category;
 import com.ssafy.spotlive.db.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
