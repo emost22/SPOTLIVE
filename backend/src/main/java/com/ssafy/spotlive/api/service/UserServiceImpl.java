@@ -4,6 +4,7 @@ import com.ssafy.spotlive.api.response.KakaoUserRes;
 import com.ssafy.spotlive.api.response.UserRes;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
 
     private final String KAKAO_URL = "https://kauth.kakao.com";
 
+    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -100,10 +102,38 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserRes findUserByAccountEmail(String accountEmail) {
         /**
-         * @Method Name : findUser
+         * @Method Name : findUserByAccountEmail
          * @작성자 : 김민권
          * @Method 설명 : 발급된 token을 통해 kakao user 정보를 반환한다.
          */
-        return UserRes.of(userRepository.findUserByAccountEmail(accountEmail));
+
+        User user = userRepository.findUserByAccountEmail(accountEmail);
+        return user == null ? null : UserRes.of(userRepository.findUserByAccountEmail(accountEmail));
+    }
+
+    @Override
+    public UserRes refreshTokensForExistUser(String accountEmail, String accessToken, String refreshToken) {
+        /**
+         * @Method Name : refreshTokensForExistUser
+         * @작성자 : 김민권
+         * @Method 설명 : 존재하는 회원에 대해서 각 토큰 값을 업데이트 한 후 반환한다.
+         */
+        User existUser = userRepository.findUserByAccountEmail(accountEmail);
+        existUser.setAccessToken(accessToken);
+        existUser.setRefreshToken(refreshToken);
+        userRepository.save(existUser);
+
+        return UserRes.of(existUser);
+    }
+
+    @Override
+    public UserRes insertUser(User newUser) {
+        /**
+         * @Method Name : insertUser
+         * @작성자 : 김민권
+         * @Method 설명 : 존재하지않는 회원에 대해서 각 토큰 값을 포함한 user를 삽입하고 반환한다.
+         */
+        userRepository.save(newUser);
+        return UserRes.of(newUser);
     }
 }
