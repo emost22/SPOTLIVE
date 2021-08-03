@@ -32,7 +32,7 @@ public class CategoryController {
     @ApiOperation(value = "모든 카테고리 조회", notes = "모든 카테고리를 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
-            @ApiResponse(code = 404, message = "조회 실패"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
             @ApiResponse(code = 500, message = "서버 에러 발생")
     })
     @GetMapping("/")
@@ -45,7 +45,7 @@ public class CategoryController {
         List<CategoryGetRes> categoryGetResList = categoryService.findAllCategory();
 
         if (categoryGetResList == null || categoryGetResList.isEmpty())
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity<>(categoryGetResList, HttpStatus.OK);
     }
