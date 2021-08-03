@@ -7,14 +7,7 @@
     </div>
     <div>
       카테고리 버튼
-      <button>뮤지컬</button>
-      <button>뮤지컬</button>
-      <button>뮤지컬</button>
-      <button>뮤지컬</button>
-      <button>뮤지컬</button>
-      <button>뮤지컬</button>
-      <button>뮤지컬</button>
-      <!-- 버튼 글라이드 만들기 FilterGlide.vue FilterBtn.vue-->
+      <FilterGlide :filters="filter_btns"/>
     </div>
     <div>
       추천 5개의 줄
@@ -31,6 +24,7 @@
 import MainSidebar from '@/views/main/components/MainSidebar.vue'
 import VideoCarousel from '@/views/main/components/VideoCarousel.vue'
 import VideoGlide from '@/views/main/components/VideoGlide.vue'
+import FilterGlide from '@/views/main/components/FilterGlide.vue'
 
 export default {
   name: "Main",
@@ -38,11 +32,12 @@ export default {
     MainSidebar,
     VideoCarousel,
     VideoGlide,
+    FilterGlide,
   },
   data: function () {
     return {
       top_videos: [],
-      filter_btn: [],
+      filter_btns: [],
       bottom_communication_videos: [],
       bottom_show_videos: [],
       bottom_ad_videos: [],
