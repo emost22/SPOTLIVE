@@ -189,4 +189,13 @@ public class UserServiceImpl implements UserService {
 
         return isValidEntity;
     }
+
+    @Override
+    public UserRes updateUser(UserUpdatePatchReq userUpdatePatchReq) {
+        User updateUser = userRepository.findUserByAccountEmail(userUpdatePatchReq.getAccountEmail());
+        User updatedUser = userUpdatePatchReq.toUser(updateUser);
+        userRepository.save(updatedUser);
+
+        return UserRes.of(updatedUser);
+    }
 }
