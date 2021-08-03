@@ -1,4 +1,4 @@
-package com.ssafy.spotlive.api.response;
+package com.ssafy.spotlive.api.response.category;
 
 import com.ssafy.spotlive.db.entity.Category;
 import lombok.Builder;
