@@ -14,6 +14,7 @@
       <button>뮤지컬</button>
       <button>뮤지컬</button>
       <button>뮤지컬</button>
+      <!-- 버튼 글라이드 만들기 FilterGlide.vue FilterBtn.vue-->
     </div>
     <div>
       추천 5개의 줄
@@ -41,21 +42,29 @@ export default {
   data: function () {
     return {
       top_videos: [],
-      top_videos: [],
-      top_videos: [],
-      top_videos: [],
-      top_videos: [],
-      top_videos: [],
+      filter_btn: [],
+      bottom_communication_videos: [],
+      bottom_show_videos: [],
+      bottom_ad_videos: [],
+      bottom_views_videos: [],
+      bottom_follow_videos: [],
     }
   },
   methods: {
-    getRecommend: function () {
+    getTopVideos: function () {
     },
+    getFilterBtn: function () {
+    },
+    getBottomVideos: function () {
+    },
+
   },
   created: function () {
-    this.getRecommend()
+    this.getTopVideos()
+    this.getFilterBtn()
+    this.getBottomVideos()
   },
-  computer: function () {
+  computed: function () {
   },
 }
 </script>
