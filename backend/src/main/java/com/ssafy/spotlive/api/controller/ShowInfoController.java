@@ -3,13 +3,14 @@ package com.ssafy.spotlive.api.controller;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoUpdatePatchReq;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
-import com.ssafy.spotlive.common.model.response.BaseResponseBody;
+import com.ssafy.spotlive.api.service.ShowInfoService;
 import com.ssafy.spotlive.db.entity.ShowInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @FileName : ShowInfoController
@@ -22,21 +23,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/showinfo")
 public class ShowInfoController {
 
-//    @Autowired
-//    ShowInfoService showInfoService;
+    @Autowired
+    ShowInfoService showInfoService;
 
     @PostMapping("/")
     @ApiOperation(value = "공연 정보 등록", notes = "새로운 공연 정보를 등록한다.")
-    public ResponseEntity<? extends BaseResponseBody> insertShowInfo(
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 404, message = "등록 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<ShowInfo> insertShowInfo(
             //@ApiIgnore Authentication authentication,
-            @RequestBody @ApiParam(value = "새로 등록할 회의의 정보", required = true) ShowInfoInsertPostReq showInfoInsertPostReq){
+//            @RequestParam("file") MultipartFile files,
+            @RequestBody @ApiParam(value = "새로 등록할 회의의 정보", required = true) ShowInfoInsertPostReq showInfoInsertPostReq
+//            @ModelAttribute ShowInfoInsertPostReq showInfoInsertPostReq
+    ){
         /**
          * @Method Name : insertShowInfo
          * @작성자 : 금아현
          * @Method 설명 : 새로운 공연 정보를 등록한다.
          */
-
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        // user 이메일 부분 추가해야함
+        ShowInfo showInfo = showInfoService.insertShowInfo(showInfoInsertPostReq);
+        return new ResponseEntity<>(showInfo, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -56,7 +66,7 @@ public class ShowInfoController {
 
     @PatchMapping("/{id}")
     @ApiOperation(value = "공연 정보 수정", notes = "공연 id로 해당 공연을 수정한다.")
-    public ResponseEntity<? extends BaseResponseBody> updateShowInfo(
+    public ResponseEntity<Object> updateShowInfo(
             //@ApiIgnore Authentication authentication,
             @PathVariable @ApiParam(value = "수정할 공연 정보의 id", required = true) long id,
             @RequestBody @ApiParam(value = "수정할 회의의 정보", required = true) ShowInfoUpdatePatchReq showInfoInsertPReq){
@@ -65,12 +75,12 @@ public class ShowInfoController {
          * @작성자 : 금아현
          * @Method 설명 : 공연 id로 해당 공연을 수정한다.
          */
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "공연 정보 삭제", notes = "공연 id로 해당 공연을 삭제한다.")
-    public ResponseEntity<? extends BaseResponseBody> deleteShowInfo(
+    public ResponseEntity<Object> deleteShowInfo(
             //@ApiIgnore Authentication authentication,
             @PathVariable @ApiParam(value = "삭제할 공연 정보의 id", required = true) long id){
         /**
@@ -78,6 +88,6 @@ public class ShowInfoController {
          * @작성자 : 금아현
          * @Method 설명 : 공연 id로 해당 공연을 삭제한다.
          */
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
