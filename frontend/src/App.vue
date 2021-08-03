@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div id="app">
     <div v-if="isLogin">
       <Login/>
     </div>
-    <div v-else id="nav">
+    <div v-else id="nav" class="sticky-top">
       <MainHeader/>
       <router-view></router-view>
     </div>
@@ -151,5 +151,9 @@ body {
 }
 #nav {
   height: 80px;
+  display: block;
+}
+#view {
+  margin-top: 80px;
 }
 </style>

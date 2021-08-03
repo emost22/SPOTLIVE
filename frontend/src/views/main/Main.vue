@@ -3,14 +3,25 @@
     <MainSidebar/>
     <div>
       상단 카테고리 추천
-      <VideoCarousel/>
+      <VideoCarousel :videos="top_videos"/>
     </div>
     <div>
       카테고리 버튼
+      <button>뮤지컬</button>
+      <button>뮤지컬</button>
+      <button>뮤지컬</button>
+      <button>뮤지컬</button>
+      <button>뮤지컬</button>
+      <button>뮤지컬</button>
+      <button>뮤지컬</button>
     </div>
     <div>
       추천 5개의 줄
-      <VideoGlide/>
+      <VideoGlide :videos="top_videos"/>
+      <VideoGlide :videos="top_videos"/>
+      <VideoGlide :videos="top_videos"/>
+      <VideoGlide :videos="top_videos"/>
+      <VideoGlide :videos="top_videos"/>
     </div>
   </div>
 </template>
