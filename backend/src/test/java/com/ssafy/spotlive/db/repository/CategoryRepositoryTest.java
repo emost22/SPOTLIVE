@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 class CategoryRepositoryTest {
@@ -20,8 +20,8 @@ class CategoryRepositoryTest {
         Optional<Category> category = categoryRepository.findCategoryByCategoryName(categoryName);
 
         if (category.isPresent())
-            assertEquals(category.get().getCategoryName(), categoryName);
+            assertThat(category.get().getCategoryName()).isEqualTo(categoryName);
         else
-            assertEquals(category, Optional.empty());
+            assertThat(category).isEqualTo(Optional.empty());
     }
 }
