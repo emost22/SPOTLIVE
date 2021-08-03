@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,5 +45,26 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity<>(categoryGetResList, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "카테고리 이름으로 카테고리 조회", notes = "카테고리 이름으로 카테고리를 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    @GetMapping("/{categoryName}")
+    public ResponseEntity<CategoryGetRes> findCategoryByCategoryName(@PathVariable("categoryName") String categoryName){
+        /**
+         * @Method Name : findCategoryByCategoryName
+         * @작성자 : 강용수
+         * @Method 설명 : 카테고리를 카테고리 이름으로 조회하는 메소드
+         */
+        CategoryGetRes categoryGetRes = categoryService.findCategoryByCategoryName(categoryName);
+
+        if (categoryGetRes == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else
+            return new ResponseEntity<>(categoryGetRes, HttpStatus.OK);
     }
 }
