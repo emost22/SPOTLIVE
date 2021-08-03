@@ -19,5 +19,7 @@ public interface UserService {
     UserRes findUserByAccountEmail(String accountEmail);
     UserRes refreshTokensForExistUser(String email, String accessToken, String refreshToken);
     UserRes insertUser(User newUser);
+
+    String accessTokenUpdate(String accountEmail);
     // User insertUser(UserPostReq userPostReq);
 }

@@ -136,4 +136,32 @@ public class UserServiceImpl implements UserService {
         userRepository.save(newUser);
         return UserRes.of(newUser);
     }
+
+    @Override
+    public String accessTokenUpdate(String accountEmail) {
+        User userForUpdate = userRepository.findUserByAccountEmail(accountEmail);
+        if(userForUpdate == null) return null;
+
+        String refreshToken = userForUpdate.getRefreshToken();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> httpBody = new LinkedMultiValueMap<>();
+        httpBody.add("grant_type", "refresh_token");
+        httpBody.add("client_id", kakaoRestApiKey);
+        httpBody.add("refresh_token", refreshToken);
+        httpBody.add("client_secret", kakaoRestSecretKey);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoUpdateTokenReq = new HttpEntity<>(httpBody, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<HashMap> tokenResEntity = restTemplate.exchange(KAKAO_URL + "/oauth/token", HttpMethod.POST, kakaoUpdateTokenReq, HashMap.class);
+
+        String newToken = (String) tokenResEntity.getBody().get("access_token");
+        userForUpdate.setAccessToken(newToken);
+        userRepository.save(userForUpdate);
+
+        return newToken;
+    }
 }
