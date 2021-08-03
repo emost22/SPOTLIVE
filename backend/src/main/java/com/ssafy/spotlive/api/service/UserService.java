@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.response.KakaoUserRes;
+import com.ssafy.spotlive.api.response.UserRes;
 import com.ssafy.spotlive.db.entity.User;
 
 import java.util.HashMap;
@@ -15,6 +16,6 @@ public interface UserService {
     String getKakaoLoginUrl();
     HashMap<String, String> getKakaoTokens(String code);
     KakaoUserRes getKakaoUserInfo(String tokenType, String accessToken);
-    // User findUser(String email);
+    UserRes findUserByAccountEmail(String accountEmail);
     // User insertUser(UserPostReq userPostReq);
 }

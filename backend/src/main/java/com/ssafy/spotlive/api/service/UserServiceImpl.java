@@ -1,7 +1,9 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.response.KakaoUserRes;
+import com.ssafy.spotlive.api.response.UserRes;
 import com.ssafy.spotlive.db.entity.User;
+import com.ssafy.spotlive.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +37,8 @@ public class UserServiceImpl implements UserService {
     private String kakaoUserInfoUrl;
 
     private final String KAKAO_URL = "https://kauth.kakao.com";
+
+    private UserRepository userRepository;
 
     @Override
     public String getKakaoLoginUrl() {
@@ -77,6 +81,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public KakaoUserRes getKakaoUserInfo(String tokenType, String accessToken) {
+        /**
+         * @Method Name : getKakaoUserInfo
+         * @작성자 : 김민권
+         * @Method 설명 : 발급된 token을 통해 kakao user 정보를 반환한다.
+         */
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -86,5 +95,15 @@ public class UserServiceImpl implements UserService {
         ResponseEntity<KakaoUserRes> userInfo = restTemplate.exchange(kakaoUserInfoUrl, HttpMethod.GET, kakaoUserInfoReq, KakaoUserRes.class);
 
         return userInfo.getBody();
+    }
+
+    @Override
+    public UserRes findUserByAccountEmail(String accountEmail) {
+        /**
+         * @Method Name : findUser
+         * @작성자 : 김민권
+         * @Method 설명 : 발급된 token을 통해 kakao user 정보를 반환한다.
+         */
+        return UserRes.of(userRepository.findUserByAccountEmail(accountEmail));
     }
 }
