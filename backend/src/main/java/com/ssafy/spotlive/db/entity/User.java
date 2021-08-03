@@ -26,6 +26,8 @@ public class User {
     String profileDescription;
     String gender;
     String ageRange;
+    String accessToken;
+    String refreshToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<ShowInfo> showInfoList = new ArrayList<>();
