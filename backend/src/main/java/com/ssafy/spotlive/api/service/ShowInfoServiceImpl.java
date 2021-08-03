@@ -86,4 +86,14 @@ public class ShowInfoServiceImpl implements ShowInfoService{
         Optional<ShowInfo> optionalShowInfo = showInfoRepository.findShowInfoByShowInfoId(id);
         return optionalShowInfo.map(ShowInfoFindByIdGetRes::of).orElse(null);
     }
+
+    @Override
+    public Long deleteShowInfoById(long id) {
+        /**
+         * @Method Name : deleteShowInfoById
+         * @작성자 : 금아현
+         * @Method 설명 : 공연정보를 id로 삭제
+         */
+        return showInfoRepository.deleteShowInfoByShowInfoId(id);
+    }
 }
