@@ -12,7 +12,7 @@ import java.util.HashMap;
 public interface UserService {
 
     String getKakaoLoginUrl();
-    // HashMap getKakaoTokens();
+    HashMap<String, String> getKakaoTokens(String code);
     // User findUser(String email);
     // User insertUser(UserPostReq userPostReq);
 }

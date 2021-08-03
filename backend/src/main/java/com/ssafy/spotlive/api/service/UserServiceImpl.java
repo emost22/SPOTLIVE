@@ -2,7 +2,14 @@ package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.db.entity.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
@@ -40,5 +47,30 @@ public class UserServiceImpl implements UserService {
                 .append("&redirect_uri=").append(kakaoRedirectUrl)
                 .append("&response_type=code")
                 .toString();
+    }
+
+    @Override
+    public HashMap<String, String> getKakaoTokens(String code) {
+        /**
+         * @Method Name : getKakaoTokens
+         * @작성자 : 김민권
+         * @Method 설명 : 발급된 code를 통해 Access Token과 Refresh Token을 반환한다.
+         */
+        HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> httpBody = new LinkedMultiValueMap<>();
+            httpBody.add("grant_type", "authorization_code");
+            httpBody.add("client_id", kakaoRestApiKey);
+            httpBody.add("redirect_uri", kakaoRedirectUrl);
+            httpBody.add("code", code);
+            httpBody.add("client_secret", kakaoRestSecretKey);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenReq = new HttpEntity<>(httpBody, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<HashMap> tokenResEntity = restTemplate.exchange(KAKAO_URL + "/oauth/token", HttpMethod.POST, kakaoTokenReq, HashMap.class);
+
+        return tokenResEntity.getBody();
     }
 }
