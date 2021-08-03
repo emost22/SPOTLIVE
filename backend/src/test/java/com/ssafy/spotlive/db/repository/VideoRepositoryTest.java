@@ -37,6 +37,7 @@ public class VideoRepositoryTest {
         VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository
                 .save(videoInsertPostReq.toVideo("penguin.png")));
         Optional<Video> videoById = videoRepository.findById(videoInsertPostRes.getVideoId());
+        
         assertThat(videoById.get().getVideoTitle()).isEqualTo("뮤지컬 [캣츠]");
     }
 
