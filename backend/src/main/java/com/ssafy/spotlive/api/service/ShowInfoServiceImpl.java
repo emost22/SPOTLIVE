@@ -16,6 +16,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @FileName : ShowInfoServiceImpl
+ * @작성자 : 금아현
+ * @Class 설명 : 공연 정보 관련 비즈니스 로직처리를 위한 서비스 구현 정의
+ */
 @Service
 public class ShowInfoServiceImpl implements ShowInfoService{
 
@@ -25,7 +30,11 @@ public class ShowInfoServiceImpl implements ShowInfoService{
 
     @Override
     public ShowInfo insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq) {
-
+        /**
+         * @Method Name : insertShowInfo
+         * @작성자 : 금아현
+         * @Method 설명 : 공연정보 추가
+         */
 //        System.out.println("showInfo Timetable: " + showInfoInsertPostReq.getTimetableInsertPostReq().get(0).getDateTime());
 //        try {
 //            String separator = File.separator;
