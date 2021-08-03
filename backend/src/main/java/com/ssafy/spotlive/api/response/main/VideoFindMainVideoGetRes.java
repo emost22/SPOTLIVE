@@ -27,6 +27,7 @@ public class VideoFindMainVideoGetRes {
     String videoLength;
     Boolean isLive;
     Long hit;
+    Long hitLive;
 
     VideoFindUserRes user;
     LocalDateTime startTime;
@@ -48,6 +49,7 @@ public class VideoFindMainVideoGetRes {
                 .videoLength(videoLength)
                 .isLive(video.getIsLive())
                 .hit(video.getHit())
+                .hitLive(video.getUserVideoList().stream().count())
                 .user(VideoFindUserRes.of(video.getUser()))
                 .startTime(video.getStartTime())
                 .categoryName(video.getCategory().getCategoryName())
