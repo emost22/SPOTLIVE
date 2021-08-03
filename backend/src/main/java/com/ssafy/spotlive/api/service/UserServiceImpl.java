@@ -4,6 +4,7 @@ import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -23,6 +24,7 @@ import java.util.HashMap;
  * @Class 설명 : User 관련 비즈니스 로직을 처리하는 Service
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
