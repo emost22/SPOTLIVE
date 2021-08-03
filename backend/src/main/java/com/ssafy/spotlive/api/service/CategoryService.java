@@ -1,6 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
-import com.ssafy.spotlive.api.response.CategoryGetRes;
+import com.ssafy.spotlive.api.response.category.CategoryGetRes;
 
 import java.util.List;
 
@@ -11,4 +11,5 @@ import java.util.List;
  */
 public interface CategoryService {
     List<CategoryGetRes> findAllCategory();
+    CategoryGetRes findCategoryByCategoryName(String categoryName);
 }
