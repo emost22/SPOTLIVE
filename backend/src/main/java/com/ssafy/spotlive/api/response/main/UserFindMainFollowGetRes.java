@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.response.main;
 
+import com.ssafy.spotlive.db.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,4 +20,18 @@ public class UserFindMainFollowGetRes {
     String profileNickname;
     String profileImageUrl;
     Boolean isLive;
+
+    public static UserFindMainFollowGetRes of(User user){
+        /**
+         * @Method Name : of
+         * @작성자 : 강용수
+         * @Method 설명 : User Entity를 UserFindMainFollowGetResponseDto로 변환하는 메소드
+         */
+        return UserFindMainFollowGetRes.builder()
+                .accountEmail(user.getAccountEmail())
+                .profileNickname(user.getProfileNickname())
+                .profileImageUrl(user.getProfileImageUrl())
+                .isLive(user.getVideoList().stream().anyMatch(video -> video.getIsLive() == true))
+                .build();
+    }
 }
