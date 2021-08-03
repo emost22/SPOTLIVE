@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
+import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import com.ssafy.spotlive.db.entity.Video;
 import com.ssafy.spotlive.db.repository.VideoRepository;
@@ -13,6 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * @FileName : VideoService
+ * @작성자 : 권영린
+ * @Class 설명 : Video관련 기능을 위한 ServiceImpl 정의.
+ */
 @Service
 public class VideoServiceImpl implements VideoService{
 
@@ -55,4 +61,14 @@ public class VideoServiceImpl implements VideoService{
         }
         return VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(saveFileName)));
     }
+
+    public VideoFindByIdGetRes findVideoById(Long id) {
+        /**
+         * @Method Name : findVideoById
+         * @작성자 : 권영린
+         * @Method 설명 : 영상 id로 영상을 조회
+         */
+        return VideoFindByIdGetRes.of(videoRepository.findById(id).get());
+    }
+
 }
