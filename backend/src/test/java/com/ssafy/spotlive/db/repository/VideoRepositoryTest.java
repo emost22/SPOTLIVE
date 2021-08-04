@@ -3,10 +3,7 @@ package com.ssafy.spotlive.db.repository;
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
-import static org.assertj.core.api.Assertions.*;
-
 import com.ssafy.spotlive.db.entity.Video;
-import io.swagger.annotations.ApiModelProperty;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @FileName : VideoRepositoryTest
@@ -103,7 +102,7 @@ public class VideoRepositoryTest {
         // given
         int page = 0;
         int size = 3;
-        int isLive = 0;
+        Boolean isLive = false;
         Sort sort = Sort.by(Sort.Direction.DESC, "hit");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
