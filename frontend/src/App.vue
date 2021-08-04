@@ -178,6 +178,22 @@ body {
   font-weight: bold;
   color: white;
 }
+.middle-button {
+  width: 180px;
+  height: 40px;
+  background: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+.small-button {
+  width: 130px;
+  height: 40px;
+  background: none;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+}
 .full-wide-screen {
   margin-left: 30px;
   margin-right: 30px;
@@ -190,5 +206,22 @@ body {
   height: 90%;
   background-color: #242424;
   color: white;
+}
+.modal-content-m {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  pointer-events: auto;
+  outline: 0;
+}
+.no-border {
+  border: 0px;
+}
+.modal-footer-m {    
+  display: flex;
+  justify-content: center;
+  padding: .75rem;
 }
 </style>

@@ -3,8 +3,8 @@
     <div class="full-wide-screen"> 
     </div>
     <div class="btn-wrapper">
-      <div class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#exampleModal"> 설정 </div>
-      <div class="bdcolor-bold-npink extra-big-button"> 스트리밍 시작 </div>
+      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#exampleModal"> 설정 </button>
+      <button class="bdcolor-bold-npink extra-big-button"> 스트리밍 시작 </button>
     </div>
   </div>
 </template>

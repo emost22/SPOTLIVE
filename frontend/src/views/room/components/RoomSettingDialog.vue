@@ -2,7 +2,7 @@
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
-        <div class="modal-header no-border ">
+        <div class="modal-header no-border">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -16,9 +16,9 @@
             <div id='slider'></div>
           </div>
         </div>
-        <div class="modal-footer no-border ">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+        <div class="modal-footer-m">
+          <!-- <button type="button" class="btn bdcolor-ngreen middle-button" data-bs-dismiss="modal">Close</button> -->
+          <button type="button" class="bdcolor-ngreen small-button">확인</button>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@ label:hover {
 .content {
   position: absolute;
   top: 50px; right: 0; bottom: 0; left: 0;
-  padding: 20px;
+  padding: 30px;
   display: none;
 }
 
@@ -88,16 +88,5 @@ label:hover {
 
 [type=radio]:checked + label + .content {
   display: inline-block;
-}
-.modal-content-m {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  pointer-events: auto;
-  outline: 0;
-}
-.no-border {
-  border: 0px;
 }
 </style>
