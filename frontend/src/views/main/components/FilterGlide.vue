@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <vue-glide
-        v-if="videos.length"
+        v-if="filters.length"
         class="glide__track"
         data-glide-el="track"
         ref="slider"
@@ -11,10 +11,10 @@
         :breakpoints="{10000: {perView: 8}, 4000: {perView: 7}, 3000: {perView: 6}, 1500: {perView: 5}, 1200: {perView: 4}, 991: {perView: 3}, 800: {perView: 2}}"
       >
         <vue-glide-slide
-          v-for="(video, idx) in videos"
+          v-for="(filter, idx) in filters"
           :key="idx">
-          <VideoCard
-            :video="video"
+          <FilterBtn
+            :filter="filter"
           />
         </vue-glide-slide>
       </vue-glide>
@@ -24,12 +24,12 @@
 
 <script>
 import { Glide, GlideSlide } from 'vue-glide-js'
-import VideoCard from '@/views/main/components/VideoCard.vue'
+import FilterBtn from '@/views/main/components/FilterBtn.vue'
 
 export default {
-  name: "VideoGlide",
+  name: "FilterGlide",
   props: {
-    videos: {
+    filters: {
       type: Array,
       required: true
     }
@@ -37,7 +37,7 @@ export default {
   components: {
     [Glide.name]: Glide,
     [GlideSlide.name]: GlideSlide,
-    VideoCard,
+    FilterBtn,
   },
   methods: {
   }
