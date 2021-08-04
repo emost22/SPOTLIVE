@@ -1,9 +1,8 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
+import com.ssafy.spotlive.api.request.showInfo.ShowInfoUpdatePatchReq;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
-import com.ssafy.spotlive.db.entity.ShowInfo;
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -15,4 +14,5 @@ public interface ShowInfoService {
     void insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq, MultipartFile posterImage);
     ShowInfoFindByIdGetRes findShowInfoById(long id);
     Long deleteShowInfoById(long id);
+    Boolean updateShowInfoById(long id, ShowInfoUpdatePatchReq showInfoUpdatePatchReq, MultipartFile posterImage);
 }
