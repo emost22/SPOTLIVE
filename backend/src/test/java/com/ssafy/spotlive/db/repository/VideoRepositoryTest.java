@@ -8,6 +8,9 @@ import com.ssafy.spotlive.db.entity.Video;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -45,4 +48,22 @@ public class VideoRepositoryTest {
         assertThat(videoById.get().getVideoTitle()).isEqualTo("뮤지컬 [캣츠]");
     }
 
+    @Test
+    void findVideosByMode(){
+        // given
+        int page = 0;
+        int size = 6;
+        Long categoryId = 6L;
+        String mode = "소통";
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByMode(pageRequest, mode);
+        Page<Video> pageVideo2 = videoRepository.findVideosByModeAndCategory_CategoryId(pageRequest, mode, categoryId);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(6);
+        assertThat(pageVideo2.getTotalElements()).isEqualTo(4);
+    }
 }
