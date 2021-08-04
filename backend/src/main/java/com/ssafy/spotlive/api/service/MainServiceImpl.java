@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.response.main.UserFindFollowGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
@@ -100,7 +101,7 @@ public class MainServiceImpl implements MainService {
          * @Method 설명 : 자신이 팔로우한 유저의 Video를 조회하는 메소드
          */
         List<String> accountEmailList = userRepository.findUserByAccountEmail(accountEmail).getFanList().stream()
-                .map(artist -> followToString(artist)).collect(Collectors.toList());
+                .map(fan -> followToString(fan)).collect(Collectors.toList());
 
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
@@ -118,5 +119,16 @@ public class MainServiceImpl implements MainService {
          * @Method 설명 : Follow 객체에서 artist의 accountEmail만 가져오는 메소드
          */
         return follow.getArtist().getAccountEmail();
+    }
+
+    @Override
+    public List<UserFindFollowGetRes> findAllFollowByFan(String accountEmail){
+        /**
+         * @Method Name : findAllFollowByFan
+         * @작성자 : 강용수
+         * @Method 설명 : 자신이 팔로우한 유저 리스트를 조회하는 메소드
+         */
+        return userRepository.findUserByAccountEmail(accountEmail).getFanList().stream()
+                .map(fan -> UserFindFollowGetRes.of(fan.getArtist())).collect(Collectors.toList());
     }
 }

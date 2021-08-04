@@ -1,6 +1,9 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.response.main.UserFindFollowGetRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
+
+import java.util.List;
 
 /**
  * @FileName : MainService
@@ -12,4 +15,5 @@ public interface MainService {
     VideoGetRes findAllReplayVideoByIsLiveAndCategoryId(int page, int size, Long categoryId);
     VideoGetRes findAllLiveVideoByIsLiveAndCategoryId(int page, int size, Long categoryId);
     VideoGetRes findAllFollowVideoByCategoryId(int page, int size, Long categoryId, String accountEmail);
+    List<UserFindFollowGetRes> findAllFollowByFan(String accountEmail);
 }
