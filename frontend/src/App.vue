@@ -7,19 +7,21 @@
       <MainHeader/>
       <router-view></router-view>
     </div>
+    <RoomSettingDialog/>
   </div>
-  
 </template>
 
 <script>
 import MainHeader from './views/MainHeader.vue'
 import Login from './views/login/Login.vue'
+import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
 
 export default ({
   name: "App",
   components: {
     Login,
     MainHeader,
+    RoomSettingDialog,
   },
   data: function () {
     return {
@@ -56,9 +58,7 @@ body {
   /* 메인 배경 */
   background-color: #121212;
   height:100%;
-  min-height: 100%;
   widows: 100%;
-  position: relative;
 }
 .match-parent {
   width: 100%;
@@ -181,7 +181,7 @@ body {
 .full-wide-screen {
   margin-left: 30px;
   margin-right: 30px;
-  height: 85%;
+  height: 80%;
   background-color: lightgrey;
 }
 </style>
