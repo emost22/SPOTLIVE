@@ -87,7 +87,7 @@ public class ShowInfoServiceImpl implements ShowInfoService {
     }
 
     @Override
-    public Boolean updateShowInfo(long id, ShowInfoUpdatePatchReq showInfoUpdatePatchReq, MultipartFile posterImage) {
+    public Boolean updateShowInfoById(long id, ShowInfoUpdatePatchReq showInfoUpdatePatchReq, MultipartFile posterImage) {
         /**
          * @Method Name : updateShowInfo
          * @작성자 : 금아현
