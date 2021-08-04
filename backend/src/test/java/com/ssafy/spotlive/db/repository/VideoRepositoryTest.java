@@ -97,4 +97,20 @@ public class VideoRepositoryTest {
         assertThat(pageVideo.getTotalElements()).isEqualTo(6);
         assertThat(pageVideo2.getTotalElements()).isEqualTo(4);
     }
+
+    @Test
+    void findVideosByIsLive(){
+        // given
+        int page = 0;
+        int size = 3;
+        int isLive = 0;
+        Sort sort = Sort.by(Sort.Direction.DESC, "hit");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByIsLive(pageRequest, isLive);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(5);
+    }
 }
