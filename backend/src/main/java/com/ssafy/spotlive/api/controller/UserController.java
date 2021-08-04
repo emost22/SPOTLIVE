@@ -59,7 +59,7 @@ public class UserController {
         HashMap<String, String> kakaoTokens = authService.getKakaoTokens(code);
 
         // 2. Token 값을 통해 UserInfo를 받아온다.
-        KakaoUserRes kakaoUserRes = authService.getKakaoUserInfo(kakaoTokens.get("token_type"), kakaoTokens.get("access_token"));
+        KakaoUserRes kakaoUserRes = authService.getKakaoUserInfo(kakaoTokens.get("access_token"));
 
         // 3. UserInfo의 내용이 회원 DB에 존재하는가?
         UserRes userResForCheck = userService.findUserByAccountEmail(kakaoUserRes.getKakao_account().getEmail());

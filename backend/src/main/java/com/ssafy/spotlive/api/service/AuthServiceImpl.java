@@ -87,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public KakaoUserRes getKakaoUserInfo(String tokenType, String accessToken) {
+    public KakaoUserRes getKakaoUserInfo(String accessToken) {
         /**
          * @Method Name : getKakaoUserInfo
          * @작성자 : 김민권
@@ -96,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-        httpHeaders.add("Authorization", tokenType + " " + accessToken);
+        httpHeaders.add("Authorization", TOKEN_TYPE + " " + accessToken);
 
         HttpEntity<MultiValueMap<String, String>> kakaoUserInfoReq = new HttpEntity<>(httpHeaders);
         ResponseEntity<KakaoUserRes> userInfo = restTemplate.exchange(kakaoUserInfoUrl, HttpMethod.GET, kakaoUserInfoReq, KakaoUserRes.class);
