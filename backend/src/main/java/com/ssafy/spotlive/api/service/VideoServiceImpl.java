@@ -57,6 +57,8 @@ public class VideoServiceImpl implements VideoService{
          */
         // 1) Openvidu 세션을 생성하고 토큰을 발급
         String sessionId = makeSessionId();
+        videoInsertPostReq.setSessionId(sessionId);
+        String tokenForConnect = createToken(sessionId);
 
         // 2) 썸네일을 비디오객체에 추가
         String saveFileName = null;
@@ -88,6 +90,7 @@ public class VideoServiceImpl implements VideoService{
             e.printStackTrace();
         }
         VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(saveFileName)));
+        videoInsertPostRes.setToken(tokenForConnect);
 
         return videoInsertPostRes;
     }
@@ -189,6 +192,29 @@ public class VideoServiceImpl implements VideoService{
         ResponseEntity<HashMap> result = restTemplate.exchange(targetUrl, HttpMethod.POST, openviduSessionReq, HashMap.class);
 
         return result.getBody().get("customSessionId").toString();
+    }
+
+    @Override
+    public String createToken(String sessionId) {
+        /**
+         * @Method Name : createToken
+         * @작성자 : 김민권
+         * @Method 설명 : 전달받은 세션 ID에 대해서 Token을 생성한다.
+         */
+        String targetUrl = openviduServerUrl + "/openvidu/api/sessions/" + sessionId + "/connection";
+
+        Map<String, String> httpBody = new HashMap<>();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "application/json");
+        httpHeaders.add("Authorization", "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU");
+
+        HttpEntity<Map<String, String>> openviduTokenReq = new HttpEntity<>(httpBody, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<HashMap> result = restTemplate.exchange(targetUrl, HttpMethod.POST, openviduTokenReq, HashMap.class);
+
+        return result.getBody().get("token").toString();
     }
 
 
