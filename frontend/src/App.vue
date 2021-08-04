@@ -3,7 +3,7 @@
     <div v-if="!isLogin">
       <Login/>
     </div>
-    <div v-else class="sticky-top">
+    <div v-else class="sticky-top match-parent">
       <MainHeader/>
       <router-view></router-view>
     </div>
@@ -49,9 +49,20 @@ export default ({
 </script>
 
 <style>
+html { 
+  height:100%; 
+}
 body {
   /* 메인 배경 */
   background-color: #121212;
+  height:100%;
+  min-height: 100%;
+  widows: 100%;
+  position: relative;
+}
+.match-parent {
+  width: 100%;
+  height:100%;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -59,6 +70,8 @@ body {
   -moz-osx-font-smoothing: grayscale; 
   text-align: center;
   color: #2c3e50;
+  height: 100%;
+  width: 100%;
 }
 /* 메인 배경 */
 .main-bgcolor-black {
@@ -146,5 +159,29 @@ body {
   box-shadow: 
     0 0 9px #C752FE,
     0 0 12px #C752FE;
+}
+.extra-big-button {
+  width: 300px;
+  height: 50px;
+  line-height: 50px;
+  background: none;
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+.big-button {
+  width: 250px;
+  height: 40px;
+  background: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+.full-wide-screen {
+  margin-left: 30px;
+  margin-right: 30px;
+  height: 85%;
+  background-color: lightgrey;
 }
 </style>
