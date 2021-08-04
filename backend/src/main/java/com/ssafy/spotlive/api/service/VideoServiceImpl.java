@@ -2,6 +2,7 @@ package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
+import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import com.ssafy.spotlive.db.entity.Category;
@@ -18,8 +19,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @FileName : VideoService
@@ -33,6 +36,7 @@ public class VideoServiceImpl implements VideoService{
     @Autowired
     VideoRepository videoRepository;
 
+    @Override
     public VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage){
         /**
          * @Method Name : insertVideo
@@ -70,6 +74,7 @@ public class VideoServiceImpl implements VideoService{
         return VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(saveFileName)));
     }
 
+    @Override
     public VideoFindByIdGetRes findVideoById(Long id) {
         /**
          * @Method Name : findVideoById
@@ -79,6 +84,7 @@ public class VideoServiceImpl implements VideoService{
         return VideoFindByIdGetRes.of(videoRepository.findById(id).get());
     }
 
+    @Override
     public Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
         /* 원래 정보를 꺼내옴 */
         Optional<Video> videoById = videoRepository.findById(videoId);
@@ -124,6 +130,7 @@ public class VideoServiceImpl implements VideoService{
         return Boolean.TRUE;
     }
 
+    @Override
     public Boolean updateVideoEndTimeById(Long videoId){
         Video video = videoRepository.findById(videoId).get();
         if(video.getEndTime()!=null)
@@ -131,6 +138,13 @@ public class VideoServiceImpl implements VideoService{
         video.setEndTime(LocalDateTime.now());
         videoRepository.save(video);
         return Boolean.TRUE;
+    }
+
+    @Override
+    public List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail) {
+
+        return videoRepository.findVideosByUserAccountEmail(accountEmail).stream()
+                .map(video -> VideoFindAllByUserIdGetRes.of(video)).collect((Collectors.toList()));
     }
 
 }
