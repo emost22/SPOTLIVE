@@ -4,10 +4,13 @@ import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
+import com.ssafy.spotlive.db.entity.Category;
+import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.entity.Video;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -23,6 +26,7 @@ import java.util.UUID;
  * @Class 설명 : Video관련 기능을 위한 ServiceImpl 정의.
  */
 @Service
+@Transactional
 public class VideoServiceImpl implements VideoService{
 
     @Autowired
@@ -75,24 +79,47 @@ public class VideoServiceImpl implements VideoService{
     }
 
     public Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
+        /* 원래 정보를 꺼내옴 */
         Optional<Video> videoById = videoRepository.findById(videoId);
+        /* 정보가 없다면 FALSE */
         if(!videoById.isPresent()){
             return Boolean.FALSE;
         }
-        if(!thumbnailImage.isEmpty()){
+        /* 썸네일이 있다면 원래 썸네일 파일을 현재 썸네일 파일로 바꿈 */
+        if(thumbnailImage != null){
             String separ = File.separator;
-            String originalThumnailName = videoById.get().getThumbnailUrl();
+            String originalThumbnailName = videoById.get().getThumbnailUrl();
             String rootPath = new File("").getAbsolutePath().split("backend")[0];
-            String originalThumnailUrl = rootPath + "frontend" + separ + "src" + separ + "assets" + separ + originalThumnailName;
-            File file = new File(originalThumnailUrl);
+            String originalThumbnailUrl = rootPath + "frontend" + separ + "src" + separ + "assets" + separ + "thumbnails" + separ  + originalThumbnailName;
+            File file = new File(originalThumbnailUrl);
             file.delete(); //원래 파일 삭제
             try {
-                thumbnailImage.transferTo(new File(originalThumnailUrl));
+                thumbnailImage.transferTo(new File(originalThumbnailUrl));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        videoRepository.save(videoUpdateByIdPatchReq.toVideo(videoId));
+        Video video = videoById.get();
+        /* 원래 정보에 바뀐 정보를 업데이트 */
+        if(videoUpdateByIdPatchReq != null) {
+            if (videoUpdateByIdPatchReq.getVideoTitle() != null) {
+                video.setVideoTitle(videoUpdateByIdPatchReq.getVideoTitle());
+            }
+            if (videoUpdateByIdPatchReq.getVideoDescription() != null) {
+                video.setVideoDescription(videoUpdateByIdPatchReq.getVideoDescription());
+            }
+            if (videoUpdateByIdPatchReq.getCategoryId() != null) {
+                Category category = new Category();
+                category.setCategoryId(videoUpdateByIdPatchReq.getCategoryId());
+                video.setCategory(category);
+            }
+            if (videoUpdateByIdPatchReq.getShowInfoId() != null) {
+                ShowInfo showInfo = new ShowInfo();
+                showInfo.setShowInfoId(videoUpdateByIdPatchReq.getShowInfoId());
+                video.setShowInfo(showInfo);
+            }
+        }
+        videoRepository.save(video);
         return Boolean.TRUE;
     }
 
