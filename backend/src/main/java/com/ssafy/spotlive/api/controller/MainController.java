@@ -1,6 +1,6 @@
 package com.ssafy.spotlive.api.controller;
 
-import com.ssafy.spotlive.api.response.main.VideoFindByModeGetRes;
+import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.service.MainService;
 import io.swagger.annotations.Api;
@@ -34,21 +34,21 @@ public class MainController {
             @ApiResponse(code = 500, message = "서버 에러 발생")
     })
     @GetMapping("/ad")
-    public ResponseEntity<VideoFindByModeGetRes> findAllAdVideo(
+    public ResponseEntity<VideoGetRes> findAllAdVideo(
             @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam(name = "categoryId", required = false) Long categoryId){
         /**
          * @Method Name : findAllAdVideo
          * @작성자 : 강용수
          * @Method 설명 : mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 홍보 Video를 검색하는 메소드
          */
-        VideoFindByModeGetRes videoFindByModeGetRes = mainService.findAllVideoByModeAndCategoryId(page, size, categoryId, "홍보");
+        VideoGetRes videoGetRes = mainService.findAllVideoByModeAndCategoryId(page, size, categoryId, "홍보");
 
-        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoFindByModeGetRes.getVideoResList();
+        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoGetRes.getVideoResList();
 
         if (videoFindMainVideoResList == null || videoFindMainVideoResList.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
-            return new ResponseEntity<>(videoFindByModeGetRes, HttpStatus.OK);
+            return new ResponseEntity<>(videoGetRes, HttpStatus.OK);
     }
 
     @ApiOperation(value = "소통 Video 조회", notes = "mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 검색된 소통 Video를 조회한다.")
@@ -58,21 +58,21 @@ public class MainController {
             @ApiResponse(code = 500, message = "서버 에러 발생")
     })
     @GetMapping("/talk")
-    public ResponseEntity<VideoFindByModeGetRes> findAllTalkVideo(
+    public ResponseEntity<VideoGetRes> findAllTalkVideo(
             @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam(name = "categoryId", required = false) Long categoryId){
         /**
          * @Method Name : findAllTalkVideo
          * @작성자 : 강용수
          * @Method 설명 : mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 소통 Video를 검색하는 메소드
          */
-        VideoFindByModeGetRes videoFindByModeGetRes = mainService.findAllVideoByModeAndCategoryId(page, size, categoryId, "소통");
+        VideoGetRes videoGetRes = mainService.findAllVideoByModeAndCategoryId(page, size, categoryId, "소통");
 
-        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoFindByModeGetRes.getVideoResList();
+        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoGetRes.getVideoResList();
 
         if (videoFindMainVideoResList == null || videoFindMainVideoResList.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
-            return new ResponseEntity<>(videoFindByModeGetRes, HttpStatus.OK);
+            return new ResponseEntity<>(videoGetRes, HttpStatus.OK);
     }
 
     @ApiOperation(value = "공연 Video 조회", notes = "mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 검색된 공연 Video를 조회한다.")
@@ -82,21 +82,21 @@ public class MainController {
             @ApiResponse(code = 500, message = "서버 에러 발생")
     })
     @GetMapping("/show")
-    public ResponseEntity<VideoFindByModeGetRes> findAllShowVideo(
+    public ResponseEntity<VideoGetRes> findAllShowVideo(
             @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam(name = "categoryId", required = false) Long categoryId){
         /**
          * @Method Name : findAllShowVideo
          * @작성자 : 강용수
          * @Method 설명 : mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 공연 Video를 검색하는 메소드
          */
-        VideoFindByModeGetRes videoFindByModeGetRes = mainService.findAllVideoByModeAndCategoryId(page, size, categoryId, "공연");
+        VideoGetRes videoGetRes = mainService.findAllVideoByModeAndCategoryId(page, size, categoryId, "공연");
 
-        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoFindByModeGetRes.getVideoResList();
+        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoGetRes.getVideoResList();
 
         if (videoFindMainVideoResList == null || videoFindMainVideoResList.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
-            return new ResponseEntity<>(videoFindByModeGetRes, HttpStatus.OK);
+            return new ResponseEntity<>(videoGetRes, HttpStatus.OK);
     }
 
     @ApiOperation(value = "조회수 순 다시보기 Video 조회", notes = "다시보기 Video를 카테고리 id 기준과 조회수 순으로 조회한다.")
@@ -106,20 +106,20 @@ public class MainController {
             @ApiResponse(code = 500, message = "서버 에러 발생")
     })
     @GetMapping("/replay")
-    public ResponseEntity<VideoFindByModeGetRes> findAllReplayVideo(
+    public ResponseEntity<VideoGetRes> findAllReplayVideo(
             @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam(name = "categoryId", required = false) Long categoryId){
         /**
          * @Method Name : findAllShowVideo
          * @작성자 : 강용수
          * @Method 설명 : 다시보기 Video를 카테고리 id 기준과 조회수 순으로 조회하는 메소드
          */
-        VideoFindByModeGetRes videoFindByModeGetRes = mainService.findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId);
+        VideoGetRes videoGetRes = mainService.findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId);
 
-        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoFindByModeGetRes.getVideoResList();
+        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoGetRes.getVideoResList();
 
         if (videoFindMainVideoResList == null || videoFindMainVideoResList.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
-            return new ResponseEntity<>(videoFindByModeGetRes, HttpStatus.OK);
+            return new ResponseEntity<>(videoGetRes, HttpStatus.OK);
     }
 }
