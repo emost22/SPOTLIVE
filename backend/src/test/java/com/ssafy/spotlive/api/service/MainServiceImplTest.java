@@ -129,4 +129,18 @@ class MainServiceImplTest {
         verify(videoRepository).findVideosByUser_AccountEmailIn(pageRequest, accountEmailList);
         verify(videoRepository).findVideosByCategory_CategoryIdAndUser_AccountEmailIn(pageRequest, categoryId1, accountEmailList);
     }
+
+    @Test
+    void findAllFollowByFan(){
+        // given
+        String accountEmail = "emoney96@naver.com";
+        User user = new User();
+
+        // when
+        when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user);
+        mainServiceImpl.findAllFollowByFan(accountEmail);
+
+        // then
+        verify(userRepository).findUserByAccountEmail(accountEmail);
+    }
 }
