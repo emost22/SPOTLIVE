@@ -14,5 +14,5 @@ public interface ShowInfoService {
     void insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq, MultipartFile posterImage);
     ShowInfoFindByIdGetRes findShowInfoById(long id);
     Long deleteShowInfoById(long id);
-    Boolean updateShowInfo(long id, ShowInfoUpdatePatchReq showInfoUpdatePatchReq, MultipartFile posterImage);
+    Boolean updateShowInfoById(long id, ShowInfoUpdatePatchReq showInfoUpdatePatchReq, MultipartFile posterImage);
 }
