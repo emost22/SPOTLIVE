@@ -184,4 +184,10 @@ body {
   height: 80%;
   background-color: lightgrey;
 }
+.modal-design {
+  width: 60%;
+  height: 90%;
+  background-color: #242424;
+  color: white;
+}
 </style>
