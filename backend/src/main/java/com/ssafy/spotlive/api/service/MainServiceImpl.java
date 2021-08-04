@@ -1,5 +1,10 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.response.main.VideoFindByModeGetRes;
+import com.ssafy.spotlive.db.repository.VideoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,5 +14,22 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MainServiceImpl implements MainService {
+    @Autowired
+    VideoRepository videoRepository;
 
+    @Override
+    public VideoFindByModeGetRes findAllAdVideo(int page, int size, Long categoryId){
+        /**
+         * @Method Name : findAllAdVideo
+         * @작성자 : 권영린 -> 강용수
+         * @Method 설명 : Query Parameter 조건에 맞는 홍보 영상들을 검색하는 메소드
+         */
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        if (categoryId == null)
+            return VideoFindByModeGetRes.of(videoRepository.findVideosByMode(pageRequest, "홍보"), pageRequest, sort, "123");
+        else
+            return VideoFindByModeGetRes.of(videoRepository.findVideosByModeAndCategoryId(pageRequest, "홍보", categoryId), pageRequest, sort, "123");
+    }
 }
