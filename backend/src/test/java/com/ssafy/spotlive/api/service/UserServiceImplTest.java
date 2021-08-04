@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
@@ -43,5 +44,24 @@ class UserServiceImplTest {
 
         // then
         verify(userRepository).save(user);
+    }
+
+    @Test
+    void userUpdateTest() {
+        // given
+        String accountEmail = "kmk130519@naver.com";
+        User user = new User();
+        user.setAccountEmail(accountEmail);
+        UserUpdatePatchReq userUpdatePatchReq = UserUpdatePatchReq.builder()
+                .accountEmail(user.getAccountEmail())
+                .build();
+
+        // when
+        when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user);
+        userService.updateUser(userUpdatePatchReq);
+
+        // then
+        verify(userRepository).save(userUpdatePatchReq.toUser(user));
+        verify(userRepository).findUserByAccountEmail(accountEmail);
     }
 }
