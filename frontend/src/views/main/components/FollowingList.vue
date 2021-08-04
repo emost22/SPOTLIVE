@@ -1,7 +1,7 @@
 <template>
   <div>    
     <li class="nav-item">
-      <router-link class="nav-link" :to="{ name: 'Profile', param: { userId : following.id } }">
+      <router-link class="nav-link" :to="{ name: 'Profile', param: { profileUserId : following.id } }">
         <div>
           <div><img src="~@/assets/icon-streaming.png" class="sidebar-nav-img"></div>
           <div v-if="open" class="sidebar-nav-name">{{following.Nickname}}</div>
