@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
@@ -9,17 +10,19 @@ import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.entity.Video;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @FileName : VideoService
@@ -30,15 +33,32 @@ import java.util.UUID;
 @Transactional
 public class VideoServiceImpl implements VideoService{
 
+    @Value("${openvidu.server.url}")
+    private String openviduServerUrl;
+
+    @Value("${openvidu.server.id}")
+    private String openviduServerId;
+
+    @Value("${openvidu.server.secret}")
+    private String openviduServerSecret;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Autowired
     VideoRepository videoRepository;
 
+    @Override
     public VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage){
         /**
          * @Method Name : insertVideo
-         * @작성자 : 권영린
-         * @Method 설명 : 영상 시작시 썸네일을 비디오객체를 추가
+         * @작성자 : 권영린, 김민권
+         * @Method 설명 : 영상 시작시 1) Openvidu 세션을 생성하고 토큰을 발급 2) 썸네일을 비디오객체를 추가
          */
+        // 1) Openvidu 세션을 생성하고 토큰을 발급
+        String sessionId = makeSessionId();
+
+        // 2) 썸네일을 비디오객체에 추가
         String saveFileName = null;
         try {
             String separ = File.separator;
@@ -67,9 +87,12 @@ public class VideoServiceImpl implements VideoService{
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(saveFileName)));
+        VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(saveFileName)));
+
+        return videoInsertPostRes;
     }
 
+    @Override
     public VideoFindByIdGetRes findVideoById(Long id) {
         /**
          * @Method Name : findVideoById
@@ -79,6 +102,7 @@ public class VideoServiceImpl implements VideoService{
         return VideoFindByIdGetRes.of(videoRepository.findById(id).get());
     }
 
+    @Override
     public Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
         /* 원래 정보를 꺼내옴 */
         Optional<Video> videoById = videoRepository.findById(videoId);
@@ -124,13 +148,53 @@ public class VideoServiceImpl implements VideoService{
         return Boolean.TRUE;
     }
 
+    @Override
     public Boolean updateVideoEndTimeById(Long videoId){
+        /**
+         * @Method Name : updateVideoEndTimeById
+         * @작성자 : 권영린, 김민권
+         * @Method 설명 : 1) 해당 비디오의 Endtime을 기록하고, Openvidu 세션을 종료한다.
+         */
         Video video = videoRepository.findById(videoId).get();
-        if(video.getEndTime()!=null)
-            return Boolean.FALSE;
+        if(video.getEndTime()!=null) return Boolean.FALSE;
+
+
         video.setEndTime(LocalDateTime.now());
         videoRepository.save(video);
+
         return Boolean.TRUE;
     }
 
+    @Override
+    public String createSession() {
+        /**
+         * @Method Name : createSession
+         * @작성자 : 김민권
+         * @Method 설명 : 세션을 생성하고, 해당 세션 ID를 반환한다.
+         */
+        String targetUrl = openviduServerUrl + "/openvidu/api/sessions";
+        String sessionId = makeSessionId();
+
+        Map<String, String> httpBody = new HashMap<>();
+        httpBody.put("customSessionId", sessionId);
+        httpBody.put("recordingMode", "MANUAL");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "application/json");
+        httpHeaders.add("Authorization", "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU");
+
+        HttpEntity<Map<String, String>> openviduSessionReq = new HttpEntity<>(httpBody, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<HashMap> result = restTemplate.exchange(targetUrl, HttpMethod.POST, openviduSessionReq, HashMap.class);
+
+        return result.getBody().get("customSessionId").toString();
+    }
+
+
+    public String makeSessionId() {
+        String sessionId = "session";
+        for(int i = 0; i < 8; i++) sessionId = sessionId + String.valueOf(new Random().nextInt(9) + 1);
+        return sessionId;
+    }
 }

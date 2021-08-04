@@ -16,4 +16,5 @@ public interface VideoService {
     VideoFindByIdGetRes findVideoById(Long id);
     Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq);
     Boolean updateVideoEndTimeById(Long videoId);
+    String createSession();
 }
