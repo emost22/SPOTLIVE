@@ -1,9 +1,9 @@
 <template>
   <carousel-3d>
     <slide v-for="(video, i) in videos" :index="i" :key="i">
-        <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
-            <img :data-index="index" :class="{ current: isCurrent, onLeft: (leftIndex >= 0), onRight: (rightIndex >= 0) }" :src="video.src">
-        </template>
+      <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
+          <img :data-index="index" :class="{ current: isCurrent, onLeft: (leftIndex >= 0), onRight: (rightIndex >= 0) }" src="~@/assets/icon-streaming.png">
+      </template>
     </slide>
   </carousel-3d>
 </template>

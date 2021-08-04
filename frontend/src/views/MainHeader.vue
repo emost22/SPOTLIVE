@@ -12,7 +12,7 @@
           <input class="bgcolor-mid-deep-grey txtcolor-white searchinput" type="text" id="" v-model.trim="input" placeholder="검색할 내용을 입력하세요">
           <button 
             class="bgcolor-mid-deep-grey txtcolor-white searchbtn" 
-            :disabled="this.validSearch" 
+            :disabled="!this.validSearch" 
             @click="clickSearchBtn">
             Search
           </button>
@@ -45,7 +45,7 @@ export default ({
   data: function () {
     return {
       isLogin: false,
-      validSearch: false,
+      validSearch: true,
       input: '',
     }
   },methods: {
@@ -59,7 +59,7 @@ export default ({
       if (this.input) {
         console.log(this.input)
         // Search.vue로 이동하고 검색 결과 axios
-        this.$router.push({ name: 'Search', query: { input: this.input } })
+        this.$router.push({ name: 'Search', param: { input: this.input } })
       }
       else {
         console.log('검색할 내용을 입력하세요')

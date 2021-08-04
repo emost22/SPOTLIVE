@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="isLogin">
+    <div v-if="!isLogin">
       <Login/>
     </div>
     <div v-else id="nav" class="sticky-top">
@@ -23,7 +23,7 @@ export default ({
   },
   data: function () {
     return {
-      isLogin: false,
+      isLogin: true,
     }
   },methods: {
     getVideos() {
@@ -31,9 +31,9 @@ export default ({
     },
   },
   computed: {
-    isLogin: function () {
-      return this.$store.getters.isLogin
-    },
+    // isLogin: function () {
+    //   return this.$store.getters.isLogin
+    // },
   },
   created: function () {
     const token = localStorage.getItem('jwt')

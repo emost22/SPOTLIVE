@@ -7,7 +7,7 @@ export default {
   name: "Search",
   data: function () {
     return {
-      input: this.$route.query.input,
+      input: this.$route.param.input,
     }
   },
   components: {
@@ -25,6 +25,9 @@ export default {
   },
   created: function () {
     this.getSearchs()
+  },
+  computed: function() {
+
   },
 }
 </script>
