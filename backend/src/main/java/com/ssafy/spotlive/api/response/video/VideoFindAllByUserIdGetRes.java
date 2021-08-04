@@ -31,7 +31,6 @@ public class VideoFindAllByUserIdGetRes {
     Boolean isLive;
     Long hit;
     String sessionId;
-
     Long showInfoId;
     Long categoryId;
     String accountEmail;
@@ -42,22 +41,41 @@ public class VideoFindAllByUserIdGetRes {
          * @작성자 : 권영린
          * @Method 설명 : Video Entity를 VideoInsertPostResDto로 변환하는 메소드
          */
-        return VideoFindAllByUserIdGetRes
-                .builder()
-                .videoTitle(video.getVideoTitle())
-                .videoDescription(video.getVideoDescription())
-                .mode(video.getMode())
-                .startTime(video.getStartTime())
-                .endTime(video.getEndTime())
-                .thumbnailUrl(video.getThumbnailUrl())
-                .videoUrl(video.getVideoUrl())
-                .isLive(video.getIsLive())
-                .hit(video.getHit())
-                .sessionId(video.getSessionId())
-                .showInfoId(video.getShowInfo().getShowInfoId())
-                .categoryId(video.getCategory().getCategoryId())
-                .accountEmail(video.getUser().getAccountEmail())
-                .build();
+        if(video.getShowInfo()==null){
+            return VideoFindAllByUserIdGetRes
+                    .builder()
+                    .videoTitle(video.getVideoTitle())
+                    .videoDescription(video.getVideoDescription())
+                    .mode(video.getMode())
+                    .startTime(video.getStartTime())
+                    .endTime(video.getEndTime())
+                    .thumbnailUrl(video.getThumbnailUrl())
+                    .videoUrl(video.getVideoUrl())
+                    .isLive(video.getIsLive())
+                    .hit(video.getHit())
+                    .sessionId(video.getSessionId())
+//                    .showInfoId(video.getShowInfo().getShowInfoId())
+                    .categoryId(video.getCategory().getCategoryId())
+                    .accountEmail(video.getUser().getAccountEmail())
+                    .build();
+        } else {
+            return VideoFindAllByUserIdGetRes
+                    .builder()
+                    .videoTitle(video.getVideoTitle())
+                    .videoDescription(video.getVideoDescription())
+                    .mode(video.getMode())
+                    .startTime(video.getStartTime())
+                    .endTime(video.getEndTime())
+                    .thumbnailUrl(video.getThumbnailUrl())
+                    .videoUrl(video.getVideoUrl())
+                    .isLive(video.getIsLive())
+                    .hit(video.getHit())
+                    .sessionId(video.getSessionId())
+                    .showInfoId(video.getShowInfo().getShowInfoId())
+                    .categoryId(video.getCategory().getCategoryId())
+                    .accountEmail(video.getUser().getAccountEmail())
+                    .build();
+        }
     }
 
 }

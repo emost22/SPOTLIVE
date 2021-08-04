@@ -51,7 +51,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Page<Video> findVideosByUser_AccountEmailIn(Pageable pageable, List<String> accountEmailList);
 
     /**
-     * @Method Name : findVideosByUser_AccountEmailIn
+     * @Method Name : findVideosByCategory_CategoryIdAndUser_AccountEmailIn
      * @작성자 : 강용수
      * @Method 설명 : 자신이 팔로우한 유저의 Video를 카테고리 id 기준으로 검색하는 메소드
      */
