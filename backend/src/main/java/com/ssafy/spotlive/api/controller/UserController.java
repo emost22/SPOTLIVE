@@ -96,8 +96,7 @@ public class UserController {
         if(vaildTokenStatusValue == 200) {
             String[] spitToken = accessToken.split(" ");
             UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
-
-            // 추가 작성 필요!
+            authService.logout(userRes);
             return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
         } else if(vaildTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
