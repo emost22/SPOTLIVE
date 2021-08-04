@@ -47,7 +47,7 @@ class MainServiceImplTest {
     }
 
     @Test
-    void findAllVideoByIsLiveAndCategoryId() {
+    void findAllReplayVideoByIsLiveAndCategoryId() {
         // given
         int page = 0;
         int size = 3;
@@ -60,8 +60,29 @@ class MainServiceImplTest {
         // when
         when(videoRepository.findVideosByIsLive(pageRequest, isLive)).thenReturn(pageVideo);
         when(videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, isLive, categoryId1)).thenReturn(pageVideo);
-        mainServiceImpl.findAllVideoByIsLiveAndCategoryId(page, size, categoryId1);
-        mainServiceImpl.findAllVideoByIsLiveAndCategoryId(page, size, categoryId2);
+        mainServiceImpl.findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId1);
+        mainServiceImpl.findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId2);
+
+        // then
+        verify(videoRepository).findVideosByIsLive(pageRequest, isLive);
+        verify(videoRepository).findVideosByIsLiveAndCategory_CategoryId(pageRequest, isLive, categoryId1);
+    }
+
+    @Test
+    void findAllLiveVideoByIsLiveAndCategoryId() {
+        // given
+        int page = 0;
+        int size = 3;
+        Long categoryId1 = 6L;
+        Long categoryId2 = null;
+        Boolean isLive = true;
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        // when
+        when(videoRepository.findVideosByIsLive(pageRequest, isLive)).thenReturn(pageVideo);
+        when(videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, isLive, categoryId1)).thenReturn(pageVideo);
+        mainServiceImpl.findAllLiveVideoByIsLiveAndCategoryId(page, size, categoryId1);
+        mainServiceImpl.findAllLiveVideoByIsLiveAndCategoryId(page, size, categoryId2);
 
         // then
         verify(videoRepository).findVideosByIsLive(pageRequest, isLive);
