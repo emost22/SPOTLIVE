@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
+import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import com.ssafy.spotlive.db.entity.Video;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -69,6 +72,28 @@ public class VideoServiceImpl implements VideoService{
          * @Method 설명 : 영상 id로 영상을 조회
          */
         return VideoFindByIdGetRes.of(videoRepository.findById(id).get());
+    }
+
+    public Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
+        Optional<Video> videoById = videoRepository.findById(videoId);
+        if(!videoById.isPresent()){
+            return Boolean.FALSE;
+        }
+        if(!thumbnailImage.isEmpty()){
+            String separ = File.separator;
+            String originalThumnailName = videoById.get().getThumbnailUrl();
+            String rootPath = new File("").getAbsolutePath().split("backend")[0];
+            String originalThumnailUrl = rootPath + "frontend" + separ + "src" + separ + "assets" + separ + originalThumnailName;
+            File file = new File(originalThumnailUrl);
+            file.delete(); //원래 파일 삭제
+            try {
+                thumbnailImage.transferTo(new File(originalThumnailUrl));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        videoRepository.save(videoUpdateByIdPatchReq.toVideo(videoId));
+        return Boolean.TRUE;
     }
 
 }
