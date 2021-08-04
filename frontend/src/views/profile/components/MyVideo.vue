@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <!-- 그리드 인피니트 스크롤 -->
+  </div>
 </template>
 
 <script>
