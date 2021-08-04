@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -25,17 +26,13 @@ public class TimetableInsertPostReq {
      * @작성자 : 금아현
      * @Method 설명 : Timetable DTO를 Entity로 변환
      */
-    @ApiModelProperty(name = "dateTime", example = "공연 날짜, 시간")
+    @ApiModelProperty(name = "dateTime", example = "2222-11-12T16:34:30.388")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime dateTime;
-    Long showInfoId;
 
-    public Timetable toTimetable(){
+    public Timetable toTimetable(ShowInfo showInfo){
         Timetable timetable = new Timetable();
         timetable.setDateTime(this.dateTime);
-
-        ShowInfo showInfo  = new ShowInfo();
-        showInfo.setShowInfoId(this.showInfoId);
-
         timetable.setShowInfo(showInfo);
         return timetable;
     }

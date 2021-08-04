@@ -45,17 +45,15 @@ public class ShowInfoInsertPostReq {
          * @Method 설명 : ShowInfo DTO를 Entity로 변환
          */
         ShowInfo showInfo = new ShowInfo();
-
         User user = new User();
+
         user.setAccountEmail(this.accountEmail);
         showInfo.setUser(user);
-
         showInfo.setShowInfoTitle(this.showInfoTitle);
         showInfo.setPosterUrl(this.posterUrl);
         showInfo.setShowInfoDescription(this.showInfoDescription);
         showInfo.setPrice(this.price);
         showInfo.setRunningTime(this.runningTime);
-        showInfo.setTimetableList(timetableInsertPostReq.stream().map(TimetableInsertPostReq::toTimetable).collect(Collectors.toList()));
 
         return showInfo;
     }
