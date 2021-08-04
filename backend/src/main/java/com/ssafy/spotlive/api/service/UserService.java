@@ -22,6 +22,6 @@ public interface UserService {
     UserRes refreshTokensForExistUser(String email, String accessToken, String refreshToken);
     UserRes insertUser(User newUser);
     String accessTokenUpdate(String accountEmail);
-    ResponseEntity<HashMap> isValidToken(String accessToken);
+    int isValidToken(String accessToken);
     UserRes updateUser(UserUpdatePatchReq userUpdatePatchReq);
 }

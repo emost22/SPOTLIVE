@@ -94,7 +94,7 @@ public class UserController {
     @ApiOperation(value = "User를 업데이트한다.", notes = "Token의 유효성을 확인 후, User의 정보를 업데이트한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "정상적인 수정 완료"),
-            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
             @ApiResponse(code = 500, message = "전송된 이메일로 유저정보를 찾을 수 없음"),
     })
     public ResponseEntity<UserRes> updateUser(
@@ -105,13 +105,12 @@ public class UserController {
          * @작성자 : 김민권
          * @Method 설명 : User에 대한 정보를 업데이트한다.
          */
-        ResponseEntity<HashMap> isValidEntity = userService.isValidToken(accessToken);
-        HttpStatus statusCode = isValidEntity.getStatusCode();
+        int vaildTokenStatusValue = userService.isValidToken(accessToken);
 
-        if(statusCode.value() == 200) {
+        if(vaildTokenStatusValue == 200) {
             UserRes userRes = userService.updateUser(userUpdatePatchReq);
             return new ResponseEntity<>(userRes, HttpStatus.OK);
-        } else if(statusCode.value() == 401) {
+        } else if(vaildTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

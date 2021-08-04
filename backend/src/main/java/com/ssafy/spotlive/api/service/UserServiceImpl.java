@@ -176,7 +176,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<HashMap> isValidToken(String accessToken) {
+    public int isValidToken(String accessToken) {
         String vaildCheckHost = "https://kapi.kakao.com/v1/user/access_token_info";
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<HashMap> isValidEntity = restTemplate.exchange(vaildCheckHost, HttpMethod.GET, kakaoVaildTokenReq, HashMap.class);
 
-        return isValidEntity;
+        return isValidEntity.getStatusCodeValue();
     }
 
     @Override
