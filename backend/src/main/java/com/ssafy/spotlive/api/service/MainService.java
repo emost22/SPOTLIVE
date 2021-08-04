@@ -9,4 +9,5 @@ import com.ssafy.spotlive.api.response.main.VideoFindByModeGetRes;
  */
 public interface MainService {
     VideoFindByModeGetRes findAllVideoByModeAndCategoryId(int page, int size, Long categoryId, String mode);
+    VideoFindByModeGetRes findAllVideoByIsLiveAndCategoryId(int page, int size, Long categoryId);
 }
