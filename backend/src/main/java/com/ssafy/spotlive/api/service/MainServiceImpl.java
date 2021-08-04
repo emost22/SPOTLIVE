@@ -32,4 +32,20 @@ public class MainServiceImpl implements MainService {
         else
             return VideoFindByModeGetRes.of(videoRepository.findVideosByModeAndCategory_CategoryId(pageRequest, mode, categoryId), pageRequest, sort);
     }
+
+    @Override
+    public VideoFindByModeGetRes findAllVideoByIsLiveAndCategoryId(int page, int size, Long categoryId){
+        /**
+         * @Method Name : findAllVideoByIsLive
+         * @작성자 : 강용수
+         * @Method 설명 : Query Parameter 조건에 맞는 다시보기 영상들을 조회수 순으로 검색하는 메소드
+         */
+        Sort sort = Sort.by(Sort.Direction.DESC, "hit");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        if (categoryId == null)
+            return VideoFindByModeGetRes.of(videoRepository.findVideosByIsLive(pageRequest, false), pageRequest, sort);
+        else
+            return VideoFindByModeGetRes.of(videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, false, categoryId), pageRequest, sort);
+    }
 }
