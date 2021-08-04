@@ -12,5 +12,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    public User findUserByAccountEmail(String accountEmail);
+    /**
+     * @Method Name : findUserByAccountEmail
+     * @작성자 : 김민권
+     * @Method 설명 : PK인 UserEmail을 통해 user를 조회한다.
+     */
+    User findUserByAccountEmail(String accountEmail);
+
+    /**
+     * @Method Name : findUserByAccessToken
+     * @작성자 : 김민권
+     * @Method 설명 : accessToken을 통해 user를 조회한다.
+     */
+    User findUserByAccessToken(String accessToken);
 }

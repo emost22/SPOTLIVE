@@ -9,6 +9,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 
@@ -17,7 +18,7 @@ import java.util.HashMap;
  * @작성자 : 김민권
  * @Class 설명 : OAuth, User 관련 인증을 매핑하는 REST Controller
  */
-@Api(value = "인증 API", tags = {"Auth."})
+@Api(value = "User 및 인증 API", tags = {"UserController"}, description = "유저 관련 API를 매핑하는 컨트롤러")
 @RestController
 @RequestMapping("/api/auth/")
 @CrossOrigin( value = {"*"}, maxAge = 6000)
@@ -94,7 +95,7 @@ public class UserController {
         } else return new ResponseEntity<>(newToken, HttpStatus.OK);
     }
 
-    @PatchMapping("/user/update")
+    @PatchMapping("/user")
     @ApiOperation(value = "User를 업데이트한다.", notes = "Token의 유효성을 확인 후, User의 정보를 업데이트한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "정상적인 수정 완료"),
@@ -102,7 +103,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "전송된 이메일로 유저정보를 찾을 수 없음"),
     })
     public ResponseEntity<UserRes> updateUser(
-            @RequestHeader("Authorization") @ApiParam(value="헤더에 담긴 Authorization의 토큰 정보", required = true) String accessToken,
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @RequestBody @ApiParam(value="수정할 정보", required = true) UserUpdatePatchReq userUpdatePatchReq) {
         /**
          * @Method Name : updateUser
@@ -113,6 +114,32 @@ public class UserController {
 
         if(vaildTokenStatusValue == 200) {
             UserRes userRes = userService.updateUser(userUpdatePatchReq);
+            return new ResponseEntity<>(userRes, HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/user")
+    @ApiOperation(value = "내 정보를 반환한다.", notes = "Token의 유효성을 확인 후, 내 정보를 반환한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적인 수정 완료"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
+            @ApiResponse(code = 500, message = "서버에 오류가 있음"),
+    })
+    public ResponseEntity<UserRes> getMyInfo(@ApiIgnore @RequestHeader("Authorization") String accessToken) {
+        /**
+         * @Method Name : getMyInfo
+         * @작성자 : 김민권
+         * @Method 설명 : 나에 대한 정보를 반환한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
             return new ResponseEntity<>(userRes, HttpStatus.OK);
         } else if(vaildTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

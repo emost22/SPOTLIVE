@@ -1,7 +1,6 @@
 package com.ssafy.spotlive.api.request.user;
 
 import com.ssafy.spotlive.db.entity.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +12,6 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@Builder
 @ToString
 public class UserUpdatePatchReq {
 
