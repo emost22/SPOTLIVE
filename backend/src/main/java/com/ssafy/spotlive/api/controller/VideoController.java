@@ -89,26 +89,27 @@ public class VideoController {
             return new ResponseEntity<>(HttpStatus.OK);
         else
             return new ResponseEntity<String>("없는 영상을 수정하려합니다.", HttpStatus.BAD_REQUEST);
-
     }
 
-//    @PatchMapping("/close/{videoId}")
-//    @ApiOperation(value = "스트리밍 종료", notes = "videoId로 해당 스트리밍의 end_time을 DB에 기록한다.")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "성공"),
-//            @ApiResponse(code = 400, message = "종료 실패"),
-//            @ApiResponse(code = 500, message = "서버 오류")
-//    })
-//    public ResponseEntity<?> closeVideoById(
-//            /*@ApiIgnore Authentication authentication,*/ @PathVariable long videoId) {
-//        /**
-//         * @Method Name : closeVideoById
-//         * @작성자 : 권영린
-//         * @Method 설명 : 비디오를 종료한다.
-//         */
-//        return ResponseEntity.status(200).body(null);
-//    }
-////
+    @PatchMapping("/close/{videoId}")
+    @ApiOperation(value = "스트리밍 종료", notes = "videoId로 해당 스트리밍의 end_time을 DB에 기록한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "종료 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> closeVideoById(@PathVariable long videoId) {
+        /**
+         * @Method Name : closeVideoById
+         * @작성자 : 권영린
+         * @Method 설명 : 비디오를 종료한다.
+         */
+        if(videoService.updateVideoEndTimeById(videoId))
+            return new ResponseEntity<>(HttpStatus.OK);
+        else
+            return new ResponseEntity<String>("이미 종료된 영상입니다.", HttpStatus.BAD_REQUEST);
+    }
+//
 //    @GetMapping("/list/{userId}")
 //    @ApiOperation(value = "특정 유저 영상 리스트 조회", notes = "userId(email 아님)를 요청받아 해당 유저의 저장된 영상리스트를 응답한다.")
 //    @ApiResponses({
