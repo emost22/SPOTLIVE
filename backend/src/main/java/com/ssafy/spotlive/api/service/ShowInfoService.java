@@ -13,4 +13,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ShowInfoService {
     ShowInfo insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq);
     ShowInfoFindByIdGetRes findShowInfoById(long id);
+    Long deleteShowInfoById(long id);
 }

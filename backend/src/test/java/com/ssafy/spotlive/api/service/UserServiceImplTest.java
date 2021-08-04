@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
@@ -17,7 +18,7 @@ class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
-    
+
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -34,25 +35,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void refreshTokensForExistUserTest() {
-        // given
-        String accountEmail = "kmk130519@naver.com";
-        String accessToken = "someAccessTokenValue";
-        String refreshToken = "someRefreshTokenValue";
-        User user = new User();
-
-        // when
-        when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user); // Mock 객체의 특정 Method 실행시 반환 값 지정
-        UserRes userRes = userService.refreshTokensForExistUser(accountEmail, accessToken, refreshToken);
-
-        // then
-        verify(userRepository).findUserByAccountEmail(accountEmail);
-        verify(userRepository).save(user);
-        assertThat(userRes.getAccessToken()).isEqualTo(accessToken);
-        assertThat(userRes.getRefreshToken()).isEqualTo(refreshToken);
-    }
-
-    @Test
     void insertUserTest() {
         // given
         User user = new User();
@@ -62,5 +44,37 @@ class UserServiceImplTest {
 
         // then
         verify(userRepository).save(user);
+    }
+
+    @Test
+    void findUserByAccessTokenTest() {
+        // given
+        String accessToken = "accessToken";
+
+        // when
+        userService.findUserByAccessToken(accessToken);
+
+        // then
+        verify(userRepository).findUserByAccessToken(accessToken);
+    }
+
+
+    @Test
+    void userUpdateTest() {
+        // given
+        String accountEmail = "kmk130519@naver.com";
+        User user = new User();
+        user.setAccountEmail(accountEmail);
+        UserUpdatePatchReq userUpdatePatchReq = UserUpdatePatchReq.builder()
+                .accountEmail(user.getAccountEmail())
+                .build();
+
+        // when
+        when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user);
+        userService.updateUser(userUpdatePatchReq);
+
+        // then
+        verify(userRepository).save(userUpdatePatchReq.toUser(user));
+        verify(userRepository).findUserByAccountEmail(accountEmail);
     }
 }

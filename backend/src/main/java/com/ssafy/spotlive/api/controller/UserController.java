@@ -1,12 +1,15 @@
 package com.ssafy.spotlive.api.controller;
 
+import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
+import com.ssafy.spotlive.api.service.AuthService;
 import com.ssafy.spotlive.api.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 
@@ -15,7 +18,7 @@ import java.util.HashMap;
  * @작성자 : 김민권
  * @Class 설명 : OAuth, User 관련 인증을 매핑하는 REST Controller
  */
-@Api(value = "인증 API", tags = {"Auth."})
+@Api(value = "User 및 인증 API", tags = {"UserController"}, description = "유저 관련 API를 매핑하는 컨트롤러")
 @RestController
 @RequestMapping("/api/auth/")
 @CrossOrigin( value = {"*"}, maxAge = 6000)
@@ -23,6 +26,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AuthService authService;
 
     @GetMapping("/kakao/showlogin")
     @ApiOperation(value = "카카오 로그인을 위한 요청 URL 전송", notes = "카카오 로그인을 위한 요청 URL을 전송한다. 해당 URL로 GET 요청을 보내면 된다.")
@@ -35,7 +41,7 @@ public class UserController {
          * @작성자 : 김민권
          * @Method 설명 : 카카오 로그인을 위한 요청 URL을 전송하는 Method, 해당 URL로 GET 요청을 전송 시 카카오톡 로그인 페이지로 이동된다.
          */
-        return new ResponseEntity<>(userService.getKakaoLoginUrl(), HttpStatus.OK);
+        return new ResponseEntity<>(authService.getKakaoLoginUrl(), HttpStatus.OK);
     }
 
     @GetMapping("/kakao/login")
@@ -51,10 +57,10 @@ public class UserController {
          */
 
         // 1. Token을 발급받는다.
-        HashMap<String, String> kakaoTokens = userService.getKakaoTokens(code);
+        HashMap<String, String> kakaoTokens = authService.getKakaoTokens(code);
 
         // 2. Token 값을 통해 UserInfo를 받아온다.
-        KakaoUserRes kakaoUserRes = userService.getKakaoUserInfo(kakaoTokens.get("token_type"), kakaoTokens.get("access_token"));
+        KakaoUserRes kakaoUserRes = authService.getKakaoUserInfo(kakaoTokens.get("access_token"));
 
         // 3. UserInfo의 내용이 회원 DB에 존재하는가?
         UserRes userResForCheck = userService.findUserByAccountEmail(kakaoUserRes.getKakao_account().getEmail());
@@ -62,7 +68,7 @@ public class UserController {
         UserRes userRes;
         if(userResForCheck != null) {
             // 존재한다면 Token 값을 갱신하고 반환한다.
-            userRes = userService.refreshTokensForExistUser(kakaoUserRes.getKakao_account().getEmail(), kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token"));
+            userRes = authService.refreshTokensForExistUser(kakaoUserRes.getKakao_account().getEmail(), kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token"));
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
             userRes = userService.insertUser(kakaoUserRes.toUser(kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token")));
@@ -83,9 +89,62 @@ public class UserController {
          * @작성자 : 김민권
          * @Method 설명 : AccessToken이 만료되었음을 확인 시, refresh token을 통해 재발급을 요청하는 Method
          */
-        String newToken = userService.accessTokenUpdate(accountEmail);
+        String newToken = authService.accessTokenUpdate(accountEmail);
         if(newToken == null) {
             return new ResponseEntity<>("Fail", HttpStatus.BAD_REQUEST);
         } else return new ResponseEntity<>(newToken, HttpStatus.OK);
+    }
+
+    @PatchMapping("/user")
+    @ApiOperation(value = "User를 업데이트한다.", notes = "Token의 유효성을 확인 후, User의 정보를 업데이트한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적인 수정 완료"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
+            @ApiResponse(code = 500, message = "전송된 이메일로 유저정보를 찾을 수 없음"),
+    })
+    public ResponseEntity<UserRes> updateUser(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @RequestBody @ApiParam(value="수정할 정보", required = true) UserUpdatePatchReq userUpdatePatchReq) {
+        /**
+         * @Method Name : updateUser
+         * @작성자 : 김민권
+         * @Method 설명 : User에 대한 정보를 업데이트한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            UserRes userRes = userService.updateUser(userUpdatePatchReq);
+            return new ResponseEntity<>(userRes, HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/user")
+    @ApiOperation(value = "내 정보를 반환한다.", notes = "Token의 유효성을 확인 후, 내 정보를 반환한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적인 수정 완료"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
+            @ApiResponse(code = 500, message = "서버에 오류가 있음"),
+    })
+    public ResponseEntity<UserRes> getMyInfo(@ApiIgnore @RequestHeader("Authorization") String accessToken) {
+        /**
+         * @Method Name : getMyInfo
+         * @작성자 : 김민권
+         * @Method 설명 : 나에 대한 정보를 반환한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+            return new ResponseEntity<>(userRes, HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

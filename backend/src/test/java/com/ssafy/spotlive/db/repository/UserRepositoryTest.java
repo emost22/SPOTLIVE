@@ -38,4 +38,19 @@ class UserRepositoryTest {
         // when
         assertThat(userByAccountEmail).isNull();
     }
+
+    @Test
+    void findUserByAccessTokenTest() {
+        // given
+        String accountEmail = "kmk130519@naver.com";
+        User userByAccountEmail = userRepository.findUserByAccountEmail(accountEmail);
+        String accessToken = userByAccountEmail.getAccessToken();
+
+        // when
+        User userByAccessToken = userRepository.findUserByAccessToken(accessToken);
+
+        // then
+        assertThat(userByAccessToken.getAccountEmail()).isEqualTo(userByAccountEmail.getAccountEmail());
+        assertThat(userByAccessToken.getAccessToken()).isEqualTo(userByAccountEmail.getAccessToken());
+    }
 }
