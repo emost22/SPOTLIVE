@@ -23,7 +23,7 @@ class ShowInfoServiceTest {
     }
 
     @Test
-    void findShowInfoById() {
+    void findShowInfoByIdTest() {
 //        ShowInfo showInfo = new ShowInfo();
 //        showInfo.setShowInfoId(1L);
 //        given(showInfoRepository.findShowInfoByShowInfoId(-1L)).willReturn(Optional.of(showInfo));
@@ -33,5 +33,12 @@ class ShowInfoServiceTest {
         long showInfoId = 1L;
         showInfoService.findShowInfoById(showInfoId);
         verify(showInfoRepository).findShowInfoByShowInfoId(showInfoId);
+    }
+
+    @Test
+    void deleteShowInfoByIdTest() {
+        long showInfoId = 1;
+        showInfoService.deleteShowInfoById(showInfoId);
+        verify(showInfoRepository).deleteShowInfoByShowInfoId(showInfoId);
     }
 }

@@ -1,12 +1,24 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/main">Main</router-link> 
+    <div v-if="isLogin">
+      <Login/>
     </div>
-    <router-view/>
+    <div v-else></div>
   </div>
 </template>
-
+<script>
+import Login from './views/login/Login.vue'
+export default {
+  components: {
+    Login
+  },
+  data: function () {
+    return {
+      isLogin: true
+    }
+  }
+}
+</script>
 <style>
 body {
   /* 메인 배경 */
