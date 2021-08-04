@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -119,6 +120,15 @@ public class VideoServiceImpl implements VideoService{
                 video.setShowInfo(showInfo);
             }
         }
+        videoRepository.save(video);
+        return Boolean.TRUE;
+    }
+
+    public Boolean updateVideoEndTimeById(Long videoId){
+        Video video = videoRepository.findById(videoId).get();
+        if(video.getEndTime()!=null)
+            return Boolean.FALSE;
+        video.setEndTime(LocalDateTime.now());
         videoRepository.save(video);
         return Boolean.TRUE;
     }
