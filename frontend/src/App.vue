@@ -1,24 +1,55 @@
 <template>
   <div id="app">
-    <div v-if="isLogin">
+    <div v-if="!isLogin">
       <Login/>
     </div>
-    <div v-else></div>
+    <div v-else id="nav" class="sticky-top">
+      <MainHeader/>
+      <router-view></router-view>
+    </div>
   </div>
+  
 </template>
+
 <script>
+import MainHeader from './views/MainHeader.vue'
 import Login from './views/login/Login.vue'
-export default {
+
+export default ({
+  name: "App",
   components: {
-    Login
+    Login,
+    MainHeader,
   },
   data: function () {
     return {
-      isLogin: true
+      isLogin: true,
     }
-  }
-}
+  },methods: {
+    getVideos() {
+      this.$store.dispatch('getVideos')
+    },
+  },
+  computed: {
+    // isLogin: function () {
+    //   return this.$store.getters.isLogin
+    // },
+  },
+  created: function () {
+    const token = localStorage.getItem('jwt')
+    if (token) {
+      this.isLogin = true
+    }
+  },
+  mounted: function () {
+    this.getVideos()
+    this.$router.push({ name: "Main" })
+  },
+})
+
 </script>
+
+>>>>>>> 83fa496 (🔧Add MainHeader.vue navbar)
 <style>
 body {
   /* 메인 배경 */
@@ -38,8 +69,6 @@ body {
 /* 헤더, 사이드바, 필터, 모달 배경 */
 .bgcolor-deep-grey {
   background-color: #242424;
-  width: 500px;
-  height: 500px;
 }
 /* 검색창, 알림 */
 .bgcolor-mid-deep-grey {
@@ -121,15 +150,10 @@ body {
     0 0 12px #C752FE;
 }
 #nav {
-  padding: 30px;
+  height: 45px;
+  display: block;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+#view {
+  margin-top: 80px;
 }
 </style>
