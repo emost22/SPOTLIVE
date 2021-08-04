@@ -1,6 +1,5 @@
 package com.ssafy.spotlive.api.service;
 
-import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
@@ -177,5 +176,28 @@ public class AuthServiceImpl implements AuthService {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR).getStatusCodeValue();
             }
         }
+    }
+
+    @Override
+    public void logout(UserRes userRes) {
+        /**
+         * @Method Name : logout
+         * @작성자 : 김민권
+         * @Method 설명 : kakao로 logout 요청을 보내 Token의 Access Token, Refresh Token의 유효성을 날려버린다.
+         */
+        String logoutHost = "https://kapi.kakao.com/v1/user/logout";
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        httpHeaders.add("Authorization", TOKEN_TYPE + " " + userRes.getAccessToken());
+
+        HttpEntity<MultiValueMap<String, String>> logoutKakaoReq = new HttpEntity<>(httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(logoutHost, HttpMethod.POST, logoutKakaoReq, HashMap.class);
+
+        User logoutUser = userRepository.findUserByAccountEmail(userRes.getAccountEmail());
+        logoutUser.setAccessToken("");
+        logoutUser.setRefreshToken("");
+        userRepository.save(logoutUser);
     }
 }
