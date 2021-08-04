@@ -161,6 +161,8 @@ public class VideoServiceImpl implements VideoService{
         Video video = videoRepository.findById(videoId).get();
         if(video.getEndTime()!=null) return Boolean.FALSE;
 
+        int statusCode = closeSession(video.getSessionId());
+        if(statusCode != 204) return Boolean.FALSE;
 
         video.setEndTime(LocalDateTime.now());
         videoRepository.save(video);
@@ -217,6 +219,28 @@ public class VideoServiceImpl implements VideoService{
         return result.getBody().get("token").toString();
     }
 
+    @Override
+    public int closeSession(String sessionId) {
+        String targetUrl = openviduServerUrl + "/openvidu/api/sessions/" + sessionId;
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "application/json");
+        httpHeaders.add("Authorization", "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU");
+
+        HttpEntity<Map<String, String>> openviduSessionReq = new HttpEntity<>(httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            restTemplate.exchange(targetUrl, HttpMethod.DELETE, openviduSessionReq, HashMap.class);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT).getStatusCodeValue();
+        } catch (HttpClientErrorException e) {
+            if(e.getStatusCode().value() == 404) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND).getStatusCodeValue();
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR).getStatusCodeValue();
+            }
+        }
+    }
 
     public String makeSessionId() {
         String sessionId = "session";

@@ -18,4 +18,5 @@ public interface VideoService {
     Boolean updateVideoEndTimeById(Long videoId);
     String createSession();
     String createToken(String sessionId);
+    int closeSession(String sessionId);
 }
