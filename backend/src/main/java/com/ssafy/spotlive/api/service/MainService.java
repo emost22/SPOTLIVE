@@ -11,4 +11,5 @@ public interface MainService {
     VideoGetRes findAllVideoByModeAndCategoryId(int page, int size, Long categoryId, String mode);
     VideoGetRes findAllReplayVideoByIsLiveAndCategoryId(int page, int size, Long categoryId);
     VideoGetRes findAllLiveVideoByIsLiveAndCategoryId(int page, int size, Long categoryId);
+    VideoGetRes findAllFollowVideoByCategoryId(int page, int size, Long categoryId, String accountEmail);
 }
