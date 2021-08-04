@@ -34,7 +34,7 @@ public class ShowInfoServiceImpl implements ShowInfoService{
     TimetableRepository timetableRepository;
 
     @Override
-    public ShowInfo insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq, MultipartFile posterImage) {
+    public void insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq, MultipartFile posterImage) {
         /**
          * @Method Name : insertShowInfo
          * @작성자 : 금아현
@@ -65,7 +65,6 @@ public class ShowInfoServiceImpl implements ShowInfoService{
         Long id = showInfoRepository.save(showInfoInsertPostReq.toShowInfo()).getShowInfoId();
         ShowInfo showInfo = showInfoRepository.getById(id);
         showInfoInsertPostReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq.toTimetable(showInfo)));
-        return null;
     }
 
     @Override
