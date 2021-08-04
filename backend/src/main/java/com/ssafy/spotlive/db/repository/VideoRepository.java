@@ -25,5 +25,5 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      * @작성자 : 강용수
      * @Method 설명 : mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 Video를 검색하는 메소드
      */
-    Page<Video> findVideosByModeAndCategoryId(Pageable pageable, String mode, Long categoryId);
+    Page<Video> findVideosByModeAndCategory_CategoryId(Pageable pageable, String mode, Long categoryId);
 }
