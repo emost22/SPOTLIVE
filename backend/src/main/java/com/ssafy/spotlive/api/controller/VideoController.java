@@ -109,22 +109,22 @@ public class VideoController {
         else
             return new ResponseEntity<String>("이미 종료된 영상입니다.", HttpStatus.BAD_REQUEST);
     }
-//
-//    @GetMapping("/list/{userId}")
-//    @ApiOperation(value = "특정 유저 영상 리스트 조회", notes = "userId(email 아님)를 요청받아 해당 유저의 저장된 영상리스트를 응답한다.")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "성공"),
-//            @ApiResponse(code = 400, message = "조회 오류"),
-//            @ApiResponse(code = 500, message = "서버 오류")
-//    })
-//    public ResponseEntity<List<VideoFindAllByUserIdGetRes>> findVideoListByUserId(
-//            /*@ApiIgnore Authentication authentication,*/ @PathVariable long userId) {
-//            /**
-//             * @Method Name : findVideoListByUserId
-//             * @작성자 : 권영린
-//             * @Method 설명 : 특정 유저의 내동영상 리스트를 조회한다.
-//             */
-//            List<VideoFindAllByUserIdGetRes> videoFindAllByUserIdGetRes = null;
-//            return ResponseEntity.status(200).body(videoFindAllByUserIdGetRes);
-//    }
+
+    @GetMapping("/list/{accountEmail}")
+    @ApiOperation(value = "특정 유저 영상 리스트 조회", notes = "user email를 요청받아 해당 유저의 저장된 영상리스트를 응답한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "조회 오류"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<List<VideoFindAllByUserIdGetRes>> findVideoListByUserId(
+            @PathVariable String accountEmail) {
+            /**
+             * @Method Name : findVideoListByUserId
+             * @작성자 : 권영린
+             * @Method 설명 : 특정 유저의 내동영상 리스트를 조회한다.
+             */
+            List<VideoFindAllByUserIdGetRes> videoFindAllByUserIdGetRes = videoService.findVideoByAccountEmail(accountEmail);
+        return new ResponseEntity<>(videoFindAllByUserIdGetRes, HttpStatus.OK);
+    }
 }
