@@ -77,6 +77,35 @@ public class UserController {
         return new ResponseEntity<>(userRes, HttpStatus.OK);
     }
 
+    @GetMapping("/kakao/logout")
+    @ApiOperation(value = "kakao에 로그아웃을 위한 신호를 보낸다.", notes = "현재 로그인되어 있는 유저의 2가지 Token 유효성을 만료시킨다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적으로 로그아웃되었음"),
+            @ApiResponse(code = 400, message = "올바르지 않은 접근"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
+            @ApiResponse(code = 500, message = "전송된 이메일로 유저정보를 찾을 수 없음"),
+    })
+    public ResponseEntity<String> logout(@ApiIgnore @RequestHeader("Authorization") String accessToken) {
+        /**
+         * @Method Name : logout
+         * @작성자 : 김민권
+         * @Method 설명 : Kakao API에 로그아웃이 되었다는 신호를 전송한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+
+            // 추가 작성 필요!
+            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/kakao/update/{accountEmail}")
     @ApiOperation(value = "Access Token을 재발급한다.", notes = "재발급 된 Token을 반환한다.")
     @ApiResponses({
@@ -99,6 +128,7 @@ public class UserController {
     @ApiOperation(value = "User를 업데이트한다.", notes = "Token의 유효성을 확인 후, User의 정보를 업데이트한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "정상적인 수정 완료"),
+            @ApiResponse(code = 400, message = "올바르지 않은 접근"),
             @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
             @ApiResponse(code = 500, message = "전송된 이메일로 유저정보를 찾을 수 없음"),
     })
@@ -126,6 +156,7 @@ public class UserController {
     @ApiOperation(value = "내 정보를 반환한다.", notes = "Token의 유효성을 확인 후, 내 정보를 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "정상적인 수정 완료"),
+            @ApiResponse(code = 400, message = "올바르지 않은 접근"),
             @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
             @ApiResponse(code = 500, message = "서버에 오류가 있음"),
     })
@@ -135,13 +166,40 @@ public class UserController {
          * @작성자 : 김민권
          * @Method 설명 : 나에 대한 정보를 반환한다.
          */
-        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+        int validTokenStatusValue = authService.isValidToken(accessToken);
 
-        if(vaildTokenStatusValue == 200) {
+        if(validTokenStatusValue == 200) {
             String[] spitToken = accessToken.split(" ");
             UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
             return new ResponseEntity<>(userRes, HttpStatus.OK);
-        } else if(vaildTokenStatusValue == 401) {
+        } else if(validTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/user/{accountEmail}")
+    @ApiOperation(value = "다른 사람의 정보를 반환한다.", notes = "Token의 유효성을 확인 후, 다른 사람의 정보를 반환한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적인 수정 완료"),
+            @ApiResponse(code = 400, message = "올바르지 않은 접근"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
+            @ApiResponse(code = 500, message = "서버에 오류가 있음"),
+    })
+    public ResponseEntity<UserRes> getOtherUserInfo(@ApiIgnore @RequestHeader("Authorization") String accessToken,
+                                               @PathVariable("accountEmail") String accountEmail) {
+        /**
+         * @Method Name : getUserInfo
+         * @작성자 : 김민권
+         * @Method 설명 : 다른 사람의 정보를 반환한다.
+         */
+        int validTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(validTokenStatusValue == 200) {
+            UserRes userRes = userService.findUserByAccountEmail(accountEmail);
+            return new ResponseEntity<>(userRes, HttpStatus.OK);
+        } else if(validTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
