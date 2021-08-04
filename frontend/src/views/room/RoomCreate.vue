@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>방생성이다</div>
 </template>
 
 <script>

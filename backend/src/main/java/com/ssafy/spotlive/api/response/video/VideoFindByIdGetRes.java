@@ -1,5 +1,9 @@
 package com.ssafy.spotlive.api.response.video;
 
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
+import com.ssafy.spotlive.db.entity.Category;
+import com.ssafy.spotlive.db.entity.ShowInfo;
+import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.entity.Video;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
@@ -31,7 +35,7 @@ public class VideoFindByIdGetRes {
     Long hit;
     String sessionId;
 
-    Long showInfoId;
+    ShowInfoRes showInfoRes;
     Long categoryId;
     String accountEmail;
     public static VideoFindByIdGetRes of(Video video){
@@ -40,18 +44,40 @@ public class VideoFindByIdGetRes {
          * @작성자 : 권영린
          * @Method 설명 : Video Entity를 VideoFindByIdGetResDto로 변환하는 메소드
          */
-        return VideoFindByIdGetRes.builder()
-                .videoTitle(video.getVideoTitle())
-                .videoDescription((video.getVideoDescription()))                .mode(video.getMode())
-                .startTime(video.getStartTime())
-                .endTime(video.getEndTime())
-                .thumbnailUrl(video.getThumbnailUrl())
-                .videoUrl(video.getVideoUrl())
-                .isLive(video.getIsLive())
-                .hit(video.getHit())
-                .accountEmail(video.getUser().getAccountEmail())
-                .showInfoId(video.getShowInfo().getShowInfoId())
-                .categoryId(video.getCategory().getCategoryId())
-                .build();
+        // 소통의 경우 ShowInfo()이 null이기 때문에 .showInfoId(video.getShowInfo().getShowInfoId())를 빼야함
+        if(video.getShowInfo() == null){
+            return VideoFindByIdGetRes.builder()
+                    .videoTitle(video.getVideoTitle())
+                    .videoDescription((video.getVideoDescription()))
+                    .mode(video.getMode())
+                    .startTime(video.getStartTime())
+                    .endTime(video.getEndTime())
+                    .thumbnailUrl(video.getThumbnailUrl())
+                    .videoUrl(video.getVideoUrl())
+                    .isLive(video.getIsLive())
+                    .hit(video.getHit())
+                    .accountEmail(video.getUser().getAccountEmail())
+                    .categoryId(video.getCategory().getCategoryId())
+                    .build();
+        } else {
+            return VideoFindByIdGetRes.builder()
+                    .videoTitle(video.getVideoTitle())
+                    .videoDescription((video.getVideoDescription()))
+                    .mode(video.getMode())
+                    .startTime(video.getStartTime())
+                    .endTime(video.getEndTime())
+                    .thumbnailUrl(video.getThumbnailUrl())
+                    .videoUrl(video.getVideoUrl())
+                    .isLive(video.getIsLive())
+                    .hit(video.getHit())
+                    .accountEmail(video.getUser().getAccountEmail())
+//                    .showInfoId(video.getShowInfo().getShowInfoId())
+                    .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
+                    .sessionId(video.getSessionId())
+                    .categoryId(video.getCategory().getCategoryId())
+                    .build();
+        }
+
+
     }
 }
