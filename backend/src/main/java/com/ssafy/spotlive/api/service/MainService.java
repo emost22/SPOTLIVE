@@ -10,4 +10,5 @@ import com.ssafy.spotlive.api.response.main.VideoGetRes;
 public interface MainService {
     VideoGetRes findAllVideoByModeAndCategoryId(int page, int size, Long categoryId, String mode);
     VideoGetRes findAllReplayVideoByIsLiveAndCategoryId(int page, int size, Long categoryId);
+    VideoGetRes findAllLiveVideoByIsLiveAndCategoryId(int page, int size, Long categoryId);
 }
