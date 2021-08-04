@@ -9,8 +9,10 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @FileName : ShowInfoController
@@ -33,11 +35,10 @@ public class ShowInfoController {
             @ApiResponse(code = 404, message = "등록 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<ShowInfo> insertShowInfo(
-            //@ApiIgnore Authentication authentication,
-//            @RequestParam("file") MultipartFile files,
-            @RequestBody @ApiParam(value = "새로 등록할 회의의 정보", required = true) ShowInfoInsertPostReq showInfoInsertPostReq
-//            @ModelAttribute ShowInfoInsertPostReq showInfoInsertPostReq
+    public ResponseEntity<Object> insertShowInfo(
+            @ApiIgnore Authentication authentication,
+            @RequestParam("posterImage") MultipartFile posterImage,
+            @ApiParam(value = "새로 등록할 회의의 정보", required = true) ShowInfoInsertPostReq showInfoInsertPostReq
     ){
         /**
          * @Method Name : insertShowInfo
@@ -45,8 +46,8 @@ public class ShowInfoController {
          * @Method 설명 : 새로운 공연 정보를 등록한다.
          */
         // user 이메일 부분 추가해야함
-        ShowInfo showInfo = showInfoService.insertShowInfo(showInfoInsertPostReq);
-        return new ResponseEntity<>(showInfo, HttpStatus.OK);
+        ShowInfo showInfo = showInfoService.insertShowInfo(showInfoInsertPostReq, posterImage);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
