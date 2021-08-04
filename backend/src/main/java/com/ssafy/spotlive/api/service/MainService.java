@@ -8,5 +8,5 @@ import com.ssafy.spotlive.api.response.main.VideoFindByModeGetRes;
  * @Class 설명 : 메인화면 데이터 조회를 위한 Service 정의.
  */
 public interface MainService {
-    VideoFindByModeGetRes findAllAdVideo(int page, int size, Long categoryId);
+    VideoFindByModeGetRes findAllVideoByModeAndCategoryId(int page, int size, Long categoryId, String mode);
 }
