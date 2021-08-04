@@ -34,9 +34,9 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public VideoFindByModeGetRes findAllVideoByIsLiveAndCategoryId(int page, int size, Long categoryId){
+    public VideoFindByModeGetRes findAllReplayVideoByIsLiveAndCategoryId(int page, int size, Long categoryId){
         /**
-         * @Method Name : findAllVideoByIsLive
+         * @Method Name : findAllReplayVideoByIsLiveAndCategoryId
          * @작성자 : 강용수
          * @Method 설명 : Query Parameter 조건에 맞는 다시보기 영상들을 조회수 순으로 검색하는 메소드
          */

@@ -113,7 +113,7 @@ public class MainController {
          * @작성자 : 강용수
          * @Method 설명 : 다시보기 Video를 카테고리 id 기준과 조회수 순으로 조회하는 메소드
          */
-        VideoFindByModeGetRes videoFindByModeGetRes = mainService.findAllVideoByIsLiveAndCategoryId(page, size, categoryId);
+        VideoFindByModeGetRes videoFindByModeGetRes = mainService.findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId);
 
         List<VideoFindMainVideoRes> videoFindMainVideoResList = videoFindByModeGetRes.getVideoResList();
 
