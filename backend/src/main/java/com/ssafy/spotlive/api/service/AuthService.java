@@ -1,9 +1,7 @@
 package com.ssafy.spotlive.api.service;
 
-import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
-import com.ssafy.spotlive.db.entity.User;
 
 import java.util.HashMap;
 
@@ -20,4 +18,5 @@ public interface AuthService {
     UserRes refreshTokensForExistUser(String email, String accessToken, String refreshToken);
     String accessTokenUpdate(String accountEmail);
     int isValidToken(String accessToken);
+    void logout(UserRes userRes);
 }
