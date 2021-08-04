@@ -47,6 +47,19 @@ class UserServiceImplTest {
     }
 
     @Test
+    void findUserByAccessTokenTest() {
+        // given
+        String accessToken = "accessToken";
+
+        // when
+        userService.findUserByAccessToken(accessToken);
+
+        // then
+        verify(userRepository).findUserByAccessToken(accessToken);
+    }
+
+
+    @Test
     void userUpdateTest() {
         // given
         String accountEmail = "kmk130519@naver.com";
