@@ -51,6 +51,11 @@ public class ShowInfoController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "공연 정보 단일 조회", notes = "공연 id로 해당 공연을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
     public ResponseEntity<ShowInfoFindByIdGetRes> findShowInfoById(
             //@ApiIgnore Authentication authentication,
             @PathVariable @ApiParam(value = "조회할 공연 정보의 id", required = true) long id){
@@ -59,8 +64,9 @@ public class ShowInfoController {
          * @작성자 : 금아현
          * @Method 설명 : 공연 id로 공연 정보를 조회한다.
          */
-        ShowInfo showInfo = new ShowInfo();
-        return ResponseEntity.status(200).body(ShowInfoFindByIdGetRes.of(showInfo));
+        ShowInfoFindByIdGetRes showInfoFindByIdGetRes = showInfoService.findShowInfoById(id);
+        if(showInfoFindByIdGetRes == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(showInfoFindByIdGetRes, HttpStatus.OK);
     }
 
 
