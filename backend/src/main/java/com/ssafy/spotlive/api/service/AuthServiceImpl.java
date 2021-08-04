@@ -1,6 +1,5 @@
 package com.ssafy.spotlive.api.service;
 
-import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
@@ -8,13 +7,11 @@ import com.ssafy.spotlive.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -165,11 +162,42 @@ public class AuthServiceImpl implements AuthService {
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         httpHeaders.add("Authorization", accessToken);
 
-        HttpEntity<MultiValueMap<String, String>> kakaoVaildTokenReq = new HttpEntity<>(httpHeaders);
+        HttpEntity<MultiValueMap<String, String>> kakaoValidTokenReq = new HttpEntity<>(httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<HashMap> isValidEntity = restTemplate.exchange(vaildCheckHost, HttpMethod.GET, kakaoVaildTokenReq, HashMap.class);
 
-        return isValidEntity.getStatusCodeValue();
+        try {
+            ResponseEntity<HashMap> isValidEntity = restTemplate.exchange(vaildCheckHost, HttpMethod.GET, kakaoValidTokenReq, HashMap.class);
+            return isValidEntity.getStatusCodeValue();
+        } catch (HttpClientErrorException e) {
+            if(e.getStatusCode().value() == 401) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED).getStatusCodeValue();
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR).getStatusCodeValue();
+            }
+        }
+    }
+
+    @Override
+    public void logout(UserRes userRes) {
+        /**
+         * @Method Name : logout
+         * @작성자 : 김민권
+         * @Method 설명 : kakao로 logout 요청을 보내 Token의 Access Token, Refresh Token의 유효성을 날려버린다.
+         */
+        String logoutHost = "https://kapi.kakao.com/v1/user/logout";
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        httpHeaders.add("Authorization", TOKEN_TYPE + " " + userRes.getAccessToken());
+
+        HttpEntity<MultiValueMap<String, String>> logoutKakaoReq = new HttpEntity<>(httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(logoutHost, HttpMethod.POST, logoutKakaoReq, HashMap.class);
+
+        User logoutUser = userRepository.findUserByAccountEmail(userRes.getAccountEmail());
+        logoutUser.setAccessToken("");
+        logoutUser.setRefreshToken("");
+        userRepository.save(logoutUser);
     }
 }

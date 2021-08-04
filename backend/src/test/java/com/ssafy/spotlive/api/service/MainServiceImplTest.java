@@ -45,4 +45,26 @@ class MainServiceImplTest {
         verify(videoRepository).findVideosByMode(pageRequest, mode);
         verify(videoRepository).findVideosByModeAndCategory_CategoryId(pageRequest, mode, categoryId1);
     }
+
+    @Test
+    void findAllVideoByIsLiveAndCategoryId() {
+        // given
+        int page = 0;
+        int size = 3;
+        Long categoryId1 = 6L;
+        Long categoryId2 = null;
+        Boolean isLive = false;
+        Sort sort = Sort.by(Sort.Direction.DESC, "hit");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        when(videoRepository.findVideosByIsLive(pageRequest, isLive)).thenReturn(pageVideo);
+        when(videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, isLive, categoryId1)).thenReturn(pageVideo);
+        mainServiceImpl.findAllVideoByIsLiveAndCategoryId(page, size, categoryId1);
+        mainServiceImpl.findAllVideoByIsLiveAndCategoryId(page, size, categoryId2);
+
+        // then
+        verify(videoRepository).findVideosByIsLive(pageRequest, isLive);
+        verify(videoRepository).findVideosByIsLiveAndCategory_CategoryId(pageRequest, isLive, categoryId1);
+    }
 }

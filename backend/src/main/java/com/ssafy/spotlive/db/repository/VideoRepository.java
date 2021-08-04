@@ -26,4 +26,18 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      * @Method 설명 : mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 Video를 검색하는 메소드
      */
     Page<Video> findVideosByModeAndCategory_CategoryId(Pageable pageable, String mode, Long categoryId);
+
+    /**
+     * @Method Name : findVideosByIsLiveOrderByHit
+     * @작성자 : 강용수
+     * @Method 설명 : 다시보기 Video를 조회수 순으로 검색하는 메소드
+     */
+    Page<Video> findVideosByIsLive(Pageable pageable, Boolean isLive);
+
+    /**
+     * @Method Name : findVideosByIsLiveAndCategory_CategoryId
+     * @작성자 : 강용수
+     * @Method 설명 : 다시보기 Video를 카테고리 id 기준과 조회수 순으로 검색하는 메소드
+     */
+    Page<Video> findVideosByIsLiveAndCategory_CategoryId(Pageable pageable, Boolean isLive, Long categoryId);
 }
