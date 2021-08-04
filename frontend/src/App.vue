@@ -147,7 +147,4 @@ body {
     0 0 9px #C752FE,
     0 0 12px #C752FE;
 }
-#view {
-  margin-top: 80px;
-}
 </style>

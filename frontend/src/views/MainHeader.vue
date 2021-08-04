@@ -8,10 +8,10 @@
           <span class="txtcolor-ngreen logo">SPOT</span>
           <span class="txtcolor-npink logo">LIVE</span>
         </router-link>
-        <div class="search"> 
-          <input class="bgcolor-mid-deep-grey txtcolor-white search-input" type="text" id="" v-model.trim="input" placeholder="검색할 내용을 입력하세요">
-          <button 
-            class="bgcolor-mid-deep-grey txtcolor-white search-btn" 
+        <div class="search">
+          <input type="text" class="bgcolor-mid-deep-grey txtcolor-white search-input" v-model.trim="input" placeholder="검색할 내용을 입력하세요">
+          <button type="button"
+            class="bgcolor-mid-deep-grey txtcolor-white search-btn text-align-center" 
             :disabled="!this.validSearch" 
             @click="clickSearchBtn">
             Search
@@ -112,8 +112,17 @@ export default ({
 .search-input{
   margin: 10px;
   width: 400px;
+  height: 25px;
+  border: #6A6A6A;
 }
 .search-btn{
-  width: 75px;
+  width: 70px;
+  height: 25px;
+  border: #6A6A6A;
+}
+input:focus {
+  box-shadow: 
+    0 0 9px #ffffff,
+    0 0 12px #ffffff;
 }
 </style>
