@@ -1,6 +1,5 @@
 package com.ssafy.spotlive.api.service;
 
-import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.db.entity.Video;
 import com.ssafy.spotlive.db.repository.VideoRepository;
@@ -9,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-//import static org.mockito.Mockito.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+//import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
@@ -48,4 +48,40 @@ class VideoServiceImplTest {
         assertThat(videoById.get().getEndTime()).isEqualTo(LocalDateTime.now());
     }
 
+    @Test
+    void 오픈비두_세션생성테스트() {
+        // given
+
+        // when
+        String sessionId = videoService.createSession();
+
+        // then
+        assertThat(sessionId).contains("session");
+    }
+
+    @Test
+    void 오픈비두_토큰발급테스트() {
+        // given
+        String sessionId = videoService.createSession();
+
+        // when
+        String token = videoService.createToken(sessionId);
+
+        // then
+        assertThat(token).contains("wss://i5a405.p.ssafy.io");
+    }
+
+    @Test
+    void 오픈비두_세션종료테스트() {
+        // given
+        String sessionId = videoService.createSession();
+
+        // when
+        int statusCodeForSuccess = videoService.closeSession(sessionId);
+        int statusCodeForFail = videoService.closeSession(sessionId);
+
+        // then
+        assertThat(statusCodeForSuccess).isEqualTo(204);
+        assertThat(statusCodeForFail).isEqualTo(404);
+    }
 }
