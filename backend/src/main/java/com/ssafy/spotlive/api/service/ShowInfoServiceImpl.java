@@ -3,6 +3,7 @@ package com.ssafy.spotlive.api.service;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
 import com.ssafy.spotlive.api.request.timetable.TimetableInsertPostReq;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.entity.Timetable;
 import com.ssafy.spotlive.db.repository.ShowInfoRepository;
@@ -28,52 +29,42 @@ public class ShowInfoServiceImpl implements ShowInfoService{
 
     @Autowired
     ShowInfoRepository showInfoRepository;
+
+    @Autowired
     TimetableRepository timetableRepository;
 
     @Override
-    public ShowInfo insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq) {
+    public void insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq, MultipartFile posterImage) {
         /**
          * @Method Name : insertShowInfo
          * @작성자 : 금아현
          * @Method 설명 : 공연정보 추가
          */
-//        System.out.println("showInfo Timetable: " + showInfoInsertPostReq.getTimetableInsertPostReq().get(0).getDateTime());
-//        try {
-//            String separator = File.separator;
-//            String today = new SimpleDateFormat("yyMMdd").format(new Date());
-//
-//            File file = new File("");
-//            String rootPath = file.getAbsolutePath().split("backend")[0];
-//            String savePath = rootPath + "frontend" + separator + "src" + separator + "assets" + separator + "thumbnails" + separator + today;
-//            if (!new File(savePath).exists()) {
-//                try{
-//                    new File(savePath).mkdirs();
-//                }
-//                catch(Exception e){
-//                    e.getStackTrace();
-//                }
-//            }
-//            System.out.println("fsdfsdfsdf: " + showInfoInsertPostReq.getFile().getOriginalFilename());
-//            System.out.println("fsdfsdfsffffffdf: " + showInfoInsertPostReq.getFile().getName());
-//            String origFilename = showInfoInsertPostReq.getFile().getOriginalFilename();
-//            String saveFileName = UUID.randomUUID().toString() + origFilename.substring(origFilename.lastIndexOf('.'));
-//            String filePath = savePath + separator + saveFileName;
-//            showInfoInsertPostReq.getFile().transferTo(new File(filePath));
-//            showInfoInsertPostReq.setPosterUrl(filePath);
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//        }
-        Long id = showInfoRepository.save(showInfoInsertPostReq.toShowInfo()).getShowInfoId();
-        System.out.println("fsdf " + id);
-//        showInfo.setTimetableList(timetableInsertPostReq.stream().map(TimetableInsertPostReq::toTimetable).collect(Collectors.toList()));
+        try {
+            String separator = File.separator;
+            String today = new SimpleDateFormat("yyMMdd").format(new Date());
 
-        showInfoInsertPostReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableInsertPostReq.setShowInfoId(id));
-        System.out.println("showInfoInsertPostReq: " + showInfoInsertPostReq.getTimetableInsertPostReq());
-        System.out.println("확인 : " + showInfoInsertPostReq.getTimetableInsertPostReq().get(0).toTimetable());
-        System.out.println("확인 : " + showInfoInsertPostReq.getTimetableInsertPostReq().get(0));
-        System.out.println("확인 : " + showInfoInsertPostReq.getTimetableInsertPostReq().get(1));
-//        showInfoInsertPostReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq));
-        return null;
+            File file = new File("");
+            String rootPath = file.getAbsolutePath().split("backend")[0];
+            String savePath = rootPath + "frontend" + separator + "src" + separator + "assets" + separator + "thumbnails" + separator + today;
+            if (!new File(savePath).exists()) {
+                try{
+                    new File(savePath).mkdirs();
+                } catch(Exception e){
+                    e.getStackTrace();
+                }
+            }
+            String origFilename = posterImage.getOriginalFilename();
+            String saveFileName = UUID.randomUUID().toString() + origFilename.substring(origFilename.lastIndexOf('.'));
+            String filePath = savePath + separator + saveFileName;
+            posterImage.transferTo(new File(filePath));
+            showInfoInsertPostReq.setPosterUrl(filePath);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        Long id = showInfoRepository.save(showInfoInsertPostReq.toShowInfo()).getShowInfoId();
+        ShowInfo showInfo = showInfoRepository.getById(id);
+        showInfoInsertPostReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq.toTimetable(showInfo)));
     }
 
     @Override

@@ -3,14 +3,19 @@ package com.ssafy.spotlive.api.controller;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoUpdatePatchReq;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
+import com.ssafy.spotlive.api.response.user.UserRes;
+import com.ssafy.spotlive.api.service.AuthService;
 import com.ssafy.spotlive.api.service.ShowInfoService;
+import com.ssafy.spotlive.api.service.UserService;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @FileName : ShowInfoController
@@ -26,6 +31,12 @@ public class ShowInfoController {
     @Autowired
     ShowInfoService showInfoService;
 
+    @Autowired
+    AuthService authService;
+
+    @Autowired
+    UserService userService;
+
     @PostMapping("/")
     @ApiOperation(value = "공연 정보 등록", notes = "새로운 공연 정보를 등록한다.")
     @ApiResponses({
@@ -33,20 +44,28 @@ public class ShowInfoController {
             @ApiResponse(code = 404, message = "등록 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<ShowInfo> insertShowInfo(
-            //@ApiIgnore Authentication authentication,
-//            @RequestParam("file") MultipartFile files,
-            @RequestBody @ApiParam(value = "새로 등록할 회의의 정보", required = true) ShowInfoInsertPostReq showInfoInsertPostReq
-//            @ModelAttribute ShowInfoInsertPostReq showInfoInsertPostReq
+    public ResponseEntity<Object> insertShowInfo(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @RequestParam(value = "posterImage", required = false) MultipartFile posterImage,
+            @ApiParam(value = "새로 등록할 회의의 정보", required = true) ShowInfoInsertPostReq showInfoInsertPostReq
     ){
         /**
          * @Method Name : insertShowInfo
          * @작성자 : 금아현
          * @Method 설명 : 새로운 공연 정보를 등록한다.
          */
-        // user 이메일 부분 추가해야함
-        ShowInfo showInfo = showInfoService.insertShowInfo(showInfoInsertPostReq);
-        return new ResponseEntity<>(showInfo, HttpStatus.OK);
+        int validTokenStatusValue = authService.isValidToken(accessToken);
+        if(validTokenStatusValue == 200){
+            String[] splitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
+            showInfoInsertPostReq.setAccountEmail(userRes.getAccountEmail());
+        }else if(validTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        showInfoService.insertShowInfo(showInfoInsertPostReq, posterImage);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

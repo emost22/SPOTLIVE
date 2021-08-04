@@ -47,7 +47,6 @@ public class ShowInfoUpdatePatchReq {
         showInfo.setPosterUrl(this.posterUrl);
         showInfo.setPrice(this.price);
         showInfo.setRunningTime(this.runningTime);
-        showInfo.setTimetableList(timetableInsertPostReq.stream().map(TimetableInsertPostReq::toTimetable).collect(Collectors.toList()));
         return showInfo;
     }
 }
