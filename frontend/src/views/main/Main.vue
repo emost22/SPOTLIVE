@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-row">
     <MainSidebar/>
-    <div class="mainvideo">
+    <div class="main-video">
       <div>
         상단 카테고리 추천
         <!-- npm install -S vue-carousel-3d -->
@@ -72,11 +72,10 @@ export default {
 </script>
 
 <style>
-.mainvideo {
+.main-video {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  margin: 0px;
-  padding: 0px;
+  width: 100%;
 }
 </style>
