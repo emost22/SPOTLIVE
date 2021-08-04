@@ -3,9 +3,11 @@ package com.ssafy.spotlive.api.controller;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoUpdatePatchReq;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
+import com.ssafy.spotlive.api.response.timetable.TimetableRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.service.AuthService;
 import com.ssafy.spotlive.api.service.ShowInfoService;
+import com.ssafy.spotlive.api.service.TimetableService;
 import com.ssafy.spotlive.api.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class ShowInfoController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    TimetableService timetableService;
 
     @PostMapping("/")
     @ApiOperation(value = "공연 정보 등록", notes = "새로운 공연 정보를 등록한다.")
@@ -124,5 +129,24 @@ public class ShowInfoController {
         Long exist = showInfoService.deleteShowInfoById(id);
         if(exist == 1) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/timetable/{id}")
+    @ApiOperation(value = "가장 가까운 공연 시간 조회", notes = "공연 id로 현재 시간의 30분 전후의 공연을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    public ResponseEntity<TimetableRes> findTimetableByShowInfoId(
+            @PathVariable @ApiParam(value = "조회할 공연 정보의 id", required = true) long id){
+        /**
+         * @Method Name : findTimetableByShowInfoId
+         * @작성자 : 금아현
+         * @Method 설명 : 공연 id로 가장 가까운 공연 시간 1개를 조회한다.
+         */
+        TimetableRes timetableRes = timetableService.findTimetableByShowInfoId(id);
+        if(timetableRes == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(timetableRes, HttpStatus.OK);
     }
 }
