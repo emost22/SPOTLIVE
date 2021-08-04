@@ -2,6 +2,8 @@ package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
+import com.ssafy.spotlive.db.entity.Follow;
+import com.ssafy.spotlive.db.repository.UserRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @FileName : MainServiceImpl
@@ -20,6 +24,8 @@ import java.util.Comparator;
 public class MainServiceImpl implements MainService {
     @Autowired
     VideoRepository videoRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public VideoGetRes findAllVideoByModeAndCategoryId(int page, int size, Long categoryId, String mode){
@@ -84,5 +90,14 @@ public class MainServiceImpl implements MainService {
         });
 
         return videoGetRes;
+    }
+
+    public String followToString(Follow follow){
+        /**
+         * @Method Name : followToString
+         * @작성자 : 강용수
+         * @Method 설명 : Follow 객체에서 artist의 accountEmail만 가져오는 메소드
+         */
+        return follow.getArtist().getAccountEmail();
     }
 }
