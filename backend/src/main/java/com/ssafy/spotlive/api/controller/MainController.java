@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.controller;
 
+import com.ssafy.spotlive.api.response.main.UserFindFollowGetRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
@@ -186,6 +187,38 @@ public class MainController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             else
                 return new ResponseEntity<>(videoGetRes, HttpStatus.OK);
+        } else if (validTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @ApiOperation(value = "자신이 팔로우 한 유저 리스트 조회", notes = "자신이 팔로우 한 유저 리스트를 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    @GetMapping("/user")
+    public ResponseEntity<List<UserFindFollowGetRes>> findAllFollowByFan(@ApiIgnore @RequestHeader("Authorization") String accessToken){
+        /**
+         * @Method Name : findAllFollowByFan
+         * @작성자 : 강용수
+         * @Method 설명 : 자신이 팔로우한 유저 리스트를 조회하는 메소드
+         */
+        int validTokenStatusValue = authService.isValidToken(accessToken);
+        
+        if (validTokenStatusValue == 200) {
+            String[] splitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
+
+            List<UserFindFollowGetRes> userFindFollowGetResList = mainService.findAllFollowByFan(userRes.getAccountEmail());
+
+            if (userFindFollowGetResList == null || userFindFollowGetResList.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            else
+                return new ResponseEntity<>(userFindFollowGetResList, HttpStatus.OK);
         } else if (validTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
