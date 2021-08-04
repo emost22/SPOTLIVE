@@ -54,12 +54,19 @@ export default ({
 html { 
   height:100%; 
 }
+
 body {
   /* 메인 배경 */
   background-color: #121212;
   height:100%;
   widows: 100%;
 }
+
+textarea {
+  resize: none;
+  height: 100px;
+}
+
 .match-parent {
   width: 100%;
   height:100%;
@@ -203,7 +210,7 @@ body {
 .modal-design {
   min-width: 500px;
   width: 70%;
-  height: 90%;
+  height: 80%;
   background-color: #242424;
   color: white;
 }

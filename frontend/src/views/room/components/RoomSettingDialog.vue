@@ -8,16 +8,17 @@
         <div class="modal-body">
           <div class='tabs'>
             <input type='radio' id='r1' name='t' checked>
-            <label for='r1'>설정</label>
-            <div class='content'>설정</div>
+            <label for='r1' class="tab-label">설정</label>
+            <div class='content'>
+              <RoomSettingDialogForm/>
+            </div>
             <input type='radio' id='r2' name='t'>
-            <label for='r2'>카메라</label>
+            <label for='r2' class="tab-label">카메라</label>
             <div class='content'>카메라</div>
             <div id='slider'></div>
           </div>
         </div>
         <div class="modal-footer-m">
-          <!-- <button type="button" class="btn bdcolor-ngreen middle-button" data-bs-dismiss="modal">Close</button> -->
           <button type="button" class="bdcolor-ngreen small-button">확인</button>
         </div>
       </div>
@@ -26,8 +27,12 @@
 </template>
 
 <script>
+import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
 export default {
-
+  name: 'RoomSettingDialog',
+  components: {
+    RoomSettingDialogForm
+  }
 }
 </script>
 
@@ -38,8 +43,17 @@ export default {
   height: 50%;
   min-width: 400px;
 }
+.tab-label {
+  display: inline-block;
+  font-weight: bold;
+  text-align: center;
+  color: #AAA;
+  width: 200px;
+  height: auto;
+  padding: 20px 0px;
+}
 
-label, #slider {
+#slider {
   display: inline-block;
   font-weight: bold;
   text-align: center;
@@ -54,7 +68,7 @@ label:hover {
   cursor: pointer;
 }
 
-.tabs [type=radio] {
+.tabs [name=t] {
   display: none;   
 }
 
@@ -74,19 +88,19 @@ label:hover {
   width: 200px;
 }
 
-[type=radio],#r1:checked ~ #slider {
+[name=t],#r1:checked ~ #slider {
   transform: translate(-400px, 0px);
 }
 
-[type=radio],#r2:checked ~ #slider {
+[name=t],#r2:checked ~ #slider {
   transform: translate(-200px, 0px);
 }
 
-[type=radio]:checked + label {
+[name=t]:checked + label {
   color: white;
 }
 
-[type=radio]:checked + label + .content {
+[name=t]:checked + label + .content {
   display: inline-block;
 }
 </style>
