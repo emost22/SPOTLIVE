@@ -17,7 +17,7 @@ class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
-    
+
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -31,25 +31,6 @@ class UserServiceImplTest {
 
         // then
         verify(userRepository).findUserByAccountEmail(accountEmail);
-    }
-
-    @Test
-    void refreshTokensForExistUserTest() {
-        // given
-        String accountEmail = "kmk130519@naver.com";
-        String accessToken = "someAccessTokenValue";
-        String refreshToken = "someRefreshTokenValue";
-        User user = new User();
-
-        // when
-        when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user); // Mock 객체의 특정 Method 실행시 반환 값 지정
-        UserRes userRes = userService.refreshTokensForExistUser(accountEmail, accessToken, refreshToken);
-
-        // then
-        verify(userRepository).findUserByAccountEmail(accountEmail);
-        verify(userRepository).save(user);
-        assertThat(userRes.getAccessToken()).isEqualTo(accessToken);
-        assertThat(userRes.getRefreshToken()).isEqualTo(refreshToken);
     }
 
     @Test
