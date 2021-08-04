@@ -6,11 +6,8 @@ import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -98,9 +95,30 @@ class AuthServiceImplTest { // Test 작업은 kmk130519@naver.com 유저의 Acce
         String accessToken = user.getAccessToken();
 
         // when
-        int validTokenCode = authService.isValidToken(accessToken);
+        int validTokenCode = authService.isValidToken("bearer " + accessToken);
 
         // then
         assertThat(validTokenCode).isIn(200, 401);
     }
+
+    @Test
+    void logoutTest() {
+        // given
+        String accountEmail = "kmk130519@naver.com";
+        User loginUser = userRepository.findUserByAccountEmail(accountEmail);
+        String accessToken = loginUser.getAccessToken();
+
+        // then
+        authService.logout(UserRes.of(loginUser));
+
+        // when 1
+        User logoutUser = userRepository.findUserByAccountEmail(accountEmail);
+        assertThat(logoutUser.getAccessToken()).isEqualTo("");
+        assertThat(logoutUser.getRefreshToken()).isEqualTo("");
+
+        // when 2
+        int validTokenCode = authService.isValidToken("bearer " + accessToken);
+        assertThat(validTokenCode).isEqualTo(401);
+    }
+
 }
