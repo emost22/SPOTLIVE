@@ -7,12 +7,10 @@ import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.service.AuthService;
 import com.ssafy.spotlive.api.service.ShowInfoService;
 import com.ssafy.spotlive.api.service.UserService;
-import com.ssafy.spotlive.db.entity.ShowInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
@@ -76,7 +74,6 @@ public class ShowInfoController {
             @ApiResponse(code = 500, message = "서버 에러 발생")
     })
     public ResponseEntity<ShowInfoFindByIdGetRes> findShowInfoById(
-            //@ApiIgnore Authentication authentication,
             @PathVariable @ApiParam(value = "조회할 공연 정보의 id", required = true) long id){
         /**
          * @Method Name : findShowInfoById
@@ -89,29 +86,35 @@ public class ShowInfoController {
     }
 
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     @ApiOperation(value = "공연 정보 수정", notes = "공연 id로 해당 공연을 수정한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 404, message = "해당하는 id의 공연정보가 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<Object> updateShowInfo(
-            //@ApiIgnore Authentication authentication,
             @PathVariable @ApiParam(value = "수정할 공연 정보의 id", required = true) long id,
-            @RequestBody @ApiParam(value = "수정할 회의의 정보", required = true) ShowInfoUpdatePatchReq showInfoInsertPReq){
+            @RequestParam(required = false) MultipartFile posterImage,
+            @ApiParam(value = "수정할 회의의 정보", required = true) ShowInfoUpdatePatchReq showInfoUpdatePatchReq){
         /**
          * @Method Name : updateShowInfo
          * @작성자 : 금아현
          * @Method 설명 : 공연 id로 해당 공연을 수정한다.
          */
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        Boolean isSuccess = showInfoService.updateShowInfo(id, showInfoUpdatePatchReq, posterImage);
+        if(isSuccess) return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "공연 정보 삭제", notes = "공연 id로 해당 공연을 삭제한다.")
     @ApiResponses({
             @ApiResponse(code = 204, message = "삭제 성공"),
-            @ApiResponse(code = 404, message = "id에 해당하는 데이터가 없음"),
+            @ApiResponse(code = 404, message = "해당하는 id의 공연정보가 없음"),
             @ApiResponse(code = 500, message = "서버 에러 발생")
     })
     public ResponseEntity<Object> deleteShowInfoById(
-            //@ApiIgnore Authentication authentication,
             @PathVariable @ApiParam(value = "삭제할 공연 정보의 id", required = true) long id){
         /**
          * @Method Name : deleteShowInfo
