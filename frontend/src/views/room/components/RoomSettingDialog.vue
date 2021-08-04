@@ -122,4 +122,12 @@ label:hover {
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+
+.btn-close {
+  background-image: url('~@/assets/icon-x.png');
+  opacity: 1;
+}
+.btn-close:hover {
+  background-image: url('~@/assets/icon-x.png');
+}
 </style>
