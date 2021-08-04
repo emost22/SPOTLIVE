@@ -93,7 +93,7 @@ public class ShowInfoController {
             @ApiResponse(code = 404, message = "해당하는 id의 공연정보가 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<Object> updateShowInfo(
+    public ResponseEntity<Object> updateShowInfoById(
             @PathVariable @ApiParam(value = "수정할 공연 정보의 id", required = true) long id,
             @RequestParam(required = false) MultipartFile posterImage,
             @ApiParam(value = "수정할 회의의 정보", required = true) ShowInfoUpdatePatchReq showInfoUpdatePatchReq){
@@ -102,7 +102,7 @@ public class ShowInfoController {
          * @작성자 : 금아현
          * @Method 설명 : 공연 id로 해당 공연을 수정한다.
          */
-        Boolean isSuccess = showInfoService.updateShowInfo(id, showInfoUpdatePatchReq, posterImage);
+        Boolean isSuccess = showInfoService.updateShowInfoById(id, showInfoUpdatePatchReq, posterImage);
         if(isSuccess) return new ResponseEntity<>(HttpStatus.CREATED);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
