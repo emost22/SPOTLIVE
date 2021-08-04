@@ -92,6 +92,25 @@ public class MainServiceImpl implements MainService {
         return videoGetRes;
     }
 
+    @Override
+    public VideoGetRes findAllFollowVideoByCategoryId(int page, int size, Long categoryId, String accountEmail){
+        /**
+         * @Method Name : findAllFollowVideoByCategoryId
+         * @작성자 : 강용수
+         * @Method 설명 : 자신이 팔로우한 유저의 Video를 조회하는 메소드
+         */
+        List<String> accountEmailList = userRepository.findUserByAccountEmail(accountEmail).getFanList().stream()
+                .map(artist -> followToString(artist)).collect(Collectors.toList());
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        if (categoryId == null)
+            return VideoGetRes.of(videoRepository.findVideosByUser_AccountEmailIn(pageRequest, accountEmailList), pageRequest, sort);
+        else
+            return VideoGetRes.of(videoRepository.findVideosByCategory_CategoryIdAndUser_AccountEmailIn(pageRequest, categoryId, accountEmailList), pageRequest, sort);
+    }
+
     public String followToString(Follow follow){
         /**
          * @Method Name : followToString
