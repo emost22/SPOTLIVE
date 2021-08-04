@@ -14,7 +14,9 @@
             </div>
             <input type='radio' id='r2' name='t'>
             <label for='r2' class="tab-label">카메라</label>
-            <div class='content'>카메라</div>
+            <div class='content'>
+              <RoomSettingDialogCameraForm/>
+            </div>
             <div id='slider'></div>
           </div>
         </div>
@@ -28,10 +30,12 @@
 
 <script>
 import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
+import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
 export default {
   name: 'RoomSettingDialog',
   components: {
-    RoomSettingDialogForm
+    RoomSettingDialogForm,
+    RoomSettingDialogCameraForm
   }
 }
 </script>
@@ -102,5 +106,20 @@ label:hover {
 
 [name=t]:checked + label + .content {
   display: inline-block;
+}
+
+.custon-select-control {
+  background-color: #595959;
+  padding: .375rem 2.25rem .375rem .75rem;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 0px;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 </style>
