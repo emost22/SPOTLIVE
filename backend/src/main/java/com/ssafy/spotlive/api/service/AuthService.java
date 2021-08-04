@@ -4,7 +4,6 @@ import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
 import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
-import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 
@@ -13,8 +12,13 @@ import java.util.HashMap;
  * @작성자 : 김민권
  * @Class 설명 : User 관련 비즈니스 로직을 처리하는 Service의 Interface
  */
-public interface UserService {
-    UserRes insertUser(User newUser);
-    UserRes updateUser(UserUpdatePatchReq userUpdatePatchReq);
+public interface AuthService {
 
+    String getKakaoLoginUrl();
+    HashMap<String, String> getKakaoTokens(String code);
+    KakaoUserRes getKakaoUserInfo(String tokenType, String accessToken);
+    UserRes findUserByAccountEmail(String accountEmail);
+    UserRes refreshTokensForExistUser(String email, String accessToken, String refreshToken);
+    String accessTokenUpdate(String accountEmail);
+    int isValidToken(String accessToken);
 }
