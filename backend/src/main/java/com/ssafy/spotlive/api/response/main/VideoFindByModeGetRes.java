@@ -1,13 +1,16 @@
 package com.ssafy.spotlive.api.response.main;
 
+import com.ssafy.spotlive.db.entity.Video;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @FileName : VideoFindByModeGetRes
@@ -31,4 +34,25 @@ public class VideoFindByModeGetRes {
     Sort sort;
     long totalElements; // 조회된 데이터의 전체 갯수
     int totalPages; // 전체 페이지의 갯수 (ex. 조회된 데이터가 10개, 페이지 당 출력 갯수가 3개 -> totalPages = 4)
+
+    public static VideoFindByModeGetRes of(Page<Video> pageVideo, Pageable pageable, Sort sort, String videoLength){
+        /**
+         * @Method Name : of
+         * @작성자 : 강용수
+         * @Method 설명 : 페이지화된 pageVideo, Pageable 객체, Sort 객체를 받아 VideoFindByModeGetResponseDto로 변환하는 함수
+         */
+        return VideoFindByModeGetRes.builder()
+                .videoList(pageVideo.stream().map(video -> VideoFindMainVideoRes.of(video, videoLength)).collect(Collectors.toList()))
+                .empty(pageVideo.isEmpty())
+                .first(pageVideo.isFirst())
+                .last(pageVideo.isLast())
+                .number(pageVideo.getNumber())
+                .numberOfElements(pageVideo.getNumberOfElements())
+                .pageable(pageable)
+                .size(pageVideo.getSize())
+                .sort(sort)
+                .totalElements(pageVideo.getTotalElements())
+                .totalPages(pageVideo.getTotalPages())
+                .build();
+    }
 }
