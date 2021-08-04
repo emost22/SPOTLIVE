@@ -19,16 +19,16 @@
         </div>        
         <ul class="navbar-nav">
           <!-- 송출자가 라이브인 경우 스트리밍 버튼 제거 -->
-          <li class="nav-item">
+          <li class="nav-item header-item">
             <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png" class="iconimg"></router-link></div>
           </li>
-          <li class="nav-item">
+          <li class="nav-item header-item">
             <div><router-link class="nav-link fw-bold" :to="{ name: 'Profile' }"><img src="~@/assets/icon-profile.png" class="iconimg"></router-link></div>
           </li>
-          <li class="nav-item">
+          <li class="nav-item header-item">
             <div><img src="~@/assets/icon-alarm.png" class="iconimg"></div>
           </li>
-          <li class="nav-item">
+          <li class="nav-item header-item">
             <div><router-link class="nav-link" @click.native="logout" :to="{ name: 'Login' }"><img src="~@/assets/icon-logout.png" class="iconimg"></router-link></div>
           </li>
         </ul>
@@ -67,9 +67,9 @@ export default ({
     }
   },
   computed: {
-    isLogin: function () {
-      return this.$store.getters.isLogin
-    },
+    // isLogin: function () {
+    //   return this.$store.getters.isLogin
+    // },
   },
   created: function () {
   },
@@ -101,10 +101,13 @@ export default ({
   width: 75px;
   /* font-weight: bold; */
 }
-.nav-item {
+.header-item {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
 }
 .iconimg {
   width: 35px;

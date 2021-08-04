@@ -3,7 +3,7 @@
     <div v-if="!isLogin">
       <Login/>
     </div>
-    <div v-else id="nav" class="sticky-top">
+    <div v-else class="sticky-top">
       <MainHeader/>
       <router-view></router-view>
     </div>
@@ -46,10 +46,8 @@ export default ({
     this.$router.push({ name: "Main" })
   },
 })
-
 </script>
 
->>>>>>> 83fa496 (🔧Add MainHeader.vue navbar)
 <style>
 body {
   /* 메인 배경 */
@@ -148,10 +146,6 @@ body {
   box-shadow: 
     0 0 9px #C752FE,
     0 0 12px #C752FE;
-}
-#nav {
-  height: 45px;
-  display: block;
 }
 #view {
   margin-top: 80px;

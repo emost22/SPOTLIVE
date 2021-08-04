@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <!-- 타인의 공연 상세 정보 -->
+  </div>
 </template>
 
 <script>
