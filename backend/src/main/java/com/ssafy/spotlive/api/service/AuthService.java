@@ -17,7 +17,6 @@ public interface AuthService {
     String getKakaoLoginUrl();
     HashMap<String, String> getKakaoTokens(String code);
     KakaoUserRes getKakaoUserInfo(String tokenType, String accessToken);
-    UserRes findUserByAccountEmail(String accountEmail);
     UserRes refreshTokensForExistUser(String email, String accessToken, String refreshToken);
     String accessTokenUpdate(String accountEmail);
     int isValidToken(String accessToken);

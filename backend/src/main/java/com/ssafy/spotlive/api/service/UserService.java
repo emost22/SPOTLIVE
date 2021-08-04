@@ -16,5 +16,6 @@ import java.util.HashMap;
 public interface UserService {
     UserRes insertUser(User newUser);
     UserRes updateUser(UserUpdatePatchReq userUpdatePatchReq);
+    UserRes findUserByAccountEmail(String accountEmail);
 
 }

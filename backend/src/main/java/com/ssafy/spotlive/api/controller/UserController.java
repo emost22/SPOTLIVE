@@ -62,7 +62,7 @@ public class UserController {
         KakaoUserRes kakaoUserRes = authService.getKakaoUserInfo(kakaoTokens.get("token_type"), kakaoTokens.get("access_token"));
 
         // 3. UserInfo의 내용이 회원 DB에 존재하는가?
-        UserRes userResForCheck = authService.findUserByAccountEmail(kakaoUserRes.getKakao_account().getEmail());
+        UserRes userResForCheck = userService.findUserByAccountEmail(kakaoUserRes.getKakao_account().getEmail());
 
         UserRes userRes;
         if(userResForCheck != null) {

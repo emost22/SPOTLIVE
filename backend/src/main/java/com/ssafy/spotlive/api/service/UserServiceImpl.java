@@ -31,6 +31,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+
+    @Override
+    public UserRes findUserByAccountEmail(String accountEmail) {
+        /**
+         * @Method Name : findUserByAccountEmail
+         * @작성자 : 김민권
+         * @Method 설명 : 발급된 token을 통해 kakao user 정보를 반환한다.
+         */
+
+        User user = userRepository.findUserByAccountEmail(accountEmail);
+        return user == null ? null : UserRes.of(userRepository.findUserByAccountEmail(accountEmail));
+    }
+
     @Override
     public UserRes insertUser(User newUser) {
         /**
