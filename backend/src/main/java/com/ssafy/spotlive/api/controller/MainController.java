@@ -50,4 +50,28 @@ public class MainController {
         else
             return new ResponseEntity<>(videoFindByModeGetRes, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "소통 Video 조회", notes = "mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 검색된 소통 Video를 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    @GetMapping("/talk")
+    public ResponseEntity<VideoFindByModeGetRes> findAllTalkVideo(
+            @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam(name = "categoryId", required = false) Long categoryId){
+        /**
+         * @Method Name : findAllTalkVideo
+         * @작성자 : 강용수
+         * @Method 설명 : mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 소통 Video를 검색하는 메소드
+         */
+        VideoFindByModeGetRes videoFindByModeGetRes = mainService.findAllVideoByModeAndCategoryId(page, size, categoryId, "소통");
+
+        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoFindByModeGetRes.getVideoResList();
+
+        if (videoFindMainVideoResList == null || videoFindMainVideoResList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else
+            return new ResponseEntity<>(videoFindByModeGetRes, HttpStatus.OK);
+    }
 }
