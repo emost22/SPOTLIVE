@@ -1,10 +1,12 @@
 package com.ssafy.spotlive.db.repository;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
+import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import static org.assertj.core.api.Assertions.*;
 
 import com.ssafy.spotlive.db.entity.Video;
+import io.swagger.annotations.ApiModelProperty;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,22 +32,51 @@ public class VideoRepositoryTest {
     void 스트리밍시작_영상저장테스트() {
 
         // 테스트 객체 생성 and 셋팅
+        String videoTitle = "뮤지컬 [캣츠]";
+        String videoDescription = "캣츠 단돈 5천원!";
+        String mode = "공연";
+        Long categoryId = 2L;
+        Long showInfoId = 6L;
+        String accountEmail = "sqk8657@naver.com";
+        String sessionId = "12341";
+        String thumbnailUrl = "penguin.png";
+
+
         VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
-        videoInsertPostReq.setVideoTitle("뮤지컬 [캣츠]");
-        videoInsertPostReq.setVideoDescription("캣츠 단돈 5천원!");
-        videoInsertPostReq.setMode("공연");
-        videoInsertPostReq.setCategoryId(2L);
-        videoInsertPostReq.setShowInfoId(6L);
-        videoInsertPostReq.setAccountEmail("sqk8657@naver.com");
-        videoInsertPostReq.setSessionId("12341");
+        videoInsertPostReq.setVideoTitle(videoTitle);
+        videoInsertPostReq.setVideoDescription(videoDescription);
+        videoInsertPostReq.setMode(mode);
+        videoInsertPostReq.setCategoryId(categoryId);
+        videoInsertPostReq.setShowInfoId(showInfoId);
+        videoInsertPostReq.setAccountEmail(accountEmail);
+        videoInsertPostReq.setSessionId(sessionId);
 
         // 위의 객체를 저장
         VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository
-                .save(videoInsertPostReq.toVideo("penguin.png")));
+                .save(videoInsertPostReq.toVideo(thumbnailUrl)));
 
         // 넣은 값을 꺼내 제대로 들어갔는지 확인
         Optional<Video> videoById = videoRepository.findById(videoInsertPostRes.getVideoId());
-        assertThat(videoById.get().getVideoTitle()).isEqualTo("뮤지컬 [캣츠]");
+        assertThat(videoById.get().getVideoTitle()).isEqualTo(videoTitle);
+    }
+
+    @Test
+    void 영상수정테스트(){
+        //id에 해당하는 비디오 정보를 수정
+        Long id = 6L;
+        String videoTitle = "뮤지컬 [갯츠]";
+        String videoDescription = "캣츠에서 갯츠로";
+        Long categoryId = 6L;
+        VideoUpdateByIdPatchReq videoUpdateByIdPatchReq = new VideoUpdateByIdPatchReq();
+        videoUpdateByIdPatchReq.setCategoryId(categoryId);
+        videoUpdateByIdPatchReq.setVideoTitle(videoTitle);
+        videoUpdateByIdPatchReq.setVideoDescription(videoDescription);
+
+        // 위의 객체를 수정(저장)
+        videoRepository.save(videoUpdateByIdPatchReq.toVideo(id));
+        // 저장 된 정보 확인
+        Optional<Video> videoById = videoRepository.findById(id);
+        assertThat(videoById.get().getVideoTitle()).isEqualTo(videoTitle);
     }
 
     @Test

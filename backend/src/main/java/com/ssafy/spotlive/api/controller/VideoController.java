@@ -67,24 +67,31 @@ public class VideoController {
         return new ResponseEntity<>(videoFindByIdGetRes, HttpStatus.OK);
     }
 
-//    @PatchMapping("/{videoId}")
-//    @ApiOperation(value = "스트리밍 정보 수정", notes = "videoId와 수정정보를 요청받아 해당 영상에 대한 정보를 응답한다.")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "성공"),
-//            @ApiResponse(code = 400, message = "수정 실패"),
-//            @ApiResponse(code = 500, message = "서버 오류")
-//    })
-//    public ResponseEntity<?> updateVideoById(
-////            @ApiIgnore Authentication authentication,
-//            @RequestParam MultipartFile thumbnail, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
-//        /**
-//         * @Method Name : updateVideoById
-//         * @작성자 : 권영린
-//         * @Method 설명 : 비디오를 수정한다.
-//         */
-//        return ResponseEntity.status(200).body(null);
-//    }
-//
+    @PatchMapping("/{videoId}")
+    @ApiOperation(value = "스트리밍 정보 수정", notes = "videoId와 수정정보를 요청받아 해당 영상에 대한 정보를 응답한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "수정 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateVideoById(
+            @PathVariable long videoId,
+            @RequestParam(name = "thumbnailImage", required = false) MultipartFile thumbnailImage,
+            VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
+        /**
+         * @Method Name : updateVideoById
+         * @작성자 : 권영린
+         * @Method 설명 : 비디오를 수정한다.
+         */
+
+        Boolean isSuccess = videoService.updateVideoById(videoId, thumbnailImage, videoUpdateByIdPatchReq);
+        if(isSuccess)
+            return new ResponseEntity<>(HttpStatus.OK);
+        else
+            return new ResponseEntity<String>("없는 영상을 수정하려합니다.", HttpStatus.BAD_REQUEST);
+
+    }
+
 //    @PatchMapping("/close/{videoId}")
 //    @ApiOperation(value = "스트리밍 종료", notes = "videoId로 해당 스트리밍의 end_time을 DB에 기록한다.")
 //    @ApiResponses({
@@ -101,7 +108,7 @@ public class VideoController {
 //         */
 //        return ResponseEntity.status(200).body(null);
 //    }
-//
+////
 //    @GetMapping("/list/{userId}")
 //    @ApiOperation(value = "특정 유저 영상 리스트 조회", notes = "userId(email 아님)를 요청받아 해당 유저의 저장된 영상리스트를 응답한다.")
 //    @ApiResponses({
