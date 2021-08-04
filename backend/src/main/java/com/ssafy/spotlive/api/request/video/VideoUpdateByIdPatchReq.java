@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.request.video;
 
+import com.ssafy.spotlive.db.entity.Category;
 import com.ssafy.spotlive.db.entity.Video;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,16 +25,20 @@ public class VideoUpdateByIdPatchReq {
     @ApiModelProperty(name="categoryId : 카테고리 ID", example="2")
     Long categoryId;
 
-    public Video toVideo(String thumbnailUrl) {
+    public Video toVideo(Long id) {
         /**
          * @Method Name : toVideo
          * @작성자 : 권영린
          * @Method 설명 : VideoUpdateByIdPatchReqDto를 Entity로 변환하는 메소드
          */
+        Category category = new Category();
+        category.setCategoryId(this.categoryId);
+
         Video video = new Video();
+        video.setVideoId(id);
         video.setVideoTitle(this.videoTitle);
         video.setVideoDescription(this.videoDescription);
-        video.getCategory().setCategoryId(this.categoryId);
+        video.setCategory(category);
 
         return video;
     }
