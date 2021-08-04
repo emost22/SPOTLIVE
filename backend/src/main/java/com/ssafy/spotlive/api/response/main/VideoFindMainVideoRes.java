@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -25,7 +26,7 @@ public class VideoFindMainVideoRes {
     String mode;
     String thumbnailUrl;
     String videoUrl;
-    String videoLength;
+    Long videoLength;
     Boolean isLive;
     Long hit;
     Long hitLive;
@@ -34,12 +35,20 @@ public class VideoFindMainVideoRes {
     LocalDateTime startTime;
     String categoryName;
 
-    public static VideoFindMainVideoRes of(Video video, String videoLength){
+    public static VideoFindMainVideoRes of(Video video){
         /**
          * @Method Name : of
          * @작성자 : 강용수
          * @Method 설명 : Video Entity와 videoLength를 VideoFindMainVideoResponseDto로 변환하는 메소드
          */
+        Duration duration = null;
+        Long videoLength = null;
+
+        if(video.getEndTime() != null){
+            duration = Duration.between(video.getEndTime(), video.getStartTime());
+            videoLength = duration.getSeconds();
+        }
+
         return VideoFindMainVideoRes.builder()
                 .videoId(video.getVideoId())
                 .videoTitle(video.getVideoTitle())
