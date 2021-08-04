@@ -37,11 +37,13 @@ class ShowInfoServiceTest {
     @Test
     void insertShowInfoTest() {
         // given
-        ShowInfoInsertPostReq showInfoInsertPostReq = new ShowInfoInsertPostReq();
         TimetableInsertPostReq timetableInsertPostReq1 = new TimetableInsertPostReq();
         TimetableInsertPostReq timetableInsertPostReq2 = new TimetableInsertPostReq();
         TimetableInsertPostReq timetableInsertPostReq3 = new TimetableInsertPostReq();
+
+        ShowInfoInsertPostReq showInfoInsertPostReq = new ShowInfoInsertPostReq();
         showInfoInsertPostReq.setTimetableInsertPostReq(new ArrayList<>());
+
         showInfoInsertPostReq.getTimetableInsertPostReq().add(timetableInsertPostReq1);
         showInfoInsertPostReq.getTimetableInsertPostReq().add(timetableInsertPostReq2);
         showInfoInsertPostReq.getTimetableInsertPostReq().add(timetableInsertPostReq3);
@@ -50,19 +52,16 @@ class ShowInfoServiceTest {
         ShowInfo showInfo = new ShowInfo();
         showInfo.setShowInfoId(1L);
 
-        doReturn(showInfo).when(showInfoRepository).save(showInfoInsertPostReq.toShowInfo());
+        doReturn(showInfo).when(showInfoRepository).save(anyObject());
         doReturn(showInfo).when(showInfoRepository).getById(1L);
         doReturn("filename.png").when(multipartFile).getOriginalFilename();
 
-//        when(showInfoRepository.save(showInfoInsertPostReq.toShowInfo())).thenReturn(showInfo);
-//        when(showInfoRepository.getById(1L)).thenReturn(showInfo);
-//        when(multipartFile.getOriginalFilename()).thenReturn("filename.png");
         showInfoService.insertShowInfo(showInfoInsertPostReq, multipartFile);
 
         // then
-        verify(showInfoRepository).save(showInfoInsertPostReq.toShowInfo());
+        verify(showInfoRepository).save(anyObject());
         verify(showInfoRepository).getById(1L);
-        verify(timetableRepository).save(timetableInsertPostReq1.toTimetable(showInfo));
+        verify(timetableRepository, times(3)).save(anyObject());
     }
 
     @Test

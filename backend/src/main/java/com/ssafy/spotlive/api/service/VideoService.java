@@ -14,5 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface VideoService {
     VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage);
     VideoFindByIdGetRes findVideoById(Long id);
-    public Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq);
+    Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq);
+    Boolean updateVideoEndTimeById(Long videoId);
 }
