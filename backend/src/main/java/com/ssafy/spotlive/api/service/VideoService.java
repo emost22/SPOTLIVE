@@ -2,9 +2,12 @@ package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
+import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @FileName : VideoService
@@ -16,4 +19,5 @@ public interface VideoService {
     VideoFindByIdGetRes findVideoById(Long id);
     Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq);
     Boolean updateVideoEndTimeById(Long videoId);
+    List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail);
 }

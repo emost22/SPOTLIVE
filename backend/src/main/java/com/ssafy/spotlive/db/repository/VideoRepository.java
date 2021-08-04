@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @FileName : VideoRepository
  * @작성자 : 권영린
@@ -40,4 +42,6 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      * @Method 설명 : Video를 카테고리 id 기준과 조회수(다시보기) / 시청자(라이브) 순으로 검색하는 메소드
      */
     Page<Video> findVideosByIsLiveAndCategory_CategoryId(Pageable pageable, Boolean isLive, Long categoryId);
+
+    List<Video> findVideosByUserAccountEmail(String accountEmail);
 }
