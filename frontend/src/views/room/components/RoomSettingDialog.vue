@@ -8,14 +8,11 @@
         <div class="modal-body">
           <div class='tabs'>
             <input type='radio' id='r1' name='t' checked>
-            <label for='r1'>Tab</label>
-            <div class='content'>Content</div>
+            <label for='r1'>설정</label>
+            <div class='content'>설정</div>
             <input type='radio' id='r2' name='t'>
-            <label for='r2'>Tib</label>
-            <div class='content'>Article</div>
-            <input type='radio' id='r3' name='t'>
-            <label for='r3'>Tub</label>
-            <div class='content'>Stuff</div>
+            <label for='r2'>카메라</label>
+            <div class='content'>카메라</div>
             <div id='slider'></div>
           </div>
         </div>
@@ -39,7 +36,7 @@ export default {
   top: 51%;
   left: 50%;
   height: 50%;
-  min-width: 450px;
+  min-width: 400px;
 }
 
 label, #slider {
@@ -47,7 +44,7 @@ label, #slider {
   font-weight: bold;
   text-align: center;
   color: #AAA;
-  width: 150px;
+  width: 200px;
   height: auto;
   padding: 20px 0px;
 }
@@ -71,22 +68,18 @@ label:hover {
 #slider {
   background-color: transparent;
   position: absolute;
-  border-bottom: 3px solid white;
-  margin: 7px 10px;
-  transition: transform 0.5s;
-  width: 130px;
+  border-bottom: 3px solid #C752FE;
+  margin: 10px 0px;
+  transition: transform 0.3s;
+  width: 200px;
 }
 
 [type=radio],#r1:checked ~ #slider {
-  transform: translate(-450px, 0px);
+  transform: translate(-400px, 0px);
 }
 
 [type=radio],#r2:checked ~ #slider {
-  transform: translate(-300px, 0px);
-}
-
-[type=radio],#r3:checked ~ #slider {
-  transform: translate(-150px, 0px);
+  transform: translate(-200px, 0px);
 }
 
 [type=radio]:checked + label {
