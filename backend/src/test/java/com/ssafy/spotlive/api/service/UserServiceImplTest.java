@@ -65,9 +65,9 @@ class UserServiceImplTest {
         String accountEmail = "kmk130519@naver.com";
         User user = new User();
         user.setAccountEmail(accountEmail);
-        UserUpdatePatchReq userUpdatePatchReq = UserUpdatePatchReq.builder()
-                .accountEmail(user.getAccountEmail())
-                .build();
+
+        UserUpdatePatchReq userUpdatePatchReq = new UserUpdatePatchReq();
+        userUpdatePatchReq.setAccountEmail(user.getAccountEmail());
 
         // when
         when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user);
