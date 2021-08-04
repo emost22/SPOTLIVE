@@ -1,11 +1,9 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
-import com.ssafy.spotlive.api.request.timetable.TimetableInsertPostReq;
+import com.ssafy.spotlive.api.request.showInfo.ShowInfoUpdatePatchReq;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
-import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
 import com.ssafy.spotlive.db.entity.ShowInfo;
-import com.ssafy.spotlive.db.entity.Timetable;
 import com.ssafy.spotlive.db.repository.ShowInfoRepository;
 import com.ssafy.spotlive.db.repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +23,7 @@ import java.util.UUID;
  * @Class 설명 : 공연 정보 관련 비즈니스 로직처리를 위한 서비스 구현 정의
  */
 @Service
-public class ShowInfoServiceImpl implements ShowInfoService{
+public class ShowInfoServiceImpl implements ShowInfoService {
 
     @Autowired
     ShowInfoRepository showInfoRepository;
@@ -48,9 +46,9 @@ public class ShowInfoServiceImpl implements ShowInfoService{
             String rootPath = file.getAbsolutePath().split("backend")[0];
             String savePath = rootPath + "frontend" + separator + "src" + separator + "assets" + separator + "thumbnails" + separator + today;
             if (!new File(savePath).exists()) {
-                try{
+                try {
                     new File(savePath).mkdirs();
-                } catch(Exception e){
+                } catch (Exception e) {
                     e.getStackTrace();
                 }
             }
@@ -59,7 +57,7 @@ public class ShowInfoServiceImpl implements ShowInfoService{
             String filePath = savePath + separator + saveFileName;
             posterImage.transferTo(new File(filePath));
             showInfoInsertPostReq.setPosterUrl(filePath);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Long id = showInfoRepository.save(showInfoInsertPostReq.toShowInfo()).getShowInfoId();
@@ -86,5 +84,45 @@ public class ShowInfoServiceImpl implements ShowInfoService{
          * @Method 설명 : 공연정보를 id로 삭제
          */
         return showInfoRepository.deleteShowInfoByShowInfoId(id);
+    }
+
+    @Override
+    public Boolean updateShowInfoById(long id, ShowInfoUpdatePatchReq showInfoUpdatePatchReq, MultipartFile posterImage) {
+        /**
+         * @Method Name : updateShowInfo
+         * @작성자 : 금아현
+         * @Method 설명 : 공연정보를 id로 수정
+         */
+        Optional<ShowInfo> optionalShowInfo = showInfoRepository.findShowInfoByShowInfoId(id);
+        ShowInfo showInfo = null;
+        if (optionalShowInfo.isPresent()) showInfo = optionalShowInfo.get();
+        else return Boolean.FALSE;
+
+        if (!posterImage.isEmpty()) {
+            String posterUrl = showInfo.getPosterUrl();
+            File file = new File(posterUrl);
+            file.delete();
+            try {
+                posterImage.transferTo(new File(posterUrl));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (showInfoUpdatePatchReq.getShowInfoTitle() != null)
+            showInfo.setShowInfoTitle(showInfoUpdatePatchReq.getShowInfoTitle());
+        if (showInfoUpdatePatchReq.getShowInfoDescription() != null)
+            showInfo.setShowInfoDescription(showInfoUpdatePatchReq.getShowInfoDescription());
+        if (showInfoUpdatePatchReq.getPrice() != null)
+            showInfo.setPrice(showInfoUpdatePatchReq.getPrice());
+        if (showInfoUpdatePatchReq.getRunningTime() != 0)
+            showInfo.setRunningTime(showInfoUpdatePatchReq.getRunningTime());
+
+        if (showInfoUpdatePatchReq.getTimetableInsertPostReq() != null) {
+            ShowInfo finalShowInfo = showInfo;
+            timetableRepository.deleteAllByShowInfo_ShowInfoId(id);
+            showInfoUpdatePatchReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq.toTimetable(finalShowInfo)));
+        }
+        return Boolean.TRUE;
     }
 }
