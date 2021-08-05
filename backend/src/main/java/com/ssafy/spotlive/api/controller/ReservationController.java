@@ -59,4 +59,36 @@ public class ReservationController {
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{timetableId}")
+    @ApiOperation(value = "예약 정보 삭제", notes = "timetable id로 예약 정보를 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "삭제 성공"),
+            @ApiResponse(code = 404, message = "해당하는 id의 예약정보가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    public ResponseEntity<Object> deleteReservationById(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @PathVariable @ApiParam(value = "삭제할 예약 정보의 timetable id", required = true) long timetableId){
+        /**
+         * @Method Name : deleteShowInfo
+         * @작성자 : 금아현
+         * @Method 설명 : timetableId와 accountEmail로 해당 예약을 삭제한다.
+         */
+        int validTokenStatusValue = authService.isValidToken(accessToken);
+        String accountEmail;
+        if(validTokenStatusValue == 200){
+            String[] splitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
+            accountEmail = userRes.getAccountEmail();
+        }else if(validTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Long exist = reservationService.deleteReservationById(timetableId, accountEmail);
+        if(exist == 1) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
