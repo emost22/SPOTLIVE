@@ -21,5 +21,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Reserv
      */
     @Transactional
     Long deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(Long timetable_timetableId, String user_accountEmail);
+
+    /**
+     * @Method Name : existsByTimetable_TimetableIdAndUser_AccountEmail
+     * @작성자 : 금아현
+     * @Method 설명 : reservation의 id로 예약 여부 확인
+     */
     Boolean existsByTimetable_TimetableIdAndUser_AccountEmail(Long timetable_timetableId, String user_accountEmail);
 }
