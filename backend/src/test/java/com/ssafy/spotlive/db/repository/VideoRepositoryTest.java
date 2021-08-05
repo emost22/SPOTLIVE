@@ -227,14 +227,18 @@ public class VideoRepositoryTest {
     @Test
     void findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(){
         // given
+        int page = 0;
+        int size = 3;
         Long categoryId = 6L;
         String videoTitle = "1";
         String videoDescription = "1";
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
-        List<Video> videoList = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(categoryId, videoTitle, videoDescription).orElse(null);
+        Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, videoTitle, videoDescription);
 
         // then
-        assertThat(videoList.size()).isEqualTo(0);
+        assertThat(pageVideo.getTotalElements()).isEqualTo(0);
     }
 }
