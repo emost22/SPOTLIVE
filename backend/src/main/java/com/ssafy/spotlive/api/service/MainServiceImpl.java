@@ -101,8 +101,17 @@ public class MainServiceImpl implements MainService {
 
                 if (hit1 < hit2)
                     return 1;
-                else if (hit1 == hit2)
-                    return 0;
+                else if (hit1 == hit2){
+                    long videoId1 = v1.getVideoId();
+                    long videoId2 = v2.getVideoId();
+
+                    if (videoId1 < videoId2)
+                        return 1;
+                    else if (videoId1 == videoId2)
+                        return 0;
+                    else
+                        return -1;
+                }
                 else
                     return -1;
             }
