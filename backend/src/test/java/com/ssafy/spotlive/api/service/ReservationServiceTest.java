@@ -46,4 +46,13 @@ class ReservationServiceTest {
         verify(timetableRepository).findById(timetableId);
 //        verify(reservationRepository).save(reservation);
     }
+
+    @Test
+    void deleteReservationByIdTest() {
+
+        long timetableId = -1L;
+        String accountEmail = "none";
+        reservationService.deleteReservationById(timetableId, accountEmail);
+        verify(reservationRepository).deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail);
+    }
 }
