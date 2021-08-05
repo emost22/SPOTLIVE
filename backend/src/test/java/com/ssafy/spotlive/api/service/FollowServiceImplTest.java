@@ -68,5 +68,15 @@ class FollowServiceImplTest {
         followsByFanAccountEmail.ifPresent(follows -> assertThat(follows.size()).isEqualTo(3));
     }
 
+    @Test
+    void 팔로워리스트() {
+        // 데이터 셋팅
+        String fanEmail = "sqk8657@naver.com";
+
+        // 아티스트 아이디로 자신을 팔로우 하는 사람 리스트 가져옴
+        Optional<List<Follow>> followsByArtistAccountEmail = followRepository.findFollowsByArtistAccountEmail(fanEmail);
+
+        // 팔로우하는 사람이 현재 기준 3명이면 통과
+        followsByArtistAccountEmail.ifPresent(follows -> assertThat(follows.size()).isEqualTo(3));
     }
 }
