@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @FileName : VideoRepository
@@ -63,4 +64,11 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      * @Method 설명 : 이메일로 해당 유저의 Video를 검색하는 메소드
      */
     List<Video> findVideosByUserAccountEmail(String accountEmail);
+
+    /**
+     * @Method Name : findVideosByMode
+     * @작성자 : 강용수
+     * @Method 설명 : mode(홍보 / 소통 / 공연)를 기준으로 Video를 검색하는 메소드
+     */
+    Optional<List<Video>> findVideosByMode(String mode);
 }
