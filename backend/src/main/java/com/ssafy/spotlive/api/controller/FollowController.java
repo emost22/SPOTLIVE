@@ -42,23 +42,26 @@ public class FollowController {
     })
     @PostMapping("/follow/{artistEmail}")
     public ResponseEntity<?> followArtist(
-//            @ApiIgnore @RequestHeader("Authorization") String accessToken,
-            @RequestParam String fanEmail,
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @PathVariable String artistEmail){
-//        int vaildTokenStatusValue = authService.isValidToken(accessToken);
-//
-//        if(vaildTokenStatusValue == 200) {
-//            String[] spitToken = accessToken.split(" ");
-//            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+        /**
+         * @Method Name : followArtist
+         * @작성자 : 권영린
+         * @Method 설명 : 팔로우버튼 클릭 시 디비에 fan, artist 쌍으로 추가된다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
 
-//            followService.insertFollowByAccountEmail(artistEmail, userRes.getAccountEmail());
-            followService.insertFollowByAccountEmail(artistEmail, fanEmail);
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+
+            followService.insertFollowByAccountEmail(artistEmail, userRes.getAccountEmail());
             return new ResponseEntity<>(HttpStatus.CREATED);
-//        } else if(vaildTokenStatusValue == 401) {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ApiOperation(value = "언팔로우", notes = "언팔로우 버튼 클릭시 해당유저를 언팔로우하는 기능 수행 | 임시로 토큰 말고 그냥 자기 이메일 입력으로 만들어놓음")
@@ -68,8 +71,7 @@ public class FollowController {
     })
     @DeleteMapping("/follow/{artistEmail}")
     public ResponseEntity<?> unfollowArtist(
-//            @ApiIgnore @RequestHeader("Authorization") String accessToken,
-            @RequestParam String fanEmail,
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @PathVariable String artistEmail){
         /**
          * @Method Name : unfollowArtist
@@ -77,20 +79,19 @@ public class FollowController {
          * @Method 설명 : 이미 팔로우 되어있는 아티스트의 경우 언팔로우 버튼이 활성화 되어있는데, 그 버튼 클릭
          *                하면 팔로우 테이블에서 삭제를 한다.
          */
-//        int vaildTokenStatusValue = authService.isValidToken(accessToken);
-//
-//        if(vaildTokenStatusValue == 200) {
-//            String[] spitToken = accessToken.split(" ");
-//            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
 
-//            followService.insertFollowByAccountEmail(artistEmail, userRes.getAccountEmail());
-        followService.deleteFollowByAccountEmail(artistEmail, fanEmail);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } else if(vaildTokenStatusValue == 401) {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+
+            followService.insertFollowByAccountEmail(artistEmail, userRes.getAccountEmail());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ApiOperation(value = "팬이 팔로우하는 아티스트 리스트", notes = "토큰 있으면 내정보로, 없으면 쿼리스트링으로 팬이메일 전달")
@@ -111,9 +112,19 @@ public class FollowController {
         if(fanEmail != null) {
             followFindByFanAccountEmailGetResList = followService.findArtistByFanAccountEmail(fanEmail);
         } else if (accessToken != null){
-            UserRes userByAccessToken = userService.findUserByAccessToken(accessToken);
-            String myEmail = userByAccessToken.getAccountEmail();
-            followFindByFanAccountEmailGetResList = followService.findArtistByFanAccountEmail(myEmail);
+            int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+            if(vaildTokenStatusValue == 200) {
+                String[] spitToken = accessToken.split(" ");
+                UserRes userByAccessToken = userService.findUserByAccessToken(spitToken[1]);
+                String myEmail = userByAccessToken.getAccountEmail();
+                followFindByFanAccountEmailGetResList = followService.findArtistByFanAccountEmail(myEmail);
+
+            } else if(vaildTokenStatusValue == 401) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         } else {
             return new ResponseEntity<>("토큰과 이메일 둘 다 없습니다.;;", HttpStatus.BAD_REQUEST);
         }
