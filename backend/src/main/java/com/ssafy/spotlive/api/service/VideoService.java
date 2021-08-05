@@ -17,8 +17,8 @@ import java.util.List;
 public interface VideoService {
     VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage);
     VideoFindByIdGetRes findVideoById(Long id);
-    Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq);
-    Boolean updateVideoEndTimeById(Long videoId);
+    Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq, String accountEmail);
+    Boolean updateVideoEndTimeById(Long videoId, String accountEmail);
     List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail);
 
     String createSession();
