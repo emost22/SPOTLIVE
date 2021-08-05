@@ -27,4 +27,13 @@ export default {
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
+
+    requestGetShowVideos(context, payload) {
+        const URL = '/main/show'
+        const PAGE_VALUE = payload.pageValue;
+        const SIZE_VALUE = payload.sizeValue;
+
+        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
+    },
+
 }
