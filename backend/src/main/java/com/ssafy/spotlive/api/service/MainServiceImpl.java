@@ -12,9 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -158,4 +156,99 @@ public class MainServiceImpl implements MainService {
         return userRepository.findById(accountEmail).map(user -> user.getFanList()).orElse(null).stream()
                 .map(fan -> UserFindFollowGetRes.of(fan.getArtist())).collect(Collectors.toList());
     }
+
+    @Override
+    public List<VideoFindMainVideoRes> findAllTopVideo(String accountEmail){
+        /**
+         * @Method Name : findAllTopVideo
+         * @작성자 : 강용수
+         * @Method 설명 : 상단 캐루젤에 표시될 영상(각 항목 당 초회수가 최대인 영상)을 조회하는 메소드
+         */
+        List<VideoFindMainVideoRes> videoFindMainVideoResList = new ArrayList<>();
+
+        List<String> accountEmailList = userRepository.findById(accountEmail).map(user -> user.getFanList()).orElse(null).stream()
+                .map(fan -> followToString(fan)).collect(Collectors.toList());
+
+        // 위에서부터 홍보, 공연, 소통, 조회수(다시보기), 시청자수(라이브), 팔로우 Videos
+        List<VideoFindMainVideoRes> adVideoList = videoRepository.findVideosByMode("홍보").orElse(null).stream()
+                .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
+        List<VideoFindMainVideoRes> showVideoList = videoRepository.findVideosByMode("공연").orElse(null).stream()
+                .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
+        List<VideoFindMainVideoRes> talkVideoList = videoRepository.findVideosByMode("소통").orElse(null).stream()
+                .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
+        List<VideoFindMainVideoRes> replayVideoList = videoRepository.findVideosByIsLive(false).orElse(null).stream()
+                .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
+        List<VideoFindMainVideoRes> liveVideoList = videoRepository.findVideosByIsLive(true).orElse(null).stream()
+                .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
+        List<VideoFindMainVideoRes> followVideoList = videoRepository.findVideosByUser_AccountEmailIn(accountEmailList).orElse(null).stream()
+                .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
+
+        sortVideo(adVideoList);
+        sortVideo(showVideoList);
+        sortVideo(talkVideoList);
+        sortVideo(replayVideoList);
+        sortVideo(liveVideoList);
+        sortVideo(followVideoList);
+
+        int adVideoListSize = adVideoList.size();
+        int showVideoListSize = showVideoList.size();
+        int talkVideoListSize = talkVideoList.size();
+        int replayVideoListSize = replayVideoList.size();
+        int liveVideoListSize = liveVideoList.size();
+        int followVideoListSize = followVideoList.size();
+
+        Set<Long> set = new HashSet<>();
+        for (int i = 0; ; i++) {
+            int cnt = 0;
+
+            // 각 최대 시청자수 / 조회수의 Video를 List에 넣는다. (set으로 중복 제거)
+            // List가 6개가 되면 break, 5개 이하지만 더 이상 넣을 Video가 없을 경우 break
+            if (adVideoList != null && !adVideoList.isEmpty() && adVideoListSize > i && !set.contains(adVideoList.get(i).getVideoId())) {
+                videoFindMainVideoResList.add(adVideoList.get(i));
+                set.add(adVideoList.get(i).getVideoId());
+            }
+            else cnt++;
+            if (videoFindMainVideoResList.size() == 6) break;
+
+            if (showVideoList != null && !showVideoList.isEmpty() && showVideoListSize > i && !set.contains(showVideoList.get(i).getVideoId())){
+                videoFindMainVideoResList.add(showVideoList.get(i));
+                set.add(showVideoList.get(i).getVideoId());
+            }
+            else cnt++;
+            if (videoFindMainVideoResList.size() == 6) break;
+
+            if (talkVideoList != null && !talkVideoList.isEmpty() && talkVideoListSize > i && !set.contains(talkVideoList.get(i).getVideoId())) {
+                videoFindMainVideoResList.add(talkVideoList.get(i));
+                set.add(talkVideoList.get(i).getVideoId());
+            }
+            else cnt++;
+            if (videoFindMainVideoResList.size() == 6) break;
+
+            if (replayVideoList != null && !replayVideoList.isEmpty() && replayVideoListSize > i && !set.contains(replayVideoList.get(i).getVideoId())) {
+                videoFindMainVideoResList.add(replayVideoList.get(i));
+                set.add(replayVideoList.get(i).getVideoId());
+            }
+            else cnt++;
+            if (videoFindMainVideoResList.size() == 6) break;
+
+            if (liveVideoList != null && !liveVideoList.isEmpty() && liveVideoListSize > i && !set.contains(liveVideoList.get(i).getVideoId())) {
+                videoFindMainVideoResList.add(liveVideoList.get(i));
+                set.add(liveVideoList.get(i).getVideoId());
+            }
+            else cnt++;
+            if (videoFindMainVideoResList.size() == 6) break;
+
+            if (followVideoList != null && !followVideoList.isEmpty() && followVideoListSize > i && !set.contains(followVideoList.get(i).getVideoId())) {
+                videoFindMainVideoResList.add(followVideoList.get(i));
+                set.add(followVideoList.get(i).getVideoId());
+            }
+            else cnt++;
+            if (videoFindMainVideoResList.size() == 6) break;
+
+            if (cnt == 6) break;
+        }
+
+        return videoFindMainVideoResList;
+    }
+
 }
