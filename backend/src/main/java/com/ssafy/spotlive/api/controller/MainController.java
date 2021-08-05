@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.controller;
 
 import com.ssafy.spotlive.api.response.main.UserFindFollowGetRes;
+import com.ssafy.spotlive.api.response.main.VideoFindAllGetRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
@@ -37,6 +38,40 @@ public class MainController {
 
     @Autowired
     UserService userService;
+
+    @ApiOperation(value = "메인화면 진입 시 모든 Video 조회", notes = "메인화면 진입 시 모든 Video를 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    @GetMapping("/all")
+    public ResponseEntity<VideoFindAllGetRes> findAllVideo(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam(name = "categoryId", required = false) Long categoryId){
+        /**
+         * @Method Name : findAllVideo
+         * @작성자 : 강용수
+         * @Method 설명 : 메인 화면 진입 시 모든 Video들을 조회하는 메소드
+         */
+        int validTokenStatusValue = authService.isValidToken(accessToken);
+
+        if (validTokenStatusValue == 200) {
+            String[] splitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
+
+            VideoFindAllGetRes videoFindAllGetRes = mainService.findAllVideo(page, size, categoryId, userRes.getAccountEmail());
+
+            if (videoFindAllGetRes == null)
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            else
+                return new ResponseEntity<>(videoFindAllGetRes, HttpStatus.OK);
+        } else if (validTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @ApiOperation(value = "홍보 Video 조회", notes = "mode(홍보 / 소통 / 공연)와 카테고리 id 기준으로 검색된 홍보 Video를 조회한다.")
     @ApiResponses({
