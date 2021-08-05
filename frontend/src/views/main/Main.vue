@@ -114,9 +114,7 @@ export default {
 
 <style>
 .main-video {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   width: 100%;
+  margin: 20px;
 }
 </style>

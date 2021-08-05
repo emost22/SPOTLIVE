@@ -1,8 +1,8 @@
 <template>
-  <div class="container px-0">
-    <div class="col">
-      <div class="card" @click="RoomDetail" style="height:200px; width:400px;">
-        <img src="~@/assets/icon-profile.png" style="height:300px;">
+  <div>
+    <div class="glide-card">
+      <div class="card" @click="RoomDetail" style="height:150px; width:250px;">
+        <img src="~@/assets/icon-profile.png" style="height:100px;">
         <div class="card-body" style="overflow:hidden;">
           <p class="card-title fw-bold text-start text-nowrap overflow-hidden">{{ video.videoTitle }} 제목</p>
           <p class="card-title text-start">
@@ -40,5 +40,7 @@ export default {
 </script>
 
 <style>
-
+.glide-card{
+  display: inline;
+}
 </style>
