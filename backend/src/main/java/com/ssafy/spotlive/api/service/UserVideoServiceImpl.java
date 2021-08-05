@@ -28,8 +28,14 @@ public class UserVideoServiceImpl implements UserVideoService {
     }
 
     @Override
-    public UserVideo joinUserVideo(String accountEmail, Long videoId) {
-        return null;
+    public void leaveUserVideo(String accountEmail, long videoId) {
+        /**
+         * @Method Name : leaveUserVideo
+         * @작성자 : 김민권
+         * @Method 설명 :  accountEmail, videoId를 UserVideo Table에서 삭제한다.
+         */
+        UserVideoReq userVideoReq = makeUserVideoReq(accountEmail, videoId);
+        userVideoRepository.deleteById(userVideoReq.toUserVideoId());
     }
 
     @Override
