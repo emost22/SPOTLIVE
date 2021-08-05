@@ -57,4 +57,16 @@ class UserVideoRepositoryTest {
         // then
         allByUser.stream().forEach(userVideo -> assertThat(userVideo.getUser().getAccountEmail()).isEqualTo(accountEmail));
     }
+
+    @Test
+    void findAllByVideoIdTest() {
+        // given
+        long videoId = 8L;
+
+        // when
+        List<UserVideo> allByVideo = userVideoRepository.findAllByVideo_VideoId(videoId);
+
+        // then
+        allByVideo.stream().forEach(userVideo -> assertThat(userVideo.getVideo().getVideoId()).isEqualTo(videoId));
+    }
 }

@@ -21,4 +21,10 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, UserVideoI
      */
     List<UserVideo> findAllByUser_AccountEmail(String accountEmail);
 
+    /**
+     * @Method Name : findVideosByModeAndCategoryId
+     * @작성자 : 김민권
+     * @Method 설명 : UserVideo들을 VideoId로 조회하는 메소드
+     */
+    List<UserVideo> findAllByVideo_VideoId(Long videoId);
 }
