@@ -55,4 +55,13 @@ class ReservationServiceTest {
         reservationService.deleteReservationById(timetableId, accountEmail);
         verify(reservationRepository).deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail);
     }
+
+    @Test
+    void findReservationByIdTest() {
+        long timetableId = 1L;
+        String accountEmail = "ahyen@naver.com";
+
+        reservationService.findReservationById(timetableId, accountEmail);
+        verify(reservationRepository).existsByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail);
+    }
 }
