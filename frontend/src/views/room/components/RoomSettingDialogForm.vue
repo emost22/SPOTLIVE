@@ -1,6 +1,5 @@
 <template>
   <div>
-    <form>
     <div class="mb-3">
       <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
       <input type="email" class="custom-form-control" id="videoTitle" v-model="videoTitle">
@@ -48,16 +47,16 @@
     <div class="mb-3">
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
       <div class="d-flex">
-        <input class="custom-form-control" id="thumbnail" v-model="thumbnail">
-        <button class="search-button"></button>
+        <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
+        <input class="custom-form-control" v-model="fileName"/>
+        <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
+        </label>
       </div>
     </div>
     <div class="mb-3">
       <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="videoDescription"></textarea>
     </div>
-  </form>
-
   </div>
 </template>
 
@@ -75,6 +74,7 @@ export default {
       mode: 1,
       thumbnail: '',
       file: [],
+      fileName:'',
       videoDescription: '',
       videoTitle: '',
       showInfoId: '',
@@ -85,6 +85,11 @@ export default {
       ]
     }
   },
+  methods: {
+    handleFileChange(e) {
+      this.fileName = e.target.files[0].name
+    }
+  }
 }
 </script>
 
@@ -129,19 +134,34 @@ form {
 
 .custom-form-control {
   display: block;
+  padding: .375rem 2.25rem .375rem .75rem;
   width: 100%;
   background-color: #595959;
   border: 0px;
+  font-size: 1rem;
   color: white;
+  border: 0px;
   border-radius: .25rem;
-  padding: .375rem .75rem;
 }
 
+.custon-select-control {
+  background-color: #595959;
+  padding: .375rem 2.25rem .375rem .75rem;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 0px;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 
 .label-alignment {
   text-align: left;
 }
-
 
 .form-check-input {
   background-color: #595959;
@@ -150,5 +170,9 @@ form {
 .form-check-input:checked {
   background-color: #04F7CA;
   border-color: #04F7CA;
+}
+
+.custom-file-input {
+    display: none;
 }
 </style>
