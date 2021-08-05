@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.service;
 
-import com.ssafy.spotlive.db.entity.UserVideo;
+import com.ssafy.spotlive.api.request.uservideo.UserVideoReq;
+import com.ssafy.spotlive.api.response.uservideo.UserVideoRes;
 import com.ssafy.spotlive.db.repository.UserVideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,10 @@ public class UserVideoServiceImpl implements UserVideoService {
         userVideoRepository.deleteById(userVideoReq.toUserVideoId());
     }
 
-    @Override
-    public UserVideo leaveUserVideo(String accountEmail, Long videoId) {
-        return null;
+    private UserVideoReq makeUserVideoReq(String accountEmail, long videoId) {
+        UserVideoReq userVideoReq = new UserVideoReq();
+        userVideoReq.setAccountEmail(accountEmail);
+        userVideoReq.setVideoId(videoId);
+        return userVideoReq;
     }
 }
