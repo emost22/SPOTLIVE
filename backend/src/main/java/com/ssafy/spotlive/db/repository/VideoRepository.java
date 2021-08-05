@@ -89,6 +89,13 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Optional<List<Video>> findVideosByUser_AccountEmailIn(List<String> accountEmailList);
 
     /**
+     * @Method Name : findVideosByVideoTitleContainsOrVideoDescriptionContains
+     * @작성자 : 강용수
+     * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 검색하는 메소드
+     */
+    Optional<List<Video>> findVideosByVideoTitleContainsOrVideoDescriptionContains(String videoTitle, String videoDescription);
+
+    /**
      * @Method Name : findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains
      * @작성자 : 강용수
      * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 categoryId를 기준으로 검색하는 메소드
