@@ -251,4 +251,65 @@ public class MainServiceImpl implements MainService {
         return videoFindMainVideoResList;
     }
 
+    public void sortVideo(List<VideoFindMainVideoRes> videoFindMainVideoResList){
+        /**
+         * @Method Name : sortVideo
+         * @작성자 : 강용수
+         * @Method 설명 : 조회된 상단 캐루젤에 표시될 영상(각 항목 당 초회수가 최대인 영상)을 조회수 / 시청자수 순으로 정렬하는 메소드
+         */
+        Collections.sort(videoFindMainVideoResList, new Comparator<VideoFindMainVideoRes>() {
+            @Override
+            public int compare(VideoFindMainVideoRes v1, VideoFindMainVideoRes v2) {
+                boolean isLive1 = v1.getIsLive();
+                boolean isLive2 = v2.getIsLive();
+
+                if (isLive1 && isLive2) {
+                    long hitLive1 = v1.getHitLive();
+                    long hitLive2 = v2.getHitLive();
+
+                    if (hitLive1 > hitLive2)
+                        return -1;
+                    else if (hitLive1 == hitLive2) {
+                        long videoId1 = v1.getVideoId();
+                        long videoId2 = v2.getVideoId();
+
+                        if (videoId1 > videoId2)
+                            return -1;
+                        else if (videoId1 == videoId2)
+                            return 0;
+                        else
+                            return 1;
+                    }
+                    else
+                        return 1;
+                }
+                else if (isLive1 && !isLive2) {
+                    return -1;
+                }
+                else if (!isLive1 && isLive2) {
+                    return 1;
+                }
+                else {
+                    long hit1 = v1.getHit();
+                    long hit2 = v2.getHit();
+
+                    if (hit1 > hit2)
+                        return -1;
+                    else if (hit1 == hit2) {
+                        long videoId1 = v1.getVideoId();
+                        long videoId2 = v2.getVideoId();
+
+                        if (videoId1 > videoId2)
+                            return -1;
+                        else if (videoId1 == videoId2)
+                            return 0;
+                        else
+                            return 1;
+                    }
+                    else
+                        return 1;
+                }
+            }
+        });
+    }
 }
