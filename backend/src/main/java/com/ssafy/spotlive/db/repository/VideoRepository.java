@@ -79,5 +79,10 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      */
     Optional<List<Video>> findVideosByIsLive(Boolean isLive);
 
-
+    /**
+     * @Method Name : findVideosByUser_AccountEmailIn
+     * @작성자 : 강용수
+     * @Method 설명 : 자신이 팔로우한 유저의 Video를 검색하는 메소드
+     */
+    Optional<List<Video>> findVideosByUser_AccountEmailIn(List<String> accountEmailList);
 }
