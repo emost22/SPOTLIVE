@@ -93,7 +93,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      * @작성자 : 강용수
      * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 검색하는 메소드
      */
-    Optional<List<Video>> findVideosByVideoTitleContainsOrVideoDescriptionContains(String videoTitle, String videoDescription);
+    Page<Video> findVideosByVideoTitleContainsOrVideoDescriptionContains(Pageable pageable, String videoTitle, String videoDescription);
 
     /**
      * @Method Name : findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains
