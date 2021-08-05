@@ -56,5 +56,17 @@ class FollowServiceImplTest {
         assertThat(follow2.isPresent()).isEqualTo(false);
     }
 
+    @Test
+    void 팔로잉리스트() {
+        // 데이터 셋팅
+        String fanEmail = "sqk8657@naver.com";
+
+        // 팬 아이디로 자신을 팔로우 하는 사람 리스트 가져옴
+        Optional<List<Follow>> followsByFanAccountEmail = followRepository.findFollowsByFanAccountEmail(fanEmail);
+
+        // 팔로우하는 사람이 현재 기준 3명이면 통과
+        followsByFanAccountEmail.ifPresent(follows -> assertThat(follows.size()).isEqualTo(3));
+    }
+
     }
 }
