@@ -51,6 +51,21 @@ class VideoServiceImplTest {
     }
 
     @Test
+    void 내동영상_삭제테스트(){
+        // video id로 종료 테스트
+        String accountEmail = "sqk8657@naver.com";
+        long videoId = 1;
+        // 먼저 URL 있는지 확인
+        Optional<Video> beforeVideoById = videoRepository.findById(videoId);
+        assertThat(beforeVideoById.get().getVideoUrl()).isEqualTo("123123");
+        // Url 삭제
+        videoService.updateVideoUrlByVideoId(videoId, accountEmail);
+        // 없어졌는지 확인
+        Optional<Video> afterVideoById = videoRepository.findById(videoId);
+        assertThat(afterVideoById.get().getVideoUrl()).isEqualTo(null);
+    }
+
+    @Test
     void 오픈비두_세션생성테스트() {
         // given
 
