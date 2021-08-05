@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 /**
  * @FileName : VideoGetRes
  * @작성자 : 강용수
@@ -18,10 +16,32 @@ import java.util.List;
 @ToString
 @Builder
 public class VideoFindAllGetRes {
-    List<VideoGetRes> adVideoGetResList;
-    List<VideoGetRes> talkVideoGetResList;
-    List<VideoGetRes> showVideoGetResList;
-    List<VideoGetRes> replayVideoGetResList;
-    List<VideoGetRes> liveVideoGetResList;
-    List<VideoGetRes> followVideoGetResList;
+    VideoGetRes adVideoGetRes; // 홍보
+    VideoGetRes talkVideoGetRes; // 소통
+    VideoGetRes showVideoGetRes; // 공연
+    VideoGetRes replayVideoGetRes; // 다시보기
+    VideoGetRes liveVideoGetRes; // 라이브
+    VideoGetRes followVideoGetRes; // 팔로우
+
+    public static VideoFindAllGetRes of(
+            VideoGetRes adVideoGetRes,
+            VideoGetRes talkVideoGetRes,
+            VideoGetRes showVideoGetRes,
+            VideoGetRes replayVideoGetRes,
+            VideoGetRes liveVideoGetRes,
+            VideoGetRes followVideoGetRes) {
+        /**
+         * @Method Name : of
+         * @작성자 : 강용수
+         * @Method 설명 : VideoGetResponseDto를 VideoFindAllGetRes로 변환하는 함수
+         */
+        return VideoFindAllGetRes.builder()
+                .adVideoGetRes(adVideoGetRes)
+                .talkVideoGetRes(talkVideoGetRes)
+                .showVideoGetRes(showVideoGetRes)
+                .replayVideoGetRes(replayVideoGetRes)
+                .liveVideoGetRes(liveVideoGetRes)
+                .followVideoGetRes(followVideoGetRes)
+                .build();
+    }
 }
