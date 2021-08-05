@@ -110,13 +110,18 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
+    public Boolean updateVideoById(
+            Long videoId,
+            MultipartFile thumbnailImage,
+            VideoUpdateByIdPatchReq videoUpdateByIdPatchReq,
+            String accountEmail) {
         /* 원래 정보를 꺼내옴 */
         Optional<Video> videoById = videoRepository.findById(videoId);
         /* 정보가 없다면 FALSE */
-        if(!videoById.isPresent()){
-            return Boolean.FALSE;
-        }
+        if(!videoById.isPresent()) return Boolean.FALSE;
+        /* 수정하려는 사람과 현재 토큰 주인이 다르다면 FALSE */
+        if(!videoById.get().getUser().getAccountEmail().equals(accountEmail)) return Boolean.FALSE;
+
         /* 썸네일이 있다면 원래 썸네일 파일을 현재 썸네일 파일로 바꿈 */
         if(thumbnailImage != null){
             String separ = File.separator;
@@ -156,7 +161,7 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public Boolean updateVideoEndTimeById(Long videoId){
+    public Boolean updateVideoEndTimeById(Long videoId, String accountEmail){
         /**
          * @Method Name : updateVideoEndTimeById
          * @작성자 : 권영린, 김민권
@@ -164,7 +169,7 @@ public class VideoServiceImpl implements VideoService{
          */
         Video video = videoRepository.findById(videoId).get();
         if(video.getEndTime()!=null) return Boolean.FALSE;
-
+        if(!video.getUser().getAccountEmail().equals(accountEmail)) return Boolean.FALSE;
         int statusCode = closeSession(video.getSessionId());
         if(statusCode != 204) return Boolean.FALSE;
 
