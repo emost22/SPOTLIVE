@@ -16,7 +16,7 @@
     <div class="profile-info">
       <div><img src="~@/assets/icon-profile.png" class="profile-img bdcolor-bold-npink"></div>
       <div class="profile-detail">
-        <p> 나예뽀님</p>
+        <p> <span class="txtcolor-nyellow">나예뽀</span> 님</p>
         <p> 안녕하세요 나예뽀입니다. 제가 세상의 중심이죠. SPOT LIVE에 오신 것을 환영합니다 </p>
         <p> email@naver.com </p>
       </div>
