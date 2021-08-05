@@ -36,4 +36,11 @@ export default {
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
+    requestGetReplayVideos(context, payload) {
+        const URL = '/main/replay'
+        const PAGE_VALUE = payload.pageValue;
+        const SIZE_VALUE = payload.sizeValue;
+
+        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
+    },
 }
