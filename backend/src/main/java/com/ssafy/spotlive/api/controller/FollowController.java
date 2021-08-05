@@ -123,4 +123,32 @@ public class FollowController {
         return new ResponseEntity<>(followFindByFanAccountEmailGetResList, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "아티스트를 팔로우하는 팬 리스트", notes = "토큰 있으면 내정보로, 없으면 쿼리스트링으로 아티스트이메일 전달")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    @GetMapping("/fan/list")
+    public ResponseEntity<?> findFanByArtist(
+            @RequestParam(required = false) String artistEmail,
+            @ApiIgnore @RequestHeader(value = "Authorization", required = false) String accessToken
+    ){
+        /**
+         * @Method Name : findFanByArtist
+         * @작성자 : 권영린
+         * @Method 설명 : 토큰 있으면 내정보로, 없으면 쿼리스트링으로 아티스트이메일 전달받아 해당 유저를 팔로우중인 팬 목록을 반환
+         */
+        List<FollowFindByArtistAccountEmailGetRes> followFindByArtistAccountEmailGetResList = null;
+        if (artistEmail != null) {
+            followFindByArtistAccountEmailGetResList = followService.findFanByArtistAccountEmail(artistEmail);
+        } else if (accessToken != null){
+            UserRes userByAccessToken = userService.findUserByAccessToken(accessToken);
+            String myEmail = userByAccessToken.getAccountEmail();
+            followFindByArtistAccountEmailGetResList = followService.findFanByArtistAccountEmail(myEmail);
+        } else {
+            return new ResponseEntity<>("토큰과 이메일 둘 다 없습니다.;;", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(followFindByArtistAccountEmailGetResList, HttpStatus.OK);
+    }
+
 }
