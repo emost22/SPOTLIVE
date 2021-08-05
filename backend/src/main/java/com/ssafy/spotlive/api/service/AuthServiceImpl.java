@@ -15,6 +15,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * @FileName : AuthServiceImpl
@@ -109,11 +110,14 @@ public class AuthServiceImpl implements AuthService {
          * @작성자 : 김민권
          * @Method 설명 : 존재하는 회원에 대해서 각 토큰 값을 업데이트 한 후 반환한다.
          */
-        User existUser = userRepository.findUserByAccountEmail(accountEmail);
-        existUser.setAccessToken(accessToken);
-        existUser.setRefreshToken(refreshToken);
-        userRepository.save(existUser);
+        Optional<User> optionalExistUser = userRepository.findById(accountEmail);
+        User existUser = optionalExistUser.map(user -> {
+            user.setAccessToken(accessToken);
+            user.setRefreshToken(refreshToken);
+            return user;
+        }).orElse(null);
 
+        userRepository.save(existUser);
         return UserRes.of(existUser);
     }
 
@@ -124,10 +128,9 @@ public class AuthServiceImpl implements AuthService {
          * @작성자 : 김민권
          * @Method 설명 : accessToken을 Refresh Token을 통해 Update한다.
          */
-        User userForUpdate = userRepository.findUserByAccountEmail(accountEmail);
-        if(userForUpdate == null) return null;
-
-        String refreshToken = userForUpdate.getRefreshToken();
+        Optional<User> optionalUserForUpdate = userRepository.findById(accountEmail);
+        String refreshToken = optionalUserForUpdate.map(User::getRefreshToken).orElse(null);
+        if(refreshToken == null) return null;
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -144,8 +147,8 @@ public class AuthServiceImpl implements AuthService {
         ResponseEntity<HashMap> tokenResEntity = restTemplate.exchange(KAKAO_URL + "/oauth/token", HttpMethod.POST, kakaoUpdateTokenReq, HashMap.class);
 
         String newToken = (String) tokenResEntity.getBody().get("access_token");
-        userForUpdate.setAccessToken(newToken);
-        userRepository.save(userForUpdate);
+        optionalUserForUpdate.get().setAccessToken(newToken);
+        userRepository.save(optionalUserForUpdate.get());
 
         return newToken;
     }
@@ -195,9 +198,12 @@ public class AuthServiceImpl implements AuthService {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.exchange(logoutHost, HttpMethod.POST, logoutKakaoReq, HashMap.class);
 
-        User logoutUser = userRepository.findUserByAccountEmail(userRes.getAccountEmail());
-        logoutUser.setAccessToken("");
-        logoutUser.setRefreshToken("");
+        Optional<User> optionalLogoutUser = userRepository.findById(userRes.getAccountEmail());
+        User logoutUser = optionalLogoutUser.map(user -> {
+            user.setAccessToken("");
+            user.setRefreshToken("");
+            return user;
+        }).orElse(null);
         userRepository.save(logoutUser);
     }
 }
