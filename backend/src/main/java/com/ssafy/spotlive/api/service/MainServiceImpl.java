@@ -69,7 +69,7 @@ public class MainServiceImpl implements MainService {
          * @작성자 : 강용수
          * @Method 설명 : Query Parameter 조건에 맞는 다시보기 영상들을 조회수 순으로 검색하는 메소드
          */
-        Sort sort = Sort.by(Sort.Direction.DESC, "hit");
+        Sort sort = Sort.by(Sort.Direction.DESC, "hit").by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         if (categoryId == null)
