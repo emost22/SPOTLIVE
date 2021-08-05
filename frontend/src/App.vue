@@ -1,10 +1,7 @@
 <template>
   <div id="app">
-    <div v-if="!isLogin">
-      <Login/>
-    </div>
-    <div v-else class="sticky-top match-parent">
-      <MainHeader/>
+    <div class="sticky-top match-parent">
+      <MainHeader v-if="isLogin"/>
       <router-view></router-view>
     </div>
     <RoomSettingDialog/>
@@ -13,22 +10,21 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import MainHeader from './views/MainHeader.vue'
-import Login from './views/login/Login.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
 import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
 
 export default ({
   name: "App",
   components: {
-    Login,
     MainHeader,
     RoomSettingDialog,
     ShowCreateDialog,
   },
   data: function () {
     return {
-      isLogin: true,
+
     }
   },methods: {
     getVideos() {
@@ -36,19 +32,21 @@ export default ({
     },
   },
   computed: {
-    // isLogin: function () {
-    //   return this.$store.getters.isLogin
-    // },
+    ...mapGetters(['isLogin']),
   },
   created: function () {
-    const token = localStorage.getItem('jwt')
+    const token = localStorage.getItem('accessToken')
     if (token) {
       this.isLogin = true
     }
   },
   mounted: function () {
-    this.getVideos()
-    this.$router.push({ name: "Main" })
+    // this.getVideos()
+    const code = this.$route.query.code
+    if(code == "" || code == null || code == undefined) this.$router.push({ name: "Main" })
+    else {
+      this.$store.dispatch('requestDoKakaoLogin', code)
+    }
   },
 })
 </script>

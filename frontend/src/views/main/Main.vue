@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import MainSidebar from '@/views/main/components/MainSidebar.vue'
 import VideoCarousel from '@/views/main/components/VideoCarousel.vue'
 import VideoGlide from '@/views/main/components/VideoGlide.vue'
@@ -59,56 +60,105 @@ export default {
   },
   
   methods: {
-    getCarouselVideos: function () {
+    getCarouselVideos() {
     },
-    getFilterBtn: function () {
+    getFilterBtn() {
     },
-    getTalkVideos: function () {
-      const SERVER_URL = "http://localhost:8080"
-      axios({
-        method: "GET",
-        url: `${SERVER_URL}/api/main/talk`,
-        params: { page: 0, size: 20 },
-        // data: {},
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data.videoResList[0])
-        this.talk_videos = res.data.videoResList;
-      })
-      .catch((err) => {
-        console.log(err);
+    
+    getTotalMainVideos(pageValue, sizeValue) {
+      this.$store.dispatch('requestGetTotalMainVideos', { 
+        pageValue: pageValue,
+        sizeValue: sizeValue,
+      }).then((response) => {
+        console.log("getTotalMainVideos() SUCCESS!!")
+        console.log(response.data)
+
+        // 6개의 비디오 GET
+        this.ad_videos = response.data.adVideoGetRes.videoResList
+        this.follow_videos = response.data.followVideoGetRes.videoResList
+        this.replay_videos = response.data.replayVideoGetRes.videoResList
+        this.show_videos = response.data.showVideoGetRes.videoResList
+        this.talk_videos = response.data.talkVideoGetRes.videoResList
+        this.live_videos = response.data.liveVideoGetRes.videoResList
+      }).catch((error) => {
+        console.log(error)
       })
     },
-    getShowVideos: function () {
-      const SERVER_URL = "http://localhost:8080"
-      axios({
-        method: "GET",
-        url: `${SERVER_URL}/api/main/show`,
-        params: { page: 0, size: 20 },
-        // data: {},
-        headers: {
-          "Content-type": "application/json",
-        },
+    
+    getTalkVideos(pageValue, sizeValue) {
+      this.$store.dispatch('requestGetTalkVideos', { 
+        pageValue: pageValue,
+        sizeValue: sizeValue,
+      }).then((response) => {
+        console.log("getTalkVideos() SUCCESS!!")
+        console.log(response.data)
+        this.talk_videos = response.data.videoResList
+      }).catch((error) => {
+        console.log(error)
       })
-      .then((res) => {
-        console.log(res.data.videoResList[0])
-        this.show_videos = res.data.videoResList;
+    },
+
+    getShowVideos(pageValue, sizeValue) {
+      this.$store.dispatch('requestGetShowVideos', { 
+        pageValue: pageValue,
+        sizeValue: sizeValue,
+      }).then((response) => {
+        console.log("getShowVideos() SUCCESS!!")
+        console.log(response.data)
+        this.show_videos = response.data.videoResList
+      }).catch((error) => {
+        console.log(error)
       })
-      .catch((err) => {
-        console.log(err);
+    },
+    
+    /*
+    getReplayVideos(pageValue, sizeValue) {
+      this.$store.dispatch('requestGetReplayVideos', { 
+        pageValue: pageValue,
+        sizeValue: sizeValue,
+      }).then((response) => {
+        console.log("getReplayVideos() SUCCESS!!")
+        console.log(response.data)
+        this.replay_videos = response.data.videoResList
+      }).catch((error) => {
+        console.log(error)
       })
-    }
+    },
+    getLiveVideos(pageValue, sizeValue) {
+      this.$store.dispatch('requestGetLiveVideos', { 
+        pageValue: pageValue,
+        sizeValue: sizeValue,
+      }).then((response) => {
+        console.log("getLiveVideos() SUCCESS!!")
+        console.log(response.data)
+        this.live_videos = response.data.videoResList
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    getUserVideos(pageValue, sizeValue) {
+      this.$store.dispatch('requestGetUserVideos', { 
+        pageValue: pageValue,
+        sizeValue: sizeValue,
+      }).then((response) => {
+        console.log("getUserVideos() SUCCESS!!")
+        console.log(response.data)
+        // follow 리스트는 어디로?
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    */
   },
   created: function () {
     this.getCarouselVideos()
     this.getFilterBtn()
-    this.getTalkVideos()
-    this.getShowVideos()
+    this.getTalkVideos(0, 20)
+    this.getShowVideos(0, 20)
+    this.getTotalMainVideos(0, 20);
   },
-  computed: function () {
+  computed: {
+    ...mapGetters(['loginUser', 'isLogin']),
   },
 }
 </script>
