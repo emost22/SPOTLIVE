@@ -44,4 +44,16 @@ public class FollowServiceImpl implements FollowService{
         followRepository.deleteById(followId);
     }
 
+    @Override
+    public List<FollowFindByFanAccountEmailGetRes> findArtistByFanAccountEmail(String fanEmail) {
+        /**
+         * @Method Name : findArtistByFanAccountEmail
+         * @작성자 : 권영린
+         * @Method 설명 : 팬의 이메일로 팬이 팔로우중인 유저들의 리스트를 담는 메소드
+         */
+        Optional<List<Follow>> artistLiat = followRepository.findFollowsByFanAccountEmail(fanEmail);
+        return artistLiat.get().stream()
+                .map(follow -> FollowFindByFanAccountEmailGetRes.of(follow)).collect(Collectors.toList());
+    }
+
 }
