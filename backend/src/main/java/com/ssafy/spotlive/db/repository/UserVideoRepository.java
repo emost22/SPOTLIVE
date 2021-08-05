@@ -5,6 +5,8 @@ import com.ssafy.spotlive.db.entity.UserVideoId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @FileName : UserVideoRepository
  * @작성자 : 김민권
@@ -12,5 +14,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserVideoRepository extends JpaRepository<UserVideo, UserVideoId> {
+    /**
+     * @Method Name : findVideosByModeAndCategoryId
+     * @작성자 : 김민권
+     * @Method 설명 : UserVideo들을 accountEmail로 조회하는 메소드
+     */
+    List<UserVideo> findAllByUser_AccountEmail(String accountEmail);
 
+    /**
+     * @Method Name : findVideosByModeAndCategoryId
+     * @작성자 : 김민권
+     * @Method 설명 : UserVideo들을 VideoId로 조회하는 메소드
+     */
+    List<UserVideo> findAllByVideo_VideoId(Long videoId);
 }
