@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.db.entity.Video;
 import com.ssafy.spotlive.db.repository.VideoRepository;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,9 +29,9 @@ class VideoServiceImplTest {
     @Test
     void 공연영상정보조회테스트(){
         // 비디오 id로 영상정보 조회
-        VideoFindByIdGetRes videoById = videoService.findVideoById(7L);
+        VideoFindByIdGetRes videoById = videoService.findVideoById(17L);
         // 잘 가져오는지 확인
-        assertThat(videoById.getVideoTitle()).isEqualTo("뮤지컬 [캣츠]");
+        assertThat(videoById.getVideoTitle()).isEqualTo("심심해요1");
     }
 
     @Test
@@ -83,5 +85,11 @@ class VideoServiceImplTest {
         // then
         assertThat(statusCodeForSuccess).isEqualTo(204);
         assertThat(statusCodeForFail).isEqualTo(404);
+    }
+
+    void 특정유저영상조회테스트() {
+        String accountEmail = "sqk8657@naver.com";
+        List<VideoFindAllByUserIdGetRes> videoByAccountEmail = videoService.findVideoByAccountEmail(accountEmail);
+        assertThat(videoByAccountEmail.size()).isEqualTo(9);
     }
 }

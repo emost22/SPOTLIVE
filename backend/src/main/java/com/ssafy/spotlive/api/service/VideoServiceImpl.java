@@ -3,6 +3,7 @@ package com.ssafy.spotlive.api.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
+import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import com.ssafy.spotlive.db.entity.Category;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @FileName : VideoService
@@ -171,6 +173,13 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
+    public List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail) {
+
+        return videoRepository.findVideosByUserAccountEmail(accountEmail).stream()
+                .map(video -> VideoFindAllByUserIdGetRes.of(video)).collect((Collectors.toList()));
+    }
+
+    @Override
     public String createSession() {
         /**
          * @Method Name : createSession
@@ -221,6 +230,11 @@ public class VideoServiceImpl implements VideoService{
 
     @Override
     public int closeSession(String sessionId) {
+        /**
+         * @Method Name : closeSession
+         * @작성자 : 김민권
+         * @Method 설명 : 전달받은 세션 ID인 세션을 종료한다.
+         */
         String targetUrl = openviduServerUrl + "/openvidu/api/sessions/" + sessionId;
 
         HttpHeaders httpHeaders = new HttpHeaders();

@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -111,5 +113,59 @@ public class VideoRepositoryTest {
 
         // then
         assertThat(pageVideo.getTotalElements()).isEqualTo(5);
+    }
+
+    @Test
+    void findVideosByIsLiveAndCategory_CategoryId(){
+        // given
+        int page = 0;
+        int size = 3;
+        Boolean isLive = false;
+        Long categoryId = 6L;
+        Sort sort = Sort.by(Sort.Direction.DESC, "hit");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, isLive, categoryId);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(4);
+    }
+
+    @Test
+    void findVideosByUser_AccountEmailIn(){
+        // given
+        int page = 0;
+        int size = 3;
+        List<String> accountEmailList = new ArrayList<>();
+        accountEmailList.add("sqk8657@naver.com");
+        accountEmailList.add("ahyen@naver.com");
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByUser_AccountEmailIn(pageRequest, accountEmailList);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(11);
+    }
+
+    @Test
+    void findVideosByCategory_CategoryIdAndUser_AccountEmailIn(){
+        // given
+        int page = 0;
+        int size = 3;
+        List<String> accountEmailList = new ArrayList<>();
+        accountEmailList.add("sqk8657@naver.com");
+        accountEmailList.add("ahyen@naver.com");
+        Long categoryId = 6L;
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndUser_AccountEmailIn(pageRequest, categoryId, accountEmailList);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(4);
     }
 }

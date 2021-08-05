@@ -7,27 +7,27 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @FileName : UserFindMainFollowGetRes
+ * @FileName : UserFindFollowGetRes
  * @작성자 : 강용수
- * @Class 설명 : 메인 화면 사이드바의 내 구독자 채널 리스트 조회 요청에 대한 UserFindMainFollowGetResponseDto 정의
+ * @Class 설명 : 메인 화면 사이드바의 내 구독자 채널 리스트 조회 요청에 대한 UserFindFollowGetResponseDto 정의
  */
 @Getter
 @Setter
 @Builder
 @ToString
-public class UserFindMainFollowGetRes {
+public class UserFindFollowGetRes {
     String accountEmail;
     String profileNickname;
     String profileImageUrl;
     Boolean isLive;
 
-    public static UserFindMainFollowGetRes of(User user){
+    public static UserFindFollowGetRes of(User user){
         /**
          * @Method Name : of
          * @작성자 : 강용수
-         * @Method 설명 : User Entity를 UserFindMainFollowGetResponseDto로 변환하는 메소드
+         * @Method 설명 : User Entity를 UserFindFollowGetResponseDto로 변환하는 메소드
          */
-        return UserFindMainFollowGetRes.builder()
+        return UserFindFollowGetRes.builder()
                 .accountEmail(user.getAccountEmail())
                 .profileNickname(user.getProfileNickname())
                 .profileImageUrl(user.getProfileImageUrl())

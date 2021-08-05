@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @FileName : VideoRepository
  * @작성자 : 권영린
@@ -28,16 +30,37 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Page<Video> findVideosByModeAndCategory_CategoryId(Pageable pageable, String mode, Long categoryId);
 
     /**
-     * @Method Name : findVideosByIsLiveOrderByHit
+     * @Method Name : findVideosByIsLive
      * @작성자 : 강용수
-     * @Method 설명 : 다시보기 Video를 조회수 순으로 검색하는 메소드
+     * @Method 설명 : Video를 조회수(다시보기) / 시청자(라이브) 순으로 검색하는 메소드
      */
     Page<Video> findVideosByIsLive(Pageable pageable, Boolean isLive);
 
     /**
      * @Method Name : findVideosByIsLiveAndCategory_CategoryId
      * @작성자 : 강용수
-     * @Method 설명 : 다시보기 Video를 카테고리 id 기준과 조회수 순으로 검색하는 메소드
+     * @Method 설명 : Video를 카테고리 id 기준과 조회수(다시보기) / 시청자(라이브) 순으로 검색하는 메소드
      */
     Page<Video> findVideosByIsLiveAndCategory_CategoryId(Pageable pageable, Boolean isLive, Long categoryId);
+
+    /**
+     * @Method Name : findVideosByUser_AccountEmailIn
+     * @작성자 : 강용수
+     * @Method 설명 : 자신이 팔로우한 유저의 Video를 검색하는 메소드
+     */
+    Page<Video> findVideosByUser_AccountEmailIn(Pageable pageable, List<String> accountEmailList);
+
+    /**
+     * @Method Name : findVideosByCategory_CategoryIdAndUser_AccountEmailIn
+     * @작성자 : 강용수
+     * @Method 설명 : 자신이 팔로우한 유저의 Video를 카테고리 id 기준으로 검색하는 메소드
+     */
+    Page<Video> findVideosByCategory_CategoryIdAndUser_AccountEmailIn(Pageable pageable, Long categoryId, List<String> accountEmailList);
+
+    /**
+     * @Method Name : findVideosByUserAccountEmail
+     * @작성자 : 권영린
+     * @Method 설명 : 이메일로 해당 유저의 Video를 검색하는 메소드
+     */
+    List<Video> findVideosByUserAccountEmail(String accountEmail);
 }
