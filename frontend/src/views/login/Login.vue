@@ -4,19 +4,34 @@
       <div class="flux">Spot </div>
       <div class="flicking">L<span id="offset">I</span>VE</div>
     </div>
-    <button class="bdcolor-nyellow kakaobtn">
+    <button class="bdcolor-nyellow kakaobtn" @click="moveToKakaoLoginPage">
       Kakaotalk Login
     </button>
   </div>
 </template>
 
 <script>
+
 export default {
   name:'Login',
   data: function () {
     return {
-      
+      moveToKakaoLoginPageURL: "",
     }
+  },
+  methods: {
+    moveToKakaoLoginPage() {
+      alert(this.moveToKakaoLoginPageURL)
+      window.open(this.moveToKakaoLoginPageURL, "_top")
+    },
+  },
+  created() {
+    this.$store.dispatch('requestGetKakaoLoginUrl', {})
+    .then((response) => {
+      this.moveToKakaoLoginPageURL = response.data
+    }).catch((error) => {
+      console.log(error)
+    })
   },
 }
 </script>
