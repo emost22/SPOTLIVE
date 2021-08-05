@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
@@ -40,8 +42,8 @@ class AuthServiceImplTest { // Test 작업은 kmk130519@naver.com 유저의 Acce
     void getKakaoUserInfoTest() {
         // given
         String accountEmail = "kmk130519@naver.com";
-        User myUser = userRepository.findUserByAccountEmail(accountEmail);
-        String accessToken = myUser.getAccessToken();
+        Optional<User> optionalMyUser = userRepository.findById(accountEmail);
+        String accessToken = optionalMyUser.map(User::getAccessToken).orElse(null);
 
         // when
         KakaoUserRes kakaoUserInfo = authService.getKakaoUserInfo(accessToken);
@@ -62,10 +64,10 @@ class AuthServiceImplTest { // Test 작업은 kmk130519@naver.com 유저의 Acce
         UserRes userRes = authService.refreshTokensForExistUser(accountEmail, newAccessToken, newRefreshToken);
 
         // then
-        User user = userRepository.findUserByAccountEmail(accountEmail);
-        assertThat(user.getAccountEmail()).isEqualTo(accountEmail);
-        assertThat(user.getAccessToken()).isEqualTo(newAccessToken);
-        assertThat(user.getRefreshToken()).isEqualTo(newRefreshToken);
+        Optional<User> optionalUser = userRepository.findById(accountEmail);
+        assertThat(optionalUser.get().getAccountEmail()).isEqualTo(accountEmail);
+        assertThat(optionalUser.get().getAccessToken()).isEqualTo(newAccessToken);
+        assertThat(optionalUser.get().getRefreshToken()).isEqualTo(newRefreshToken);
     }
 
     @Test
@@ -73,26 +75,26 @@ class AuthServiceImplTest { // Test 작업은 kmk130519@naver.com 유저의 Acce
     void accessTokenUpdateTest() {
         // given
         String accountEmail = "kmk130519@naver.com";
-        User user = userRepository.findUserByAccountEmail(accountEmail);
-        String beforeAccessToken = user.getAccessToken();
-        String refreshToken = user.getRefreshToken();
+        Optional<User> optionalUser = userRepository.findById(accountEmail);
+        String beforeAccessToken = optionalUser.get().getAccessToken();
+        String refreshToken = optionalUser.get().getRefreshToken();
 
         // when
         String afterAccessToken = authService.accessTokenUpdate(accountEmail);
 
         // then
-        User newUser = userRepository.findUserByAccountEmail(accountEmail);
-        assertThat(user.getAccountEmail()).isEqualTo(accountEmail);
-        assertThat(user.getAccessToken()).isEqualTo(afterAccessToken);
-        assertThat(user.getAccessToken()).isNotEqualTo(beforeAccessToken);
+        Optional<User> optionalNewUser = userRepository.findById(accountEmail);
+        assertThat(optionalNewUser.get().getAccountEmail()).isEqualTo(accountEmail);
+        assertThat(optionalNewUser.get().getAccessToken()).isEqualTo(afterAccessToken);
+        assertThat(optionalNewUser.get().getAccessToken()).isNotEqualTo(beforeAccessToken);
     }
 
     @Test
     void isValidTokenTest() {
         // given
         String accountEmail = "kmk130519@naver.com";
-        User user = userRepository.findUserByAccountEmail(accountEmail);
-        String accessToken = user.getAccessToken();
+        Optional<User> optionalUser = userRepository.findById(accountEmail);
+        String accessToken = optionalUser.get().getAccessToken();
 
         // when
         int validTokenCode = authService.isValidToken("bearer " + accessToken);
@@ -105,16 +107,16 @@ class AuthServiceImplTest { // Test 작업은 kmk130519@naver.com 유저의 Acce
     void logoutTest() {
         // given
         String accountEmail = "kmk130519@naver.com";
-        User loginUser = userRepository.findUserByAccountEmail(accountEmail);
-        String accessToken = loginUser.getAccessToken();
+        Optional<User> optionalLoginUser = userRepository.findById(accountEmail);
+        String accessToken = optionalLoginUser.get().getAccessToken();
 
         // then
-        authService.logout(UserRes.of(loginUser));
+        authService.logout(UserRes.of(optionalLoginUser.get()));
 
         // when 1
-        User logoutUser = userRepository.findUserByAccountEmail(accountEmail);
-        assertThat(logoutUser.getAccessToken()).isEqualTo("");
-        assertThat(logoutUser.getRefreshToken()).isEqualTo("");
+        Optional<User> optionalLogoutUser = userRepository.findById(accountEmail);
+        assertThat(optionalLogoutUser.get().getAccessToken()).isEqualTo("");
+        assertThat(optionalLogoutUser.get().getRefreshToken()).isEqualTo("");
 
         // when 2
         int validTokenCode = authService.isValidToken("bearer " + accessToken);
