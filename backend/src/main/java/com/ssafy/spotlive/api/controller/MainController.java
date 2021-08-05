@@ -260,4 +260,36 @@ public class MainController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @ApiOperation(value = "상단 캐루젤에 표시될 영상 조회", notes = "메인화면 상단 캐루젤에 표시될 영상을 조회하는 메소드")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    @GetMapping("/top")
+    public ResponseEntity<List<VideoFindMainVideoRes>> findAllTopVideo(@ApiIgnore @RequestHeader("Authorization") String accessToken){
+        /**
+         * @Method Name : findAllTopVideo
+         * @작성자 : 강용수
+         * @Method 설명 : 상단 캐루젤에 표시될 영상을 조회하는 메소드
+         */
+        int validTokenStatusValue = authService.isValidToken(accessToken);
+
+        if (validTokenStatusValue == 200) {
+            String[] splitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
+
+            List<VideoFindMainVideoRes> videoFindMainVideoResList = mainService.findAllTopVideo(userRes.getAccountEmail());
+
+            if (videoFindMainVideoResList == null || videoFindMainVideoResList.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            else
+                return new ResponseEntity<>(videoFindMainVideoResList, HttpStatus.OK);
+        } else if (validTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

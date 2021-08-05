@@ -91,4 +91,35 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/{timetableId}")
+    @ApiOperation(value = "예약 여부 확인", notes = "timetable id로 예약 정보를 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "예약 목록에 있음"),
+            @ApiResponse(code = 204, message = "예약 목록에 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    public ResponseEntity<Object> findReservationById(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @PathVariable @ApiParam(value = "확인할 timetable의 id", required = true) long timetableId
+    ){
+        /**
+         * @Method Name : findReservationById
+         * @작성자 : 금아현
+         * @Method 설명 : timetableId와 accountEmail로 예약 여부를 조회한다.
+         */
+        int validTokenStatusValue = authService.isValidToken(accessToken);
+        String accountEmail;
+        if(validTokenStatusValue == 200){
+            String[] splitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
+            accountEmail = userRes.getAccountEmail();
+        }else if(validTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Boolean isExist = reservationService.findReservationById(timetableId, accountEmail);
+        if(isExist) return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
