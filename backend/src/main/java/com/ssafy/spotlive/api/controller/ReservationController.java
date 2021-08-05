@@ -102,6 +102,11 @@ public class ReservationController {
             @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @PathVariable @ApiParam(value = "확인할 timetable의 id", required = true) long timetableId
     ){
+        /**
+         * @Method Name : findReservationById
+         * @작성자 : 금아현
+         * @Method 설명 : timetableId와 accountEmail로 예약 여부를 조회한다.
+         */
         int validTokenStatusValue = authService.isValidToken(accessToken);
         String accountEmail;
         if(validTokenStatusValue == 200){
