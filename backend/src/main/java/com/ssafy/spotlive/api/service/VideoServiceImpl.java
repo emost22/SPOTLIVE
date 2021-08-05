@@ -193,6 +193,22 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
+    public Boolean updateVideoUrlByVideoId(long videoId, String accountEmail) {
+        /**
+         * @Method Name : updateVideoUrlByVideoId
+         * @작성자 : 권영린
+         * @Method 설명 : 해당 유저의 비디오가 맞는지 확인하고, 맞으면 Video파일을 삭제한 후 DB의 videoUrl을 null로 비운다.
+         */
+        Optional<Video> videoById = videoRepository.findById(videoId);
+        if (!videoById.isPresent()) return Boolean.FALSE;
+        if (videoById.get().getVideoUrl() == null) return Boolean.FALSE;
+        if (!videoById.get().getUser().getAccountEmail().equals(accountEmail)) return Boolean.FALSE;
+        videoById.get().setVideoUrl(null);
+        videoRepository.save(videoById.get());
+        return Boolean.TRUE;
+    }
+
+    @Override
     public String createSession() {
         /**
          * @Method Name : createSession
