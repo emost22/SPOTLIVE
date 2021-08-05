@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
@@ -9,6 +10,7 @@ import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import com.ssafy.spotlive.db.entity.*;
 import com.ssafy.spotlive.db.repository.UserVideoRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -20,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * @Class 설명 : Video관련 기능을 위한 ServiceImpl 정의.
  */
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class VideoServiceImpl implements VideoService{
 
@@ -52,6 +54,19 @@ public class VideoServiceImpl implements VideoService{
     @Autowired
     UserVideoRepository userVideoRepository;
 
+    @Autowired
+    FileUploadService fileUploadService;
+
+    private final static String TEMP_FILE_PATH = "src/main/resources/";
+
+    @Value("${cloud.aws.s3.bucket}") // 프로퍼티에서 cloud.aws.s3.bucket에 대한 정보를 불러옴
+    public String bucket;
+
+    @Value("${cloud.aws.s3.bucket.url}")
+    private String defaultUrl;
+
+    private final AmazonS3Client amazonS3Client;
+
     @Override
     public VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage){
         /**
@@ -62,42 +77,23 @@ public class VideoServiceImpl implements VideoService{
         // 1) Openvidu 세션을 생성하고 토큰을 발급
         String sessionId = makeSessionId();
         videoInsertPostReq.setSessionId(sessionId);
-        String tokenForConnect = createToken(sessionId);
-
+//        String tokenForConnect = createToken(sessionId);
         // 2) 썸네일을 비디오객체에 추가
-        String saveFileName = null;
+        String thumbnailImageUrl = null;
         try {
-            String separ = File.separator;
-            String today = new SimpleDateFormat("yyMMdd").format(new Date());
-
-            /* 절대경로를 가져오기 위한 file객체 생성 */
-            File file = new File("");
-            String rootPath = file.getAbsolutePath().split("backend")[0];
-            /* 저장 경로 설정 후 없으면 생성 */
-
-            String savePath = rootPath + "frontend" + separ + "src" + separ + "assets" + separ + "thumbnails";
-            if (!new File(savePath).exists()) {
-                try {
-                    new File(savePath).mkdirs();
-                } catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-
-            /* 파일 이름을 중복없이 만들어 생성. */
-            String origFilename = thumbnailImage.getOriginalFilename();
-            saveFileName = UUID.randomUUID().toString() + origFilename.substring(origFilename.lastIndexOf('.')); // 이상함.. 이거 했는데 왜 확장자 포함해서 파일이름이 저장될까
-            /* 최종 이미지파일의 경로(Thumbnail) 생성 후 conferenceInsertPostReq에 셋팅*/
-            String filePath = savePath + separ + saveFileName;
-            thumbnailImage.transferTo(new File(filePath));
+            /* S3에 업로드 */
+            thumbnailImageUrl = fileUploadService.upload(thumbnailImage);
+            System.out.println(thumbnailImageUrl);
         } catch(Exception e) {
             e.printStackTrace();
         }
-        VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(saveFileName)));
-        videoInsertPostRes.setToken(tokenForConnect);
+        VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(thumbnailImageUrl)));
+//        videoInsertPostRes.setToken(tokenForConnect);
 
         return videoInsertPostRes;
     }
+
+
 
     @Override
     public VideoFindByIdGetRes findVideoById(Long id) {
@@ -281,5 +277,4 @@ public class VideoServiceImpl implements VideoService{
         userVideoId.setVideo(userVideo.getVideo().getVideoId());
         return userVideoId;
     }
-
 }
