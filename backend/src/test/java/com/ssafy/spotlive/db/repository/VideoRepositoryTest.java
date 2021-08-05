@@ -210,14 +210,18 @@ public class VideoRepositoryTest {
     @Test
     void findVideosByVideoTitleContainsOrVideoDescriptionContains(){
         // given
+        int page = 0;
+        int size = 3;
         String videoTitle = "1";
         String videoDescription = "1";
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
-        List<Video> videoList = videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(videoTitle, videoDescription).orElse(null);
+        Page<Video> pageVideo = videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, videoTitle, videoDescription);
 
         // then
-        assertThat(videoList.size()).isEqualTo(2);
+        assertThat(pageVideo.getTotalElements()).isEqualTo(2);
     }
 
     @Test
