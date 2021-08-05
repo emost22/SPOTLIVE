@@ -15,5 +15,6 @@ import java.util.Optional;
  */
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, FollowId> {
+    Optional<List<Follow>> findFollowsByArtistAccountEmail(String artistEmail);
     Optional<List<Follow>> findFollowsByFanAccountEmail(String fanEmail);
 }
