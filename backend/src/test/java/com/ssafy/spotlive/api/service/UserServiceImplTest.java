@@ -1,7 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
-import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -10,8 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.*;
+import java.util.Optional;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -31,7 +32,7 @@ class UserServiceImplTest {
         userService.findUserByAccountEmail(accountEmail);
 
         // then
-        verify(userRepository).findUserByAccountEmail(accountEmail);
+        verify(userRepository).findById(accountEmail);
     }
 
     @Test
@@ -70,11 +71,11 @@ class UserServiceImplTest {
         userUpdatePatchReq.setAccountEmail(user.getAccountEmail());
 
         // when
-        when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user);
+        when(userRepository.findById(accountEmail)).thenReturn(Optional.ofNullable(user));
         userService.updateUser(userUpdatePatchReq);
 
         // then
         verify(userRepository).save(userUpdatePatchReq.toUser(user));
-        verify(userRepository).findUserByAccountEmail(accountEmail);
+        verify(userRepository).findById(accountEmail);
     }
 }

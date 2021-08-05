@@ -1,23 +1,14 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.user.UserUpdatePatchReq;
-import com.ssafy.spotlive.api.response.user.KakaoUserRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * @FileName : UserServiceImpl
@@ -38,8 +29,8 @@ public class UserServiceImpl implements UserService {
          * @작성자 : 김민권
          * @Method 설명 : accountEmail을 통해 user 정보를 반환한다.
          */
-        User user = userRepository.findUserByAccountEmail(accountEmail);
-        return user == null ? null : UserRes.of(user);
+        Optional<User> optionalUser = userRepository.findById(accountEmail);
+        return optionalUser.map(user -> UserRes.of(user)).orElse(null);
     }
 
     @Override
@@ -49,8 +40,8 @@ public class UserServiceImpl implements UserService {
          * @작성자 : 김민권
          * @Method 설명 : accessToken을 통해 user 정보를 반환한다.
          */
-        User user = userRepository.findUserByAccessToken(accessToken);
-        return user == null ? null : UserRes.of(user);
+        Optional<User> optionalUser = userRepository.findUserByAccessToken(accessToken);
+        return optionalUser.map(user -> UserRes.of(user)).orElse(null);
     }
 
     @Override
@@ -71,9 +62,9 @@ public class UserServiceImpl implements UserService {
          * @작성자 : 김민권
          * @Method 설명 : 회원의 정보를 업데이트한다.
          */
-        User updateUser = userRepository.findUserByAccountEmail(userUpdatePatchReq.getAccountEmail());
-        User updatedUser = userUpdatePatchReq.toUser(updateUser);
-        userRepository.save(updatedUser);
+        Optional<User> optionalUpdateUser = userRepository.findById(userUpdatePatchReq.getAccountEmail());
+        User updatedUser = optionalUpdateUser.map(user -> userUpdatePatchReq.toUser(user)).orElse(null);
+        if(updatedUser != null) userRepository.save(updatedUser);
 
         return UserRes.of(updatedUser);
     }
