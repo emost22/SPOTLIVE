@@ -65,7 +65,7 @@ export default {
   name: 'RoomSettingDialogForm',
   data: function () {
     return {
-      categoryId: '',
+      categoryId: '1',
       categoryIds: [
         { v: "1", t: "뮤지컬" },
         { v: "2", t: "마술" },
@@ -77,7 +77,7 @@ export default {
       fileName:'',
       videoDescription: '',
       videoTitle: '',
-      showInfoId: '',
+      showInfoId: '1',
       showInfoIds: [
         { v: "1", t: "옥탑방 고냥쓰들" },
         { v: "2", t: "캣츠" },

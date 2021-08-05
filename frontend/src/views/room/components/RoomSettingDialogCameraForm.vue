@@ -2,20 +2,31 @@
   <div class="camera-setting-wrapper">
     <div class="prev-camera-screen">
     </div>
-    <select class="camera-setting-selector mb-3" aria-label="Default select example">
-      <option selected>FaceTime HD 카메라(내장형)</option>
-      <option value="1">FaceTime HD 카메라(내장형)</option>
+    <select class="camera-setting-selector mb-3" v-model="cameraId" id="cameraId">
+      <option :key="i" :value="d.v" v-for="(d, i) in cameraIds">{{ d.t }}</option>
     </select>
-    <select class="camera-setting-selector mb-3" aria-label="Default select example">
-      <option selected>음성오디오(내장형)</option>
-      <option value="1">음성오디오(내장형)</option>
+    <select class="camera-setting-selector mb-3" v-model="audioId" id="audioId">
+      <option :key="i" :value="d.v" v-for="(d, i) in audioIds">{{ d.t }}</option>
     </select>
+    
   </div>
 </template>
 
 <script>
 export default {
-
+  name: 'RoomSettingDialogCameraForm',
+  data: function () {
+    return {
+      cameraId: '1',
+      cameraIds: [
+        { v: "1", t: "FaceTime HD 카메라(내장형)" },
+      ],
+      audioId: '1',
+      audioIds: [
+        { v: "1", t: "옥탑방 음성오디오(내장형)" },
+      ]
+    }
+  },
 }
 </script>
 

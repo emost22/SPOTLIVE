@@ -44,7 +44,7 @@ export default {
   }, 
   methods: {
     setSetting() {
-      alert("axios요청")
+      // axios 요청
     }
   }
 }
