@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog bdcolor-bold-npurple modal-design">
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button" @click="setSetting" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>
@@ -36,6 +36,16 @@ export default {
   components: {
     RoomSettingDialogForm,
     RoomSettingDialogCameraForm
+  },
+  data: function () {
+    return {
+      
+    }
+  }, 
+  methods: {
+    setSetting() {
+      //axios
+    }
   }
 }
 </script>
@@ -79,7 +89,9 @@ label:hover {
 .content {
   position: absolute;
   top: 50px; right: 0; bottom: 0; left: 0;
-  padding: 30px;
+  padding-top: 50px;
+  padding-right: 30px;
+  padding-left: 30px;
   display: none;
 }
 
@@ -107,22 +119,6 @@ label:hover {
 [name=t]:checked + label + .content {
   display: inline-block;
 }
-
-.custon-select-control {
-  background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: 400;
-  color: white;
-  background-repeat: no-repeat;
-  background-position: right .75rem center;
-  background-size: 16px 12px;
-  border: 0px;
-  border-radius: .25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-
 .btn-close {
   background-image: url('~@/assets/icon-x.png');
   opacity: 1;

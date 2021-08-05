@@ -8,6 +8,7 @@
       <router-view></router-view>
     </div>
     <RoomSettingDialog/>
+    <ShowCreateDialog/>
   </div>
 </template>
 
@@ -15,6 +16,7 @@
 import MainHeader from './views/MainHeader.vue'
 import Login from './views/login/Login.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
+import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
 
 export default ({
   name: "App",
@@ -22,6 +24,7 @@ export default ({
     Login,
     MainHeader,
     RoomSettingDialog,
+    ShowCreateDialog,
   },
   data: function () {
     return {
@@ -64,7 +67,6 @@ body {
 
 textarea {
   resize: none;
-  height: 100px;
 }
 
 .match-parent {
@@ -208,9 +210,9 @@ textarea {
   background-color: lightgrey;
 }
 .modal-design {
+  max-height: 700px;
   min-width: 500px;
   width: 70%;
-  height: 80%;
   background-color: #242424;
   color: white;
 }
@@ -229,6 +231,52 @@ textarea {
 .modal-footer-m {    
   display: flex;
   justify-content: center;
-  padding: .75rem;
+  padding: 1.2rem;
+}
+form {
+  margin-top: 20px;
+}
+.custom-select-control {
+  background-color: #595959;
+  padding: .375rem 2.25rem .375rem .75rem;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 0px;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.custom-form-control {
+  display: block;
+  width: 100%;
+  background-color: #595959;
+  border: 0px;
+  color: white;
+  border-radius: .25rem;
+  padding: .375rem .75rem;
+}
+.btn-close {
+  background-image: url('~@/assets/icon-x.png');
+  opacity: 1;
+}
+.btn-close:hover {
+  background-image: url('~@/assets/icon-x.png');
+}
+.label-alignment {
+  text-align: left;
+}
+label:hover {
+  color: white;
+  cursor: pointer;
+}
+.content {
+  position: absolute;
+  top: 50px; right: 0; bottom: 0; left: 0;
+  padding: 30px;
+  display: none;
 }
 </style>

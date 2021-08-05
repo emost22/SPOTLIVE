@@ -2,9 +2,12 @@ package com.ssafy.spotlive.api.controller;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
+import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
+import com.ssafy.spotlive.api.service.AuthService;
+import com.ssafy.spotlive.api.service.UserService;
 import com.ssafy.spotlive.api.service.VideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -31,6 +35,10 @@ public class VideoController {
 
     @Autowired
     VideoService videoService;
+    @Autowired
+    AuthService authService;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/insert")
     @ApiOperation(value = "스트리밍 시작", notes = "스트리밍을 시작하면 영상정보가 DB에 저장된다.")
@@ -39,6 +47,7 @@ public class VideoController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<VideoInsertPostRes> insertVideo(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @RequestParam("thumbnailImage") MultipartFile thumbnailImage,
             VideoInsertPostReq videoInsertPostReq) {
         /**
@@ -46,8 +55,19 @@ public class VideoController {
          * @작성자 : 권영린
          * @Method 설명 : 비디오를 추가한다.
          */
-        VideoInsertPostRes videoInsertPostRes = videoService.insertVideo(videoInsertPostReq, thumbnailImage);
-        return new ResponseEntity<>(videoInsertPostRes, HttpStatus.CREATED);
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+            videoInsertPostReq.setAccountEmail(userRes.getAccountEmail());
+            VideoInsertPostRes videoInsertPostRes = videoService.insertVideo(videoInsertPostReq, thumbnailImage);
+            return new ResponseEntity<>(videoInsertPostRes, HttpStatus.CREATED);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{videoId}")
@@ -57,14 +77,26 @@ public class VideoController {
             @ApiResponse(code = 400, message = "조회 오류"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<VideoFindByIdGetRes> findVideoById(@PathVariable long videoId) {
+    public ResponseEntity<VideoFindByIdGetRes> findVideoById(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @PathVariable long videoId) {
         /**
          * @Method Name : findVideoById
          * @작성자 : 권영린
          * @Method 설명 : 비디오 정보를 조회한다.
          */
-        VideoFindByIdGetRes videoFindByIdGetRes = videoService.findVideoById(videoId);
-        return new ResponseEntity<>(videoFindByIdGetRes, HttpStatus.OK);
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+            VideoFindByIdGetRes videoFindByIdGetRes = videoService.findVideoById(videoId);
+            return new ResponseEntity<>(videoFindByIdGetRes, HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PatchMapping("/{videoId}")
@@ -75,6 +107,7 @@ public class VideoController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> updateVideoById(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @PathVariable long videoId,
             @RequestParam(name = "thumbnailImage", required = false) MultipartFile thumbnailImage,
             VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
@@ -83,12 +116,21 @@ public class VideoController {
          * @작성자 : 권영린
          * @Method 설명 : 비디오를 수정한다.
          */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
 
-        Boolean isSuccess = videoService.updateVideoById(videoId, thumbnailImage, videoUpdateByIdPatchReq);
-        if(isSuccess)
-            return new ResponseEntity<>(HttpStatus.OK);
-        else
-            return new ResponseEntity<String>("없는 영상을 수정하려합니다.", HttpStatus.BAD_REQUEST);
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+            Boolean isSuccess = videoService.updateVideoById(videoId, thumbnailImage, videoUpdateByIdPatchReq, userRes.getAccountEmail());
+            if(isSuccess)
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<String>("없는 영상이거나 남의 영상이거나 아무튼 실패함", HttpStatus.BAD_REQUEST);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PatchMapping("/close/{videoId}")
@@ -98,16 +140,28 @@ public class VideoController {
             @ApiResponse(code = 400, message = "종료 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> closeVideoById(@PathVariable long videoId) {
+    public ResponseEntity<?> closeVideoById(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @PathVariable long videoId) {
         /**
          * @Method Name : closeVideoById
          * @작성자 : 권영린
          * @Method 설명 : 비디오를 종료한다.
          */
-        if(videoService.updateVideoEndTimeById(videoId))
-            return new ResponseEntity<>(HttpStatus.OK);
-        else
-            return new ResponseEntity<String>("이미 종료된 영상입니다.", HttpStatus.BAD_REQUEST);
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+            if(videoService.updateVideoEndTimeById(videoId, userRes.getAccountEmail()))
+                return new ResponseEntity<>(HttpStatus.OK);
+            else
+                return new ResponseEntity<String>("이미 종료됐거나 남의 영상이거나 아무튼 실패함.", HttpStatus.BAD_REQUEST);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/list/{accountEmail}")
@@ -118,13 +172,24 @@ public class VideoController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<List<VideoFindAllByUserIdGetRes>> findVideoListByUserId(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @PathVariable String accountEmail) {
             /**
              * @Method Name : findVideoListByUserId
              * @작성자 : 권영린
              * @Method 설명 : 특정 유저의 내동영상 리스트를 조회한다.
              */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
             List<VideoFindAllByUserIdGetRes> videoFindAllByUserIdGetRes = videoService.findVideoByAccountEmail(accountEmail);
-        return new ResponseEntity<>(videoFindAllByUserIdGetRes, HttpStatus.OK);
+            return new ResponseEntity<>(videoFindAllByUserIdGetRes, HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
