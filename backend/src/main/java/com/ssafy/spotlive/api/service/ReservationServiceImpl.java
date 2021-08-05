@@ -56,4 +56,9 @@ public class ReservationServiceImpl implements ReservationService{
          */
         return reservationRepository.deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail);
     }
+
+    @Override
+    public Boolean findReservationById(long timetableId, String accountEmail) {
+        return reservationRepository.existsByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail);
+    }
 }
