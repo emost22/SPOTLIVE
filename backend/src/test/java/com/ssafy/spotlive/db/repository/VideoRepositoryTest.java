@@ -100,7 +100,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByIsLive(){
+    void findPageVideosByIsLive(){
         // given
         int page = 0;
         int size = 3;
@@ -179,5 +179,17 @@ public class VideoRepositoryTest {
 
         // then
         assertThat(videoList.size()).isEqualTo(6);
+    }
+
+    @Test
+    void findVideosByIsLive(){
+        // given
+        Boolean isLive = false;
+
+        // when
+        List<Video> videoList = videoRepository.findVideosByIsLive(isLive).orElse(null);
+
+        // then
+        assertThat(videoList.size()).isEqualTo(5);
     }
 }
