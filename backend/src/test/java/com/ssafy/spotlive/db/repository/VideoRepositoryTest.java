@@ -133,7 +133,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByUser_AccountEmailIn(){
+    void findPageVideosByUser_AccountEmailIn(){
         // given
         int page = 0;
         int size = 3;
@@ -191,5 +191,19 @@ public class VideoRepositoryTest {
 
         // then
         assertThat(videoList.size()).isEqualTo(5);
+    }
+
+    @Test
+    void findVideosByUser_AccountEmailIn(){
+        // given
+        List<String> accountEmailList = new ArrayList<>();
+        accountEmailList.add("sqk8657@naver.com");
+        accountEmailList.add("ahyen@naver.com");
+
+        // when
+        List<Video> videoList = videoRepository.findVideosByUser_AccountEmailIn(accountEmailList).orElse(null);
+
+        // then
+        assertThat(videoList.size()).isEqualTo(10);
     }
 }
