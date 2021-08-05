@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import MainSidebar from '@/views/main/components/MainSidebar.vue'
 import VideoCarousel from '@/views/main/components/VideoCarousel.vue'
 import VideoGlide from '@/views/main/components/VideoGlide.vue'
@@ -66,7 +67,8 @@ export default {
     this.getFilterBtn()
     this.getBottomVideos()
   },
-  computed: function () {
+  computed: {
+    ...mapGetters(['loginUser', 'isLogin']),
   },
 }
 </script>
