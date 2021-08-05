@@ -1,29 +1,30 @@
 <template>
-  <div class="d-flex flex-row">
-    <MainSidebar/>
-    <div class="main-video">
-      <div>
-        상단 카테고리 추천
-        <!-- npm install -S vue-carousel-3d -->
-        <VideoCarousel :videos="carousel_videos"/>
-      </div>
-      <div>
-        카테고리 버튼
-        <FilterGlide :filters="filter_btns"/>
-      </div>
-      <div>
-        <p> 소통용 영상</p>
-        <VideoGlide :videos="talk_videos"/>
-        <p> 공연용 영상</p>
-        <VideoGlide :videos="show_videos"/>
-        <p> 홍보용 영상</p>
-        <VideoGlide :videos="ad_videos"/>
-        <p> 다시보기 조회순 높은 영상</p>
-        <VideoGlide :videos="replay_videos"/>
-        <p> 실시간 시청자 높은 영상</p>
-        <VideoGlide :videos="live_videos"/>
-        <p> 내가 팔로우 하는 사람들의 최신 영상</p>
-        <VideoGlide :videos="follow_videos"/>
+  <div>
+    <div class="d-flex flex-row">
+      <MainSidebar/>
+      <div class="main-video">
+        <div>
+          상단 카테고리 추천
+          <VideoCarousel :videos="carousel_videos"/>
+        </div>
+        <div>
+          카테고리 버튼
+          <FilterGlide :filters="filter_btns"/>
+        </div>
+        <div class="row">
+          <p> 소통용 영상</p>
+          <VideoGlide :videos="talk_videos"/>
+          <p> 공연용 영상</p>
+          <VideoGlide :videos="show_videos"/>
+          <p> 홍보용 영상</p>
+          <VideoGlide :videos="ad_videos"/>
+          <p> 다시보기 조회순 높은 영상</p>
+          <VideoGlide :videos="replay_videos"/>
+          <p> 실시간 시청자 높은 영상</p>
+          <VideoGlide :videos="live_videos"/>
+          <p> 내가 팔로우 하는 사람들의 최신 영상</p>
+          <VideoGlide :videos="follow_videos"/>
+        </div>
       </div>
     </div>
   </div>
