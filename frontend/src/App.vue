@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="sticky-top match-parent">
-      <MainHeader/>
+      <MainHeader v-if="isLogin"/>
       <router-view></router-view>
     </div>
     <RoomSettingDialog/>
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import MainHeader from './views/MainHeader.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
 import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
@@ -23,7 +24,7 @@ export default ({
   },
   data: function () {
     return {
-      isLogin: false,
+
     }
   },methods: {
     getVideos() {
@@ -31,7 +32,7 @@ export default ({
     },
   },
   computed: {
-
+    ...mapGetters(['isLogin']),
   },
   created: function () {
     const token = localStorage.getItem('accessToken')
@@ -44,7 +45,7 @@ export default ({
     const code = this.$route.query.code
     if(code == "" || code == null || code == undefined) this.$router.push({ name: "Main" })
     else {
-      this.$store.dispatch('doKakaoLogin', code)
+      this.$store.dispatch('requestDoKakaoLogin', code)
     }
   },
 })
