@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -121,7 +122,7 @@ class MainServiceImplTest {
         // when
         when(videoRepository.findVideosByUser_AccountEmailIn(pageRequest, accountEmailList)).thenReturn(pageVideo);
         when(videoRepository.findVideosByCategory_CategoryIdAndUser_AccountEmailIn(pageRequest, categoryId1, accountEmailList)).thenReturn(pageVideo);
-        when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user);
+        when(userRepository.findById(accountEmail)).thenReturn(Optional.ofNullable(user));
         mainServiceImpl.findAllFollowVideoByCategoryId(page, size, categoryId1, accountEmail);
         mainServiceImpl.findAllFollowVideoByCategoryId(page, size, categoryId2, accountEmail);
 
@@ -137,10 +138,10 @@ class MainServiceImplTest {
         User user = new User();
 
         // when
-        when(userRepository.findUserByAccountEmail(accountEmail)).thenReturn(user);
+        when(userRepository.findById(accountEmail)).thenReturn(Optional.ofNullable(user));
         mainServiceImpl.findAllFollowByFan(accountEmail);
 
         // then
-        verify(userRepository).findUserByAccountEmail(accountEmail);
+        verify(userRepository).findById(accountEmail);
     }
 }
