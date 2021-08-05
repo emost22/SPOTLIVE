@@ -3,23 +3,25 @@
     <div v-if="!isLogin">
       <Login/>
     </div>
-    <div v-else class="sticky-top">
+    <div v-else class="sticky-top match-parent">
       <MainHeader/>
       <router-view></router-view>
     </div>
+    <RoomSettingDialog/>
   </div>
-  
 </template>
 
 <script>
 import MainHeader from './views/MainHeader.vue'
 import Login from './views/login/Login.vue'
+import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
 
 export default ({
   name: "App",
   components: {
     Login,
     MainHeader,
+    RoomSettingDialog,
   },
   data: function () {
     return {
@@ -49,9 +51,25 @@ export default ({
 </script>
 
 <style>
+html { 
+  height:100%; 
+}
+
 body {
   /* 메인 배경 */
   background-color: #121212;
+  height:100%;
+  widows: 100%;
+}
+
+textarea {
+  resize: none;
+  height: 100px;
+}
+
+.match-parent {
+  width: 100%;
+  height:100%;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -59,6 +77,8 @@ body {
   -moz-osx-font-smoothing: grayscale; 
   text-align: center;
   color: #2c3e50;
+  height: 100%;
+  width: 100%;
 }
 /* 메인 배경 */
 .main-bgcolor-black {
@@ -146,5 +166,69 @@ body {
   box-shadow: 
     0 0 9px #C752FE,
     0 0 12px #C752FE;
+}
+.extra-big-button {
+  width: 300px;
+  height: 50px;
+  line-height: 50px;
+  background: none;
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+.big-button {
+  width: 250px;
+  height: 40px;
+  background: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+.middle-button {
+  width: 180px;
+  height: 40px;
+  background: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+.small-button {
+  width: 130px;
+  height: 40px;
+  background: none;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+}
+.full-wide-screen {
+  margin-left: 30px;
+  margin-right: 30px;
+  height: 80%;
+  background-color: lightgrey;
+}
+.modal-design {
+  min-width: 500px;
+  width: 70%;
+  height: 80%;
+  background-color: #242424;
+  color: white;
+}
+.modal-content-m {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  pointer-events: auto;
+  outline: 0;
+}
+.no-border {
+  border: 0px;
+}
+.modal-footer-m {    
+  display: flex;
+  justify-content: center;
+  padding: .75rem;
 }
 </style>
