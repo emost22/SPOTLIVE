@@ -1,10 +1,17 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.response.follow.FollowFindByArtistAccountEmailGetRes;
+import com.ssafy.spotlive.api.response.follow.FollowFindByFanAccountEmailGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
+import com.ssafy.spotlive.db.entity.FollowId;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.FollowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @FileName : FollowServiceImpl
@@ -28,15 +35,13 @@ public class FollowServiceImpl implements FollowService{
         followRepository.save(follow);
     }
 
-//    @Override
-//    public void deleteFollowByAccountEmail(String artistEmail, String fanEmail){
-//        Follow follow = new Follow();
-//        User artist = new User();
-//        User fan = new User();
-//        artist.setAccountEmail(artistEmail);
-//        fan.setAccountEmail(fanEmail);
-//        follow.setArtist(artist);
-//        follow.setFan(fan);
-//        followRepository.deleteByUser(follow).;
-//    }
+    @Override
+    public void deleteFollowByAccountEmail(String artistEmail, String fanEmail){
+        FollowId followId = new FollowId();
+
+        followId.setArtist(artistEmail);
+        followId.setFan(fanEmail);
+        followRepository.deleteById(followId);
+    }
+
 }
