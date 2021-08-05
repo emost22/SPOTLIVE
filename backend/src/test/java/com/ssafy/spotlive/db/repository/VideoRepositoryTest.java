@@ -81,7 +81,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByMode(){
+    void findPageVideosByMode(){
         // given
         int page = 0;
         int size = 6;
@@ -167,5 +167,17 @@ public class VideoRepositoryTest {
 
         // then
         assertThat(pageVideo.getTotalElements()).isEqualTo(4);
+    }
+
+    @Test
+    void findVideosByMode(){
+        // given
+        String mode = "소통";
+
+        // when
+        List<Video> videoList = videoRepository.findVideosByMode(mode).orElse(null);
+
+        // then
+        assertThat(videoList.size()).isEqualTo(6);
     }
 }
