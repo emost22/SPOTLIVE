@@ -8,7 +8,7 @@
     <div class="mb-3 d-flex">
       <div class="flex-fill me-3">
         <div class="label-alignment"><label class="form-label">분류</label></div>
-        <select class="custon-select-control" aria-label="Default select example">
+        <select class="custom-select-control" aria-label="Default select example">
           <option selected>뮤지컬</option>
           <option value="1">One</option>
         </select>
@@ -40,7 +40,7 @@
     <div class="mb-3">
       <div class="label-alignment"><label for="exampleFormControlInput3" class="form-label">등록한 공연 선택</label></div>
       <div class="d-flex">
-      <select class="custon-select-control" aria-label="Default select example">
+      <select class="custom-select-control" aria-label="Default select example">
         <option selected>옥탑방 고냥쓰들</option>
         <option value="1">One</option>
       </select>

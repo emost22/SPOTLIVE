@@ -3,13 +3,13 @@
 
     <div> 
       <div class="profile-btn-line" v-if="!inMyProfile">
-        <div><button class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow">예매 내역</button></div>
-        <div><button class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">공연 생성</button></div>
-        <div><button class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink">프로필 수정</button></div>
+        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow">예매 내역</button></div>
+        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen" data-bs-toggle="modal" data-bs-target="#showCreateModal">공연 생성</button></div>
+        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink">프로필 수정</button></div>
       </div>
       <div class="profile-btn-line" v-if="!inMyProfile">
-        <button v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
-        <button v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
+        <button type="button" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
+        <button type="button" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
       </div>
     </div>
 
@@ -113,8 +113,6 @@ export default {
 .profile-detail{
   width: 300px;
   height: 150px;
-  margin-top: auto;
-  margin-bottom: auto;
   margin-top: auto;
   margin-bottom: auto;
   margin-left: 30px;
