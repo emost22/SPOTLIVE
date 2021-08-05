@@ -59,6 +59,11 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     public Boolean findReservationById(long timetableId, String accountEmail) {
+        /**
+         * @Method Name : findReservationById
+         * @작성자 : 금아현
+         * @Method 설명 : timetableId, accountEmail로 예약 여부 확인
+         */
         return reservationRepository.existsByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail);
     }
 }
