@@ -14,6 +14,6 @@ import java.util.Optional;
  * @Class 설명 : 팔로우 관련 기능을 위한 Repository 정의.
  */
 @Repository
-public interface FollowRepository extends JpaRepository<Follow, String> {
-    Optional<Follow> findFollowsByArtistAccountEmailAndFanAccountEmail(String artistEmail, String fanEmail);
+public interface FollowRepository extends JpaRepository<Follow, FollowId> {
+    Optional<List<Follow>> findFollowsByFanAccountEmail(String fanEmail);
 }
