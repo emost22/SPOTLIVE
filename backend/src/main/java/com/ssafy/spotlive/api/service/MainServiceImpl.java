@@ -1,10 +1,10 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.response.main.UserFindFollowGetRes;
+import com.ssafy.spotlive.api.response.main.VideoFindAllGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
-import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,23 @@ public class MainServiceImpl implements MainService {
     UserRepository userRepository;
 
     @Override
+    public VideoFindAllGetRes findAllVideo(int page, int size, Long categoryId, String accountEmail) {
+        /**
+         * @Method Name : findAllVideo
+         * @작성자 : 강용수
+         * @Method 설명 : 메인 화면 진입 시 모든 Video들을 조회하는 메소드
+         */
+        VideoGetRes adVideoGetRes = findAllVideoByModeAndCategoryId(page, size, categoryId, "홍보");
+        VideoGetRes talkVideoGetRes = findAllVideoByModeAndCategoryId(page, size, categoryId, "소통");
+        VideoGetRes showVideoGetRes = findAllVideoByModeAndCategoryId(page, size, categoryId, "공연");
+        VideoGetRes replayVideoGetRes = findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId);
+        VideoGetRes liveVideoGetRes = findAllLiveVideoByIsLiveAndCategoryId(page, size, categoryId);
+        VideoGetRes followVideoGetRes = findAllFollowVideoByCategoryId(page, size, categoryId, accountEmail);
+
+        return VideoFindAllGetRes.of(adVideoGetRes, talkVideoGetRes, showVideoGetRes, replayVideoGetRes, liveVideoGetRes, followVideoGetRes);
+    }
+
+    @Override
     public VideoGetRes findAllVideoByModeAndCategoryId(int page, int size, Long categoryId, String mode){
         /**
          * @Method Name : findAllVideoByModeAndCategoryId
@@ -52,7 +69,7 @@ public class MainServiceImpl implements MainService {
          * @작성자 : 강용수
          * @Method 설명 : Query Parameter 조건에 맞는 다시보기 영상들을 조회수 순으로 검색하는 메소드
          */
-        Sort sort = Sort.by(Sort.Direction.DESC, "hit");
+        Sort sort = Sort.by(Sort.Direction.DESC, "hit").by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         if (categoryId == null)
@@ -84,8 +101,17 @@ public class MainServiceImpl implements MainService {
 
                 if (hit1 < hit2)
                     return 1;
-                else if (hit1 == hit2)
-                    return 0;
+                else if (hit1 == hit2){
+                    long videoId1 = v1.getVideoId();
+                    long videoId2 = v2.getVideoId();
+
+                    if (videoId1 < videoId2)
+                        return 1;
+                    else if (videoId1 == videoId2)
+                        return 0;
+                    else
+                        return -1;
+                }
                 else
                     return -1;
             }
@@ -101,7 +127,7 @@ public class MainServiceImpl implements MainService {
          * @작성자 : 강용수
          * @Method 설명 : 자신이 팔로우한 유저의 Video를 조회하는 메소드
          */
-        List<String> accountEmailList = userRepository.findById(accountEmail).map(User::getFanList).orElse(null).stream()
+        List<String> accountEmailList = userRepository.findById(accountEmail).map(user -> user.getFanList()).orElse(null).stream()
                 .map(fan -> followToString(fan)).collect(Collectors.toList());
 
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
@@ -129,7 +155,7 @@ public class MainServiceImpl implements MainService {
          * @작성자 : 강용수
          * @Method 설명 : 자신이 팔로우한 유저 리스트를 조회하는 메소드
          */
-        return userRepository.findById(accountEmail).map(User::getFanList).orElse(null).stream()
+        return userRepository.findById(accountEmail).map(user -> user.getFanList()).orElse(null).stream()
                 .map(fan -> UserFindFollowGetRes.of(fan.getArtist())).collect(Collectors.toList());
     }
 }
