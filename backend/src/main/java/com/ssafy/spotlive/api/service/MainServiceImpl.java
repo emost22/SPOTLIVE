@@ -5,7 +5,6 @@ import com.ssafy.spotlive.api.response.main.VideoFindAllGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
-import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +127,7 @@ public class MainServiceImpl implements MainService {
          * @작성자 : 강용수
          * @Method 설명 : 자신이 팔로우한 유저의 Video를 조회하는 메소드
          */
-        List<String> accountEmailList = userRepository.findById(accountEmail).map(User::getFanList).orElse(null).stream()
+        List<String> accountEmailList = userRepository.findById(accountEmail).map(user -> user.getFanList()).orElse(null).stream()
                 .map(fan -> followToString(fan)).collect(Collectors.toList());
 
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
@@ -156,7 +155,7 @@ public class MainServiceImpl implements MainService {
          * @작성자 : 강용수
          * @Method 설명 : 자신이 팔로우한 유저 리스트를 조회하는 메소드
          */
-        return userRepository.findById(accountEmail).map(User::getFanList).orElse(null).stream()
+        return userRepository.findById(accountEmail).map(user -> user.getFanList()).orElse(null).stream()
                 .map(fan -> UserFindFollowGetRes.of(fan.getArtist())).collect(Collectors.toList());
     }
 }
