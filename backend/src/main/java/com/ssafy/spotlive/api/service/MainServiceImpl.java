@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.response.main.UserFindFollowGetRes;
+import com.ssafy.spotlive.api.response.main.VideoFindAllGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
@@ -27,6 +28,23 @@ public class MainServiceImpl implements MainService {
     VideoRepository videoRepository;
     @Autowired
     UserRepository userRepository;
+
+    @Override
+    public VideoFindAllGetRes findAllVideo(int page, int size, Long categoryId, String accountEmail) {
+        /**
+         * @Method Name : findAllVideo
+         * @작성자 : 강용수
+         * @Method 설명 : 메인 화면 진입 시 모든 Video들을 조회하는 메소드
+         */
+        VideoGetRes adVideoGetRes = findAllVideoByModeAndCategoryId(page, size, categoryId, "홍보");
+        VideoGetRes talkVideoGetRes = findAllVideoByModeAndCategoryId(page, size, categoryId, "소통");
+        VideoGetRes showVideoGetRes = findAllVideoByModeAndCategoryId(page, size, categoryId, "공연");
+        VideoGetRes replayVideoGetRes = findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId);
+        VideoGetRes liveVideoGetRes = findAllLiveVideoByIsLiveAndCategoryId(page, size, categoryId);
+        VideoGetRes followVideoGetRes = findAllFollowVideoByCategoryId(page, size, categoryId, accountEmail);
+
+        return VideoFindAllGetRes.of(adVideoGetRes, talkVideoGetRes, showVideoGetRes, replayVideoGetRes, liveVideoGetRes, followVideoGetRes);
+    }
 
     @Override
     public VideoGetRes findAllVideoByModeAndCategoryId(int page, int size, Long categoryId, String mode){
