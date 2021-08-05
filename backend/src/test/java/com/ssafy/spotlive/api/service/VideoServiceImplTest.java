@@ -45,7 +45,7 @@ class VideoServiceImplTest {
     @Test
     void 스트리밍종료테스트(){
         // video id로 종료 테스트
-        videoService.updateVideoEndTimeById(1L);
+        videoService.updateVideoEndTimeById(1L, "sqk8657@naver.com");
         Optional<Video> videoById = videoRepository.findById(1L);
         assertThat(videoById.get().getEndTime()).isEqualTo(LocalDateTime.now());
     }
