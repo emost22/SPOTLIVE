@@ -81,7 +81,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByMode(){
+    void findPageVideosByMode(){
         // given
         int page = 0;
         int size = 6;
@@ -100,7 +100,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByIsLive(){
+    void findPageVideosByIsLive(){
         // given
         int page = 0;
         int size = 3;
@@ -133,7 +133,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByUser_AccountEmailIn(){
+    void findPageVideosByUser_AccountEmailIn(){
         // given
         int page = 0;
         int size = 3;
@@ -167,5 +167,78 @@ public class VideoRepositoryTest {
 
         // then
         assertThat(pageVideo.getTotalElements()).isEqualTo(4);
+    }
+
+    @Test
+    void findVideosByMode(){
+        // given
+        String mode = "소통";
+
+        // when
+        List<Video> videoList = videoRepository.findVideosByMode(mode).orElse(null);
+
+        // then
+        assertThat(videoList.size()).isEqualTo(6);
+    }
+
+    @Test
+    void findVideosByIsLive(){
+        // given
+        Boolean isLive = false;
+
+        // when
+        List<Video> videoList = videoRepository.findVideosByIsLive(isLive).orElse(null);
+
+        // then
+        assertThat(videoList.size()).isEqualTo(5);
+    }
+
+    @Test
+    void findVideosByUser_AccountEmailIn(){
+        // given
+        List<String> accountEmailList = new ArrayList<>();
+        accountEmailList.add("sqk8657@naver.com");
+        accountEmailList.add("ahyen@naver.com");
+
+        // when
+        List<Video> videoList = videoRepository.findVideosByUser_AccountEmailIn(accountEmailList).orElse(null);
+
+        // then
+        assertThat(videoList.size()).isEqualTo(10);
+    }
+
+    @Test
+    void findVideosByVideoTitleContainsOrVideoDescriptionContains(){
+        // given
+        int page = 0;
+        int size = 3;
+        String videoTitle = "1";
+        String videoDescription = "1";
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, videoTitle, videoDescription);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(2);
+    }
+
+    @Test
+    void findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(){
+        // given
+        int page = 0;
+        int size = 3;
+        Long categoryId = 6L;
+        String videoTitle = "1";
+        String videoDescription = "1";
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, videoTitle, videoDescription);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(0);
     }
 }

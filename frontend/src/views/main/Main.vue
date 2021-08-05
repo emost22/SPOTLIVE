@@ -1,27 +1,30 @@
 <template>
-  <div class="d-flex flex-row">
-    <MainSidebar/>
-    <div class="main-video">
-      <div>
-        상단 카테고리 추천
-        <!-- npm install -S vue-carousel-3d -->
-        <VideoCarousel :videos="top_videos"/>
-      </div>
-      <div>
-        카테고리 버튼
-        <FilterGlide :filters="filter_btns"/>
-      </div>
-      <div>
-        <p> 소통용 영상</p>
-        <VideoGlide :videos="bottom_communication_videos"/>
-        <p> 공연용 영상</p>
-        <VideoGlide :videos="bottom_show_videos"/>
-        <p> 홍보용 영상</p>
-        <VideoGlide :videos="bottom_ad_videos"/>
-        <p> 조회순 높은 영상</p>
-        <VideoGlide :videos="bottom_views_videos"/>
-        <p> 내 구독자들의 영상</p>
-        <VideoGlide :videos="bottom_follow_videos"/>
+  <div>
+    <div class="d-flex flex-row">
+      <MainSidebar/>
+      <div class="main-video">
+        <div>
+          상단 카테고리 추천
+          <VideoCarousel :videos="carousel_videos"/>
+        </div>
+        <div>
+          카테고리 버튼
+          <FilterGlide :filters="filter_btns"/>
+        </div>
+        <div class="row">
+          <p> 소통용 영상</p>
+          <VideoGlide :videos="talk_videos"/>
+          <p> 공연용 영상</p>
+          <VideoGlide :videos="show_videos"/>
+          <p> 홍보용 영상</p>
+          <VideoGlide :videos="ad_videos"/>
+          <p> 다시보기 조회순 높은 영상</p>
+          <VideoGlide :videos="replay_videos"/>
+          <p> 실시간 시청자 높은 영상</p>
+          <VideoGlide :videos="live_videos"/>
+          <p> 내가 팔로우 하는 사람들의 최신 영상</p>
+          <VideoGlide :videos="follow_videos"/>
+        </div>
       </div>
     </div>
   </div>
@@ -32,6 +35,7 @@ import MainSidebar from '@/views/main/components/MainSidebar.vue'
 import VideoCarousel from '@/views/main/components/VideoCarousel.vue'
 import VideoGlide from '@/views/main/components/VideoGlide.vue'
 import FilterGlide from '@/views/main/components/FilterGlide.vue'
+import axios from 'axios'
 
 export default {
   name: "Main",
@@ -43,28 +47,66 @@ export default {
   },
   data: function () {
     return {
-      top_videos: [],
+      carousel_videos: [],
       filter_btns: [],
-      bottom_communication_videos: [],
-      bottom_show_videos: [],
-      bottom_ad_videos: [],
-      bottom_views_videos: [],
-      bottom_follow_videos: [],
+      talk_videos: [],
+      show_videos: [],
+      ad_videos: [],
+      replay_videos: [],
+      live_videos: [],
+      follow_videos: [],
     }
   },
+  
   methods: {
-    getTopVideos: function () {
+    getCarouselVideos: function () {
     },
     getFilterBtn: function () {
     },
-    getBottomVideos: function () {
+    getTalkVideos: function () {
+      const SERVER_URL = "http://localhost:8080"
+      axios({
+        method: "GET",
+        url: `${SERVER_URL}/api/main/talk`,
+        params: { page: 0, size: 20 },
+        // data: {},
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res.data.videoResList[0])
+        this.talk_videos = res.data.videoResList;
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     },
-
+    getShowVideos: function () {
+      const SERVER_URL = "http://localhost:8080"
+      axios({
+        method: "GET",
+        url: `${SERVER_URL}/api/main/show`,
+        params: { page: 0, size: 20 },
+        // data: {},
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res.data.videoResList[0])
+        this.show_videos = res.data.videoResList;
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
   },
   created: function () {
-    this.getTopVideos()
+    this.getCarouselVideos()
     this.getFilterBtn()
-    this.getBottomVideos()
+    this.getTalkVideos()
+    this.getShowVideos()
   },
   computed: function () {
   },
@@ -73,9 +115,7 @@ export default {
 
 <style>
 .main-video {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   width: 100%;
+  margin: 20px;
 }
 </style>

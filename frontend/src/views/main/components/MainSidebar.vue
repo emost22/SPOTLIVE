@@ -62,12 +62,14 @@ export default {
 
 <style>
 .open-sidebar {
-  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
   display: block;
   padding: 5px;
 }
 .close-sidebar {
-  width: 65px;
+  min-width: 65px;
+  max-width: 65px;
   display: block;
   padding: 5px;
 }
