@@ -292,4 +292,28 @@ public class MainController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @ApiOperation(value = "입력된 keyword가 포함되는 제목과 설명이 있는 Video를 categoryId 기준으로 조회", notes = "입력된 keyword가 포함되는 제목과 설명이 있는 Video를 categoryId 기준으로 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    @GetMapping("/search")
+    public ResponseEntity<VideoGetRes> findAllSearchVideo(
+            @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam("keyword") String keyword, @RequestParam(name = "categoryId", required = false) Long categoryId){
+        /**
+         * @Method Name : findAllSearchVideo
+         * @작성자 : 강용수
+         * @Method 설명 : 입력된 keyword가 포함되는 제목과 설명이 있는 Video를 categoryId 기준으로 조회하는 메소드
+         */
+        VideoGetRes videoGetRes = mainService.findAllSearchVideoByKeywordContains(page, size, keyword, categoryId);
+
+        List<VideoFindMainVideoRes> videoFindMainVideoResList = videoGetRes.getVideoResList();
+
+        if (videoFindMainVideoResList == null || videoFindMainVideoResList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else
+            return new ResponseEntity<>(videoGetRes, HttpStatus.OK);
+    }
 }

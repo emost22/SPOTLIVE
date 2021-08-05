@@ -144,4 +144,26 @@ class MainServiceImplTest {
         // then
         verify(userRepository).findById(accountEmail);
     }
+
+    @Test
+    void findAllSearchVideoByKeywordContains(){
+        // given
+        int page = 0;
+        int size = 3;
+        String keyword = "1";
+        Long categoryId1 = 6L;
+        Long categoryId2 = null;
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        when(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword)).thenReturn(pageVideo);
+        when(videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId1, keyword, keyword)).thenReturn(pageVideo);
+        mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword, categoryId1);
+        mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword, categoryId2);
+
+        // then
+        verify(videoRepository).findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword);
+        verify(videoRepository).findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId1, keyword, keyword);
+    }
 }

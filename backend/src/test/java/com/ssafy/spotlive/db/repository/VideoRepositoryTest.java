@@ -206,4 +206,39 @@ public class VideoRepositoryTest {
         // then
         assertThat(videoList.size()).isEqualTo(10);
     }
+
+    @Test
+    void findVideosByVideoTitleContainsOrVideoDescriptionContains(){
+        // given
+        int page = 0;
+        int size = 3;
+        String videoTitle = "1";
+        String videoDescription = "1";
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, videoTitle, videoDescription);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(2);
+    }
+
+    @Test
+    void findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(){
+        // given
+        int page = 0;
+        int size = 3;
+        Long categoryId = 6L;
+        String videoTitle = "1";
+        String videoDescription = "1";
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // when
+        Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, videoTitle, videoDescription);
+
+        // then
+        assertThat(pageVideo.getTotalElements()).isEqualTo(0);
+    }
 }
