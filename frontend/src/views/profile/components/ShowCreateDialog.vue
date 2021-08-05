@@ -5,16 +5,16 @@
         <div class="modal-header no-border">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body mx-3">
             <form>
-              <div class="d-flex flex-row">
+              <div class="d-flex flex-row mb-3">
                 <div><img src="~@/assets/icon-profile.png" class="profile-small-img bdcolor-bold-npink"></div>
-                <div class="mx-2">
-                  <p> 나예뽀님</p>
-                  <p> email@naver.com </p>
+                <div class="profile-small-detail">
+                  <div> 나예뽀님</div>
+                  <div> email@naver.com </div>
                 </div>
               </div>
-              <div class="d-flex flex-row">
+              <div class="d-flex flex-row justify-content-evenly mb-3">
                 <div class="camera-input-bgcolor-light-grey show-img">
                   <div><button class="camera-input-button"></button></div>
                 </div>
@@ -42,11 +42,15 @@
                         <option value="2">One</option>
                       </select>
                     </div>
+                    <div class="flex-fill me-3">
+                      <div class="label-alignment">
+                        <label class="form-label">러닝타임</label>
+                      </div>
+                      <input type="text" class="custom-form-control" id="showCreateFormControlInput1">
+                    </div>
                   </div>
                 </div>
               </div>
-
-
               <div class="mb-3">
                 <div class="label-alignment"><label for="showCreateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
                 <textarea class="custom-form-control" id="showCreateFormControlTextarea1" rows="3"></textarea>
@@ -83,9 +87,11 @@ export default {
   background-position: center;
 }
 .camera-input-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40px;
   height: 40px;
-  margin-left: 10px;
   background-color: #C4C4C4;
   border: none;
   border-radius: .25rem;
@@ -94,14 +100,21 @@ export default {
   background-position: center;
 }
 .show-img {
-
+  width: 100%;
+  margin-right: 20px;
 }
 .show-info {
-
+  width: 100%;
 }
 .profile-small-img {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+}
+.profile-small-detail{
+  width: 100px;
+  height: 50px;
+  margin-left: 30px;
+  text-align: left;
 }
 </style>

@@ -67,7 +67,6 @@ body {
 
 textarea {
   resize: none;
-  height: 100px;
 }
 
 .match-parent {
@@ -233,7 +232,6 @@ textarea {
   display: flex;
   justify-content: center;
   padding: .75rem;
-  margin-bottom: 20px;
 }
 form {
   margin-top: 20px;
@@ -267,5 +265,18 @@ form {
 }
 .btn-close:hover {
   background-image: url('~@/assets/icon-x.png');
+}
+.label-alignment {
+  text-align: left;
+}
+label:hover {
+  color: white;
+  cursor: pointer;
+}
+.content {
+  position: absolute;
+  top: 50px; right: 0; bottom: 0; left: 0;
+  padding: 30px;
+  display: none;
 }
 </style>

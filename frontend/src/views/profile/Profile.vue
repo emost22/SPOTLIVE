@@ -115,8 +115,6 @@ export default {
   height: 150px;
   margin-top: auto;
   margin-bottom: auto;
-  margin-top: auto;
-  margin-bottom: auto;
   margin-left: 30px;
   text-align: left;
 }
