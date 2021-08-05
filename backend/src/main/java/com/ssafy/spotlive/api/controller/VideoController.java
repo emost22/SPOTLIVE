@@ -192,4 +192,36 @@ public class VideoController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PatchMapping("/delete/{videoId}")
+    @ApiOperation(value = "본인의 '내동영상' 영상중 하나 삭제", notes = "videoId를 입력받아 해당 유저의 영상파일 삭제, DB에 videoUrl을 비운다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "삭제 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<String> updateVideoUrlByVideoId(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @PathVariable long videoId) {
+        /**
+         * @Method Name : findVideoListByUserId
+         * @작성자 : 권영린
+         * @Method 설명 : 특정 유저의 내동영상 리스트를 조회한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String[] spitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
+            if(videoService.updateVideoUrlByVideoId(videoId, userRes.getAccountEmail())) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            }else{
+                return new ResponseEntity<String>("비디오가 없거나, 저장된 Url이 없거나, 다른 사람의 영상을 삭제하려 하거나, 암튼 실패", HttpStatus.BAD_REQUEST);
+            }
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
