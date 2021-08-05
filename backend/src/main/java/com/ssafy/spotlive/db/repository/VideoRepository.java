@@ -4,6 +4,8 @@ import com.ssafy.spotlive.db.entity.Video;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -85,4 +87,24 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      * @Method 설명 : 자신이 팔로우한 유저의 Video를 검색하는 메소드
      */
     Optional<List<Video>> findVideosByUser_AccountEmailIn(List<String> accountEmailList);
+
+    /**
+     * @Method Name : findVideosByVideoTitleContainsOrVideoDescriptionContains
+     * @작성자 : 강용수
+     * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 검색하는 메소드
+     */
+    Page<Video> findVideosByVideoTitleContainsOrVideoDescriptionContains(Pageable pageable, String videoTitle, String videoDescription);
+
+    /**
+     * @Method Name : findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains
+     * @작성자 : 강용수
+     * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 categoryId를 기준으로 검색하는 메소드
+     */
+    @Query(value = "select v from Video v where category_id=:categoryId and (video_title like %:videoTitle% or video_description like %:videoDescription%)")
+    Page<Video> findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(
+            Pageable pageable,
+            @Param("categoryId") Long categoryId,
+            @Param("videoTitle") String videoTitle,
+            @Param("videoDescription") String videoDescription
+    );
 }
