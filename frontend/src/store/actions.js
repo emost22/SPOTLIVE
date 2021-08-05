@@ -51,6 +51,7 @@ export default {
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
+
     requestGetUserVideos(context, payload) {
         const URL = '/main/user'
         const PAGE_VALUE = payload.pageValue;
@@ -58,4 +59,13 @@ export default {
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
+
+    requestGetTotalMainVideos(context, payload) {
+        const URL = '/main/all'
+        const PAGE_VALUE = payload.pageValue;
+        const SIZE_VALUE = payload.sizeValue;
+
+        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
+    },
+    
 }
