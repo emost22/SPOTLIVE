@@ -1,15 +1,16 @@
-import axios from '../util/axios'
+import $axios from '../util/axios'
 
 export default {
 
     requestGetKakaoLoginUrl(context, payload) {
         const URL = '/auth/kakao/showlogin'
-        return axios.get(URL)
+        return $axios.get(URL)
     },
 
     requestDoKakaoLogin(context, payload) {
         const URL = '/auth/kakao/login'
-        axios.get(URL + "?code=" + payload)
+
+        $axios.get(URL + "?code=" + payload)
         .then((response) => {
             context.commit("DO_KAKAO_LOGIN", {
                 loginUser: response.data,
