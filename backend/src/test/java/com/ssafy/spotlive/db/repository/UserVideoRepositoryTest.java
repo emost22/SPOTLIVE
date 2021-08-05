@@ -45,4 +45,16 @@ class UserVideoRepositoryTest {
         assertThat(optionalUserVideo.get().getUser().getAccountEmail()).isEqualTo(accountEmail);
         assertThat(optionalUserVideo.get().getVideo().getVideoId()).isEqualTo(videoId);
     }
+
+    @Test
+    void findAllByUserTest() {
+        // given
+        String accountEmail = "emoney96@naver.com";
+
+        // when
+        List<UserVideo> allByUser = userVideoRepository.findAllByUser_AccountEmail(accountEmail);
+
+        // then
+        allByUser.stream().forEach(userVideo -> assertThat(userVideo.getUser().getAccountEmail()).isEqualTo(accountEmail));
+    }
 }
