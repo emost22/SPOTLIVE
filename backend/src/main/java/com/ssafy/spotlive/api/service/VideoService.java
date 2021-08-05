@@ -20,4 +20,8 @@ public interface VideoService {
     Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq);
     Boolean updateVideoEndTimeById(Long videoId);
     List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail);
+
+    String createSession();
+    String createToken(String sessionId);
+    int closeSession(String sessionId);
 }

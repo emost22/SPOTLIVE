@@ -51,10 +51,45 @@ class VideoServiceImplTest {
     }
 
     @Test
+    void 오픈비두_세션생성테스트() {
+        // given
+
+        // when
+        String sessionId = videoService.createSession();
+
+        // then
+        assertThat(sessionId).contains("session");
+    }
+
+    @Test
+    void 오픈비두_토큰발급테스트() {
+        // given
+        String sessionId = videoService.createSession();
+
+        // when
+        String token = videoService.createToken(sessionId);
+
+        // then
+        assertThat(token).contains("wss://i5a405.p.ssafy.io");
+    }
+
+    @Test
+    void 오픈비두_세션종료테스트() {
+        // given
+        String sessionId = videoService.createSession();
+
+        // when
+        int statusCodeForSuccess = videoService.closeSession(sessionId);
+        int statusCodeForFail = videoService.closeSession(sessionId);
+
+        // then
+        assertThat(statusCodeForSuccess).isEqualTo(204);
+        assertThat(statusCodeForFail).isEqualTo(404);
+    }
+
     void 특정유저영상조회테스트() {
         String accountEmail = "sqk8657@naver.com";
         List<VideoFindAllByUserIdGetRes> videoByAccountEmail = videoService.findVideoByAccountEmail(accountEmail);
         assertThat(videoByAccountEmail.size()).isEqualTo(9);
     }
-
 }
