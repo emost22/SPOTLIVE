@@ -210,9 +210,9 @@ textarea {
   background-color: lightgrey;
 }
 .modal-design {
+  max-height: 700px;
   min-width: 500px;
   width: 70%;
-  height: 80%;
   background-color: #242424;
   color: white;
 }
@@ -231,7 +231,7 @@ textarea {
 .modal-footer-m {    
   display: flex;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1.2rem;
 }
 form {
   margin-top: 20px;

@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered bdcolor-bold-npurple modal-design">
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -44,7 +44,7 @@ export default {
   }, 
   methods: {
     setSetting() {
-      // axios 요청
+      //axios
     }
   }
 }
