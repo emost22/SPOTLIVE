@@ -56,4 +56,15 @@ public class FollowServiceImpl implements FollowService{
                 .map(follow -> FollowFindByFanAccountEmailGetRes.of(follow)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<FollowFindByArtistAccountEmailGetRes> findFanByArtistAccountEmail(String artistEmail) {
+        /**
+         * @Method Name : findFanByArtistAccountEmail
+         * @작성자 : 권영린
+         * @Method 설명 : 아티스트의 이메일로 자신을 팔로우중인 유저들의 리스트를 담는 메소드
+         */
+        Optional<List<Follow>> fanList = followRepository.findFollowsByArtistAccountEmail(artistEmail);
+        return fanList.get().stream()
+                .map(follow -> FollowFindByArtistAccountEmailGetRes.of(follow)).collect(Collectors.toList());
+    }
 }

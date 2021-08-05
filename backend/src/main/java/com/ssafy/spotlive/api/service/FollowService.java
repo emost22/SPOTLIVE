@@ -14,4 +14,5 @@ public interface FollowService {
     void insertFollowByAccountEmail(String artistEmail, String fanEmail);
     void deleteFollowByAccountEmail(String artistEmail, String fanEmail);
     List<FollowFindByFanAccountEmailGetRes> findArtistByFanAccountEmail(String fanEmail);
+    List<FollowFindByArtistAccountEmailGetRes> findFanByArtistAccountEmail(String artistEmail);
 }
