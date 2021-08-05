@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog bdcolor-bold-npurple modal-design">
+    <div class="modal-dialog modal-dialog-centered bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button" @click="setSetting" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>
@@ -36,6 +36,16 @@ export default {
   components: {
     RoomSettingDialogForm,
     RoomSettingDialogCameraForm
+  },
+  data: function () {
+    return {
+      
+    }
+  }, 
+  methods: {
+    setSetting() {
+      alert("axios요청")
+    }
   }
 }
 </script>
@@ -79,7 +89,9 @@ label:hover {
 .content {
   position: absolute;
   top: 50px; right: 0; bottom: 0; left: 0;
-  padding: 30px;
+  padding-top: 50px;
+  padding-right: 30px;
+  padding-left: 30px;
   display: none;
 }
 

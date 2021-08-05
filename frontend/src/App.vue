@@ -231,7 +231,7 @@ textarea {
 .modal-footer-m {    
   display: flex;
   justify-content: center;
-  padding: .75rem;
+  padding: 1.5rem;
 }
 form {
   margin-top: 20px;
