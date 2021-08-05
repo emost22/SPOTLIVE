@@ -6,9 +6,8 @@ import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
-import com.ssafy.spotlive.db.entity.Category;
-import com.ssafy.spotlive.db.entity.ShowInfo;
-import com.ssafy.spotlive.db.entity.Video;
+import com.ssafy.spotlive.db.entity.*;
+import com.ssafy.spotlive.db.repository.UserVideoRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +48,9 @@ public class VideoServiceImpl implements VideoService{
 
     @Autowired
     VideoRepository videoRepository;
+
+    @Autowired
+    UserVideoRepository userVideoRepository;
 
     @Override
     public VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage){
@@ -158,7 +160,7 @@ public class VideoServiceImpl implements VideoService{
         /**
          * @Method Name : updateVideoEndTimeById
          * @작성자 : 권영린, 김민권
-         * @Method 설명 : 1) 해당 비디오의 Endtime을 기록하고, Openvidu 세션을 종료한다.
+         * @Method 설명 : 1) 해당 비디오의 Endtime을 기록하고 2) Openvidu 세션을 종료한다. 3) 이후 관련된 UserVideo를 전부 삭제한다.
          */
         Video video = videoRepository.findById(videoId).get();
         if(video.getEndTime()!=null) return Boolean.FALSE;
@@ -168,6 +170,12 @@ public class VideoServiceImpl implements VideoService{
 
         video.setEndTime(LocalDateTime.now());
         videoRepository.save(video);
+
+        // User Video 삭제
+        List<UserVideo> deleteUserVideoList = userVideoRepository.findAllByVideo_VideoId(video.getVideoId());
+        deleteUserVideoList.stream()
+                .map(userVideo -> makeUserVideoId(userVideo))
+                .forEach(userVideoId -> userVideoRepository.deleteById(userVideoId));
 
         return Boolean.TRUE;
     }
@@ -261,4 +269,12 @@ public class VideoServiceImpl implements VideoService{
         for(int i = 0; i < 8; i++) sessionId = sessionId + String.valueOf(new Random().nextInt(9) + 1);
         return sessionId;
     }
+
+    private UserVideoId makeUserVideoId(UserVideo userVideo) {
+        UserVideoId userVideoId = new UserVideoId();
+        userVideoId.setUser(userVideo.getUser().getAccountEmail());
+        userVideoId.setVideo(userVideo.getVideo().getVideoId());
+        return userVideoId;
+    }
+
 }
