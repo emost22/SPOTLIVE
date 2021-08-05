@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="mb-3">
+    <div class="mb-3" v-if="mode==1 || mode==2">
       <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
       <div class="d-flex">
       <select class="custon-select-control" aria-label="Default select example" v-model="showInfoId" id="showInfoId">
