@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @FileName : ShowInfoInsertPostReq
@@ -22,11 +21,11 @@ import java.util.stream.Collectors;
 @ToString
 @ApiModel("ShowInfoInsertPostReq")
 public class ShowInfoInsertPostReq {
-    @ApiModelProperty(name = "accountEmail", example = "주지마세요")
+    @ApiModelProperty(name = "accountEmail", hidden = true)
     String accountEmail;
     @ApiModelProperty(name = "showInfoTitle", example = "공연 제목")
     String showInfoTitle;
-    @ApiModelProperty(name = "posterUrl", example = "https://k.kakaocdn.net/14/dn/btraHsFgtT6/Hd1681aKfKy6T5BVy7CSq0/o.jpg")
+    @ApiModelProperty(name = "posterUrl", hidden = true)
     String posterUrl;
     @ApiModelProperty(name = "showInfoDescription", example = "공연에 대한 설명")
     String showInfoDescription;

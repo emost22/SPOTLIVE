@@ -22,7 +22,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @작성자 : 금아현
  * @Class 설명 : 공연 정보(ShowInfo)에 대한 CRUD를 수행하는 컨트롤러
  */
-@Api(value = "공연 정보 API", tags = {"ShowInfo"})
+@Api(value = "공연 정보 API", tags = {"ShowInfoController"}, description = "공연 정보 컨트롤러")
 @RestController
 @CrossOrigin(value = {"*"}, maxAge = 6000)
 @RequestMapping("/api/showinfo")

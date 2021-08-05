@@ -9,7 +9,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @FileName : ShowInfoUpdatePatchReq
@@ -25,7 +24,7 @@ public class ShowInfoUpdatePatchReq {
     String showInfoTitle;
     @ApiModelProperty(name = "showInfoDescription", example = "수정할 설명입니다.")
     String showInfoDescription;
-    @ApiModelProperty(name = "posterUrl", example = "https://k.kakaocdn.net/14/dn/btraHsFgtT6/Hd1681aKfKy6T5BVy7CSq0/o.jpg")
+    @ApiModelProperty(name = "posterUrl", hidden = true)
     String posterUrl;
     @ApiModelProperty(name = "price", example = "20000")
     Long price;
