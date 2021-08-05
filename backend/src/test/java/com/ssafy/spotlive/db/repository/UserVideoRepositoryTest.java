@@ -1,11 +1,14 @@
 package com.ssafy.spotlive.db.repository;
 
 
+import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.entity.UserVideo;
 import com.ssafy.spotlive.db.entity.UserVideoId;
+import com.ssafy.spotlive.db.entity.Video;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,5 +71,40 @@ class UserVideoRepositoryTest {
 
         // then
         allByVideo.stream().forEach(userVideo -> assertThat(userVideo.getVideo().getVideoId()).isEqualTo(videoId));
+    }
+
+    @Test
+    @Transactional
+    void saveTest() {
+        // given
+        String accountEmail = "emoney96@naver.com";
+        long videoId = 2;
+
+        User user = new User();
+        user.setAccountEmail(accountEmail);
+
+        Video video = new Video();
+        video.setVideoId(videoId);
+
+        UserVideo userVideo = new UserVideo();
+        userVideo.setUser(user);
+        userVideo.setVideo(video);
+
+        // when
+        userVideoRepository.save(userVideo);
+
+        UserVideoId userVideoId = new UserVideoId();
+        userVideoId.setUser(accountEmail);
+        userVideoId.setVideo(videoId);
+
+        Optional<UserVideo> expectResult = userVideoRepository.findById(userVideoId);
+
+        // then
+        assertThat(expectResult).isNotEqualTo(Optional.empty());
+        assertThat(expectResult.get().getUser().getAccountEmail()).isEqualTo(accountEmail);
+        assertThat(expectResult.get().getVideo().getVideoId()).isEqualTo(videoId);
+
+        assertThat(expectResult.get().getUser().getUserName()).isEqualTo("강용수");
+        assertThat(expectResult.get().getVideo().getVideoTitle()).contains("심심해요");
     }
 }
