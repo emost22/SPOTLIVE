@@ -206,4 +206,18 @@ public class VideoRepositoryTest {
         // then
         assertThat(videoList.size()).isEqualTo(10);
     }
+
+    @Test
+    void findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(){
+        // given
+        Long categoryId = 6L;
+        String videoTitle = "1";
+        String videoDescription = "1";
+
+        // when
+        List<Video> videoList = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(categoryId, videoTitle, videoDescription).orElse(null);
+
+        // then
+        assertThat(videoList.size()).isEqualTo(0);
+    }
 }
