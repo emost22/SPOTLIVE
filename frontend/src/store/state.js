@@ -14,4 +14,5 @@ export default {
     mainStreamManager: undefined,
     publisher: undefined,
     subscribers: [],
+    createdVideoData: {}
 }

@@ -96,5 +96,9 @@ export default {
         state.isSettingDialogOpen = !state.isSettingDialogOpen
         console.log(!state.isSettingDialogOpen)
         state.settingDialogViewId = payload
+    },
+
+    SET_CREATEVIDEO_DATA (state, payload) {
+        state.createdVideoData = payload
     }
 }

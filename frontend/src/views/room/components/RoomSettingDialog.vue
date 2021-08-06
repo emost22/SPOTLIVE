@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button" @click="setSetting()" data-bs-dismiss="modal">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button" @click="setCreatedVideoDataInVuex()" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>
@@ -49,15 +49,14 @@ export default {
     }
   }, 
   methods: {
-    setSetting: function () {
-      //axios
-      this.closeRoomSettingDialog()
-    },
     closeRoomSettingDialog: function () {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 0)
     },
     setViewId: function() {
       viewId = settingDialogViewId
+    },
+    setCreatedVideoDataInVuex: function () {
+      this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
     }
     
   },
@@ -70,7 +69,6 @@ export default {
   mounted() {
     this.$store.dispatch('requestGetCategoryIds')
       .then((response) => {
-        console.log(response)
         this.categoryIds = response.data
       })
   },

@@ -43,7 +43,7 @@
       </select>
       <button class="plus-button"></button>
       </div>
-      <input  v-if="form.mode==1" class="custom-form-control mt-1" id="videoTitle" v-model="form.videoTitle" readonly="readonly" disabled="disabled">
+      <input  v-if="form.mode==1" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
     </div>
     <div class="mb-3">
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
@@ -74,10 +74,11 @@ export default {
     return {
       form: {
         categoryId: '1',
-        file: [],
+        thumbnailImage: [],
         videoDescription: '',
         videoTitle: '',
-        showInfoId: '1',
+        showInfoId: '35',
+        showTime:'',
         mode: 1,
       },
       thumbnail: '',
@@ -91,10 +92,17 @@ export default {
   },
   methods: {
     handleFileChange(e) {
+      this.form.thumbnailImage = e.target.files[0]
       this.fileName = e.target.files[0].name
     }
   },
   beforeUpdate() {
+    if (this.form.mode == 2 || this.form.mode == 3) {
+      delete this.form.showTime
+      if (this.form.mode == 3) {
+        delete this.form.showInfoId
+      }
+    } 
     this.$emit('form-data', this.form)
   }
 }

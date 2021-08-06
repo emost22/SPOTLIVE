@@ -118,7 +118,6 @@ export default {
     // MainSidebar.vue
     requestGetFollowingList() {
         const URL = '/main/user'
-
         return $axios.get(URL)
     },
     
@@ -129,5 +128,18 @@ export default {
     requestGetCategoryIds(context) {
         const URL = '/category/'
         return $axios.get(URL)
+    },
+
+    requestSetCreatedVideoData({ commit }, payload) {
+        commit('SET_CREATEVIDEO_DATA', payload)
+    },
+
+    requestStartStreaming(context, payload) {
+        const URL = '/video/insert'
+        return $axios.post(URL, payload, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
     }
 }

@@ -38,6 +38,9 @@ export default {
     },
     isSettingDialogOpen(state) {
         return state.isSettingDialogOpen
+    },
+    createdVideoData(state) {
+        return state.createdVideoData
     }
 
 }
