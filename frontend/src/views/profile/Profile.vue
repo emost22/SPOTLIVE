@@ -2,19 +2,19 @@
   <div class="txtcolor-white"> 
 
     <div> 
-      <div class="profile-btn-line" v-if="!inMyProfile">
+      <div class="profile-btn-line" v-if="inMyProfile">
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow">예매 내역</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen" data-bs-toggle="modal" data-bs-target="#showCreateModal">공연 생성</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink">프로필 수정</button></div>
       </div>
-      <div class="profile-btn-line" v-if="!inMyProfile">
+      <div class="profile-btn-line" v-if="inMyProfile">
         <button type="button" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
         <button type="button" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
       </div>
     </div>
 
     <div class="profile-info">
-      <div><img :src="myProfile.profileImageUrl" class="profile-img bdcolor-bold-npink"></div>
+      <div><img :src="myProfile.profileImageUrl" class="profile-img bdcolor-bold-ngreen"></div>
       <div class="profile-detail">
         <p> <span class="txtcolor-nyellow">나예뽀 {{ myProfile.profileNickname }}</span> 님</p>
         <p> 
