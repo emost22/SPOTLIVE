@@ -1,8 +1,13 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
+import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
+import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
+import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @FileName : VideoService
@@ -11,4 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface VideoService {
     VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage);
+    VideoFindByIdGetRes findVideoById(Long id);
+    Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq, String accountEmail);
+    Boolean updateVideoEndTimeById(Long videoId, String accountEmail);
+    List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail);
+
+    String createSession();
+    String createToken(String sessionId);
+    int closeSession(String sessionId);
 }

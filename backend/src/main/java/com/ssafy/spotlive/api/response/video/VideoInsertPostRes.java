@@ -20,6 +20,8 @@ import lombok.ToString;
 public class VideoInsertPostRes {
     long videoId;
     String thumbnailUrl;
+    String sessionId;
+    String token;
 
     public static VideoInsertPostRes of(Video video) {
         /**
@@ -30,6 +32,7 @@ public class VideoInsertPostRes {
         return VideoInsertPostRes.builder()
                 .videoId(video.getVideoId())
                 .thumbnailUrl(video.getThumbnailUrl())
+                .sessionId(video.getSessionId())
                 .build();
     }
 }

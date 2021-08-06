@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
@@ -20,11 +22,11 @@ class UserRepositoryTest {
         String userName = "김민권";
 
         // then
-        User userByAccountEmail = userRepository.findUserByAccountEmail(accountEmail);
+        Optional<User> userByAccountEmail = userRepository.findById(accountEmail);
 
         // when
-        assertThat(userByAccountEmail.getAccountEmail()).isEqualTo(accountEmail);
-        assertThat(userByAccountEmail.getUserName()).isEqualTo(userName);
+        assertThat(userByAccountEmail.get().getAccountEmail()).isEqualTo(accountEmail);
+        assertThat(userByAccountEmail.get().getUserName()).isEqualTo(userName);
     }
 
     @Test
@@ -33,9 +35,25 @@ class UserRepositoryTest {
         String accountEmail = "expectNullId@younsubabo.com";
 
         // then
-        User userByAccountEmail = userRepository.findUserByAccountEmail(accountEmail);
+        Optional<User> userByAccountEmail = userRepository.findById(accountEmail);
 
         // when
-        assertThat(userByAccountEmail).isNull();
+        assertThat(userByAccountEmail).isEqualTo(Optional.empty());
+        assertThat(userByAccountEmail.isPresent()).isFalse();
+    }
+
+    @Test
+    void findUserByAccessTokenTest() {
+        // given
+        String accountEmail = "kmk130519@naver.com";
+        Optional<User> userByAccountEmail = userRepository.findById(accountEmail);
+        String accessToken = userByAccountEmail.get().getAccessToken();
+
+        // when
+        Optional<User> userByAccessToken = userRepository.findUserByAccessToken(accessToken);
+
+        // then
+        assertThat(userByAccessToken.get().getAccountEmail()).isEqualTo(userByAccountEmail.get().getAccountEmail());
+        assertThat(userByAccessToken.get().getAccessToken()).isEqualTo(userByAccountEmail.get().getAccessToken());
     }
 }
