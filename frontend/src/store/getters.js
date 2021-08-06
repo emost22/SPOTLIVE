@@ -24,6 +24,12 @@ export default {
     audioDevices(state) {
         return state.audioDevices
     },
+    videoDeviceId(state) {
+        return state.videoDeviceId
+    },
+    audioDeviceId(state) {
+        return state.audioDeviceId
+    },
     mainStreamManager(state) {
         return state.mainStreamManager
     },
