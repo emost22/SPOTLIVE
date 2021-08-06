@@ -1,6 +1,5 @@
 package com.ssafy.spotlive.api.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
@@ -11,7 +10,6 @@ import com.ssafy.spotlive.api.response.video.VideoOpenViduSessionGetRes;
 import com.ssafy.spotlive.db.entity.*;
 import com.ssafy.spotlive.db.repository.UserVideoRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -33,7 +31,6 @@ import java.util.stream.Collectors;
  * @Class 설명 : Video관련 기능을 위한 ServiceImpl 정의.
  */
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class VideoServiceImpl implements VideoService{
 
@@ -60,14 +57,6 @@ public class VideoServiceImpl implements VideoService{
 
     private final static String TEMP_FILE_PATH = "src/main/resources/";
 
-    @Value("${cloud.aws.s3.bucket}") // 프로퍼티에서 cloud.aws.s3.bucket에 대한 정보를 불러옴
-    public String bucket;
-
-    @Value("${cloud.aws.s3.bucket.url}")
-    private String defaultUrl;
-
-    private final AmazonS3Client amazonS3Client;
-
     @Override
     public VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage){
         /**
@@ -75,6 +64,7 @@ public class VideoServiceImpl implements VideoService{
          * @작성자 : 권영린, 김민권
          * @Method 설명 : 영상 시작시 썸네일을 비디오객체를 추가
          */
+
         // 썸네일을 비디오객체에 추가
         String thumbnailImageUrl = null;
         try {
@@ -85,7 +75,7 @@ public class VideoServiceImpl implements VideoService{
             e.printStackTrace();
         }
         VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(thumbnailImageUrl)));
-        
+
         return videoInsertPostRes;
     }
 
@@ -105,6 +95,11 @@ public class VideoServiceImpl implements VideoService{
             MultipartFile thumbnailImage,
             VideoUpdateByIdPatchReq videoUpdateByIdPatchReq,
             String accountEmail) {
+        /**
+         * @Method Name : findVideoById
+         * @작성자 : 권영린
+         * @Method 설명 : 영상 id로 영상을 조회
+         */
         /* 원래 정보를 꺼내옴 */
         Optional<Video> videoById = videoRepository.findById(videoId);
         /* 정보가 없다면 FALSE */

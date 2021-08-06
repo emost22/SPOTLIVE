@@ -10,7 +10,6 @@ export default {
         state.isLogin = true;
         localStorage.setItem('accessToken', payload.loginUser.accessToken)
         $axios.defaults.headers['Authorization'] = 'Bearer ' + payload.loginUser.accessToken
-
         router.push({ name: "Main" })
     },
 

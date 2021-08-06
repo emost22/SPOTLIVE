@@ -9,9 +9,10 @@
           <img src="~@/assets/icon-sidebar-back.png" class="sidebar-icon-img">
         </div>
       </div>
-      <ul class="navbar-nav" v-for="(following, idx) in followings" :key="idx">
+      <ul class="navbar-nav" v-for="(following, idx) in following_list" :key="idx">
         <FollowingList
           :following="following"
+          :open="open"
         />
       </ul>
     </nav>
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
 import FollowingList from '@/views/main/components/FollowingList.vue'
 
 export default {
@@ -28,12 +30,21 @@ export default {
   },
   data: function () {
     return {
-      followings: [],
+      following_list: [],
       open: false,
     }
   },
   methods: {
-    getFollowings: function () {
+    getFollowingList() {
+      this.$store.dispatch('requestGetFollowingList')
+      .then((response) => {
+        console.log("getFollowingList() SUCCESS!!")
+        console.log(response.data)
+        this.following_list = response.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     },
     openSidebar: function () {
       const nav = document.querySelectorAll('.nav-sidebar')[0]
@@ -53,9 +64,10 @@ export default {
     },
   },
   created: function () {
-    this.getFollowings()
+    this.getFollowingList()
   },
-  computed: function () {
+  computed: {
+    ...mapGetters(['loginUser', 'isLogin']),
   },
 }
 </script>

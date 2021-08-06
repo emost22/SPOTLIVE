@@ -1,8 +1,8 @@
 import $axios from '../util/axios'
 
 export default {
-
-    requestGetKakaoLoginUrl(context, payload) {
+    // login.vue
+    requestGetKakaoLoginUrl() {
         const URL = '/auth/kakao/showlogin'
         return $axios.get(URL)
     },
@@ -45,8 +45,17 @@ export default {
         context.commit("CONNECT_SESSION")
     },
 
-    requestGetTalkVideos(context, payload) {
-        const URL = '/main/talk'
+    // Main.vue
+    requestGetTotalMainVideos(context, payload) {
+        const URL = '/main/all'
+        const PAGE_VALUE = payload.pageValue;
+        const SIZE_VALUE = payload.sizeValue;
+
+        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
+    },
+
+    requestGetAdVideos(context, payload) {
+        const URL = '/main/ad'
         const PAGE_VALUE = payload.pageValue;
         const SIZE_VALUE = payload.sizeValue;
 
@@ -61,8 +70,8 @@ export default {
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
-    requestGetReplayVideos(context, payload) {
-        const URL = '/main/replay'
+    requestGetTalkVideos(context, payload) {
+        const URL = '/main/talk'
         const PAGE_VALUE = payload.pageValue;
         const SIZE_VALUE = payload.sizeValue;
 
@@ -77,20 +86,26 @@ export default {
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
-    requestGetUserVideos(context, payload) {
-        const URL = '/main/user'
+    requestGetReplayVideos(context, payload) {
+        const URL = '/main/replay'
         const PAGE_VALUE = payload.pageValue;
         const SIZE_VALUE = payload.sizeValue;
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
-    requestGetTotalMainVideos(context, payload) {
-        const URL = '/main/all'
+    requestGetFollowVideos(context, payload) {
+        const URL = '/main/follow'
         const PAGE_VALUE = payload.pageValue;
         const SIZE_VALUE = payload.sizeValue;
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
     
+    // MainSidebar.vue
+    requestGetFollowingList() {
+        const URL = '/main/user'
+
+        return $axios.get(URL)
+    },
 }

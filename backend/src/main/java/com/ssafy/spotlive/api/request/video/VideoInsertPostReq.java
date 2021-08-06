@@ -28,11 +28,11 @@ public class VideoInsertPostReq {
     String mode;
     @ApiModelProperty(name="categoryId : 카테고리 ID", example="1")
     Long categoryId;
-    @ApiModelProperty(name="showInfoId : 공연의 경우 해당 공연ID, 홍보의 경우 연결된 공연ID, 홍보의 경우 비움", example="")
+    @ApiModelProperty(name="showInfoId : 공연의 경우 해당 공연ID, 홍보의 경우 연결된 공연ID, 홍보의 경우 비움, 없는 공연 Id를 넣으면 500 에러", example="")
     Long showInfoId;
     @ApiModelProperty(name="accountEmail : 유저 email", example="email@email.com")
     String accountEmail;
-    @ApiModelProperty(name="sessionId : 세션Id", example="")
+    @ApiModelProperty(name="sessionId : Openvidu Server의 Session id", example="session12345678")
     String sessionId;
 
     public Video toVideo(String thumbnailUrl){
@@ -45,6 +45,7 @@ public class VideoInsertPostReq {
         Category category = new Category();
         ShowInfo showInfo = new ShowInfo();
         User user = new User();
+        System.out.println(showInfoId);
 
         video.setVideoTitle(this.videoTitle);
         video.setVideoDescription(this.videoDescription);
@@ -54,8 +55,10 @@ public class VideoInsertPostReq {
         video.setHit(0L);
         category.setCategoryId(this.categoryId);
         video.setCategory(category);
-        showInfo.setShowInfoId(this.showInfoId);
-        video.setShowInfo(showInfo);
+        if(this.showInfoId != null) {
+            showInfo.setShowInfoId(this.showInfoId);
+            video.setShowInfo(showInfo);
+        }
         user.setAccountEmail(this.accountEmail);
         video.setUser(user);
         video.setSessionId(this.sessionId);

@@ -25,6 +25,11 @@ public class FollowServiceImpl implements FollowService{
 
     @Override
     public void insertFollowByAccountEmail(String artistEmail, String fanEmail){
+        /**
+         * @Method Name : insertFollowByAccountEmail
+         * @작성자 : 권영린
+         * @Method 설명 : 팔로우 버튼 클릭시 팔로잉
+         */
         Follow follow = new Follow();
         User artist = new User();
         User fan = new User();
@@ -37,8 +42,12 @@ public class FollowServiceImpl implements FollowService{
 
     @Override
     public void deleteFollowByAccountEmail(String artistEmail, String fanEmail){
+        /**
+         * @Method Name : deleteFollowByAccountEmail
+         * @작성자 : 권영린
+         * @Method 설명 : 언팔로우 버튼 클릭시 언팔로잉
+         */
         FollowId followId = new FollowId();
-
         followId.setArtist(artistEmail);
         followId.setFan(fanEmail);
         followRepository.deleteById(followId);

@@ -50,11 +50,10 @@ public class VideoRepositoryTest {
         videoInsertPostReq.setCategoryId(categoryId);
         videoInsertPostReq.setShowInfoId(showInfoId);
         videoInsertPostReq.setAccountEmail(accountEmail);
-        videoInsertPostReq.setSessionId(sessionId);
 
         // 위의 객체를 저장
         VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository
-                .save(videoInsertPostReq.toVideo(thumbnailUrl)));
+                .save(videoInsertPostReq.toVideo(thumbnailUrl, sessionId)));
 
         // 넣은 값을 꺼내 제대로 들어갔는지 확인
         Optional<Video> videoById = videoRepository.findById(videoInsertPostRes.getVideoId());
