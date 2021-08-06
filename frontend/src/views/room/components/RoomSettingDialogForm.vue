@@ -43,13 +43,13 @@
       </select>
       <button class="plus-button"></button>
       </div>
-      <input  v-if="form.mode==1" class="custom-form-control mt-1" id="videoTitle" v-model="form.videoTitle">
+      <input  v-if="form.mode==1" class="custom-form-control mt-1" id="videoTitle" v-model="form.videoTitle" readonly="readonly" disabled="disabled">
     </div>
     <div class="mb-3">
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
       <div class="d-flex">
         <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
-        <input class="custom-form-control" v-model="fileName"/>
+        <input class="custom-form-control" v-model="fileName" readonly="readonly" disabled="disabled"/>
         <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
         </label>
       </div>
