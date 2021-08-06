@@ -28,6 +28,10 @@ export default {
         const URL = '/video/openvidu/session'
         return $axios.post(URL)
     },
+
+    requestSetSessionIdAndTokenForOpenvidu(context, payload) {
+        context.commit("SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU", payload)
+    },
     requestGetTalkVideos(context, payload) {
         const URL = '/main/talk'
         const PAGE_VALUE = payload.pageValue;
