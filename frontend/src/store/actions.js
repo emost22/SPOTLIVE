@@ -40,6 +40,11 @@ export default {
     requestAddEventInSession(context) {
         context.commit("ADD_EVENT_IN_SESSION")
     },
+
+    requestConnectSession(context) {
+        context.commit("CONNECT_SESSION")
+    },
+
     requestGetTalkVideos(context, payload) {
         const URL = '/main/talk'
         const PAGE_VALUE = payload.pageValue;
