@@ -46,6 +46,12 @@ export default {
     },
 
     // Main.vue
+    requestGetCarouselVideos() {
+        const URL = '/main/top'
+
+        return $axios.get(URL)
+    },
+
     requestGetTotalMainVideos(context, payload) {
         const URL = '/main/all'
         const PAGE_VALUE = payload.pageValue;

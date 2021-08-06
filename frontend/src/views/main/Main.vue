@@ -70,6 +70,14 @@ export default {
   },
   methods: {
     getCarouselVideos() {
+      this.$store.dispatch('requestGetCarouselVideos')
+      .then((response) => {
+        console.log("getCarouselVideos() SUCCESS!!")
+        console.log(response.data)
+        this.carousel_videos = response.data})
+      .catch((error) => {
+        console.log(error)
+      })
     },
 
     getFilterBtns() {
@@ -99,7 +107,7 @@ export default {
         pageValue: pageValue,
         sizeValue: sizeValue,
       }).then((response) => {
-        console.log("getadVideos() SUCCESS!!")
+        console.log("getAdVideos() SUCCESS!!")
         console.log(response.data)
         this.ad_videos = response.data.videoResList
       }).catch((error) => {
