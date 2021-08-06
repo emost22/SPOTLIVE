@@ -1,4 +1,5 @@
-import router from '../router/index';
+import router from '../router/index'
+import $axios from '../util/axios'
 
 export default {
 
@@ -11,5 +12,11 @@ export default {
         $axios.defaults.headers['Authorization'] = 'Bearer ' + payload.loginUser.accessToken
 
         router.push({ name: "Main" })
+    },
+
+    INIT_SESSION(state, payload) {
+        console.log("MUTATION: INIT_SESSION() RUN...")
+        state.OV = payload;
+        state.ovSession = state.OV.initSession()
     },
 }
