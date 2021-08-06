@@ -2,32 +2,32 @@
   <div>
     <div class="mb-3">
       <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
-      <input type="email" class="custom-form-control" id="videoTitle" v-model="videoTitle">
+      <input type="email" class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
     </div>
     <div class="mb-3 d-flex">
       <div class="flex-fill me-3">
         <div class="label-alignment"><label class="form-label" for="categoryId">분류</label></div>
-        <select class="custon-select-control" aria-label="Default select example" v-model="categoryId" id="categoryId">
-          <option :key="i" :value="d.v" v-for="(d, i) in categoryIds">{{ d.t }}</option>
+        <select class="custon-select-control" aria-label="Default select example" v-model="form.categoryId" id="categoryId">
+          <option :key="i" :value="d.categoryId" v-for="(d, i) in categoryIds">{{ d.categoryName }}</option>
         </select>
       </div>
       <div>
         <div class="label-alignment"><label class="form-label">영상용도</label><div class="icon-info"></div></div>
         <div class="d-flex mt-1">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="1" v-model="mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="1" v-model="form.mode">
             <label class="form-check-label" for="forShow">
               공연용
             </label>
           </div>
           <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="2" v-model="mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="2" v-model="form.mode">
             <label class="form-check-label" for="forAd">
               홍보용
             </label>
           </div>
           <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="3" v-model="mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="3" v-model="form.mode">
             <label class="form-check-label" for="forCommunicate">
               소통용
             </label>
@@ -35,10 +35,10 @@
         </div>
       </div>
     </div>
-    <div class="mb-3" v-if="mode==1 || mode==2">
+    <div class="mb-3" v-if="form.mode==1 || form.mode==2">
       <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
       <div class="d-flex">
-      <select class="custon-select-control" aria-label="Default select example" v-model="showInfoId" id="showInfoId">
+      <select class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
          <option :key="i" :value="d.v" v-for="(d, i) in showInfoIds">{{ d.t }}</option>
       </select>
       <button class="plus-button"></button>
@@ -55,7 +55,7 @@
     </div>
     <div class="mb-3">
       <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
-      <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="videoDescription"></textarea>
+      <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
   </div>
 </template>
@@ -63,21 +63,24 @@
 <script>
 export default {
   name: 'RoomSettingDialogForm',
+  props: {
+    categoryIds: {
+      type: Array,
+      default: [],
+    }
+  },
   data: function () {
     return {
-      categoryId: '1',
-      categoryIds: [
-        { v: "1", t: "뮤지컬" },
-        { v: "2", t: "마술" },
-        { v: "3", t: "연극" },
-      ],
-      mode: 1,
+      form: {
+        categoryId: '1',
+        file: [],
+        videoDescription: '',
+        videoTitle: '',
+        showInfoId: '1',
+        mode: 1,
+      },
       thumbnail: '',
-      file: [],
       fileName:'',
-      videoDescription: '',
-      videoTitle: '',
-      showInfoId: '1',
       showInfoIds: [
         { v: "1", t: "옥탑방 고냥쓰들" },
         { v: "2", t: "캣츠" },
@@ -89,6 +92,9 @@ export default {
     handleFileChange(e) {
       this.fileName = e.target.files[0].name
     }
+  },
+  beforeUpdate() {
+    this.$emit('form-data', this.form)
   }
 }
 </script>

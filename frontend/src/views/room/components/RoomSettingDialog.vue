@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isSettingDialogOpen" class="modal fade" id="roomSettingDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div v-show="isSettingDialogOpen" class="modal fade" id="roomSettingDialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
@@ -10,7 +10,10 @@
             <input type='radio' id='r1' name='t' checked>
             <label for='r1' class="tab-label">설정</label>
             <div class='content'>
-              <RoomSettingDialogForm/>
+              <RoomSettingDialogForm
+                :categoryIds="categoryIds"
+                @form-data="form => videoData = form"
+              />
             </div>
             <input type='radio' id='r2' name='t'>
             <label for='r2' class="tab-label">카메라</label>
@@ -41,6 +44,8 @@ export default {
   data: function () {
     return {
       viewId: 0,
+      categoryIds: [],
+      videoData: {},
     }
   }, 
   methods: {
@@ -62,7 +67,20 @@ export default {
     'isSettingDialogOpen'
     ]),
   },
+  mounted() {
+    this.$store.dispatch('requestGetCategoryIds')
+      .then((response) => {
+        console.log(response)
+        this.categoryIds = response.data
+      })
+  },
   beforeUpdate() {
+    
+    if (this.settingDialogViewId == 1) {
+      
+    } else if (this.settingDialogViewId == 2) {
+
+    }
   },
 }
 </script>

@@ -124,5 +124,10 @@ export default {
     
     requestSetIsOpenSettingDialog({ commit }, payload) {
         commit('SET_IS_OPEN_SETTING_DIALOG', payload)
+    },
+
+    requestGetCategoryIds(context) {
+        const URL = '/category/'
+        return $axios.get(URL)
     }
 }
