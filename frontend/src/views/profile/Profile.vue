@@ -58,7 +58,7 @@ export default {
       inMyProfile: true,
       follow: false,
       userId: '',
-      profileUserId: Number(this.$route.param.profileUserId),
+      // profileId: Number(this.$route.param.profileId),
       // 희진님과 프로필 눌러서 param의 프로필 유저 pk번호 데이터 이름 맞추기
       myProfile: [],
       myShows: [],

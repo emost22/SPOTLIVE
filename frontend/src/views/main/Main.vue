@@ -13,9 +13,9 @@
         </div>
         <div class="row">
           <p> 홍보용 영상</p>
-          <VideoGlide :videos="ad_videos"/>
+          <!-- <VideoGlide :videos="ad_videos"/> -->
           <p> 공연용 영상</p>
-          <VideoGlide :videos="show_videos"/>
+          <!-- <VideoGlide :videos="show_videos"/> -->
           <p> 소통용 영상</p>
           <VideoGlide :videos="talk_videos"/>
           <p> 실시간 시청자 높은 영상</p>

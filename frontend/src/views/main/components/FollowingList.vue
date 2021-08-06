@@ -1,7 +1,7 @@
 <template>
   <div>    
     <li class="nav-item">
-      <router-link class="nav-link" :to="{ name: 'Profile', param: { profileUserId : following.id } }">
+      <router-link class="nav-link" :to="{ name: 'Profile', param: { profileId : following.accountEmail } }">
         <div class="sidebar-following-info">
           <div><img src="~@/assets/icon-streaming.png" class="sidebar-following-img"></div>
           <div v-if="open" class="sidebar-following-nickname txtcolor-white">
@@ -25,10 +25,6 @@ export default {
       type: Boolean,
       required: true
     },
-  },
-  data: function () {
-  },
-  methods: {
   },
 }
 </script>
