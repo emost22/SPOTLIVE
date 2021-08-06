@@ -1,10 +1,8 @@
 package com.ssafy.spotlive.api.service;
 
 import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
@@ -77,16 +75,15 @@ public class FileUploadService {
             amazonClientException.printStackTrace();
         }
     }
-    public void delete(String key) {
+    public void delete(String imageUrl) {
+        /**
+         * @Method Name : delete
+         * @작성자 : 금아현
+         * @Method 설명 : imageUrl에 해당하는 이미지를 S3에서 삭제
+         */
         try {
-            //Delete 객체 생성
-            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(this.bucket, key);
-            //Delete
-            this.amazonS3Client.deleteObject(deleteObjectRequest);
-            System.out.println(String.format("[%s] deletion complete", key));
-
-        } catch (AmazonServiceException e) {
-            e.printStackTrace();
+            final String deleteFileName = imageUrl.substring(imageUrl.lastIndexOf('/')+1);
+            amazonS3Client.deleteObject(this.bucket, deleteFileName);
         } catch (SdkClientException e) {
             e.printStackTrace();
         }
