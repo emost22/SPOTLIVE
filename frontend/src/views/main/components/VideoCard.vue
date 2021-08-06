@@ -1,17 +1,18 @@
 <template>
   <div>
-    <div class="card" @click="RoomDetail" style="height:150px; width:250px;">
-      <img src="~@/assets/icon-profile.png" style="height:100px;">
+    <div class="card" @click="RoomDetail" style="height:150px; width:400px;">
+      <img :src="video.thumbnailUrl" style="height:100px;">
       <div class="card-body" style="overflow:hidden;">
         <p class="card-title fw-bold text-start text-nowrap overflow-hidden">{{ video.videoTitle }}</p>
         <p class="card-title text-start">
+          {{ video.thumbnailUrl }}
           {{ video.user.profileNickname }} 
           {{ video.user.profileImageUrl }} 
           {{ video.user.accountEmail }} 
           <!-- 사용자 pk -->
           <!-- {{ video.videoDescription }}
           {{ video.mode }}
-          {{ video.thumbnailUrl }}
+          
           {{ video.videoLength }}
           {{ video.startTime }}
           {{ video.isLive }}

@@ -20,6 +20,7 @@ export default {
         })
     },
 
+    // RoomCreate.vue (민권)
     requestInitSession(context, payload) {
         context.commit("INIT_SESSION", payload)
     },
@@ -47,6 +48,40 @@ export default {
 
     requestChangeDevice(context, payload) {
         context.commit("CHANGE_DEVICE", payload)
+    },
+
+    // RoomCreate.vue (희진)
+    requestSetIsOpenSettingDialog({ commit }, payload) {
+        commit('SET_IS_OPEN_SETTING_DIALOG', payload)
+    },
+
+    requestGetCategoryIds(context) {
+        const URL = '/category/'
+        return $axios.get(URL)
+    },
+
+    requestSetCreatedVideoData({ commit }, payload) {
+        commit('SET_CREATEVIDEO_DATA', payload)
+    },
+
+    requestStartStreaming(context, payload) {
+        const URL = '/video/insert'
+        return $axios.post(URL, payload, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    },
+
+    // RoomDetail.vue
+    requestGetRoomDetail(context, payload) {
+        const URL = `/video/${payload}`
+        return $axios.get(URL)
+    },
+
+    requestCloseVideo(context, payload) {
+        const URL = `/video/close/${payload}`
+        return $axios.patch(URL, payload)
     },
 
     // Main.vue
@@ -122,6 +157,13 @@ export default {
     // MainSidebar.vue
     requestGetFollowingList() {
         const URL = '/main/user'
+
+        return $axios.get(URL)
+    },
+
+    // Profile.vue
+    requestGetMyProfile() {
+        const URL = '/auth/user'
 
         return $axios.get(URL)
     },

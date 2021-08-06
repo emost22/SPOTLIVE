@@ -70,7 +70,7 @@ export default {
         //     state.chatArray.push(userId + ": " + event.data)
         // })
     },
-
+    
     CONNECT_SESSION(state) {
         console.log("MUTATION: CONNECT_SESSION() RUN...")
         console.log("OV TOKEN: " + state.ovToken)
@@ -123,5 +123,15 @@ export default {
             })
         })
         console.log("MUTATION: CHANGE_DEVICE() DONE...")
+    },
+    
+    SET_IS_OPEN_SETTING_DIALOG(state, payload) {
+        state.isSettingDialogOpen = !state.isSettingDialogOpen
+        console.log(!state.isSettingDialogOpen)
+        state.settingDialogViewId = payload
+    },
+
+    SET_CREATEVIDEO_DATA (state, payload) {
+        state.createdVideoData = payload
     }
 }

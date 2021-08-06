@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,4 +30,11 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long> {
      * @Method 설명 : 시간이 start와 end 사이인 timetable 조회
      */
     Optional<Timetable> findTimetableByShowInfo_ShowInfoIdAndDateTimeBetween(Long showInfo_showInfoId, LocalDateTime start, LocalDateTime end);
+
+    /**
+     * @Method Name : findTimetablesByShowInfo_ShowInfoId
+     * @작성자 : 강용수
+     * @Method 설명 : 해당 공연의 timetable을 조회하는 메소드
+     */
+    Optional<List<Timetable>> findTimetablesByShowInfo_ShowInfoId(Long showInfoId);
 }
