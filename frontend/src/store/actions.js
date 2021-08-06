@@ -20,6 +20,9 @@ export default {
         })
     },
 
+    requestInitSession(context, payload) {
+        context.commit("INIT_SESSION", payload)
+    },
     requestGetTalkVideos(context, payload) {
         const URL = '/main/talk'
         const PAGE_VALUE = payload.pageValue;
