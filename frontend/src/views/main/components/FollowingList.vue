@@ -2,9 +2,11 @@
   <div>    
     <li class="nav-item">
       <router-link class="nav-link" :to="{ name: 'Profile', param: { profileUserId : following.id } }">
-        <div>
-          <div><img src="~@/assets/icon-streaming.png" class="sidebar-nav-img"></div>
-          <div v-if="open" class="sidebar-nav-name">{{following.Nickname}}</div>
+        <div class="sidebar-following-info">
+          <div><img src="~@/assets/icon-streaming.png" class="sidebar-following-img"></div>
+          <div v-if="open" class="sidebar-following-nickname txtcolor-white">
+            <p>{{following.profileNickname}}</p>
+          </div>
         </div>
       </router-link>
     </li>
@@ -32,12 +34,16 @@ export default {
 </script>
 
 <style>
-.sidebar-nav-img {
-  width: 40px;
-  height: 40px;
+.sidebar-following-img {
+  width: 50px;
+  height: 50px;
   border-radius: 100%;
 }
-.sidebar-nav-name{
-  font-size: 10px;
+.sidebar-following-nickname {
+  font-size: 15px;
+}
+.sidebar-following-info {
+  display: flex;
+  flex-direction: row;
 }
 </style>

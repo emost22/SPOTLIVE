@@ -12,10 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @FileName : ShowInfoServiceImpl
@@ -31,6 +28,9 @@ public class ShowInfoServiceImpl implements ShowInfoService {
     @Autowired
     TimetableRepository timetableRepository;
 
+    @Autowired
+    FileUploadService fileUploadService;
+
     @Override
     public void insertShowInfo(ShowInfoInsertPostReq showInfoInsertPostReq, MultipartFile posterImage) {
         /**
@@ -38,28 +38,14 @@ public class ShowInfoServiceImpl implements ShowInfoService {
          * @작성자 : 금아현
          * @Method 설명 : 공연정보 추가
          */
+        String posterImageUrl = null;
         try {
-            String separator = File.separator;
-            String today = new SimpleDateFormat("yyMMdd").format(new Date());
-
-            File file = new File("");
-            String rootPath = file.getAbsolutePath().split("backend")[0];
-            String savePath = rootPath + "frontend" + separator + "src" + separator + "assets" + separator + "thumbnails" + separator + today;
-            if (!new File(savePath).exists()) {
-                try {
-                    new File(savePath).mkdirs();
-                } catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            String origFilename = posterImage.getOriginalFilename();
-            String saveFileName = UUID.randomUUID().toString() + origFilename.substring(origFilename.lastIndexOf('.'));
-            String filePath = savePath + separator + saveFileName;
-            posterImage.transferTo(new File(filePath));
-            showInfoInsertPostReq.setPosterUrl(filePath);
-        } catch (Exception e) {
+            /* S3에 업로드 */
+            posterImageUrl = fileUploadService.upload(posterImage);
+        } catch(Exception e) {
             e.printStackTrace();
         }
+        showInfoInsertPostReq.setPosterUrl(posterImageUrl);
         Long id = showInfoRepository.save(showInfoInsertPostReq.toShowInfo()).getShowInfoId();
         ShowInfo showInfo = showInfoRepository.getById(id);
         showInfoInsertPostReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq.toTimetable(showInfo)));
