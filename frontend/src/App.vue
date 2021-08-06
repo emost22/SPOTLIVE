@@ -35,18 +35,10 @@ export default ({
     ...mapGetters(['isLogin']),
   },
   created: function () {
-    const token = localStorage.getItem('accessToken')
-    if (token) {
-      this.isLogin = true
-    }
+    
   },
   mounted: function () {
-    // this.getVideos()
-    const code = this.$route.query.code
-    if(code == "" || code == null || code == undefined) this.$router.push({ name: "Main" })
-    else {
-      this.$store.dispatch('requestDoKakaoLogin', code)
-    }
+    
   },
 })
 </script>

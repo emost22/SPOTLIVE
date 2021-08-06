@@ -48,7 +48,8 @@ export default ({
       validSearch: true,
       input: '',
     }
-  },methods: {
+  },
+  methods: {
     logout: function () {
       this.isLogin = false
       this.$store.dispatch('logout', this.isLogin)

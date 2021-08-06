@@ -26,12 +26,17 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('requestGetKakaoLoginUrl', {})
-    .then((response) => {
-      this.moveToKakaoLoginPageURL = response.data
-    }).catch((error) => {
-      console.log(error)
-    })
+    const code = this.$route.query.code
+    if(code != "" && code != null && code != undefined) {
+      this.$store.dispatch('requestDoKakaoLogin', code)
+    } else {
+      this.$store.dispatch('requestGetKakaoLoginUrl', {})
+      .then((response) => {
+        this.moveToKakaoLoginPageURL = response.data
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
   },
 }
 </script>
