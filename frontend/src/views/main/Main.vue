@@ -74,7 +74,8 @@ export default {
       .then((response) => {
         console.log("getCarouselVideos() SUCCESS!!")
         console.log(response.data)
-        this.carousel_videos = response.data})
+        this.carousel_videos = response.data
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -85,7 +86,8 @@ export default {
       .then((response) => {
         console.log("getFilterButtons() SUCCESS!!")
         console.log(response.data)
-        this.filter_buttons = response.data})
+        this.filter_buttons = response.data
+      })
       .catch((error) => {
         console.log('필터실패')
         console.log(error)

@@ -20,6 +20,7 @@ export default {
         })
     },
 
+    // RoomCreate.vue (민권)
     requestInitSession(context, payload) {
         context.commit("INIT_SESSION", payload)
     },
@@ -44,6 +45,40 @@ export default {
     requestConnectSession(context) {
         context.commit("CONNECT_SESSION")
     },
+
+    // RoomCreate.vue (희진)
+    requestSetIsOpenSettingDialog({ commit }, payload) {
+        commit('SET_IS_OPEN_SETTING_DIALOG', payload)
+    },
+
+    requestGetCategoryIds(context) {
+        const URL = '/category/'
+        return $axios.get(URL)
+    },
+
+    requestSetCreatedVideoData({ commit }, payload) {
+        commit('SET_CREATEVIDEO_DATA', payload)
+    },
+
+    requestStartStreaming(context, payload) {
+        const URL = '/video/insert'
+        return $axios.post(URL, payload, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+            })
+    },
+
+    // RoomDetail.vue
+    requestGetRoomDetail(context, payload) {
+        const URL = `/video/${payload}`
+        return $axios.get(URL)
+    },
+
+    requestCloseVideo(context, payload) {
+        const URL = `/video/close/${payload}`
+        return $axios.patch(URL, payload)
+    }
 
     // Main.vue
     requestGetCarouselVideos() {
@@ -120,36 +155,4 @@ export default {
         const URL = '/main/user'
         return $axios.get(URL)
     },
-    
-    requestSetIsOpenSettingDialog({ commit }, payload) {
-        commit('SET_IS_OPEN_SETTING_DIALOG', payload)
-    },
-
-    requestGetCategoryIds(context) {
-        const URL = '/category/'
-        return $axios.get(URL)
-    },
-
-    requestSetCreatedVideoData({ commit }, payload) {
-        commit('SET_CREATEVIDEO_DATA', payload)
-    },
-
-    requestStartStreaming(context, payload) {
-        const URL = '/video/insert'
-        return $axios.post(URL, payload, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-    },
-
-    requestGetRoomDetail(context, payload) {
-        const URL = `/video/${payload}`
-        return $axios.get(URL)
-    },
-
-    requestCloseVideo(context, payload) {
-        const URL = `/video/close/${payload}`
-        return $axios.patch(URL, payload)
-    }
 }
