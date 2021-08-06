@@ -6,6 +6,7 @@ import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
+import com.ssafy.spotlive.api.response.video.VideoOpenViduSessionGetRes;
 import com.ssafy.spotlive.api.service.AuthService;
 import com.ssafy.spotlive.api.service.UserService;
 import com.ssafy.spotlive.api.service.VideoService;
@@ -63,6 +64,34 @@ public class VideoController {
             videoInsertPostReq.setAccountEmail(userRes.getAccountEmail());
             VideoInsertPostRes videoInsertPostRes = videoService.insertVideo(videoInsertPostReq, thumbnailImage);
             return new ResponseEntity<>(videoInsertPostRes, HttpStatus.CREATED);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/openvidu/session")
+    @ApiOperation(value = "Openvidu를 위한 세션과 토큰을 생성", notes = "openvidu를 위한 세션과 토큰을 생성한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "요청 성공"),
+            @ApiResponse(code = 400, message = "올바르지 않은 접근"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
+            @ApiResponse(code = 500, message = "서버 오류 발생"),
+    })
+    public ResponseEntity<VideoOpenViduSessionGetRes> createSessionAndMakeTokenForOpenVidu(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken) {
+        /**
+         * @Method Name : createSessionAndMakeTokenForOpenVidu
+         * @작성자 : 김민권
+         * @Method 설명 : openvidu를 위한 세션과 토큰을 생성한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            String sessionId = videoService.createSession();
+            VideoOpenViduSessionGetRes videoOpenViduSessionGetRes = videoService.createToken(sessionId);
+            return new ResponseEntity<>(videoOpenViduSessionGetRes, HttpStatus.OK);
         } else if(vaildTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {

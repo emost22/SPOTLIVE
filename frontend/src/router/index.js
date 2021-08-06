@@ -6,6 +6,7 @@ import Profile from '../views/profile/Profile.vue'
 import RoomCreate from '../views/room/RoomCreate.vue'
 import RoomDetail from '../views/room/RoomDetail.vue'
 import Search from '../views/search/Search.vue'
+import state from '../store/state'
 
 Vue.use(VueRouter)
 
@@ -13,8 +14,10 @@ const requireAuth = (to, from, next) => {
   const accessToken = localStorage.getItem("accessToken");
   if (accessToken == null) {
     alert("로그인을 먼저 해주세요.");
+    state.isLogin = false;
     next('/login');
   } else {
+    state.isLogin = true;
     next();
   }
 }
