@@ -75,7 +75,7 @@ public class VideoServiceImpl implements VideoService{
         } catch(Exception e) {
             e.printStackTrace();
         }
-        VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(thumbnailImageUrl)));
+        VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(thumbnailImageUrl, sessionId)));
         videoInsertPostRes.setToken(tokenForConnect);
 
         return videoInsertPostRes;
