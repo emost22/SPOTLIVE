@@ -4,7 +4,7 @@
       <user-video />
     </div>
     <div class="btn-wrapper">
-      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#exampleModal"> 설정 </button>
+      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog"> 설정 </button>
       <router-link :to="{ name: 'RoomDetail' }"><button class="bdcolor-bold-npink extra-big-button"> 스트리밍 시작 </button></router-link>
     </div>
   </div>

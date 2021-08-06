@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="roomSettingDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
 import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
 export default {
@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .tabs {
   top: 51%;
   left: 50%;
