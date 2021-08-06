@@ -9,6 +9,7 @@ import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import com.ssafy.spotlive.api.response.video.VideoOpenViduSessionGetRes;
 import com.ssafy.spotlive.api.service.AuthService;
 import com.ssafy.spotlive.api.service.UserService;
+import com.ssafy.spotlive.api.service.UserVideoService;
 import com.ssafy.spotlive.api.service.VideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +41,8 @@ public class VideoController {
     AuthService authService;
     @Autowired
     UserService userService;
+    @Autowired
+    UserVideoService userVideoService;
 
     @PostMapping("/insert")
     @ApiOperation(value = "스트리밍 시작", notes = "스트리밍을 시작하면 영상정보가 DB에 저장된다.")
@@ -63,6 +66,7 @@ public class VideoController {
             UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
             videoInsertPostReq.setAccountEmail(userRes.getAccountEmail());
             VideoInsertPostRes videoInsertPostRes = videoService.insertVideo(videoInsertPostReq, thumbnailImage);
+            userVideoService.joinUserVideo(userRes.getAccountEmail(), videoInsertPostRes.getVideoId());
             return new ResponseEntity<>(videoInsertPostRes, HttpStatus.CREATED);
         } else if(vaildTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -71,25 +75,52 @@ public class VideoController {
         }
     }
 
-    @PostMapping("/openvidu/session")
-    @ApiOperation(value = "Openvidu를 위한 세션과 토큰을 생성", notes = "openvidu를 위한 세션과 토큰을 생성한다.")
+    @GetMapping("/openvidu/session")
+    @ApiOperation(value = "Openvidu를 위한 세션을 생성", notes = "openvidu를 위한 세션을 생성한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "요청 성공"),
             @ApiResponse(code = 400, message = "올바르지 않은 접근"),
             @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
             @ApiResponse(code = 500, message = "서버 오류 발생"),
     })
-    public ResponseEntity<VideoOpenViduSessionGetRes> createSessionAndMakeTokenForOpenVidu(
+    public ResponseEntity<String> createSessionIdForOpenVidu(
             @ApiIgnore @RequestHeader("Authorization") String accessToken) {
         /**
          * @Method Name : createSessionAndMakeTokenForOpenVidu
          * @작성자 : 김민권
-         * @Method 설명 : openvidu를 위한 세션과 토큰을 생성한다.
+         * @Method 설명 : openvidu를 위한 세센을 생성한다.
          */
         int vaildTokenStatusValue = authService.isValidToken(accessToken);
 
         if(vaildTokenStatusValue == 200) {
             String sessionId = videoService.createSession();
+            return new ResponseEntity<>(sessionId, HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/openvidu/token/{sessionId}")
+    @ApiOperation(value = "Openvidu를 위한 토큰을 생성", notes = "openvidu를 위한 토큰을 생성한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "요청 성공"),
+            @ApiResponse(code = 400, message = "올바르지 않은 접근"),
+            @ApiResponse(code = 401, message = "올바르지 않은 Token이거나, 만료된 Token, 재발급 요청이 필요"),
+            @ApiResponse(code = 500, message = "서버 오류 발생"),
+    })
+    public ResponseEntity<VideoOpenViduSessionGetRes> createTokenForOpenVidu(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @PathVariable("sessionId") String sessionId) {
+        /**
+         * @Method Name : createSessionAndMakeTokenForOpenVidu
+         * @작성자 : 김민권
+         * @Method 설명 : openvidu를 위한 토큰을 생성한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
             VideoOpenViduSessionGetRes videoOpenViduSessionGetRes = videoService.createToken(sessionId);
             return new ResponseEntity<>(videoOpenViduSessionGetRes, HttpStatus.OK);
         } else if(vaildTokenStatusValue == 401) {
