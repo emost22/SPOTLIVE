@@ -75,7 +75,7 @@ public class VideoServiceImpl implements VideoService{
          * @Method 설명 : 영상 시작시 1) Openvidu 세션을 생성하고 토큰을 발급 2) 썸네일을 비디오객체를 추가
          */
         // 1) Openvidu 세션을 생성하고 토큰을 발급
-        String sessionId = makeSessionId();
+        String sessionId = createSession();
         videoInsertPostReq.setSessionId(sessionId);
         String tokenForConnect = createToken(sessionId);
         // 2) 썸네일을 비디오객체에 추가
