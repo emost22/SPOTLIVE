@@ -27,4 +27,12 @@ export default {
         console.log("OV SESSION ID: " + state.ovSessionId)
         console.log("OV TOKEN: " + state.ovToken)
     },
+
+    SET_ALL_DEVICES(state) {
+        console.log("MUTATION: SET_ALL_DEVICES() RUN...")
+        state.OV.getDevices().then(devices => {
+            state.videoDevices = devices.filter(device => device.kind === 'videoinput')
+            state.audioDevices = devices.filter(device => device.kind === 'audioinput')
+        })
+    },
 }
