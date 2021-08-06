@@ -39,7 +39,7 @@
       <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
       <div class="d-flex">
       <select class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
-         <option :key="i" :value="d.v" v-for="(d, i) in showInfoIds">{{ d.t }}</option>
+        <option :key="i" :value="d.v" v-for="(d, i) in showInfoIds">{{ d.t }}</option>
       </select>
       <button class="plus-button"></button>
       </div>

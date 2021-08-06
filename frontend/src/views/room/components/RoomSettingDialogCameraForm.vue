@@ -1,30 +1,43 @@
 <template>
   <div class="camera-setting-wrapper">
     <div class="prev-camera-screen">
+      <video class="user-video" ref="myVideo" autoplay/>
     </div>
-    <select class="camera-setting-selector mb-3" v-model="cameraId" id="cameraId">
-      <option :key="i" :value="d.v" v-for="(d, i) in cameraIds">{{ d.t }}</option>
+    <select @change="changeDevice()" class="camera-setting-selector mb-3" v-model="videoDeviceId" id="videoDeviceId">
+      <option :key="index" :value="index" v-for="(videoDevice, index) in this.videoDevices">{{ videoDevice.label }}</option>
     </select>
-    <select class="camera-setting-selector mb-3" v-model="audioId" id="audioId">
-      <option :key="i" :value="d.v" v-for="(d, i) in audioIds">{{ d.t }}</option>
+    <select @change="changeDevice()" class="camera-setting-selector mb-3" v-model="audioDeviceId" id="audioDeviceId">
+      <option :key="index" :value="index" v-for="(audioDevice, index) in this.audioDevices">{{ audioDevice.label }}</option>
     </select>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default {
   name: 'RoomSettingDialogCameraForm',
   data: function () {
     return {
-      cameraId: '1',
-      cameraIds: [
-        { v: "1", t: "FaceTime HD 카메라(내장형)" },
-      ],
-      audioId: '1',
-      audioIds: [
-        { v: "1", t: "옥탑방 음성오디오(내장형)" },
-      ]
+      videoDeviceId: 0,
+      audioDeviceId: 0,
     }
+  },
+  methods: {
+    changeDevice() {
+      this.$store.dispatch("requestChangeDevice", {
+        videoDeviceId: this.videoDeviceId,
+        audioDeviceId: this.audioDeviceId,
+      })
+    }
+  },
+  watch: {
+    mainStreamManager: function(val, oldVal) {
+      this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+    }
+  },
+  computed: {
+    ...mapGetters(['audioDevices', 'videoDevices', 'mainStreamManager']),
   },
 }
 </script>
@@ -54,5 +67,10 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.user-video {
+  height: 180px;
+  width: 480px;
+  margin: 0 auto;
 }
 </style>

@@ -1,13 +1,15 @@
 import router from '../router/index'
 import $axios from '../util/axios'
 
+const RESOLUTION = '960x540'
+
 export default {
 
     DO_KAKAO_LOGIN(state, payload) {
         console.log("MUTATION: DO_KAKAO_LOGIN() RUN...")
         console.log(payload)
         state.loginUser = payload.loginUser
-        state.isLogin = true;
+        state.isLogin = true
         localStorage.setItem('accessToken', payload.loginUser.accessToken)
         $axios.defaults.headers['Authorization'] = 'Bearer ' + payload.loginUser.accessToken
         router.push({ name: "Main" })
@@ -15,7 +17,7 @@ export default {
 
     INIT_SESSION(state, payload) {
         console.log("MUTATION: INIT_SESSION() RUN...")
-        state.OV = payload;
+        state.OV = payload
         state.ovSession = state.OV.initSession()
     },
 
@@ -42,7 +44,7 @@ export default {
         })
 
         state.ovSession.on('streamCreated', ({ stream }) => {
-            let subscriber = state.session.subscribe(stream, undefined);
+            let subscriber = state.session.subscribe(stream, undefined)
             console.log('[OPENVIDU] Add new user: ' + subscriber.id)
             console.log(subscriber)
             state.mainStreamManager = subscriber
@@ -51,15 +53,15 @@ export default {
 
         state.ovSession.on('streamDestroyed', ({ stream }) => {
             console.log('[OPENVIDU] Stream Destroyed!')
-            const index = state.subscribers.indexOf(stream.streamManager, 0);
+            const index = state.subscribers.indexOf(stream.streamManager, 0)
             if (index >= 0) {
-                state.subscribers.splice(index, 1);
+                state.subscribers.splice(index, 1)
             }
         })
 
         state.ovSession.on('exception', ({ exception }) => {
             console.log('[OPENVIDU] exception!')
-            console.warn(exception);
+            console.warn(exception)
         })
 
         // state.ovSession.on('signal:my-chat', (event) => {
@@ -79,7 +81,7 @@ export default {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-                resolution: '960x540',  // The resolution of your video
+                resolution: RESOLUTION,  // The resolution of your video
                 frameRate: 30,			// The frame rate of your video
                 insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
                 mirror: false       	// Whether to mirror your local video or not
@@ -88,8 +90,39 @@ export default {
             state.publisher = publisher
             state.ovSession.publish(state.publisher)
         }).catch((error) => {
-            console.log('There was an error connecting to the session:', error.code, error.message);
+            console.log('There was an error connecting to the session:', error.code, error.message)
         })
+    },
+
+    CHANGE_DEVICE(state, payload) {
+        console.log("MUTATION: CHANGE_DEVICE() RUN...")
+        state.audioDeviceId = payload.audioDeviceId
+        state.videoDeviceId = payload.videoDeviceId
+        console.log("* ID: " + payload.audioDeviceId)
+        console.log("* ID: " + payload.videoDeviceId)
+        console.log("* ID: " + state.audioDeviceId)
+        console.log("* ID: " + state.videoDeviceId)
+
+        let newPublisher = state.OV.initPublisher(undefined, {
+			audioSource: state.audioDevices[state.audioDeviceId].deviceId, // The source of audio. If undefined default microphone
+			videoSource: state.videoDevices[state.videoDeviceId].deviceId, // The source of video. If undefined default webcam
+			publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+			publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+			resolution: RESOLUTION,  // The resolution of your video
+			frameRate: 30,			// The frame rate of your video
+			insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+			mirror: false       	// Whether to mirror your local video or not
+		})
+
+        state.ovSession.unpublish(state.publisher).then(() => {
+            console.log('Old publisher unpublished!')
+            state.publisher = newPublisher
+            state.mainStreamManager = state.publisher
+            state.ovSession.publish(state.publisher).then(() => {
+                console.log('New publisher published!')
+            })
+        })
+        console.log("MUTATION: CHANGE_DEVICE() DONE...")
     },
     
     SET_IS_OPEN_SETTING_DIALOG(state, payload) {

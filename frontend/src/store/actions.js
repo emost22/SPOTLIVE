@@ -46,6 +46,10 @@ export default {
         context.commit("CONNECT_SESSION")
     },
 
+    requestChangeDevice(context, payload) {
+        context.commit("CHANGE_DEVICE", payload)
+    },
+
     // RoomCreate.vue (희진)
     requestSetIsOpenSettingDialog({ commit }, payload) {
         commit('SET_IS_OPEN_SETTING_DIALOG', payload)
@@ -66,7 +70,7 @@ export default {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-            })
+        })
     },
 
     // RoomDetail.vue
@@ -96,56 +100,56 @@ export default {
 
     requestGetTotalMainVideos(context, payload) {
         const URL = '/main/all'
-        const PAGE_VALUE = payload.pageValue;
-        const SIZE_VALUE = payload.sizeValue;
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
     requestGetAdVideos(context, payload) {
         const URL = '/main/ad'
-        const PAGE_VALUE = payload.pageValue;
-        const SIZE_VALUE = payload.sizeValue;
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
     requestGetShowVideos(context, payload) {
         const URL = '/main/show'
-        const PAGE_VALUE = payload.pageValue;
-        const SIZE_VALUE = payload.sizeValue;
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
     requestGetTalkVideos(context, payload) {
         const URL = '/main/talk'
-        const PAGE_VALUE = payload.pageValue;
-        const SIZE_VALUE = payload.sizeValue;
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
     requestGetLiveVideos(context, payload) {
         const URL = '/main/live'
-        const PAGE_VALUE = payload.pageValue;
-        const SIZE_VALUE = payload.sizeValue;
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
     requestGetReplayVideos(context, payload) {
         const URL = '/main/replay'
-        const PAGE_VALUE = payload.pageValue;
-        const SIZE_VALUE = payload.sizeValue;
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
 
     requestGetFollowVideos(context, payload) {
         const URL = '/main/follow'
-        const PAGE_VALUE = payload.pageValue;
-        const SIZE_VALUE = payload.sizeValue;
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
