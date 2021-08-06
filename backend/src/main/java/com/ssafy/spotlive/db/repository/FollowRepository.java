@@ -15,6 +15,16 @@ import java.util.Optional;
  */
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, FollowId> {
+    /**
+     * @Method Name : findFollowsByArtistAccountEmail
+     * @작성자 : 권영린
+     * @Method 설명 : 아티스트 이메일로 팬리스트 반환
+     */
     Optional<List<Follow>> findFollowsByArtistAccountEmail(String artistEmail);
+    /**
+     * @Method Name : findFollowsByFanAccountEmail
+     * @작성자 : 권영린
+     * @Method 설명 : 팬 이메일로 아티스트 리스트 반환
+     */
     Optional<List<Follow>> findFollowsByFanAccountEmail(String fanEmail);
 }
