@@ -70,7 +70,7 @@ export default {
       formData.append('sessionId', 1)
       this.$store.dispatch('requestStartStreaming', formData)
       .then((response) => {
-        this.$router.push({name: RoomDetail, query: { videoId : response.data.videoId }})
+        this.$router.push({name: 'RoomDetail', query: { videoId : response.data.videoId }})
       })
     }
   },

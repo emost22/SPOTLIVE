@@ -141,5 +141,9 @@ export default {
               'Content-Type': 'multipart/form-data'
             }
           })
+    },
+    requestGetRoomDetail(context, payload) {
+        const URL = `/video/${payload}`
+        return $axios.get(URL)
     }
 }

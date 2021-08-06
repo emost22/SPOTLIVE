@@ -51,6 +51,16 @@ export default {
     openRoomSettingDialog: function () {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     }
+  },
+  mounted() {
+    const videoId = this.$route.query.videoId
+    this.$store.dispatch('requestGetRoomDetail', videoId)
+    .then((response) => {
+      console.log(response)
+      this.videoDescription = response.data.videoDescription
+      this.category = response.data.categoryId
+      this.videoTitle = response.data.videoTitle
+    })
   }
 }
 </script>
