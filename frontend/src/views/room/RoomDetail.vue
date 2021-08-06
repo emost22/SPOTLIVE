@@ -9,9 +9,9 @@
         </div>
         <div class="d-flex flex-row justify-content-between detail-top ms-3">
           <div class="d-flex flex-column">
-            <h3>{{ videoTitle }}</h3>
+            <div class="videoTitle">{{ videoTitle }}</div>
             <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ category }}</div>
-            <div>{{ videoDescription }}</div>
+            <div class="videoDescription">{{ videoDescription }}</div>
           </div>
           <div>
             <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ peopleWatching }}</span>
@@ -29,7 +29,7 @@
       </div>
       <div class="d-flex flex-column align-items-center mt-3">
         <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
-        <button class="bdcolor-nyellow extra-big-button m-1">스트리밍 종료</button>
+        <button class="bdcolor-nyellow extra-big-button m-1" @click="closeStreaming()">스트리밍 종료</button>
       </div>
     </div>
   </div>
@@ -40,21 +40,28 @@ export default {
   name: 'RoomDetail',
   data: function () {
     return {
-      videoDescription: "testtesttesttesttesttesttesttesttesttesttest",
-      category: "뮤지컬",
-      videoTitle: "뷔 닮은 슈퍼 댄서와 소통해요!",
+      videoId:"",
+      videoDescription: "",
+      category: "",
+      videoTitle: "",
       currentTime: "02:22:01",
-      peopleWatching: "23,035"
+      peopleWatching: "0"
     }
   },
   methods: {
     openRoomSettingDialog: function () {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
+    },
+    closeStreaming: function () {
+      this.$store.dispatch('requestCloseVideo', this.videoId)
+      .then(res => {
+        console.log(res)
+      })
     }
   },
   mounted() {
-    const videoId = this.$route.query.videoId
-    this.$store.dispatch('requestGetRoomDetail', videoId)
+    this.videoId = this.$route.query.videoId
+    this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
       console.log(response)
       this.videoDescription = response.data.videoDescription
@@ -115,15 +122,18 @@ export default {
 .detail-top {
   width: 100%;
 }
-.detail-top > div > h3 {
+.detail-top > div > .videoTitle {
   font-size: 24px;
   color: white;
+  font-weight: bold;
+  text-align: left;
   margin-bottom: 1px;
 }
-.detail-top > div > div {
+.detail-top > div > .videoDescription {
   font-size: 15px;
   font-weight: bold;
   color: white;
+  text-align: left;
   margin-bottom: 1px;
 }
 .current-time {
@@ -134,6 +144,7 @@ export default {
   height: 26px;
   line-height: 24px;
   border-radius: 13px;
+  text-align: center;
   font-size: 14px;
 }
 .badge-design {

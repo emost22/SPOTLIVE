@@ -142,8 +142,14 @@ export default {
             }
           })
     },
+
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
         return $axios.get(URL)
+    },
+
+    requestCloseVideo(context, payload) {
+        const URL = `/video/close/${payload}`
+        return $axios.patch(URL, payload)
     }
 }
