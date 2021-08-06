@@ -8,7 +8,6 @@
     <select class="camera-setting-selector mb-3" v-model="audioId" id="audioId">
       <option :key="i" :value="d.v" v-for="(d, i) in audioIds">{{ d.t }}</option>
     </select>
-    
   </div>
 </template>
 

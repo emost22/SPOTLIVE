@@ -32,7 +32,9 @@ export default ({
     },
   },
   computed: {
-    ...mapGetters(['isLogin']),
+    ...mapGetters([
+    'isLogin', 
+    ]),
   },
   created: function () {
     

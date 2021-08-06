@@ -33,4 +33,14 @@ export default {
     subscribers(state) {
         return state.subscribers
     },
+    settingDialogViewId(state) {
+        return state.settingDialogViewId
+    },
+    isSettingDialogOpen(state) {
+        return state.isSettingDialogOpen
+    },
+    createdVideoData(state) {
+        return state.createdVideoData
+    }
+
 }

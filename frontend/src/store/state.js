@@ -2,7 +2,8 @@ export default {
     
     loginUser: undefined,
     isLogin: false,
-    
+    isSettingDialogOpen: false,
+    settingDialogViewId: 0,
     // in openvidu variable
     ovSessionId: '',
     ovToken: '',
@@ -13,4 +14,5 @@ export default {
     mainStreamManager: undefined,
     publisher: undefined,
     subscribers: [],
+    createdVideoData: {}
 }
