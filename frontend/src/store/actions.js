@@ -78,7 +78,7 @@ export default {
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
         return $axios.patch(URL, payload)
-    }
+    },
 
     // Main.vue
     requestGetCarouselVideos() {
