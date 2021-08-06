@@ -69,4 +69,27 @@ export default {
         //     state.chatArray.push(userId + ": " + event.data)
         // })
     },
+
+    CONNECT_SESSION(state) {
+        console.log("MUTATION: CONNECT_SESSION() RUN...")
+        console.log("OV TOKEN: " + state.ovToken)
+        state.ovSession.connect(state.ovToken, { clientData: 'kmk130519@naver.com' })
+        .then((response) => {
+            let publisher = state.OV.initPublisher(undefined, {
+                audioSource: undefined, // The source of audio. If undefined default microphone
+                videoSource: undefined, // The source of video. If undefined default webcam
+                publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+                publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+                resolution: '960x540',  // The resolution of your video
+                frameRate: 30,			// The frame rate of your video
+                insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+                mirror: false       	// Whether to mirror your local video or not
+            })
+            state.mainStreamManager = publisher
+            state.publisher = publisher
+            state.ovSession.publish(state.publisher)
+        }).catch((error) => {
+            console.log('There was an error connecting to the session:', error.code, error.message);
+        })
+    }
 }
