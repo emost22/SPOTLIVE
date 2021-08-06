@@ -116,6 +116,8 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-aws-context', version: '2.2.1.RELEASE'
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-aws-autoconfigure
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-aws-autoconfigure', version: '2.2.1.RELEASE'
+    // https://mvnrepository.com/artifact/com.github.javafaker/javafaker
+    implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
 
 }
 

@@ -1,26 +1,24 @@
 package com.ssafy.spotlive.api.response.video;
 
+import com.ssafy.spotlive.api.response.category.CategoryRes;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
 import com.ssafy.spotlive.db.entity.Video;
-import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 /**
- * @FileName : VideoFindByIdGetRes
+ * @FileName : VideoRes
  * @작성자 : 권영린
- * @Class 설명 : 비디오 아이디로 영상 정보 조회 요청에 응답할 리스폰스 정의.
+ * @Class 설명 : 유저가 저장한 영상정보
  */
 @Getter
 @Setter
-@ToString
 @Builder
-@ApiModel("VideoFindByIdGetRes")
-public class VideoFindByIdGetRes {
+public class VideoRes {
+    long videoId;
     String videoTitle;
     String videoDescription;
     String mode;
@@ -31,21 +29,15 @@ public class VideoFindByIdGetRes {
     Boolean isLive;
     Long hit;
     String sessionId;
-
     ShowInfoRes showInfoRes;
-    Long categoryId;
-    String accountEmail;
-    public static VideoFindByIdGetRes of(Video video){
-        /**
-         * @Method Name : of
-         * @작성자 : 권영린
-         * @Method 설명 : Video Entity를 VideoFindByIdGetResDto로 변환하는 메소드
-         */
-        // 소통의 경우 ShowInfo()이 null이기 때문에 .showInfoId(video.getShowInfo().getShowInfoId())를 빼야함
-        if(video.getShowInfo() == null){
-            return VideoFindByIdGetRes.builder()
+    CategoryRes categoryRes;
+
+    public static VideoRes of(Video video) {
+        if(video.getShowInfo() != null) {
+            return VideoRes.builder()
+                    .videoId(video.getVideoId())
                     .videoTitle(video.getVideoTitle())
-                    .videoDescription((video.getVideoDescription()))
+                    .videoDescription(video.getVideoDescription())
                     .mode(video.getMode())
                     .startTime(video.getStartTime())
                     .endTime(video.getEndTime())
@@ -53,13 +45,15 @@ public class VideoFindByIdGetRes {
                     .videoUrl(video.getVideoUrl())
                     .isLive(video.getIsLive())
                     .hit(video.getHit())
-                    .accountEmail(video.getUser().getAccountEmail())
-                    .categoryId(video.getCategory().getCategoryId())
+                    .sessionId(video.getSessionId())
+                    .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
+                    .categoryRes(CategoryRes.of(video.getCategory()))
                     .build();
         } else {
-            return VideoFindByIdGetRes.builder()
+            return VideoRes.builder()
+                    .videoId(video.getVideoId())
                     .videoTitle(video.getVideoTitle())
-                    .videoDescription((video.getVideoDescription()))
+                    .videoDescription(video.getVideoDescription())
                     .mode(video.getMode())
                     .startTime(video.getStartTime())
                     .endTime(video.getEndTime())
@@ -67,13 +61,10 @@ public class VideoFindByIdGetRes {
                     .videoUrl(video.getVideoUrl())
                     .isLive(video.getIsLive())
                     .hit(video.getHit())
-                    .accountEmail(video.getUser().getAccountEmail())
-                    .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
                     .sessionId(video.getSessionId())
-                    .categoryId(video.getCategory().getCategoryId())
+//                    .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
+                    .categoryRes(CategoryRes.of(video.getCategory()))
                     .build();
         }
-
-
     }
 }
