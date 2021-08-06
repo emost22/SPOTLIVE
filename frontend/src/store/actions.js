@@ -32,6 +32,10 @@ export default {
     requestSetSessionIdAndTokenForOpenvidu(context, payload) {
         context.commit("SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU", payload)
     },
+
+    requestSetAllDevices(context) {
+        context.commit("SET_ALL_DEVICES")
+    },
     requestGetTalkVideos(context, payload) {
         const URL = '/main/talk'
         const PAGE_VALUE = payload.pageValue;
