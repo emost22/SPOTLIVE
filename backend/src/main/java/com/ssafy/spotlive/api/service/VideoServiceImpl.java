@@ -7,6 +7,7 @@ import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
+import com.ssafy.spotlive.api.response.video.VideoOpenViduSessionGetRes;
 import com.ssafy.spotlive.db.entity.*;
 import com.ssafy.spotlive.db.repository.UserVideoRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
@@ -72,13 +73,9 @@ public class VideoServiceImpl implements VideoService{
         /**
          * @Method Name : insertVideo
          * @작성자 : 권영린, 김민권
-         * @Method 설명 : 영상 시작시 1) Openvidu 세션을 생성하고 토큰을 발급 2) 썸네일을 비디오객체를 추가
+         * @Method 설명 : 영상 시작시 썸네일을 비디오객체를 추가
          */
-        // 1) Openvidu 세션을 생성하고 토큰을 발급
-        String sessionId = createSession();
-        videoInsertPostReq.setSessionId(sessionId);
-        String tokenForConnect = createToken(sessionId);
-        // 2) 썸네일을 비디오객체에 추가
+        // 썸네일을 비디오객체에 추가
         String thumbnailImageUrl = null;
         try {
             /* S3에 업로드 */
@@ -88,12 +85,9 @@ public class VideoServiceImpl implements VideoService{
             e.printStackTrace();
         }
         VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(thumbnailImageUrl)));
-        videoInsertPostRes.setToken(tokenForConnect);
-
+        
         return videoInsertPostRes;
     }
-
-
 
     @Override
     public VideoFindByIdGetRes findVideoById(Long id) {
@@ -215,7 +209,7 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public String createToken(String sessionId) {
+    public VideoOpenViduSessionGetRes createToken(String sessionId) {
         /**
          * @Method Name : createToken
          * @작성자 : 김민권
@@ -234,7 +228,10 @@ public class VideoServiceImpl implements VideoService{
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<HashMap> result = restTemplate.exchange(targetUrl, HttpMethod.POST, openviduTokenReq, HashMap.class);
 
-        return result.getBody().get("token").toString();
+        return VideoOpenViduSessionGetRes.builder()
+                .sessionId(sessionId)
+                .token(result.getBody().get("token").toString())
+                .build();
     }
 
     @Override
