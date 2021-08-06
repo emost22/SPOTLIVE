@@ -3,11 +3,20 @@
     <div class="card" @click="RoomDetail" style="height:150px; width:250px;">
       <img src="~@/assets/icon-profile.png" style="height:100px;">
       <div class="card-body" style="overflow:hidden;">
-        <p class="card-title fw-bold text-start text-nowrap overflow-hidden">{{ video.videoTitle }} 제목</p>
+        <p class="card-title fw-bold text-start text-nowrap overflow-hidden">{{ video.videoTitle }}</p>
         <p class="card-title text-start">
-          {{ video.user.profileNickname }} 송출자
-          {{ video.videoDescription }}
+          {{ video.user.profileNickname }} 
+          {{ video.user.profileImageUrl }} 
+          {{ video.user.accountEmail }} 
+          <!-- 사용자 pk -->
+          <!-- {{ video.videoDescription }}
           {{ video.mode }}
+          {{ video.thumbnailUrl }}
+          {{ video.videoLength }}
+          {{ video.startTime }}
+          {{ video.isLive }}
+          {{ video.hitLive }}
+          {{ video.hit }} -->
         </p> 
       </div>
     </div>
@@ -25,11 +34,7 @@ export default {
   },
   methods: {
     RoomDetail: function () {
-      if (localStorage.getItem('jwt')) {
-        this.$router.push({ name: 'RoomDetail', query: { video: this.video } })
-      } else {
-        this.$router.push({name: 'Login'})
-      }
+      this.$router.push({ name: 'RoomDetail', query: { videoId : this.video.videoId } })
     },
   },
   computed: {
