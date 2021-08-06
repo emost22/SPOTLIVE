@@ -2,7 +2,7 @@
   <div>
     <div class="mb-3">
       <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
-      <input type="email" class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
+      <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
     </div>
     <div class="mb-3 d-flex">
       <div class="flex-fill me-3">
@@ -43,6 +43,7 @@
       </select>
       <button class="plus-button"></button>
       </div>
+      <input  v-if="form.mode==1" class="custom-form-control mt-1" id="videoTitle" v-model="form.videoTitle">
     </div>
     <div class="mb-3">
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
