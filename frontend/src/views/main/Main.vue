@@ -12,16 +12,16 @@
           <FilterGlide :filters="filter_btns"/>
         </div>
         <div class="row">
-          <p> 소통용 영상</p>
-          <VideoGlide :videos="talk_videos"/>
-          <p> 공연용 영상</p>
-          <VideoGlide :videos="show_videos"/>
           <p> 홍보용 영상</p>
           <VideoGlide :videos="ad_videos"/>
-          <p> 다시보기 조회순 높은 영상</p>
-          <VideoGlide :videos="replay_videos"/>
+          <p> 공연용 영상</p>
+          <VideoGlide :videos="show_videos"/>
+          <p> 소통용 영상</p>
+          <VideoGlide :videos="talk_videos"/>
           <p> 실시간 시청자 높은 영상</p>
           <VideoGlide :videos="live_videos"/>
+          <p> 다시보기 조회순 높은 영상</p>
+          <VideoGlide :videos="replay_videos"/>
           <p> 내가 팔로우 하는 사람들의 최신 영상</p>
           <VideoGlide :videos="follow_videos"/>
         </div>
@@ -57,7 +57,17 @@ export default {
       follow_videos: [],
     }
   },
-  
+  created: function () {
+    this.getCarouselVideos()
+    this.getFilterBtns()
+    this.getAdVideos(0, 20)
+    this.getShowVideos(0, 20)
+    this.getTalkVideos(0, 20)
+    this.getLiveVideos(0, 20)
+    this.getReplayVideos(0, 20)
+    this.getFollowVideos(0, 20)
+    this.getTotalMainVideos(0, 20)
+  },
   methods: {
     getCarouselVideos() {
     },
@@ -85,7 +95,7 @@ export default {
     },
     
     getAdVideos(pageValue, sizeValue) {
-      this.$store.dispatch('requestGetadVideos', { 
+      this.$store.dispatch('requestGetAdVideos', { 
         pageValue: pageValue,
         sizeValue: sizeValue,
       }).then((response) => {
@@ -161,18 +171,6 @@ export default {
         console.log(error)
       })
     },
-
-  },
-  created: function () {
-    this.getCarouselVideos()
-    this.getFilterBtns()
-    this.getAdVideos(0, 20)
-    this.getShowVideos(0, 20)
-    this.getTalkVideos(0, 20)
-    this.getLiveVideos(0, 20)
-    this.getReplayVideos(0, 20)
-    this.getFollowVideos(0, 20)
-    this.getTotalMainVideos(0, 20)
   },
   computed: {
     ...mapGetters(['loginUser', 'isLogin']),
