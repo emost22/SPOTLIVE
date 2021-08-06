@@ -32,6 +32,7 @@ public class VideoInsertPostRes {
         return VideoInsertPostRes.builder()
                 .videoId(video.getVideoId())
                 .thumbnailUrl(video.getThumbnailUrl())
+                .sessionId(video.getSessionId())
                 .build();
     }
 }
