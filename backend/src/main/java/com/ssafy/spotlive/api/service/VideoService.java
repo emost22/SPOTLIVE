@@ -5,6 +5,7 @@ import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
+import com.ssafy.spotlive.api.response.video.VideoOpenViduSessionGetRes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -22,6 +23,6 @@ public interface VideoService {
     List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail);
 
     String createSession();
-    String createToken(String sessionId);
+    VideoOpenViduSessionGetRes createToken(String sessionId);
     int closeSession(String sessionId);
 }

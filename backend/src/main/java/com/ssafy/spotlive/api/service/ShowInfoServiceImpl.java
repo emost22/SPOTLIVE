@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -85,11 +84,12 @@ public class ShowInfoServiceImpl implements ShowInfoService {
         else return Boolean.FALSE;
 
         if (!posterImage.isEmpty()) {
-            String posterUrl = showInfo.getPosterUrl();
-            File file = new File(posterUrl);
-            file.delete();
+            String nextPosterImageUrl = null;
+            String currentPosterUrl = showInfo.getPosterUrl();
+            fileUploadService.delete(currentPosterUrl);
             try {
-                posterImage.transferTo(new File(posterUrl));
+                nextPosterImageUrl = fileUploadService.upload(posterImage);
+                showInfo.setPosterUrl(nextPosterImageUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -6,6 +6,7 @@ import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
+import com.ssafy.spotlive.api.response.video.VideoOpenViduSessionGetRes;
 import com.ssafy.spotlive.db.entity.*;
 import com.ssafy.spotlive.db.repository.UserVideoRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
@@ -18,7 +19,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -61,12 +61,10 @@ public class VideoServiceImpl implements VideoService{
         /**
          * @Method Name : insertVideo
          * @작성자 : 권영린, 김민권
-         * @Method 설명 : 영상 시작시 1) Openvidu 세션을 생성하고 토큰을 발급 2) 썸네일을 비디오객체를 추가
+         * @Method 설명 : 영상 시작시 썸네일을 비디오객체를 추가
          */
-        // 1) Openvidu 세션을 생성하고 토큰을 발급
-        String sessionId = createSession();
-        String tokenForConnect = createToken(sessionId);
-        // 2) 파일을 저장한 후 그 썸네일을 비디오객체에 추가, DB에 영상 정보 저장
+
+        // 썸네일을 비디오객체에 추가
         String thumbnailImageUrl = null;
         try {
             /* S3에 업로드 */
@@ -75,13 +73,10 @@ public class VideoServiceImpl implements VideoService{
         } catch(Exception e) {
             e.printStackTrace();
         }
-        VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(thumbnailImageUrl, sessionId)));
-        videoInsertPostRes.setToken(tokenForConnect);
+        VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository.save(videoInsertPostReq.toVideo(thumbnailImageUrl)));
 
         return videoInsertPostRes;
     }
-
-
 
     @Override
     public VideoFindByIdGetRes findVideoById(Long id) {
@@ -113,14 +108,12 @@ public class VideoServiceImpl implements VideoService{
 
         /* 썸네일이 있다면 원래 썸네일 파일을 현재 썸네일 파일로 바꿈 */
         if(thumbnailImage != null){
-            String separ = File.separator;
-            String originalThumbnailName = videoById.get().getThumbnailUrl();
-            String rootPath = new File("").getAbsolutePath().split("backend")[0];
-            String originalThumbnailUrl = rootPath + "frontend" + separ + "src" + separ + "assets" + separ + "thumbnails" + separ  + originalThumbnailName;
-            File file = new File(originalThumbnailUrl);
-            file.delete(); //원래 파일 삭제
+            String nextThumbnailUrl = null;
+            String currentThumbnailUrl = videoById.get().getThumbnailUrl();
+            fileUploadService.delete(currentThumbnailUrl);
             try {
-                thumbnailImage.transferTo(new File(originalThumbnailUrl));
+                nextThumbnailUrl = fileUploadService.upload(thumbnailImage);
+                videoById.get().setThumbnailUrl(nextThumbnailUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -208,7 +201,7 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public String createToken(String sessionId) {
+    public VideoOpenViduSessionGetRes createToken(String sessionId) {
         /**
          * @Method Name : createToken
          * @작성자 : 김민권
@@ -227,7 +220,10 @@ public class VideoServiceImpl implements VideoService{
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<HashMap> result = restTemplate.exchange(targetUrl, HttpMethod.POST, openviduTokenReq, HashMap.class);
 
-        return result.getBody().get("token").toString();
+        return VideoOpenViduSessionGetRes.builder()
+                .sessionId(sessionId)
+                .token(result.getBody().get("token").toString())
+                .build();
     }
 
     @Override

@@ -32,8 +32,10 @@ public class VideoInsertPostReq {
     Long showInfoId;
     @ApiModelProperty(name="accountEmail : 유저 email", example="email@email.com")
     String accountEmail;
+    @ApiModelProperty(name="sessionId : Openvidu Server의 Session id", example="session12345678")
+    String sessionId;
 
-    public Video toVideo(String thumbnailUrl, String sessionId){
+    public Video toVideo(String thumbnailUrl){
         /**
          * @Method Name : toVideo
          * @작성자 : 권영린
@@ -59,7 +61,7 @@ public class VideoInsertPostReq {
         }
         user.setAccountEmail(this.accountEmail);
         video.setUser(user);
-        video.setSessionId(sessionId);
+        video.setSessionId(this.sessionId);
 
         return video;
     }

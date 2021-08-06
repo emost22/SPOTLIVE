@@ -20,6 +20,31 @@ export default {
         })
     },
 
+    requestInitSession(context, payload) {
+        context.commit("INIT_SESSION", payload)
+    },
+
+    requestGetSessionAndTokenForOpenvidu(context) {
+        const URL = '/video/openvidu/session'
+        return $axios.post(URL)
+    },
+
+    requestSetSessionIdAndTokenForOpenvidu(context, payload) {
+        context.commit("SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU", payload)
+    },
+
+    requestSetAllDevices(context) {
+        context.commit("SET_ALL_DEVICES")
+    },
+
+    requestAddEventInSession(context) {
+        context.commit("ADD_EVENT_IN_SESSION")
+    },
+
+    requestConnectSession(context) {
+        context.commit("CONNECT_SESSION")
+    },
+
     // Main.vue
     requestGetTotalMainVideos(context, payload) {
         const URL = '/main/all'
