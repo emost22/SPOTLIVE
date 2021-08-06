@@ -36,6 +36,10 @@ export default {
     requestSetAllDevices(context) {
         context.commit("SET_ALL_DEVICES")
     },
+
+    requestAddEventInSession(context) {
+        context.commit("ADD_EVENT_IN_SESSION")
+    },
     requestGetTalkVideos(context, payload) {
         const URL = '/main/talk'
         const PAGE_VALUE = payload.pageValue;
