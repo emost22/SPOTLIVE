@@ -153,6 +153,14 @@ export default {
     // MainSidebar.vue
     requestGetFollowingList() {
         const URL = '/main/user'
+
+        return $axios.get(URL)
+    },
+
+    // Profile.vue
+    requestGetMyProfile() {
+        const URL = '/auth/user'
+
         return $axios.get(URL)
     },
 }

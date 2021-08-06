@@ -30,17 +30,6 @@ export default {
     MyShowCard,
   },
   methods: {
-    getMyShows() {
-      this.$store.dispatch('requestGetMyShows')
-      .then((response) => {
-        console.log("getMyShows() SUCCESS!!")
-        console.log(response.data)
-        this.show_videos = response.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    },
   }
 }
 </script>

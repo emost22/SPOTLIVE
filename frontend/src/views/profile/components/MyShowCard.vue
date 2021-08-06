@@ -15,6 +15,8 @@ export default {
   },
   methods: {
     ShowDetail: function () {
+      // 내 프로필인 경우 ShowDetailDialog.vue
+      // 타인 프로필인 경우 ShowReservationDialog.vue
     },
   },
 }
