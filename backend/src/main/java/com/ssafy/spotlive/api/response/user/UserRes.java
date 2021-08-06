@@ -1,10 +1,16 @@
 package com.ssafy.spotlive.api.response.user;
 
+import com.ssafy.spotlive.api.response.reservation.ReservationRes;
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
 import com.ssafy.spotlive.db.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @FileName : UserRes
@@ -27,6 +33,8 @@ public class UserRes {
     String ageRange;
     String accessToken;
     String refreshToken;
+    List<ShowInfoRes> showInfoResList = new ArrayList<>();
+    List<ReservationRes> reservationResList = new ArrayList<>();
 
     // showInfo, Reservation, Follow(Fan, artist), userVideo, video 리스트가 필드와 of method의 빌더에 추가되어야 한다.
 
@@ -42,6 +50,8 @@ public class UserRes {
                 .ageRange(user.getAgeRange())
                 .accessToken(user.getAccessToken())
                 .refreshToken(user.getRefreshToken())
+                .showInfoResList(user.getShowInfoList().stream().map(showInfo -> ShowInfoRes.of(showInfo)).collect(Collectors.toList()))
+                .reservationResList(user.getReservationList().stream().map(reservation -> ReservationRes.of(reservation)).collect(Collectors.toList()))
                 .build();
     }
 }
