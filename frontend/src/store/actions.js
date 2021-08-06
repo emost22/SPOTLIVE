@@ -70,7 +70,7 @@ export default {
     },
 
     requestGetFollowVideos(context, payload) {
-        const URL = '/main/user'
+        const URL = '/main/follow'
         const PAGE_VALUE = payload.pageValue;
         const SIZE_VALUE = payload.sizeValue;
 
@@ -78,4 +78,9 @@ export default {
     },
     
     // MainSidebar.vue
+    requestGetFollowingList() {
+        const URL = '/main/user'
+
+        return $axios.get(URL)
+    },
 }

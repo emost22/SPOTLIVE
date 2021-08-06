@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 import MainSidebar from '@/views/main/components/MainSidebar.vue'
 import VideoCarousel from '@/views/main/components/VideoCarousel.vue'
 import VideoGlide from '@/views/main/components/VideoGlide.vue'
