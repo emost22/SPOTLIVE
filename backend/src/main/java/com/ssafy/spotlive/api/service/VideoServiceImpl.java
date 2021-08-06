@@ -1,6 +1,5 @@
 package com.ssafy.spotlive.api.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
@@ -10,7 +9,6 @@ import com.ssafy.spotlive.api.response.video.VideoInsertPostRes;
 import com.ssafy.spotlive.db.entity.*;
 import com.ssafy.spotlive.db.repository.UserVideoRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -32,7 +30,6 @@ import java.util.stream.Collectors;
  * @Class 설명 : Video관련 기능을 위한 ServiceImpl 정의.
  */
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class VideoServiceImpl implements VideoService{
 
@@ -58,14 +55,6 @@ public class VideoServiceImpl implements VideoService{
     FileUploadService fileUploadService;
 
     private final static String TEMP_FILE_PATH = "src/main/resources/";
-
-    @Value("${cloud.aws.s3.bucket}") // 프로퍼티에서 cloud.aws.s3.bucket에 대한 정보를 불러옴
-    public String bucket;
-
-    @Value("${cloud.aws.s3.bucket.url}")
-    private String defaultUrl;
-
-    private final AmazonS3Client amazonS3Client;
 
     @Override
     public VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage){
