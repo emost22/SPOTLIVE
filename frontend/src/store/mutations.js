@@ -19,4 +19,12 @@ export default {
         state.OV = payload;
         state.ovSession = state.OV.initSession()
     },
+
+    SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU(state, payload) {
+        console.log("MUTATION: SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU() RUN...")
+        state.ovSessionId = payload.ovSessionId
+        state.ovToken = payload.ovToken
+        console.log("OV SESSION ID: " + state.ovSessionId)
+        console.log("OV TOKEN: " + state.ovToken)
+    },
 }
