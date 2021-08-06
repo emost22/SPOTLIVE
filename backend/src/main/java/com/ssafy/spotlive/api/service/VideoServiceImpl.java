@@ -18,7 +18,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -113,14 +112,12 @@ public class VideoServiceImpl implements VideoService{
 
         /* 썸네일이 있다면 원래 썸네일 파일을 현재 썸네일 파일로 바꿈 */
         if(thumbnailImage != null){
-            String separ = File.separator;
-            String originalThumbnailName = videoById.get().getThumbnailUrl();
-            String rootPath = new File("").getAbsolutePath().split("backend")[0];
-            String originalThumbnailUrl = rootPath + "frontend" + separ + "src" + separ + "assets" + separ + "thumbnails" + separ  + originalThumbnailName;
-            File file = new File(originalThumbnailUrl);
-            file.delete(); //원래 파일 삭제
+            String nextThumbnailUrl = null;
+            String currentThumbnailUrl = videoById.get().getThumbnailUrl();
+            fileUploadService.delete(currentThumbnailUrl);
             try {
-                thumbnailImage.transferTo(new File(originalThumbnailUrl));
+                nextThumbnailUrl = fileUploadService.upload(thumbnailImage);
+                videoById.get().setThumbnailUrl(nextThumbnailUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
