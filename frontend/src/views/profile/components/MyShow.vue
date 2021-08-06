@@ -1,5 +1,5 @@
 <template>
-  <carousel-3d>
+  <carousel-3d :width="200" :height="300">
     <slide v-for="(show, i) in shows" :index="i" :key="i">
       <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
           <MyShowCard

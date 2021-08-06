@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <img :src="show.thumbnailUrl" @click="ShowDetail">
+  <div class="show-card-img">
+    <img :src="show.posterUrl" @click="ShowDetail" >
   </div>
 </template>
 
@@ -23,4 +23,6 @@ export default {
 </script>
 
 <style>
+.show-card-img {
+}
 </style>
