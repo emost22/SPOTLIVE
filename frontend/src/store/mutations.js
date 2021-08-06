@@ -35,4 +35,38 @@ export default {
             state.audioDevices = devices.filter(device => device.kind === 'audioinput')
         })
     },
+
+    ADD_EVENT_IN_SESSION(state) {
+        console.log("MUTATION: ADD_EVENT_IN_SESSION() RUN...")
+        state.ovSession.on('connectionCreated', event => {
+            console.log('[OPENVIDU] Found Connection: ', { event })
+        })
+
+        state.ovSession.on('streamCreated', ({ stream }) => {
+            let subscriber = state.session.subscribe(stream, undefined);
+            console.log('[OPENVIDU] Add new user: ' + subscriber.id)
+            console.log(subscriber)
+            state.mainStreamManager = subscriber
+            state.subscribers.push(subscriber)
+        })
+
+        state.ovSession.on('streamDestroyed', ({ stream }) => {
+            console.log('[OPENVIDU] Stream Destroyed!')
+            const index = state.subscribers.indexOf(stream.streamManager, 0);
+            if (index >= 0) {
+                state.subscribers.splice(index, 1);
+            }
+        })
+
+        state.ovSession.on('exception', ({ exception }) => {
+            console.log('[OPENVIDU] exception!')
+            console.warn(exception);
+        })
+
+        // state.ovSession.on('signal:my-chat', (event) => {
+        //     console.log('[OPENVIDU] Get Chat data: ' + event.data)
+        //     let userId = JSON.parse(event.from.data).clientData
+        //     state.chatArray.push(userId + ": " + event.data)
+        // })
+    },
 }
