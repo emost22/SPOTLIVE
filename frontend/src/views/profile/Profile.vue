@@ -81,7 +81,7 @@ export default {
     this.getMyProfile()
     this.getUser()
   },
-  computed: function () {
+  computed: {
   },
 }
 </script>

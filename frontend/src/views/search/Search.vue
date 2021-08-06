@@ -26,7 +26,7 @@ export default {
   created: function () {
     this.getSearchs()
   },
-  computed: function() {
+  computed: {
 
   },
 }
