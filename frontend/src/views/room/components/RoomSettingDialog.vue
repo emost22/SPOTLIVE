@@ -1,9 +1,9 @@
 <template>
-  <div class="modal fade" id="roomSettingDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div v-show="isSettingDialogOpen" class="modal fade" id="roomSettingDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeRoomSettingDialog()"></button>
         </div>
         <div class="modal-body">
           <div class='tabs'>
@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button" @click="setSetting" data-bs-dismiss="modal">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button" @click="setSetting()" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>
@@ -29,6 +29,7 @@
 </template>
 
 <script scoped>
+import { mapGetters } from "vuex"
 import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
 import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
 export default {
@@ -39,14 +40,30 @@ export default {
   },
   data: function () {
     return {
-      
+      viewId: 0,
     }
   }, 
   methods: {
-    setSetting() {
+    setSetting: function () {
       //axios
+      this.closeRoomSettingDialog()
+    },
+    closeRoomSettingDialog: function () {
+      this.$store.dispatch('requestSetIsOpenSettingDialog', 0)
+    },
+    setViewId: function() {
+      viewId = settingDialogViewId
     }
-  }
+    
+  },
+  computed: {
+    ...mapGetters([
+    'settingDialogViewId',
+    'isSettingDialogOpen'
+    ]),
+  },
+  beforeUpdate() {
+  },
 }
 </script>
 

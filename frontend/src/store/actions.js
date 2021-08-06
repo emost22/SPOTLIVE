@@ -121,4 +121,8 @@ export default {
 
         return $axios.get(URL)
     },
+    
+    requestSetIsOpenSettingDialog({ commit }, payload) {
+        commit('SET_IS_OPEN_SETTING_DIALOG', payload)
+    }
 }

@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="d-flex flex-column align-items-center mt-3">
-        <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog">스트리밍 수정</button>
+        <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
         <button class="bdcolor-nyellow extra-big-button m-1">스트리밍 종료</button>
       </div>
     </div>
@@ -45,6 +45,11 @@ export default {
       videoTitle: "뷔 닮은 슈퍼 댄서와 소통해요!",
       currentTime: "02:22:01",
       peopleWatching: "23,035"
+    }
+  },
+  methods: {
+    openRoomSettingDialog: function () {
+      this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     }
   }
 }
