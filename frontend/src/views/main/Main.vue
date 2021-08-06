@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex flex-row">
+    <div class="main-div">
       <MainSidebar/>
       <div class="main-video">
         <div>
@@ -111,7 +111,6 @@ export default {
       })
     },
     
-    /*
     getReplayVideos(pageValue, sizeValue) {
       this.$store.dispatch('requestGetReplayVideos', { 
         pageValue: pageValue,
@@ -148,7 +147,6 @@ export default {
         console.log(error)
       })
     },
-    */
   },
   created: function () {
     this.getCarouselVideos()
@@ -164,8 +162,14 @@ export default {
 </script>
 
 <style>
+.main-div{
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+}
 .main-video {
   width: 100%;
+  min-height: 100vh;
   margin: 20px;
 }
 </style>

@@ -1,4 +1,5 @@
-import router from '../router/index';
+import router from '../router/index'
+import $axios from '../util/axios'
 
 export default {
 
@@ -8,6 +9,7 @@ export default {
         state.loginUser = payload.loginUser
         state.isLogin = true;
         localStorage.setItem('accessToken', payload.loginUser.accessToken)
+        $axios.defaults.headers['Authorization'] = 'Bearer ' + payload.loginUser.accessToken
         router.push({ name: "Main" })
     },
 }
