@@ -1,7 +1,10 @@
 package com.ssafy.spotlive.api.response.user;
 
+import com.ssafy.spotlive.api.response.follow.FollowMyArtistRes;
+import com.ssafy.spotlive.api.response.follow.FollowMyFanRes;
 import com.ssafy.spotlive.api.response.reservation.ReservationRes;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
+import com.ssafy.spotlive.api.response.video.VideoRes;
 import com.ssafy.spotlive.db.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +38,9 @@ public class UserRes {
     String refreshToken;
     List<ShowInfoRes> showInfoResList = new ArrayList<>();
     List<ReservationRes> reservationResList = new ArrayList<>();
-
+    List<VideoRes> videoResList = new ArrayList<>();
+    List<FollowMyArtistRes> followMyArtistResList = new ArrayList<>();
+    List<FollowMyFanRes> followMyFanResList = new ArrayList<>();
     // showInfo, Reservation, Follow(Fan, artist), userVideo, video 리스트가 필드와 of method의 빌더에 추가되어야 한다.
 
     public static UserRes of(User user) {
@@ -52,6 +57,9 @@ public class UserRes {
                 .refreshToken(user.getRefreshToken())
                 .showInfoResList(user.getShowInfoList().stream().map(showInfo -> ShowInfoRes.of(showInfo)).collect(Collectors.toList()))
                 .reservationResList(user.getReservationList().stream().map(reservation -> ReservationRes.of(reservation)).collect(Collectors.toList()))
+                .videoResList(user.getVideoList().stream().map(video -> VideoRes.of(video)).collect(Collectors.toList()))
+                .followMyArtistResList(user.getArtistList().stream().map(follow -> FollowMyArtistRes.of(follow)).collect(Collectors.toList()))
+                .followMyFanResList(user.getFanList().stream().map(follow -> FollowMyFanRes.of(follow)).collect(Collectors.toList()))
                 .build();
     }
 }
