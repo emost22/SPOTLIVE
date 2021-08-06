@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="full-wide-screen"> 
-      <user-video />
+      <video class="userVideo" ref="myVideo" autoplay/>
     </div>
     <div class="btn-wrapper">
       <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#exampleModal"> 설정 </button>
@@ -11,15 +11,15 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 import { OpenVidu } from 'openvidu-browser'
-import UserVideo from './components/UserVideo.vue';
+import UserVideo from './components/UserVideo.vue'
 
 export default {
+  name:'RoomCreate',
   components: {
     UserVideo,
   },
-  name:'RoomCreate',
   data() {
     return  {
 
@@ -60,8 +60,13 @@ export default {
       this.$store.dispatch("requestAddEventInSession")
     },
   },
+  watch: {
+    mainStreamManager: function(val, oldVal) {
+      this.mainStreamManager.addVideoElement(this.$refs.myVideo);
+    }
+  },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices']),
+    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'mainStreamManager']),
   },
 }
 </script>
