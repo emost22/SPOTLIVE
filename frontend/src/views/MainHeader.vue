@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default ({
   name: "MainHeader",
   components: {
@@ -68,13 +70,8 @@ export default ({
     }
   },
   computed: {
-    // isLogin: function () {
-    //   return this.$store.getters.isLogin
-    // },
-  },
-  created: function () {
-  },
-  mounted: function () {
+    ...mapGetters(['loginUser', 'isLogin']),
+    // FilterButton.vue에서 클릭 이벤트가 일어나면 카테고리 아이디를 받아서 인자를 넣어보자
   },
 })
 </script>

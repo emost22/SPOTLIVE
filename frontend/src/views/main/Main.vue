@@ -9,7 +9,7 @@
         </div>
         <div>
           카테고리 버튼
-          <FilterGlide :filters="filter_btns"/>
+          <FilterGlide :filters="filter_buttons"/>
         </div>
         <div class="row">
           <p> 홍보용 영상</p>
@@ -48,7 +48,7 @@ export default {
   data: function () {
     return {
       carousel_videos: [],
-      filter_btns: [],
+      filter_buttons: [],
       ad_videos: [],
       show_videos: [],
       talk_videos: [],
@@ -59,7 +59,7 @@ export default {
   },
   created: function () {
     this.getCarouselVideos()
-    this.getFilterBtns()
+    this.getFilterButtons()
     this.getAdVideos(0, 20)
     this.getShowVideos(0, 20)
     this.getTalkVideos(0, 20)
@@ -80,7 +80,16 @@ export default {
       })
     },
 
-    getFilterBtns() {
+    getFilterButtons() {
+      this.$store.dispatch('requestGetFilterButtons')
+      .then((response) => {
+        console.log("getFilterButtons() SUCCESS!!")
+        console.log(response.data)
+        this.filter_buttons = response.data})
+      .catch((error) => {
+        console.log('필터실패')
+        console.log(error)
+      })
     },
     
     getTotalMainVideos(pageValue, sizeValue) {
@@ -182,6 +191,7 @@ export default {
   },
   computed: {
     ...mapGetters(['loginUser', 'isLogin']),
+    // FilterButton.vue에서 클릭 이벤트가 일어나면 카테고리 아이디를 받아서 인자를 넣어보자
   },
 }
 </script>
