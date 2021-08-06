@@ -65,9 +65,8 @@ public class VideoServiceImpl implements VideoService{
          */
         // 1) Openvidu 세션을 생성하고 토큰을 발급
         String sessionId = createSession();
-        videoInsertPostReq.setSessionId(sessionId);
         String tokenForConnect = createToken(sessionId);
-        // 2) 썸네일을 비디오객체에 추가
+        // 2) 파일을 저장한 후 그 썸네일을 비디오객체에 추가, DB에 영상 정보 저장
         String thumbnailImageUrl = null;
         try {
             /* S3에 업로드 */
@@ -100,6 +99,11 @@ public class VideoServiceImpl implements VideoService{
             MultipartFile thumbnailImage,
             VideoUpdateByIdPatchReq videoUpdateByIdPatchReq,
             String accountEmail) {
+        /**
+         * @Method Name : findVideoById
+         * @작성자 : 권영린
+         * @Method 설명 : 영상 id로 영상을 조회
+         */
         /* 원래 정보를 꺼내옴 */
         Optional<Video> videoById = videoRepository.findById(videoId);
         /* 정보가 없다면 FALSE */
