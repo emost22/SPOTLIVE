@@ -1,9 +1,6 @@
 package com.ssafy.spotlive.api.response.video;
 
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
-import com.ssafy.spotlive.db.entity.Category;
-import com.ssafy.spotlive.db.entity.ShowInfo;
-import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.entity.Video;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
@@ -71,7 +68,6 @@ public class VideoFindByIdGetRes {
                     .isLive(video.getIsLive())
                     .hit(video.getHit())
                     .accountEmail(video.getUser().getAccountEmail())
-//                    .showInfoId(video.getShowInfo().getShowInfoId())
                     .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
                     .sessionId(video.getSessionId())
                     .categoryId(video.getCategory().getCategoryId())
