@@ -46,6 +46,19 @@ export default {
     },
 
     // Main.vue
+    requestGetCarouselVideos() {
+        const URL = '/main/top'
+
+        return $axios.get(URL)
+    },
+
+    requestGetFilterButtons() {
+        const URL = '/category/'
+        // 엔드슬래시 전부 제거한 후 pull받고 수정
+
+        return $axios.get(URL)
+    },
+
     requestGetTotalMainVideos(context, payload) {
         const URL = '/main/all'
         const PAGE_VALUE = payload.pageValue;
