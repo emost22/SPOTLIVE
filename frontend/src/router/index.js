@@ -18,6 +18,7 @@ const requireAuth = (to, from, next) => {
     next('/login')
   } else {
     state.isLogin = true
+    state.loginUser = JSON.parse(localStorage.getItem("loginUser"))
     next()
   }
 }
