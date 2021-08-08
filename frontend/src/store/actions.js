@@ -25,9 +25,14 @@ export default {
         context.commit("INIT_SESSION", payload)
     },
 
-    requestGetSessionAndTokenForOpenvidu(context) {
+    requestGetSessionForOpenvidu(context) {
         const URL = '/video/openvidu/session'
-        return $axios.post(URL)
+        return $axios.get(URL)
+    },
+
+    requestGetTokenForOpenvidu(context, payload) {
+        const URL = `/video/openvidu/token/${payload.sessionId}`
+        return $axios.get(URL)
     },
 
     requestSetSessionIdAndTokenForOpenvidu(context, payload) {
@@ -82,6 +87,13 @@ export default {
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
         return $axios.patch(URL, payload)
+    },
+
+    // RoomSettingDialogForm.vue
+    requestGetRecentlyTimeTable(context, payload) {
+        const URL = `/showinfo/timetable/${payload.showInfoId}`
+        console.log(URL)
+        return $axios.get(URL)
     },
 
     // Main.vue
