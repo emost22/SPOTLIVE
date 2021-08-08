@@ -13,13 +13,9 @@
 <script>
 import { mapGetters } from "vuex"
 import { OpenVidu } from 'openvidu-browser'
-import UserVideo from './components/UserVideo.vue';
 
 export default {
   name:'RoomCreate',
-  components: {
-    UserVideo,
-  },
   data() {
     return  {
 
@@ -34,12 +30,18 @@ export default {
       this.$store.dispatch("requestInitSession", openvidu)
     },
     async doOpenviduCall() {
-      await this.$store.dispatch("requestGetSessionAndTokenForOpenvidu")
+      await this.$store.dispatch("requestGetSessionForOpenvidu")
       .then((response) => {
-        this.setSessionIdAndTokenForOpenvidu(response.data.sessionId, response.data.token)
-        this.setAllDevices()
-        this.addEventInSession()
-        this.connectSession()
+        console.log(response.data)
+        this.$store.dispatch("requestGetTokenForOpenvidu", { sessionId: response.data })
+        .then((response) => {
+          this.setSessionIdAndTokenForOpenvidu(response.data.sessionId, response.data.token)
+          this.setAllDevices()
+          this.addEventInSession()
+          this.connectSession()
+        }).catch((error) => {
+          console.log(error)
+        })         
       }).catch((error) => {
         console.log(error)
       })
