@@ -12,6 +12,7 @@
             <div class='content'>
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
+                :showInfoList="loginUser.showInfoResList"
                 @form-data="form => videoData = form"
               />
             </div>
@@ -63,14 +64,17 @@ export default {
   computed: {
     ...mapGetters([
     'settingDialogViewId',
-    'isSettingDialogOpen'
+    'isSettingDialogOpen',
+    'loginUser'
     ]),
   },
   mounted() {
     this.$store.dispatch('requestGetCategoryIds')
-      .then((response) => {
-        this.categoryIds = response.data
-      })
+    .then((response) => {
+      this.categoryIds = response.data
+    })
+
+
   },
   beforeUpdate() {
     
