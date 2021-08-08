@@ -38,8 +38,8 @@
     <div class="mb-3" v-if="form.mode==1 || form.mode==2">
       <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
       <div class="d-flex">
-      <select class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
-        <option :key="i" :value="d.v" v-for="(d, i) in showInfoIds">{{ d.t }}</option>
+      <select @change="getRecentlyTimeTable()" class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
+        <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
       </select>
       <button class="plus-button"></button>
       </div>
@@ -68,6 +68,10 @@ export default {
     categoryIds: {
       type: Array,
       default: [],
+    },
+    showInfoList: {
+      type: Array,
+      default: [],
     }
   },
   data: function () {
@@ -77,24 +81,37 @@ export default {
         thumbnailImage: [],
         videoDescription: '',
         videoTitle: '',
-        showInfoId: '35',
+        showInfoId: '',
         showTime:'',
         mode: 1,
       },
       thumbnail: '',
       fileName:'',
-      showInfoIds: [
-        { v: "1", t: "옥탑방 고냥쓰들" },
-        { v: "2", t: "캣츠" },
-        { v: "3", t: "룰루" },
-      ]
+      showInfoIds: [],
     }
   },
   methods: {
     handleFileChange(e) {
       this.form.thumbnailImage = e.target.files[0]
       this.fileName = e.target.files[0].name
+    },
+    makeShowInfoIds() {
+      this.showInfoList.filter((showInfo, index) => {
+        this.showInfoIds.push({ v: index, t: showInfo,})
+      })
+    },
+    getRecentlyTimeTable() {
+      this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
+      .then((response) => {
+        console.log("RESPONSE")
+        console.log(response.data)
+      }).catch((error) => {
+        console.log("ERROR")
+      })
     }
+  },
+  created() {
+    this.makeShowInfoIds()
   },
   beforeUpdate() {
     if (this.form.mode == 2 || this.form.mode == 3) {
