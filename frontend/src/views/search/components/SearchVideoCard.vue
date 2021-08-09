@@ -2,16 +2,15 @@
   <div class="card search-card-box">
     <div 
       class="search-card-img-box" 
-      style="background-image: url('video.thumbnailUrl');"
+      v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
       @click="goRoomDetail"  
     >
       <div class="live-badge" v-if="video.isLive"></div>
-      <!-- <img :src="video.thumbnailUrl" class="search-card-img-thumbnail"> -->
-      <div>{{ video.videoLength }}</div>
-      <!-- {{ video.startTime }} -->
+      <div class="time-badge" v-if="!video.isLive">{{ Number(video.videoLength)/60 }}m</div>
     </div>
-    
-    <div class="search-card-info-box" style="overflow:hidden;">
+    <!-- {{ video.startTime }} -->
+  
+    <div class="search-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
       <div>
         <img :src="video.user.profileImageUrl" class="search-card-img-profile" @click="goProfile">
       </div>
@@ -50,24 +49,23 @@ export default {
 <style>
 .search-card-box {
   width:300px;
-  height:225px;
+  height:250px;
+  border: none;
+  border-radius: 0%;
 }
 .search-card-img-box {
   width:300px;
   height:187.5px;
   overflow:hidden;
+  background-size: cover;
   margin:0;
-}
-.search-card-img-thumbnail {
-  width:100%;
-  height:100%;
-  object-fit:cover;
 }
 .search-card-info-box {
   width:300px;
-  height:37.5px;
+  height:62.5px;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 .search-card-img-profile {
   width: 40px;

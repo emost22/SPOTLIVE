@@ -33,14 +33,14 @@
     </div>
 
     <div>
-      <p>나의 공연 정보</p>
+      <p class="txtcolor-white-npurple main-title">나의 공연 정보</p>
       <MyShow
         :shows="myShows"
       />
     </div>
 
     <div>
-      <p>나의 동영상</p>
+      <p class="txtcolor-white-ngreen main-title">나의 동영상</p>
       <MyVideo
         :videos="myVideos"
       />

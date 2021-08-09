@@ -1,15 +1,42 @@
 <template>
-  <div>
-    <!-- 그리드 인피니트 스크롤 -->
+  <div class="my-video-grid-box">
+    <div v-if="videos.length">
+      <div
+        v-for="(video, idx) in videos"
+        :key="idx">
+        <MyVideoCard
+          :video="video"
+        />
+      </div>
+    </div>
+    <div v-if="!videos.length">
+      <p class="txtcolor-nyellow">저장된 동영상이 존재하지 않습니다.</p>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
+import MyVideoCard from '@/views/profile/components/MyVideoCard.vue'
 
+export default {
+  name: "MyVideo",
+  props: {
+    videos: {
+      type: Array,
+      required: true
+    }
+  },
+  components: {
+    MyVideoCard,
+  },
+  methods: {
+  }
 }
 </script>
 
 <style>
-
+.my-video-grid-box {
+  display: flex;
+  flex-direction: row;
+}
 </style>
