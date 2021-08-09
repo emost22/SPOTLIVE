@@ -97,6 +97,18 @@ export default {
         })
     },
 
+    CONNECT_SESSION_FOR_GUEST(state) {
+        console.log("MUTATION: CONNECT_SESSION_FOR_GUEST() RUN...")
+        console.log("OV TOKEN: " + state.ovToken)
+        console.log("ACCOUNT_EMAIL: " + state.loginUser.accountEmail)
+        state.ovSession.connect(state.ovToken, { clientData: state.loginUser.accountEmail })
+        .then((response) => {
+            state.mainStreamManager = state.subscribers[0]
+        }).catch((error) => {
+            console.log('There was an error connecting to the session:', error.code, error.message)
+        })
+    },
+
     CHANGE_DEVICE(state, payload) {
         console.log("MUTATION: CHANGE_DEVICE() RUN...")
         state.audioDeviceId = payload.audioDeviceId
