@@ -55,6 +55,10 @@ export default {
     requestConnectSession(context) {
         context.commit("CONNECT_SESSION")
     },
+    
+    requestConnectSessionForGuest(context) {
+        context.commit("CONNECT_SESSION_FOR_GUEST")
+    },
 
     requestChangeDevice(context, payload) {
         context.commit("CHANGE_DEVICE", payload)
