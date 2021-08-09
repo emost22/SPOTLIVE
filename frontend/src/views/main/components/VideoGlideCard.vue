@@ -11,7 +11,7 @@
         <!-- {{ video.startTime }} -->
       </div>
       
-      <div class="glide-card-info-box" style="overflow:hidden;">
+      <div class="glide-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
         <div>
           <img :src="video.user.profileImageUrl" class="glide-card-img-profile" @click="goProfile">
         </div>

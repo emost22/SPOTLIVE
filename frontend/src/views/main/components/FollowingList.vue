@@ -4,6 +4,7 @@
       <router-link class="nav-link" :to="{ name: 'Profile', query: { profileId : following.accountEmail } }">
         <div class="sidebar-following-info">
           <div><img :src="following.profileImageUrl" class="sidebar-following-img"></div>
+          <!-- 라이브 중인 경우 핑크색 점 추가 -->
           <div v-if="open" class="sidebar-following-nickname txtcolor-white">
             <p>{{following.profileNickname}}</p>
           </div>
@@ -43,5 +44,6 @@ export default {
 .sidebar-following-info {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 </style>
