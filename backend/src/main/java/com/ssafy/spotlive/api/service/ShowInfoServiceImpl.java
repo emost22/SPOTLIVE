@@ -109,6 +109,7 @@ public class ShowInfoServiceImpl implements ShowInfoService {
 
         if (showInfoUpdatePatchReq.getTimetableInsertPostReq() != null) {
             ShowInfo finalShowInfo = showInfo;
+            showInfoRepository.save(finalShowInfo);
             timetableRepository.deleteAllByShowInfo_ShowInfoId(id);
             showInfoUpdatePatchReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq.toTimetable(finalShowInfo)));
         }

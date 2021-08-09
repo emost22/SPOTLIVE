@@ -1,82 +1,102 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.response.follow.FollowFindByArtistAccountEmailGetRes;
+import com.ssafy.spotlive.api.response.follow.FollowFindByFanAccountEmailGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
-import com.ssafy.spotlive.db.entity.FollowId;
+import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.FollowRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class FollowServiceImplTest {
 
-    @Autowired
-    FollowService followService;
-    @Autowired
-    FollowRepository followRepository;
+    @Mock
+    private FollowRepository followRepository;
+
+    @InjectMocks
+    private FollowServiceImpl followService;
 
     @Test
-    void 팔() {
-        // 데이터 셋팅
-        FollowId followId = new FollowId();
-        followId.setArtist("sqk8657@naver.com");
-        followId.setFan("kmk130519@naver.com");
+    void insertFollowByAccountEmail() {
+        //given
+        String fanEmail = "ssss@naver.com";
+        String artistEmail = "aaaa@naver.com";
 
-        // 팔로우 실행
-        followService.insertFollowByAccountEmail("sqk8657@naver.com","kmk130519@naver.com");
+        //when
+        followService.insertFollowByAccountEmail(artistEmail, fanEmail);
 
-        // 영린 민권 쌍이 있는지 확인
-        Optional<Follow> follow = followRepository.findById(followId);
-        assertThat(follow.isPresent()).isEqualTo(true);
+        //then
+        Mockito.verify(followRepository).save(Mockito.any());
     }
 
     @Test
-    void 언팔() {
-        // 데이터 셋팅
-        FollowId followId = new FollowId();
-        followId.setArtist("sqk8657@naver.com");
-        followId.setFan("kmk130519@naver.com");
+    void deleteFollowByAccountEmail() {
+        //given
+        String fanEmail = "ssss@naver.com";
+        String artistEmail = "aaaa@naver.com";
 
-        // 영린 민권 쌍이 있나 테스트
-        Optional<Follow> follow = followRepository.findById(followId);
-        assertThat(follow.isPresent()).isEqualTo(true);
+        //when
+        followService.deleteFollowByAccountEmail(artistEmail, fanEmail);
 
-        // 언팔로우 실행
-        followService.deleteFollowByAccountEmail("sqk8657@naver.com","kmk130519@naver.com");
-
-        // 이제는 없으면 성공
-        Optional<Follow> follow2 = followRepository.findById(followId);
-        assertThat(follow2.isPresent()).isEqualTo(false);
+        //then
+        Mockito.verify(followRepository).deleteById(Mockito.any());
     }
 
     @Test
-    void 팔로잉리스트() {
-        // 데이터 셋팅
+    void findArtistByFanAccountEmail() {
+        //given
         String fanEmail = "sqk8657@naver.com";
+        List<Follow> followList = new ArrayList<>();
+        Follow follow = new Follow();
+        User fan = new User();
+        fan.setAccountEmail(fanEmail);
+        User artist = new User() ;
+        artist.setAccountEmail("23213@#2");
+        follow.setFan(fan);
+        follow.setArtist(artist);
+        followList.add(follow);
 
-        // 팬 아이디로 자신을 팔로우 하는 사람 리스트 가져옴
-        Optional<List<Follow>> followsByFanAccountEmail = followRepository.findFollowsByFanAccountEmail(fanEmail);
+        //when
+        Mockito.when(followRepository.findFollowsByFanAccountEmail(fanEmail))
+                .thenReturn(Optional.ofNullable(followList));
+        List<FollowFindByFanAccountEmailGetRes> artistByFanAccountEmail = followService.findArtistByFanAccountEmail(fanEmail);
 
-        // 팔로우하는 사람이 현재 기준 3명이면 통과
-        followsByFanAccountEmail.ifPresent(follows -> assertThat(follows.size()).isEqualTo(3));
+        //then
+        Assertions.assertThat(artistByFanAccountEmail.size()).isEqualTo(1);
+        Assertions.assertThat(artistByFanAccountEmail.get(0).getAccountEmail()).isEqualTo(artist.getAccountEmail());
     }
 
     @Test
-    void 팔로워리스트() {
-        // 데이터 셋팅
-        String fanEmail = "sqk8657@naver.com";
+    void findFanByArtistAccountEmail() {
+        //given
+        String artistEmail = "sqk8657@naver.com";
+        List<Follow> followList = new ArrayList<>();
+        Follow follow = new Follow();
+        User artist = new User();
+        artist.setAccountEmail(artistEmail);
+        User fan = new User() ;
+        fan.setAccountEmail("artist");
+        follow.setFan(fan);
+        follow.setArtist(artist);
+        followList.add(follow);
 
-        // 아티스트 아이디로 자신을 팔로우 하는 사람 리스트 가져옴
-        Optional<List<Follow>> followsByArtistAccountEmail = followRepository.findFollowsByArtistAccountEmail(fanEmail);
+        //when
+        Mockito.when(followRepository.findFollowsByArtistAccountEmail(artistEmail)).thenReturn(Optional.of(followList));
+        List<FollowFindByArtistAccountEmailGetRes> fanByArtistAccountEmail = followService.findFanByArtistAccountEmail(artistEmail);
 
-        // 팔로우하는 사람이 현재 기준 3명이면 통과
-        followsByArtistAccountEmail.ifPresent(follows -> assertThat(follows.size()).isEqualTo(3));
+        //then
+        Assertions.assertThat(fanByArtistAccountEmail.size()).isEqualTo(1);
+        Assertions.assertThat(fanByArtistAccountEmail.get(0).getAccountEmail()).isEqualTo(fan.getAccountEmail());
     }
+
 }

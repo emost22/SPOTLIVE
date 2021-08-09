@@ -104,7 +104,7 @@ public class VideoServiceImpl implements VideoService{
         /* 정보가 없다면 FALSE */
         if(!videoById.isPresent()) return Boolean.FALSE;
         /* 수정하려는 사람과 현재 토큰 주인이 다르다면 FALSE */
-        if(!videoById.get().getUser().getAccountEmail().equals(accountEmail)) return Boolean.FALSE;
+        if(!(videoById.get().getUser().getAccountEmail().equals(accountEmail))) return Boolean.FALSE;
 
         /* 썸네일이 있다면 원래 썸네일 파일을 현재 썸네일 파일로 바꿈 */
         if(thumbnailImage != null){

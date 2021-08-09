@@ -169,8 +169,8 @@ public class VideoController {
     public ResponseEntity<?> updateVideoById(
             @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @PathVariable long videoId,
-            @RequestParam(name = "thumbnailImage", required = false) MultipartFile thumbnailImage,
-            VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
+            @RequestPart(value = "thumbnailImage", required = false) MultipartFile thumbnailImage,
+            @RequestPart(value = "showInfoInsertPostReq", required = false) VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
         /**
          * @Method Name : updateVideoById
          * @작성자 : 권영린
