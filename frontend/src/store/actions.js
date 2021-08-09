@@ -20,6 +20,11 @@ export default {
         })
     },
 
+    requestGetUserByAccountEmail(context, payload) {
+        const URL = `/auth/user/${payload.accountEmail}`
+        return $axios.get(URL)
+    },
+
     // RoomCreate.vue (민권)
     requestInitSession(context, payload) {
         context.commit("INIT_SESSION", payload)
