@@ -84,11 +84,7 @@ export default {
 
     requestStartStreaming(context, payload) {
         const URL = '/video/insert'
-        return $axios.post(URL, payload, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        return $axios.post(URL, payload)
     },
 
     // RoomDetail.vue
