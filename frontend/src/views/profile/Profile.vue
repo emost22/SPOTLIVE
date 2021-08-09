@@ -1,5 +1,5 @@
 <template>
-  <div class="txtcolor-white"> 
+  <div class="txtcolor-white profile-box"> 
 
     <div> 
       <div class="profile-btn-line" v-if="inMyProfile">
@@ -8,8 +8,8 @@
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink">프로필 수정</button></div>
       </div>
       <div class="profile-btn-line" v-if="!inMyProfile">
-        <button type="button" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
-        <button type="button" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
+        <button type="button" @click="clickFollowButton" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
+        <button type="button" @click="clickUnfollowButton" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
       </div>
     </div>
 
@@ -66,6 +66,8 @@ export default {
       follow: false,
       userId: '',
       profileId: this.$route.query.profileId,
+      // 타인의 프로필에 진입하고 내 프로필을 메인헤더에서 누르면 이동하지 않음 초기화 문제
+      // 검색 뷰에서도 초기화 안 되서 2번째 검색 실패
       following: '',
       follower: '',
       myProfile: [],
@@ -123,6 +125,32 @@ export default {
         console.log(error)
       })
     },
+    clickFollowButton() {
+      this.$store.dispatch('requestClickFollowButton', { profileId : this.profileId})
+      .then((response) => {
+        console.log("getClickFollowButton() SUCCESS!!")
+        console.log(response.data)
+        this.follow = true
+        this.getProfile()
+        // 실시간 팔로워수 변경 비동기화 문제
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    clickUnfollowButton() {
+      this.$store.dispatch('requestClickUnfollowButton', { profileId : this.profileId})
+      .then((response) => {
+        console.log("getClickUnfollowButton() SUCCESS!!")
+        console.log(response.data)
+        this.follow = false
+        this.getProfile()
+        // 실시간 팔로워수 변경 비동기화 문제
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
   },
   computed: {
     ...mapGetters(['loginUser']),
@@ -131,11 +159,14 @@ export default {
 </script>
 
 <style>
+.profile-box {
+  margin: 25px;
+  margin-right: 25px;
+}
 .profile-btn-line {
   display: flex;
   flex-direction: row-reverse;
   justify-content: end;
-  margin: 20px;
 }
 .profile-btn {
   width: 110px;

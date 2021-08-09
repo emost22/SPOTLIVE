@@ -3,9 +3,10 @@
     v-if="shows.length"
     :width="200" 
     :height="300"
-    :autoplay="true"
-    :autoplayTimeout="1000"
-    :display="3"
+    :autoplay="false"
+    :autoplayTimeout="1200"
+    :space="300"
+    :display="5"
   >
     <slide 
       v-for="(show, i) in shows" 

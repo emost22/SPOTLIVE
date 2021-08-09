@@ -194,6 +194,16 @@ export default {
 
         return $axios.get(URL)
     },
+    requestClickFollowButton(context, payload) {
+        const URL = `/follow/${payload.profileId}`
+
+        return $axios.post(URL)
+    },
+    requestClickUnfollowButton(context, payload) {
+        const URL = `/unfollow/${payload.profileId}`
+
+        return $axios.delete(URL)
+    },
 
     // Search.vue
     requestGetSearchVideos(context, payload) {
