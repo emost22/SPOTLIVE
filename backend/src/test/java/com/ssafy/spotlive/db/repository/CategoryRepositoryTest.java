@@ -4,8 +4,7 @@ import com.ssafy.spotlive.db.entity.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -15,17 +14,21 @@ class CategoryRepositoryTest {
     CategoryRepository categoryRepository;
 
     @Test
+    @Transactional
     void findCategoryByCategoryName(){
         // given
-        String categoryName = "소통";
+        String categoryName = "테스트";
+        Category insertCategory = new Category();
+        insertCategory.setCategoryName(categoryName);
 
         // when
-        Optional<Category> category = categoryRepository.findCategoryByCategoryName(categoryName);
+        categoryRepository.save(insertCategory);
+        Category category = categoryRepository.findCategoryByCategoryName(categoryName).orElse(null);
 
         // then
-        if (category.isPresent())
-            assertThat(category.get().getCategoryName()).isEqualTo(categoryName);
-        else
-            assertThat(category).isEqualTo(Optional.empty());
+        assertThat(category).isNotEqualTo(null);
+        assertThat(category.getCategoryName()).isEqualTo(categoryName);
+        assertThat(category.getCategoryId()).isEqualTo(insertCategory.getCategoryId());
+        System.out.println(insertCategory.getCategoryId());
     }
 }
