@@ -1,6 +1,6 @@
 <template>
-  <div> 
-    <div class="txtcolor-ngreen"> '{{ input }}' 에 대한 검색 결과입니다  </div>
+  <div class="search-box"> 
+    <div class="txtcolor-white-ngreen main-title"> '{{ input }}' 에 대한 검색 결과입니다  </div>
     <SearchVideoGrid :videos="search_videos"/>
   </div>
 </template>
@@ -46,5 +46,7 @@ export default {
 </script>
 
 <style>
-
+.search-box {
+  margin: 50px;
+}
 </style>

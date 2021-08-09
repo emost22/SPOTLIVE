@@ -10,7 +10,7 @@
       </div>
     </div>
     <div v-if="!videos.length">
-      <p class="txtcolor-nyellow">해당 검색 결과가 존재하지 않습니다.</p>
+      <p class="txtcolor-white-nyellow main-title">해당 검색 결과가 존재하지 않습니다.</p>
     </div>
   </div>
 </template>
@@ -38,5 +38,6 @@ export default {
 .search-grid-box {
   display: flex;
   flex-direction: row;
+  margin-top: 50px;
 }
 </style>

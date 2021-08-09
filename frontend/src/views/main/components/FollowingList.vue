@@ -9,7 +9,7 @@
           >
           </div>
           <div v-if="following.isLive" class="live-circle-badge bdcolor-npink"></div>
-          <div v-if="open" class="sidebar-following-nickname txtcolor-white">
+          <div v-if="open" class="sidebar-following-nickname txtcolor-white" style="overflow:hidden;">
             <p>{{following.profileNickname}}</p>
           </div>
         </div>
@@ -51,7 +51,7 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 100%;
-  margin-left: 10px;
+  margin-left: 7.5px;
   overflow:hidden;
   background-size: cover;
 }

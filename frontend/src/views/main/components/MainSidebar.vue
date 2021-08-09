@@ -1,12 +1,13 @@
 <template>
   <div class="bgcolor-deep-grey nav-sidebar close-sidebar overflow-auto">
     <nav class="nav flex-column">
-      <div >
+      <div>
         <div v-if="!open" @click="openSidebar">
           <img src="~@/assets/icon-sidebar.png" class="sidebar-icon-img">
         </div>
         <div v-if="open" @click="closeSidebar" class="sidebar-close-item">
           <img src="~@/assets/icon-sidebar-back.png" class="sidebar-icon-img">
+          <p class="txtcolor-white-npink mx-1" >Sunbscriber</p>
         </div>
       </div>
       <ul class="navbar-nav" v-for="(following, idx) in following_list" :key="idx">
@@ -74,8 +75,8 @@ export default {
 
 <style>
 .open-sidebar {
-  min-width: 300px;
-  max-width: 300px;
+  min-width: 250px;
+  max-width: 250px;
   display: block;
   padding: 5px;
 }
@@ -88,7 +89,7 @@ export default {
 .sidebar-close-item {
   display: flex;
   flex-direction: row-reverse;
-  justify-content: end;
+  justify-content: space-between;
   margin: 5px;
 }
 .sidebar-icon-img {
