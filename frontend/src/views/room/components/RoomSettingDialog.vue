@@ -176,28 +176,4 @@ label:hover {
 .btn-close:hover {
   background-image: url('~@/assets/icon-x.png');
 }
-.m-offcanvas-top {
-  width: 70vh;
-  height: 27vh;
-  border-bottom-left-radius: 2vh;
-  border-bottom-right-radius: 2vh;
-}
-.m-offcanvas {
-    background-color: #242424;
-    color: white;
-    margin: 0 auto;
-}
-.offcanvas-header {
-  display: flex;
-  justify-content: flex-end;
-  padding: 13px;
-}
-.popUpTitle {
-  font-weight: bold;
-  font-size: 25px;
-  margin-bottom: 10px;
-}
-.offcanvas-body{
-  padding: 10px;
-}
 </style>

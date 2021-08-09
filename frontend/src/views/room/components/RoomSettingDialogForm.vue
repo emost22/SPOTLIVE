@@ -124,7 +124,6 @@ export default {
       })
     },
     clickToast() {
-      console.log('clickToast')
       var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.myToast)
       myToast.show()
     }
@@ -238,29 +237,5 @@ form {
 .tooltip.tooltip-left,
 .tooltip.tooltip-right {
   z-index: 100000;
-}
-
-.toast {
-  width: 450px;
-  max-width: 100%;
-  font-size: .875rem;
-  pointer-events: auto;
-  background-color: #6A6A6A;
-  background-clip: padding-box;
-  border: 1px solid rgba(0,0,0,.1);
-  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
-  border-radius: .25rem;
-}
-
-.toast-header {
-  display: flex;
-  align-items: center;
-  padding: .5rem .75rem;
-  color: white;
-  background-color: #595959;
-  background-clip: padding-box;
-  border-bottom: 1px solid rgba(0,0,0,.05);
-  border-top-left-radius: calc(.25rem - 1px);
-  border-top-right-radius: calc(.25rem - 1px);
 }
 </style>
