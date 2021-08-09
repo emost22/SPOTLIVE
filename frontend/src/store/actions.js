@@ -64,6 +64,10 @@ export default {
         context.commit("CHANGE_DEVICE", payload)
     },
 
+    requestSendChat(context, payload) {
+        context.commit("SEND_CHAT", payload)
+    },
+
     // RoomCreate.vue (희진)
     requestSetIsOpenSettingDialog({ commit }, payload) {
         commit('SET_IS_OPEN_SETTING_DIALOG', payload)
