@@ -1,25 +1,25 @@
 <template>
-  <div class="card glide-card-box">
+  <div class="card search-card-box">
     <div 
-      class="glide-card-img-box" 
+      class="search-card-img-box" 
       style="background-image: url('video.thumbnailUrl');"
       @click="goRoomDetail"  
     >
       <div class="live-badge" v-if="video.isLive"></div>
-      <!-- <img :src="video.thumbnailUrl" class="glide-card-img-thumbnail"> -->
+      <!-- <img :src="video.thumbnailUrl" class="search-card-img-thumbnail"> -->
       <div>{{ video.videoLength }}</div>
       <!-- {{ video.startTime }} -->
     </div>
     
-    <div class="glide-card-info-box" style="overflow:hidden;">
+    <div class="search-card-info-box" style="overflow:hidden;">
       <div>
-        <img :src="video.user.profileImageUrl" class="glide-card-img-profile" @click="goProfile">
+        <img :src="video.user.profileImageUrl" class="search-card-img-profile" @click="goProfile">
       </div>
       <div>
-        <p class="text-nowrap overflow-hidden fw-bold glide-card-info-detail">
+        <p class="text-nowrap overflow-hidden fw-bold search-card-info-detail">
           {{ video.videoTitle }}
         </p>
-        <p class="glide-card-info-detail"> {{ video.user.profileNickname }} </p> 
+        <p class="search-card-info-detail"> {{ video.user.profileNickname }} </p> 
       </div>           
     </div>
   </div>
@@ -48,34 +48,34 @@ export default {
 </script>
 
 <style>
-.glide-card-box {
+.search-card-box {
   width:300px;
   height:225px;
 }
-.glide-card-img-box {
+.search-card-img-box {
   width:300px;
   height:187.5px;
   overflow:hidden;
   margin:0;
 }
-.glide-card-img-thumbnail {
+.search-card-img-thumbnail {
   width:100%;
   height:100%;
   object-fit:cover;
 }
-.glide-card-info-box {
+.search-card-info-box {
   width:300px;
   height:37.5px;
   display: flex;
   flex-direction: row;
 }
-.glide-card-img-profile {
+.search-card-img-profile {
   width: 40px;
   height: 40px;
   border-radius: 100%;
   margin-left: 10px;
 }
-.glide-card-info-detail {
+.search-card-info-detail {
   margin-bottom: 0;
   margin-left: 10px;
   text-align: start;

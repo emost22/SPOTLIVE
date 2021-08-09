@@ -1,6 +1,6 @@
 <template>
   <!-- v-if="!isLogin" -->
-  <div class="bgcolor-deep-grey nav-header">
+  <div class="nav-header bgcolor-deep-grey">
     <nav class="navbar navbar-expand">
       <div class="container-fluid">
         <router-link class="navbar-brand" :to="{ name: 'Main' }">
@@ -79,6 +79,7 @@ export default ({
 
 <style>
 .nav-header {
+  width: 100%;
   height: 65px;
   display: block;
 }

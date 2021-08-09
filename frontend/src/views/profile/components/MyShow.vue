@@ -5,6 +5,7 @@
     :height="300"
     :autoplay="true"
     :autoplayTimeout="1000"
+    :display="3"
   >
     <slide 
       v-for="(show, i) in shows" 

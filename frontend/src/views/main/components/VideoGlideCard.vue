@@ -3,12 +3,11 @@
     <div class="card glide-card-box">
       <div 
         class="glide-card-img-box" 
-        style="background-image: url('video.thumbnailUrl');"
+        v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
         @click="goRoomDetail"  
       >
-        <!-- <img :src="video.thumbnailUrl" class="glide-card-img-thumbnail"> -->
         <div class="live-badge" v-if="video.isLive"></div>
-        <div class="time-badge" v-if="!video.isLive">{{ video.videoLength }}</div>
+        <div class="time-badge" v-if="!video.isLive">{{ Number(video.videoLength)/60 }}m</div>
         <!-- {{ video.startTime }} -->
       </div>
       
@@ -52,24 +51,23 @@ export default {
 <style>
 .glide-card-box {
   width:300px;
-  height:225px;
+  height:250px;
+  border: none;
+  border-radius: 0%;
 }
 .glide-card-img-box {
   width:300px;
   height:187.5px;
   overflow:hidden;
+  background-size: cover;
   margin:0;
-}
-.glide-card-img-thumbnail {
-  width:100%;
-  height:100%;
-  object-fit:cover;
 }
 .glide-card-info-box {
   width:300px;
-  height:37.5px;
+  height:62.5px;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 .glide-card-img-profile {
   width: 40px;

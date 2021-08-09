@@ -1,25 +1,28 @@
 <template>
-  <carousel-3d
-  v-if="videos.length"
-  :autoplay="true"
-  :autoplayTimeout="1000"
-  :height="300"
-  >
-    <slide 
-      v-for="(video, i) in videos" 
-      :index="i" 
-      :key="i" 
-      class="carousel-video"
+  <div>
+    <carousel-3d
+    v-if="videos.length"
+    :autoplay="true"
+    :autoplayTimeout="1500"
+    :space="300"
+    :height="350"
+    :width="500"
+    >
+      <slide 
+        v-for="(video, i) in videos" 
+        :index="i" 
+        :key="i" 
       >
-      <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
+        <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
           <VideoCarouselCard
             :data-index="index" 
             :class="{ current: isCurrent, onLeft: (leftIndex >= 0), onRight: (rightIndex >= 0) }" 
             :video="video"
           />
-      </template>
-    </slide>
-  </carousel-3d>
+        </template>
+      </slide>
+    </carousel-3d>
+  </div>
 </template>
 
 <script>
@@ -45,8 +48,12 @@ export default {
 </script>
 
 <style>
-.carousel-video {
-  margin: 20px;
+.carousel-3d-container[data-v-07917306]  {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  min-height: 450px;
+  max-height: 450px;
+  border: 0 none;
 }
 .current{
   border: 2px solid #F84ABF;

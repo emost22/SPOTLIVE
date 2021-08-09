@@ -7,7 +7,7 @@
       ref="slider"
       type="slider"
       :autoplay="false"
-      :breakpoints="{10000: {perView: 9}, 4000: {perView: 8}, 3000: {perView: 6}}"
+      :breakpoints="{10000: {perView: 9}, 3000: {perView: 9}, 2000: {perView: 7}}"
     >
       <vue-glide-slide
         v-for="(filter, idx) in filters"
