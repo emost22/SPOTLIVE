@@ -71,6 +71,13 @@ class TimetableRepositoryTest {
         assertThat(timetable).isNotNull();
     }
 
+    @Test
+    void findTimetablesByShowInfo_ShowInfoIdTest() {
+        //when
+        List<Timetable> timetableList = timetableRepository.findTimetablesByShowInfo_ShowInfoId(showInfoId).orElse(null);
+        assert timetableList != null;
 
+        //then
+        assertThat(timetableList.size()).isEqualTo(3);
     }
 }
