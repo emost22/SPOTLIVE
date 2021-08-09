@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.service;
 
+import com.ssafy.spotlive.api.response.category.CategoryGetRes;
 import com.ssafy.spotlive.db.entity.Category;
 import com.ssafy.spotlive.db.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -24,18 +28,28 @@ class CategoryServiceImplTest {
     @Test
     void findAllCategory(){
         // given x
+        Long categoryId = 2147483648L;
+        String categoryName = "kmk 그는 신인가?";
+        List<Category> categoryList = new ArrayList<>();
+        Category category = new Category();
+        category.setCategoryId(categoryId);
+        category.setCategoryName(categoryName);
+        categoryList.add(category);
 
         // when
-        categoryServiceImpl.findAllCategory();
+        when(categoryRepository.findAll()).thenReturn(categoryList);
+        List<CategoryGetRes> categoryGetResList = categoryServiceImpl.findAllCategory();
 
         // then
         verify(categoryRepository).findAll();
+        assertThat(categoryGetResList.get(0).getCategoryId()).isEqualTo(categoryId);
+        assertThat(categoryGetResList.get(0).getCategoryName()).isEqualTo(categoryName);
     }
 
     @Test
     void findCategoryByCategoryName(){
         // given
-        String categoryName = "ㅁㄴㅇㄹ";
+        String categoryName = "kmk 그는 신인가?";
         Category category = new Category();
 
         // when
