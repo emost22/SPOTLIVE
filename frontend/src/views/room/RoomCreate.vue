@@ -61,20 +61,32 @@ export default {
     addEventInSession() {
       this.$store.dispatch("requestAddEventInSession")
     },
-    openRoomSettingDialog: function () {
+    openRoomSettingDialog() {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 1)
     },
-    startStreaming: function () {
-      let formData = new FormData()
-      for (const p in this.createdVideoData) {
-        formData.append(p, this.createdVideoData[p])
-      }
-      formData.append('accountEmail', this.loginUser.accountEmail)
-      formData.append('sessionId', 1)
+    startStreaming () {
+      let formData = this.makeFormDataForStartStreaming()
       this.$store.dispatch('requestStartStreaming', formData)
       .then((response) => {
         this.$router.push({name: 'RoomDetail', query: { videoId : response.data.videoId }})
       })
+    },
+    makeFormDataForStartStreaming() {
+      let formData = new FormData()
+      let videoInsertPostReq = {
+        "videoTitle": this.createdVideoData.videoTitle,
+        "videoDescription": this.createdVideoData.videoDescription,
+        "mode": this.createdVideoData.mode,
+        "categoryId": this.createdVideoData.categoryId,
+        "showInfoId": this.createdVideoData.showInfoId,
+        "accountEmail": this.loginUser.accountEmail,
+        "sessionId": this.ovSessionId,
+      }
+
+      formData.append('posterImage', this.createdVideoData.thumbnailImage)
+      formData.append('videoInsertPostReq', new Blob([JSON.stringify(videoInsertPostReq)] , {type: "application/json"}))
+
+      return formData
     }
   },
   watch: {
