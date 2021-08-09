@@ -3,6 +3,7 @@ package com.ssafy.spotlive.api.controller;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoUpdatePatchReq;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
 import com.ssafy.spotlive.api.response.timetable.TimetableRes;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.service.AuthService;
@@ -17,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 /**
  * @FileName : ShowInfoController
@@ -162,5 +165,33 @@ public class ShowInfoController {
         TimetableRes timetableRes = timetableService.findTimetableByShowInfoId(id);
         if(timetableRes == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(timetableRes, HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    @ApiOperation(value = "해당 유저의 공연 조회", notes = "")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 204, message = "조회할 데이터가 없음"),
+            @ApiResponse(code = 500, message = "서버 에러 발생")
+    })
+    public ResponseEntity<List<ShowInfoRes>> findShowInfoByUser(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken){
+        /**
+         * @Method Name : findShowInfoByUser
+         * @작성자 : 금아현
+         * @Method 설명 : user정보로 공연을 조회한다.
+         */
+        int validTokenStatusValue = authService.isValidToken(accessToken);
+        if(validTokenStatusValue == 200){
+            String[] splitToken = accessToken.split(" ");
+            UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
+            List<ShowInfoRes> showInfoRes = showInfoService.findShowInfoByUser(userRes.getAccountEmail());
+            if(showInfoRes == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(showInfoRes, HttpStatus.OK);
+        }else if(validTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

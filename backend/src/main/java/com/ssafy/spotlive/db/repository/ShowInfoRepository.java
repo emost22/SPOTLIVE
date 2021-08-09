@@ -38,4 +38,10 @@ public interface ShowInfoRepository extends JpaRepository<ShowInfo, Long> {
      */
     Optional<List<ShowInfo>> findShowInfosByUser_AccountEmailNot(String accountEmail);
 
+    /**
+     * @Method Name : findShowInfosByUser_AccountEmail
+     * @작성자 : 금아현
+     * @Method 설명 : 등록자가 본인 공연 조회
+     */
+    Optional<List<ShowInfo>> findShowInfosByUser_AccountEmail(String accountEmail);
 }
