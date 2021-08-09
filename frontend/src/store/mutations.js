@@ -139,6 +139,20 @@ export default {
         })
         console.log("MUTATION: CHANGE_DEVICE() DONE...")
     },
+
+    SEND_CHAT(state, payload) {
+        console.log("MUTATION: CHANGE_DEVICE() RUN...")
+        console.log(payload.chatMsg)
+        state.ovSession.signal({
+            data: payload.chatMsg,
+            to: [],                     
+            type: 'my-chat'             
+        }).then(() => {
+            console.log('Message successfully sent');
+        }).catch(error => {
+            console.error(error);
+        })
+    },
     
     SET_IS_OPEN_SETTING_DIALOG(state, payload) {
         state.isSettingDialogOpen = !state.isSettingDialogOpen
