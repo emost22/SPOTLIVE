@@ -9,6 +9,9 @@
         />
       </div>
     </div>
+    <div v-if="!videos.length">
+      <p class="txtcolor-nyellow">해당 검색 결과가 존재하지 않습니다.</p>
+    </div>
   </div>
 </template>
 
