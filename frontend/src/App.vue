@@ -199,7 +199,6 @@ textarea {
   margin-left: 30px;
   margin-right: 30px;
   height: 80%;
-  background-color: lightgrey;
 }
 .modal-design {
   max-height: 700px;
