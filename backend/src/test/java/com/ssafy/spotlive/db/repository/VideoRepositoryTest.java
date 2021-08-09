@@ -400,18 +400,37 @@ public class VideoRepositoryTest {
     @Test
     void findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
         int size = MAX;
-        Long categoryId = 6L;
-        String videoTitle = "1";
-        String videoDescription = "1";
+        Long categoryId = 2L;
+        String videoTitle = "kmk";
+        String videoDescription = "kmk";
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, videoTitle, videoDescription);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(0);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 }
