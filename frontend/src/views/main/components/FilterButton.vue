@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button class="filter-btn bgcolor-deep-grey txtcolor-white no-border" @click="clickFilter">{{ filter.categoryName }}</button>
+    <button class="filter-btn bgcolor-deep-grey txtcolor-white no-border" @click="clickFilter">
+      {{ filter.categoryName }}
+    </button>
   </div>
 </template>
 
@@ -15,6 +17,7 @@ export default {
   },
   methods: {
     clickFilter: function () {
+      this.$emit("categoryId", this.filter.categoryId)
     // Main.vue의 axios요청 다시 받아오도록 computed
     },
   },

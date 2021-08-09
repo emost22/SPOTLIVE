@@ -7,13 +7,14 @@
       ref="slider"
       type="slider"
       :autoplay="false"
-      :breakpoints="{10000: {perView: 9}, 3000: {perView: 9}, 2000: {perView: 7}}"
+      :breakpoints="{10000: {perView: 11}, 4500: {perView: 10},  3000: {perView: 9}, 2000: {perView: 8}, 1500: {perView: 7}, 1200: {perView: 6}, 900: {perView: 5}, 700: {perView: 4}}"
     >
       <vue-glide-slide
         v-for="(filter, idx) in filters"
         :key="idx">
         <FilterButton
           :filter="filter"
+          @categoryId="emitCategoryId"
         />
       </vue-glide-slide>
     </vue-glide>
@@ -38,6 +39,9 @@ export default {
     FilterButton,
   },
   methods: {
+    emitCategoryId(categoryId) {
+      this.$emit("categoryId", categoryId)
+    },
   }
 }
 </script>

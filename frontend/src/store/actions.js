@@ -123,8 +123,9 @@ export default {
         const URL = '/main/all'
         const PAGE_VALUE = payload.pageValue
         const SIZE_VALUE = payload.sizeValue
+        const CATEGORY_ID = payload.categoryId
 
-        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
+        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE, categoryId: CATEGORY_ID}})
     },
 
     requestGetAdVideos(context, payload) {

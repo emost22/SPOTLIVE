@@ -6,7 +6,10 @@
         <VideoCarousel :videos="carousel_videos"/>
       </div>
       <div>
-        <FilterGlide :filters="filter_buttons"/>
+        <FilterGlide 
+          :filters="filter_buttons"
+          @categoryId="getFilterCategoryId"
+        />
       </div>
       <div>
         <p class="txtcolor-white-ngreen main-title"> 홍보용 영상</p>
@@ -45,6 +48,7 @@ export default {
     return {
       carousel_videos: [],
       filter_buttons: [],
+      filter_category_id: '',
       ad_videos: [],
       show_videos: [],
       talk_videos: [],
@@ -85,15 +89,22 @@ export default {
         this.filter_buttons = response.data
       })
       .catch((error) => {
-        console.log('필터실패')
         console.log(error)
       })
     },
     
-    getTotalMainVideos(pageValue, sizeValue) {
+    getFilterCategoryId(categoryId) {
+      this.filter_category_id = Number(categoryId)
+      console.log(this.filter_category_id)
+      console.log('emit category id')
+      this.getTotalMainVideos(0, 20, this.filter_category_id)
+    },
+
+    getTotalMainVideos(pageValue, sizeValue, catogoryId) {
       this.$store.dispatch('requestGetTotalMainVideos', { 
         pageValue: pageValue,
         sizeValue: sizeValue,
+        catogoryId: catogoryId,
       }).then((response) => {
         console.log("getTotalMainVideos() SUCCESS!!")
         console.log(response.data)
@@ -104,6 +115,7 @@ export default {
         this.live_videos = response.data.liveVideoGetRes.videoResList
         this.replay_videos = response.data.replayVideoGetRes.videoResList
         this.follow_videos = response.data.followVideoGetRes.videoResList
+        console.log(this.live_videos)
       }).catch((error) => {
         console.log(error)
       })
