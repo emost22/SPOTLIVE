@@ -75,6 +75,7 @@ class ShowInfoRepositoryTest {
     }
 
     @Test
+    @Transactional
     void findShowInfosByUser_AccountEmailNotTest() {
         //given
         String accountEmail = "newUser@new.com";
@@ -83,15 +84,16 @@ class ShowInfoRepositoryTest {
         userRepository.save(user);
 
         //when
-        Optional<List<ShowInfo>> optionalShowInfoList = showInfoRepository.findShowInfosByUser_AccountEmailNot(accountEmail);
+        List<ShowInfo> showInfoList = showInfoRepository.findShowInfosByUser_AccountEmailNot(accountEmail).orElse(null);
 
         //then
-        optionalShowInfoList.ifPresent(showInfos -> showInfos.forEach(showInfo -> assertThat(showInfo.getUser()).isNotEqualTo(user)));
+        assert showInfoList != null;
+        assertThat(showInfoList.stream().anyMatch(showInfo -> showInfo.getUser().getAccountEmail().equals(accountEmail))).isFalse();
     }
 
     @Test
     @Transactional
-    void findShowInfosByUser_AccountEmail() {
+    void findShowInfosByUser_AccountEmailTest() {
         //given
         String accountEmail = "newUser@new.com";
         User user = new User();
