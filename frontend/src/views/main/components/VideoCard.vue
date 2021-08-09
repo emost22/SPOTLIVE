@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     RoomDetail: function () {
-      this.$router.push({ name: 'RoomDetail', query: { videoId : this.video.videoId } })
+      this.$router.push({ name: 'RoomDetailForGuest', query: { videoId : this.video.videoId } })
     },
   },
   computed: {

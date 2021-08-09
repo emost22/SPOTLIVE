@@ -15,19 +15,19 @@
         <div class="label-alignment"><label class="form-label">영상용도</label><div class="icon-info"></div></div>
         <div class="d-flex mt-1">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="1" v-model="form.mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
             <label class="form-check-label" for="forShow">
               공연용
             </label>
           </div>
           <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="2" v-model="form.mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
             <label class="form-check-label" for="forAd">
               홍보용
             </label>
           </div>
           <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="3" v-model="form.mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
             <label class="form-check-label" for="forCommunicate">
               소통용
             </label>
@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="mb-3" v-if="form.mode==1 || form.mode==2">
+    <div class="mb-3" v-if="form.mode=='공연' || form.mode=='홍보'">
       <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
       <div class="d-flex">
       <select @change="getRecentlyTimeTable()" class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
@@ -43,7 +43,7 @@
       </select>
       <button class="plus-button"></button>
       </div>
-      <input  v-if="form.mode==1" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
+      <input v-if="form.mode=='공연'" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
     </div>
     <div class="mb-3">
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
@@ -83,7 +83,7 @@ export default {
         videoTitle: '',
         showInfoId: '',
         showTime:'',
-        mode: 1,
+        mode: '공연',
       },
       thumbnail: '',
       fileName:'',
@@ -103,10 +103,9 @@ export default {
     getRecentlyTimeTable() {
       this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
       .then((response) => {
-        console.log("RESPONSE")
         console.log(response.data)
+        this.form.showTime = response.data.dateTime
       }).catch((error) => {
-        console.log("ERROR")
       })
     }
   },

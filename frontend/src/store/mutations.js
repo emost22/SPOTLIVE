@@ -47,7 +47,7 @@ export default {
         })
 
         state.ovSession.on('streamCreated', ({ stream }) => {
-            let subscriber = state.session.subscribe(stream, undefined)
+            let subscriber = state.ovSession.subscribe(stream, undefined)
             console.log('[OPENVIDU] Add new user: ' + subscriber.id)
             console.log(subscriber)
             state.mainStreamManager = subscriber
@@ -66,18 +66,12 @@ export default {
             console.log('[OPENVIDU] exception!')
             console.warn(exception)
         })
-
-        // state.ovSession.on('signal:my-chat', (event) => {
-        //     console.log('[OPENVIDU] Get Chat data: ' + event.data)
-        //     let userId = JSON.parse(event.from.data).clientData
-        //     state.chatArray.push(userId + ": " + event.data)
-        // })
     },
     
     CONNECT_SESSION(state) {
         console.log("MUTATION: CONNECT_SESSION() RUN...")
         console.log("OV TOKEN: " + state.ovToken)
-        state.ovSession.connect(state.ovToken, { clientData: 'kmk130519@naver.com' })
+        state.ovSession.connect(state.ovToken, { clientData: state.loginUser.accountEmail })
         .then((response) => {
             let publisher = state.OV.initPublisher(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
@@ -92,6 +86,18 @@ export default {
             state.mainStreamManager = publisher
             state.publisher = publisher
             state.ovSession.publish(state.publisher)
+        }).catch((error) => {
+            console.log('There was an error connecting to the session:', error.code, error.message)
+        })
+    },
+
+    CONNECT_SESSION_FOR_GUEST(state) {
+        console.log("MUTATION: CONNECT_SESSION_FOR_GUEST() RUN...")
+        console.log("OV TOKEN: " + state.ovToken)
+        console.log("ACCOUNT_EMAIL: " + state.loginUser.accountEmail)
+        state.ovSession.connect(state.ovToken, { clientData: state.loginUser.accountEmail })
+        .then((response) => {
+            state.mainStreamManager = state.subscribers[0]
         }).catch((error) => {
             console.log('There was an error connecting to the session:', error.code, error.message)
         })
@@ -126,6 +132,20 @@ export default {
             })
         })
         console.log("MUTATION: CHANGE_DEVICE() DONE...")
+    },
+
+    SEND_CHAT(state, payload) {
+        console.log("MUTATION: CHANGE_DEVICE() RUN...")
+        console.log(payload.chatMsg)
+        state.ovSession.signal({
+            data: payload.chatMsg,
+            to: [],                     
+            type: 'my-chat'             
+        }).then(() => {
+            console.log('Message successfully sent');
+        }).catch(error => {
+            console.error(error);
+        })
     },
     
     SET_IS_OPEN_SETTING_DIALOG(state, payload) {

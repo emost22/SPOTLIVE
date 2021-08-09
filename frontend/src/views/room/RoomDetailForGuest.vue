@@ -39,7 +39,7 @@
         </div>
         <div class="row" style="position: absolute; bottom: 0px;">
           <div class="input-part col-md-7">
-            <input type="text">
+            <input type="text" v-model="chatMsg">
           </div>
           <div class="col-md-2">
             <button class="small-button col-md-5" @click="sendChat()"> 전송 </button>
@@ -64,6 +64,7 @@ export default {
   data: function () {
     return {
       videoId:"",
+      sessionId: "",
       videoDescription: "",
       category: "",
       videoTitle: "",
@@ -74,6 +75,7 @@ export default {
         s: '',
       },
       peopleWatching: "0",
+      chatMsg: "",
       chatList: [
           {
             userName: "김민권1",
@@ -106,6 +108,20 @@ export default {
         this.takenTime.s = parseInt(((total % 3600) % 60)).toString().padStart(2, '0')
       }, 1000);
     },
+    async initSession(openvidu) {
+      this.$store.dispatch("requestInitSession", openvidu)
+    },
+    async doOpenviduCall() {
+      this.$store.dispatch("requestGetTokenForOpenvidu", { sessionId: this.sessionId })
+      .then((response) => {
+        this.setSessionIdAndTokenForOpenvidu(response.data.sessionId, response.data.token)
+        this.addEventInSession()
+        this.addEventForChat()
+        this.connectSessionForGuest()
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     addEventForChat() {
       this.ovSession.on('signal:my-chat', (event) => {
         let givenCharStr = event.data
@@ -123,6 +139,18 @@ export default {
         })
       })
     },
+    setSessionIdAndTokenForOpenvidu(sessionId, token) {
+      this.$store.dispatch("requestSetSessionIdAndTokenForOpenvidu", {
+        ovSessionId: sessionId,
+        ovToken: token,
+      })
+    },
+    connectSessionForGuest() {
+      this.$store.dispatch("requestConnectSessionForGuest")
+    },
+    addEventInSession() {
+      this.$store.dispatch("requestAddEventInSession")
+    },
     sendChat() {
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
     }
@@ -137,11 +165,11 @@ export default {
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
+      this.sessionId = response.data.sessionId
+      this.initSession(new OpenVidu())
+      this.doOpenviduCall()
     })
-    if(this.mainStreamManager != undefined) 
-      this.mainStreamManager.addVideoElement(this.$refs.myVideo)
     this.startTimer()
-    this.addEventForChat()
   },
   watch: {
     mainStreamManager: function(val, oldVal) {
@@ -150,7 +178,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager']),
+    ...mapGetters(['loginUser', 'mainStreamManager', 'ovSession']),
   },
 }
 </script>

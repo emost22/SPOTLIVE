@@ -20,6 +20,11 @@ export default {
         })
     },
 
+    requestGetUserByAccountEmail(context, payload) {
+        const URL = `/auth/user/${payload.accountEmail}`
+        return $axios.get(URL)
+    },
+
     // RoomCreate.vue (민권)
     requestInitSession(context, payload) {
         context.commit("INIT_SESSION", payload)
@@ -50,9 +55,17 @@ export default {
     requestConnectSession(context) {
         context.commit("CONNECT_SESSION")
     },
+    
+    requestConnectSessionForGuest(context) {
+        context.commit("CONNECT_SESSION_FOR_GUEST")
+    },
 
     requestChangeDevice(context, payload) {
         context.commit("CHANGE_DEVICE", payload)
+    },
+
+    requestSendChat(context, payload) {
+        context.commit("SEND_CHAT", payload)
     },
 
     // RoomCreate.vue (희진)
@@ -71,11 +84,7 @@ export default {
 
     requestStartStreaming(context, payload) {
         const URL = '/video/insert'
-        return $axios.post(URL, payload, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        return $axios.post(URL, payload)
     },
 
     // RoomDetail.vue
