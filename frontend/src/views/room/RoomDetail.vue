@@ -16,7 +16,7 @@
             <div class="videoDescription">{{ videoDescription }}</div>
           </div>
           <div>
-            <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ peopleWatching }}</span>
+            <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ subscribers.length }}</span>
             <span class="current-time"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
           </div>
         </div>
@@ -39,7 +39,7 @@
         </div>
         <div class="row" style="position: absolute; bottom: 0px;">
           <div class="input-part col-md-7">
-            <input type="text">
+            <input type="text" v-model="chatMsg">
           </div>
           <div class="col-md-2">
             <button class="small-button col-md-5" @click="sendChat()"> 전송 </button>
@@ -73,7 +73,7 @@ export default {
         m: '',
         s: '',
       },
-      peopleWatching: "0",
+      chatMsg: "",
       chatList: [
           {
             userName: "김민권1",
@@ -150,7 +150,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager']),
+    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers']),
   },
 }
 </script>

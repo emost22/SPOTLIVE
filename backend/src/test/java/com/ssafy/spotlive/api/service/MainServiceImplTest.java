@@ -65,7 +65,7 @@ class MainServiceImplTest {
         Long categoryId1 = 6L;
         Long categoryId2 = null;
         Boolean isLive = false;
-        Sort sort = Sort.by(Sort.Direction.DESC, "hit");
+        Sort sort = Sort.by(Sort.Direction.DESC, "hit").by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
