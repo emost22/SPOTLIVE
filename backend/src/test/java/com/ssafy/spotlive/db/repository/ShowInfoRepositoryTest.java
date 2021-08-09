@@ -1,11 +1,13 @@
 package com.ssafy.spotlive.db.repository;
 
 import com.ssafy.spotlive.db.entity.ShowInfo;
+import com.ssafy.spotlive.db.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -16,6 +18,9 @@ class ShowInfoRepositoryTest {
 
     @Autowired
     private  ShowInfoRepository showInfoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     @Transactional
@@ -68,4 +73,20 @@ class ShowInfoRepositoryTest {
         //then
         assertThat(id).isEqualTo(0);
     }
+
+    @Test
+    void findShowInfosByUser_AccountEmailNotTest() {
+        //given
+        String accountEmail = "newUser@new.com";
+        User user = new User();
+        user.setAccountEmail(accountEmail);
+        userRepository.save(user);
+
+        //when
+        Optional<List<ShowInfo>> optionalShowInfoList = showInfoRepository.findShowInfosByUser_AccountEmailNot(accountEmail);
+
+        //then
+        optionalShowInfoList.ifPresent(showInfos -> showInfos.forEach(showInfo -> assertThat(showInfo.getUser()).isNotEqualTo(user)));
+    }
+    
 }
