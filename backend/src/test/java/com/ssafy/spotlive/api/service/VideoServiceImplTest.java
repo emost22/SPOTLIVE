@@ -2,6 +2,7 @@ package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
+import com.ssafy.spotlive.api.response.video.VideoOpenViduSessionGetRes;
 import com.ssafy.spotlive.db.entity.Video;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.junit.jupiter.api.Test;
@@ -67,10 +68,11 @@ class VideoServiceImplTest {
         String sessionId = videoService.createSession();
 
         // when
-        String token = videoService.createToken(sessionId);
+        VideoOpenViduSessionGetRes videoOpenViduSessionGetRes = videoService.createToken(sessionId);
 
         // then
-        assertThat(token).contains("wss://i5a405.p.ssafy.io");
+        assertThat(videoOpenViduSessionGetRes.getToken()).contains("wss://i5a405.p.ssafy.io");
+        assertThat(videoOpenViduSessionGetRes.getSessionId()).isEqualTo(sessionId);
     }
 
     @Test
