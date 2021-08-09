@@ -6,7 +6,7 @@
     ref="slider"
     type="slider"
     :autoplay="false"
-    :breakpoints="{1500: {perView: 5}, 1200: {perView: 4}}"
+    :breakpoints="{3000: {perView: 7}, 2000: {perView: 6}, 1500: {perView: 5}, 900: {perView: 4}, 500: {perView: 3}}"
   >
     <vue-glide-slide
       v-for="(video, idx) in videos"

@@ -193,4 +193,14 @@ export default {
 
         return $axios.get(URL)
     },
+
+    // Search.vue
+    requestGetSearchVideos(context, payload) {
+        const URL = '/main/search'
+        const KEYWORD_VALUE = payload.keywordValue
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
+
+        return $axios.get(URL, { params: { keyword: KEYWORD_VALUE, page: PAGE_VALUE, size: SIZE_VALUE }})
+    }
 }

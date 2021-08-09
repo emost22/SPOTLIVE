@@ -6,9 +6,9 @@
         style="background-image: url('video.thumbnailUrl');"
         @click="goRoomDetail"  
       >
-        <!-- <div class="live-badge" v-if="video.isLive"></div> -->
+        <div class="live-badge" v-if="video.isLive"></div>
         <!-- <img :src="video.thumbnailUrl" class="glide-card-img-thumbnail"> -->
-        <!-- {{ video.videoLength }} -->
+        <div>{{ video.videoLength }}</div>
         <!-- {{ video.startTime }} -->
       </div>
       
@@ -17,10 +17,10 @@
           <img :src="video.user.profileImageUrl" class="glide-card-img-profile" @click="goProfile">
         </div>
         <div>
-          <p class="text-start text-nowrap overflow-hidden fw-bold">
+          <p class="text-nowrap overflow-hidden fw-bold glide-card-info-detail">
             {{ video.videoTitle }}
           </p>
-          <p class="text-start"> {{ video.user.profileNickname }} </p> 
+          <p class="glide-card-info-detail"> {{ video.user.profileNickname }} </p> 
         </div>           
       </div>
     </div>
@@ -51,12 +51,12 @@ export default {
 
 <style>
 .glide-card-box {
-  height:300px;
-  width:400px;
+  width:300px;
+  height:225px;
 }
 .glide-card-img-box {
-  width:380px;
-  height:250px;
+  width:300px;
+  height:187.5px;
   overflow:hidden;
   margin:0;
 }
@@ -66,27 +66,34 @@ export default {
   object-fit:cover;
 }
 .glide-card-info-box {
-  width:380px;
-  height:100px;
+  width:300px;
+  height:37.5px;
   display: flex;
   flex-direction: row;
 }
 .glide-card-img-profile {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 100%;
+  margin-left: 10px;
+}
+.glide-card-info-detail {
+  margin-bottom: 0;
+  margin-left: 10px;
+  text-align: start;
 }
 .live-badge{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
-  background-color: #C4C4C4;
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: none;
   border: none;
-  border-radius: .25rem;
   background-image: url('~@/assets/icon-live-badge.png');
   background-repeat: no-repeat;
   background-position: center;
+  margin: 10px;
 }
 </style>
