@@ -1,9 +1,9 @@
 <template>
   <div>    
     <li class="nav-item">
-      <router-link class="nav-link" :to="{ name: 'Profile', param: { profileId : following.accountEmail } }">
+      <router-link class="nav-link" :to="{ name: 'Profile', query: { profileId : following.accountEmail } }">
         <div class="sidebar-following-info">
-          <div><img src="~@/assets/icon-streaming.png" class="sidebar-following-img"></div>
+          <div><img :src="following.profileImageUrl" class="sidebar-following-img"></div>
           <div v-if="open" class="sidebar-following-nickname txtcolor-white">
             <p>{{following.profileNickname}}</p>
           </div>
@@ -31,12 +31,14 @@ export default {
 
 <style>
 .sidebar-following-img {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 100%;
+  margin-left: 10px;
 }
 .sidebar-following-nickname {
   font-size: 15px;
+  margin-left: 15px;
 }
 .sidebar-following-info {
   display: flex;

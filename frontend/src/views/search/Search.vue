@@ -1,8 +1,12 @@
 <template>
-  <div> 검색결과 {{ input }} {{ search_videos }} </div>
+  <div> 검색결과 {{ input }} {{ search_videos }} 
+    <SearchVideoGrid :videos="search_videos"/>
+  </div>
 </template>
 
 <script>
+import SearchVideoGrid from '@/views/search/components/SearchVideoGrid.vue'
+
 export default {
   name: "Search",
   data: function () {
@@ -12,6 +16,7 @@ export default {
     }
   },
   components: {
+    SearchVideoGrid,
   },
   created: function () {
     this.getSearchs(this.input, 0, 20)
