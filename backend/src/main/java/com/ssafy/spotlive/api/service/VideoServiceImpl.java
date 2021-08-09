@@ -150,10 +150,22 @@ public class VideoServiceImpl implements VideoService{
          * @Method 설명 : 1) 해당 비디오의 Endtime을 기록하고 2) Openvidu 세션을 종료한다. 3) 이후 관련된 UserVideo를 전부 삭제한다.
          */
         Video video = videoRepository.findById(videoId).get();
-        if(video.getEndTime()!=null) return Boolean.FALSE;
-        if(!video.getUser().getAccountEmail().equals(accountEmail)) return Boolean.FALSE;
+        if(video.getEndTime()!=null) {
+            System.out.println("1");
+            return Boolean.FALSE;
+        }
+        if(!(video.getUser().getAccountEmail().equals(accountEmail))) {
+            System.out.println(video.getUser().getAccountEmail());
+            System.out.println(accountEmail);
+            System.out.println(video.getUser().getAccountEmail().equals(accountEmail));
+            System.out.println("2");
+            return Boolean.FALSE;
+        }
         int statusCode = closeSession(video.getSessionId());
-        if(statusCode != 204) return Boolean.FALSE;
+        if(statusCode != 204) {
+            System.out.println("3");
+            return Boolean.FALSE;
+        }
 
         video.setEndTime(LocalDateTime.now());
         videoRepository.save(video);
@@ -169,7 +181,11 @@ public class VideoServiceImpl implements VideoService{
 
     @Override
     public List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail) {
-
+        /**
+         * @Method Name : findVideoByAccountEmail
+         * @작성자 : 권영린
+         * @Method 설명 : 유저 이메일로 영상들을 조회한다.
+         */
         return videoRepository.findVideosByUserAccountEmail(accountEmail).stream()
                 .map(video -> VideoFindAllByUserIdGetRes.of(video)).collect((Collectors.toList()));
     }
