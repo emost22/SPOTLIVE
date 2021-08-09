@@ -67,25 +67,37 @@ export default {
       videoDescription: "",
       category: "",
       videoTitle: "",
-      currentTime: "02:22:01",
-      peopleWatching: "0"
       startTime: "",
       takenTime: {
         h: '',
         m: '',
         s: '',
       },
+      peopleWatching: "0",
+      chatList: [
+          {
+            userName: "김민권1",
+            profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
+            charStr: "안녕하세요, 채팅입니다! 1"
+          },
+          {
+            userName: "김민권2",
+            profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
+            charStr: "안녕하세요, 채팅입니다! 2"
+          },
+      ]
     }
   },
   methods: {
-    openRoomSettingDialog: function () {
+    openRoomSettingDialog() {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     },
-    closeStreaming: function () {
+    closeStreaming() {
       this.$store.dispatch('requestCloseVideo', this.videoId)
       .then(res => {
         console.log(res)
       })
+    },
     startTimer() {
       setInterval(() => {
         let total = (new Date().getTime() - new Date(this.startTime).getTime()) / 1000
@@ -94,8 +106,28 @@ export default {
         this.takenTime.s = parseInt(((total % 3600) % 60)).toString().padStart(2, '0')
       }, 1000);
     },
+    addEventForChat() {
+      this.ovSession.on('signal:my-chat', (event) => {
+        let givenCharStr = event.data
+        let userId = JSON.parse(event.from.data).clientData
+        console.log('[OPENVIDU] Get Chat data: ' + givenCharStr + ', UserId: ' + userId)
+        this.$store.dispatch("requestGetUserByAccountEmail", { accountEmail: userId })
+        .then((response) => {
+          this.chatList.push({
+            userName: response.data.userName,
+            profileImg: response.data.profileImageUrl,
+            charStr: givenCharStr,
+          })
+        }).catch((error) => {
+          console.log(error)
+        })
+      })
+    },
+    sendChat() {
+      this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
     }
   },
+  
   mounted() {
     this.videoId = this.$route.query.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
