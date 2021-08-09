@@ -29,6 +29,21 @@
         </div>
       </div>
     </div>
+    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-header">
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <h5 class="popUpTitle">공연을 추가하기 위해 프로필로 이동해주세요</h5>
+      등록된 공연이 없다면<br>
+      <strong>프로필 > 공연 생성</strong> 버튼 클릭하여<br>
+      상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
+      <div class="d-flex justify-content-center mt-4">
+        <!-- <div><button type="button" class="bdcolor-ngreen small-button mx-3">취소</button></div> -->
+        <div><button type="button" class="bdcolor-npink small-button mx-3">프로필로 가기</button></div>
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -160,5 +175,29 @@ label:hover {
 }
 .btn-close:hover {
   background-image: url('~@/assets/icon-x.png');
+}
+.m-offcanvas-top {
+  width: 70vh;
+  height: 27vh;
+  border-bottom-left-radius: 2vh;
+  border-bottom-right-radius: 2vh;
+}
+.m-offcanvas {
+    background-color: #242424;
+    color: white;
+    margin: 0 auto;
+}
+.offcanvas-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 13px;
+}
+.popUpTitle {
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.offcanvas-body{
+  padding: 10px;
 }
 </style>

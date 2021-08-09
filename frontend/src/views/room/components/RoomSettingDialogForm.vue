@@ -43,7 +43,7 @@
       <select @change="getRecentlyTimeTable()" class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
         <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
       </select>
-      <button class="plus-button" @click="clickToast()"> </button>
+      <button class="plus-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"> </button>
       </div>
       <input v-if="form.mode=='공연'" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
     </div>
@@ -71,6 +71,7 @@
         </div>
       </div>
     </div>
+    
   </div>
 </template>
 
