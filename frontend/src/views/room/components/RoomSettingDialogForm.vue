@@ -12,7 +12,12 @@
         </select>
       </div>
       <div>
-        <div class="label-alignment"><label class="form-label">영상용도</label><div class="icon-info"></div></div>
+        <div class="label-alignment"><label class="form-label">영상용도</label>
+        <div class="icon-info"></div>
+        <button type="button" class="btn btn-secondary tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
+  Tooltip on top
+</button>
+        </div>
         <div class="d-flex mt-1">
           <div class="form-check">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
@@ -41,7 +46,7 @@
       <select @change="getRecentlyTimeTable()" class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
         <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
       </select>
-      <button class="plus-button"></button>
+      <button class="plus-button" @click="clickToast()"> </button>
       </div>
       <input v-if="form.mode=='공연'" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
     </div>
@@ -57,6 +62,17 @@
     <div class="mb-3">
       <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
+    </div>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
+      <div id="liveToast" ref="myToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="8000">
+        <div class="toast-header">
+          <strong class="me-auto">공연을 추가하기 위해 프로필로 이동해 주세요</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          등록된 공연이 없다면 <strong class="me-auto">프로필 > 공연 생성 </strong>버튼 클릭하여 상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -88,6 +104,7 @@ export default {
       thumbnail: '',
       fileName:'',
       showInfoIds: [],
+      toast: null,
     }
   },
   methods: {
@@ -107,6 +124,11 @@ export default {
         this.form.showTime = response.data.dateTime
       }).catch((error) => {
       })
+    },
+    clickToast() {
+      console.log('clickToast')
+      var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.myToast)
+      myToast.show()
     }
   },
   created() {
@@ -205,5 +227,35 @@ form {
 
 .custom-file-input {
     display: none;
+}
+.tooltip.tooltip-top,
+.tooltip.tooltip-bottom,
+.tooltip.tooltip-left,
+.tooltip.tooltip-right {
+  z-index: 100000;
+}
+
+.toast {
+  width: 450px;
+  max-width: 100%;
+  font-size: .875rem;
+  pointer-events: auto;
+  background-color: #6A6A6A;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.1);
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+  border-radius: .25rem;
+}
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  padding: .5rem .75rem;
+  color: white;
+  background-color: #595959;
+  background-clip: padding-box;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  border-top-left-radius: calc(.25rem - 1px);
+  border-top-right-radius: calc(.25rem - 1px);
 }
 </style>

@@ -3,10 +3,13 @@
     <div class="full-wide-screen"> 
       <video class="userVideo" ref="myVideo" autoplay/>
     </div>
+
+
     <div class="btn-wrapper">
       <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog"> 설정 </button>
       <button class="bdcolor-bold-npink extra-big-button" @click="startStreaming()"> 스트리밍 시작 </button>
     </div>
+ 
   </div>
 </template>
 
@@ -87,6 +90,11 @@ export default {
       formData.append('videoInsertPostReq', new Blob([JSON.stringify(videoInsertPostReq)] , {type: "application/json"}))
 
       return formData
+    },
+    clickToast: function () {
+      console.log('clickToast')
+      var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.myToast)
+      myToast.show()
     }
   },
   watch: {

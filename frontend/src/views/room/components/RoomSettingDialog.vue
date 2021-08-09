@@ -73,8 +73,6 @@ export default {
     .then((response) => {
       this.categoryIds = response.data
     })
-
-
   },
   beforeUpdate() {
     
