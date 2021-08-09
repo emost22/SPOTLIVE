@@ -48,10 +48,14 @@ class ReservationRepositoryTest {
 
     @Test
     void deleteReservationByTimetable_TimetableIdTest() {
-        Long timetableId = 9L;
-        String accountEmail = "kmk130519@naver.com";
+        //when
         Long exist = reservationRepository.deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail);
+        Long notExist = reservationRepository.deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(-1L, "");
+
+        //then
         assertThat(exist).isEqualTo(1);
+        assertThat(notExist).isEqualTo(0);
+
     }
 
     @Test
