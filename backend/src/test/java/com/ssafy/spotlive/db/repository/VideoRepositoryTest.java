@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 public class VideoRepositoryTest {
+    static final int MAX = 2147483647;
     @Autowired
     VideoRepository videoRepository;
 
@@ -82,162 +83,354 @@ public class VideoRepositoryTest {
     @Test
     void findPageVideosByMode(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
-        int size = 6;
-        Long categoryId = 6L;
+        int size = MAX;
+
+        Long categoryId = 2L;
         String mode = "소통";
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByMode(pageRequest, mode);
         Page<Video> pageVideo2 = videoRepository.findVideosByModeAndCategory_CategoryId(pageRequest, mode, categoryId);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(6);
-        assertThat(pageVideo2.getTotalElements()).isEqualTo(4);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
+        assertThat(pageVideo2.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findPageVideosByIsLive(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
-        int size = 3;
-        Boolean isLive = false;
+        int size = MAX;
+        Boolean isLive = true;
         Sort sort = Sort.by(Sort.Direction.DESC, "hit");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByIsLive(pageRequest, isLive);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(5);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findVideosByIsLiveAndCategory_CategoryId(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
-        int size = 3;
-        Boolean isLive = false;
-        Long categoryId = 6L;
+        int size = MAX;
+        Boolean isLive = true;
+        Long categoryId = 2L;
         Sort sort = Sort.by(Sort.Direction.DESC, "hit");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, isLive, categoryId);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(4);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findPageVideosByUser_AccountEmailIn(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
-        int size = 3;
+        int size = MAX;
         List<String> accountEmailList = new ArrayList<>();
         accountEmailList.add("sqk8657@naver.com");
         accountEmailList.add("ahyen@naver.com");
+        accountEmailList.add("emoney96@naver.com");
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByUser_AccountEmailIn(pageRequest, accountEmailList);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(11);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findVideosByCategory_CategoryIdAndUser_AccountEmailIn(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
-        int size = 3;
+        int size = MAX;
         List<String> accountEmailList = new ArrayList<>();
         accountEmailList.add("sqk8657@naver.com");
         accountEmailList.add("ahyen@naver.com");
-        Long categoryId = 6L;
+        accountEmailList.add("emoney96@naver.com");
+        Long categoryId = 2L;
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndUser_AccountEmailIn(pageRequest, categoryId, accountEmailList);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(4);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findVideosByMode(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         String mode = "소통";
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         List<Video> videoList = videoRepository.findVideosByMode(mode).orElse(null);
 
         // then
-        assertThat(videoList.size()).isEqualTo(6);
+        assertThat(videoList.stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findVideosByIsLive(){
         // given
-        Boolean isLive = false;
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
+        Boolean isLive = true;
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         List<Video> videoList = videoRepository.findVideosByIsLive(isLive).orElse(null);
 
         // then
-        assertThat(videoList.size()).isEqualTo(5);
+        assertThat(videoList.stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findVideosByUser_AccountEmailIn(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         List<String> accountEmailList = new ArrayList<>();
-        accountEmailList.add("sqk8657@naver.com");
-        accountEmailList.add("ahyen@naver.com");
+        accountEmailList.add("emoney96@naver.com");
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         List<Video> videoList = videoRepository.findVideosByUser_AccountEmailIn(accountEmailList).orElse(null);
 
         // then
-        assertThat(videoList.size()).isEqualTo(10);
+        assertThat(videoList.stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findVideosByVideoTitleContainsOrVideoDescriptionContains(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
-        int size = 3;
-        String videoTitle = "1";
-        String videoDescription = "1";
+        int size = MAX;
+        String videoTitle = "kmk";
+        String videoDescription = "kmk";
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, videoTitle, videoDescription);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(2);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
     void findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
-        int size = 3;
-        Long categoryId = 6L;
-        String videoTitle = "1";
-        String videoDescription = "1";
+        int size = MAX;
+        Long categoryId = 2L;
+        String videoTitle = "kmk";
+        String videoDescription = "kmk";
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, videoTitle, videoDescription);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(0);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 }

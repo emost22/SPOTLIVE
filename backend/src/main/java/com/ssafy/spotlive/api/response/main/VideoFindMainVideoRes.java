@@ -46,7 +46,7 @@ public class VideoFindMainVideoRes {
 
         if(video.getEndTime() != null){
             duration = Duration.between(video.getEndTime(), video.getStartTime());
-            videoLength = duration.getSeconds();
+            videoLength = Math.abs(duration.getSeconds());
         }
 
         return VideoFindMainVideoRes.builder()
