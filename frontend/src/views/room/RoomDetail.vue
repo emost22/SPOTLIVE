@@ -17,17 +17,35 @@
           </div>
           <div>
             <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ peopleWatching }}</span>
-            <span class="current-time"> {{ currentTime }} </span>
+            <span class="current-time"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
           </div>
         </div>
       </div>
     </div>
     <div class="right-side d-flex flex-column flex-end">
-      <div class="chatting-part">
+      <div class="chatting-part" style="position: relative;">
         <div class="chatting-screen">
+          <div class="row" v-for="(chat, index) in chatList" :key="index">
+            <div class="col-md-2" style="text-align: center">
+              <img :src="chat.profileImg" class="profile-img bdcolor-bold-ngreen">
+            </div>
+            <div class="col-md-6 profile-detail">
+              <p> 
+                <span class="txtcolor-nyellow"> {{ chat.userName }}</span> 님 <br>
+                {{ chat.charStr }}
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="input-part">
+        <div class="row" style="position: absolute; bottom: 0px;">
+          <div class="input-part col-md-7">
+            <input type="text">
+          </div>
+          <div class="col-md-2">
+            <button class="small-button col-md-5" @click="sendChat()"> 전송 </button>
+          </div>
         </div>
+        
       </div>
       <div class="d-flex flex-column align-items-center mt-3">
         <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
