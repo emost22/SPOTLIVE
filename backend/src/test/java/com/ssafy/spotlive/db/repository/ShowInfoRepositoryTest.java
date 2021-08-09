@@ -44,16 +44,28 @@ class ShowInfoRepositoryTest {
     }
 
     @Test
+    @Transactional
     void deleteShowInfoByExistIdTest() {
-        Long existShowInfoId = 1L;
-        Long id = showInfoRepository.deleteShowInfoByShowInfoId(existShowInfoId);
+        //given
+        ShowInfo showInfo = new ShowInfo();
+        Long showInfoId = showInfoRepository.save(showInfo).getShowInfoId();
+
+        //given
+        Long id = showInfoRepository.deleteShowInfoByShowInfoId(showInfoId);
+
+        //then
         assertThat(id).isEqualTo(1);
     }
 
     @Test
     void deleteShowInfoByNotExistIdTest(){
+        //given
         Long notExistShowInfoId = -1L;
+
+        //when
         Long id = showInfoRepository.deleteShowInfoByShowInfoId(notExistShowInfoId);
+
+        //then
         assertThat(id).isEqualTo(0);
     }
 }
