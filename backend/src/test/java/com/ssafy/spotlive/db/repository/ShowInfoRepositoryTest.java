@@ -33,7 +33,7 @@ class ShowInfoRepositoryTest {
         Optional<ShowInfo> optionalShowInfo = showInfoRepository.findShowInfoByShowInfoId(showInfoId);
 
         //then
-        assertThat(optionalShowInfo.get()).isEqualTo(showInfo);
+        optionalShowInfo.ifPresent(info -> assertThat(info).isEqualTo(showInfo));
     }
 
     @Test
@@ -88,5 +88,5 @@ class ShowInfoRepositoryTest {
         //then
         optionalShowInfoList.ifPresent(showInfos -> showInfos.forEach(showInfo -> assertThat(showInfo.getUser()).isNotEqualTo(user)));
     }
-    
+
 }
