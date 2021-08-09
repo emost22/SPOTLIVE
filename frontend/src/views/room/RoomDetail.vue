@@ -188,8 +188,8 @@ export default {
   margin: 5px;
 }
 .profile-img {
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   border-radius: 100%;
 }
 .watching-people > img {
