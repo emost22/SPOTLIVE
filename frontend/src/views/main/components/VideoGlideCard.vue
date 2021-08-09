@@ -6,9 +6,9 @@
         style="background-image: url('video.thumbnailUrl');"
         @click="goRoomDetail"  
       >
-        <div class="live-badge" v-if="video.isLive"></div>
         <!-- <img :src="video.thumbnailUrl" class="glide-card-img-thumbnail"> -->
-        <div>{{ video.videoLength }}</div>
+        <div class="live-badge" v-if="video.isLive"></div>
+        <div class="time-badge" v-if="!video.isLive">{{ video.videoLength }}</div>
         <!-- {{ video.startTime }} -->
       </div>
       
@@ -94,6 +94,18 @@ export default {
   background-image: url('~@/assets/icon-live-badge.png');
   background-repeat: no-repeat;
   background-position: center;
+  margin: 10px;
+}
+.time-badge{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: #242424;
+  color: #FFFFFF;
+  border: none;
   margin: 10px;
 }
 </style>
