@@ -40,6 +40,10 @@ export default {
   height: 12px;
   border-radius: 100%;
   background-color: #F84ABF;
+  box-shadow: 
+    0 0 5px #F84ABF,
+    0 0 10px #F84ABF,
+    0 0 20px #F84ABF;
   margin-left: -7px;
   margin-top: -20px;
 }
