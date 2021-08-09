@@ -30,7 +30,7 @@ public class VideoInsertPostReq {
     Long categoryId;
     @ApiModelProperty(name="showInfoId : 공연의 경우 해당 공연ID, 홍보의 경우 연결된 공연ID, 홍보의 경우 비움, 없는 공연 Id를 넣으면 500 에러", example="")
     Long showInfoId;
-    @ApiModelProperty(name="accountEmail : 유저 email", example="email@email.com")
+    @ApiModelProperty(name="accountEmail : 유저 email", example="email@email.com", hidden = true)
     String accountEmail;
     @ApiModelProperty(name="sessionId : Openvidu Server의 Session id", example="session12345678")
     String sessionId;
