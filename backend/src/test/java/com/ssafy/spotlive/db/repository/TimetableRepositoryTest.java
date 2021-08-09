@@ -51,7 +51,14 @@ class TimetableRepositoryTest {
     }
 
     @Test
-    void findByDateTimeBetween() {
+    void deleteAllByShowInfo_ShowInfoIdTest() {
+        //when
+        timetableRepository.deleteAllByShowInfo_ShowInfoId(showInfoId);
+        List<Timetable> timetableList = timetableRepository.findTimetablesByShowInfo_ShowInfoId(showInfoId).orElse(null);
+        assert timetableList != null;
+
+        //then
+        assertThat(timetableList.size()).isEqualTo(0);
     }
 
     @Test
