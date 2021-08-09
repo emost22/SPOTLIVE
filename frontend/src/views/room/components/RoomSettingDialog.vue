@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isSettingDialogOpen" class="modal fade" id="roomSettingDialog" tabindex="-1" aria-hidden="true">
+  <div v-show="isSettingDialogOpen" class="modal fade" id="roomSettingDialog" ref="roomSettingDialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
     <div class="offcanvas-header">
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
@@ -40,7 +40,7 @@
       상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
       <div class="d-flex justify-content-center mt-4">
         <!-- <div><button type="button" class="bdcolor-ngreen small-button mx-3">취소</button></div> -->
-        <div><button type="button" class="bdcolor-npink small-button mx-3">프로필로 가기</button></div>
+        <div><button type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas" @click="routeToProfile()">프로필로 가기</button></div>
       </div>
     </div>
   </div>
@@ -73,8 +73,12 @@ export default {
     },
     setCreatedVideoDataInVuex: function () {
       this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
+    }, 
+    routeToProfile: function () {
+      var roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
+      roomSettingModal.hide()
+      this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
     }
-    
   },
   computed: {
     ...mapGetters([
