@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @IdClass(FollowId.class)
 public class Follow{
     @Id

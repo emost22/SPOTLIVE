@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @IdClass(ReservationId.class)
 public class Reservation {
     @Id

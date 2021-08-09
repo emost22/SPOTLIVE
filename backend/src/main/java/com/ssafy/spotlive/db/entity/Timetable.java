@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 public class Timetable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
