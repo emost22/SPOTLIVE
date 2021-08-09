@@ -1,35 +1,26 @@
 <template>
-  <div class="d-flex flex-row">
-    <div class="controls" data-glide-el="controls" >
-      <button class="glide-btn-left glide__arrows" data-glide-dir="<"></button>
-    </div>
-    <vue-glide
-      v-if="videos.length"
-      class="glider_track"
-      data-glide-el="track"
-      ref="slider"
-      type="slider"
-      :autoplay="false"
-      :breakpoints="{10000: {perView: 9}, 4000: {perView: 7}, 3000: {perView: 6}, 1500: {perView: 5}, 1200: {perView: 4}, 991: {perView: 3}, 800: {perView: 2}}"
-    >
-      <vue-glide-slide
-
-        v-for="(video, idx) in videos"
-        :key="idx">
-        <VideoCard
-          :video="video"
-        />
-      </vue-glide-slide>
-    </vue-glide>
-    <div class="controls" data-glide-el="controls" >
-      <button class="glide-btn-right glide__arrows" data-glide-dir=">"></button>
-    </div>
-  </div>
+  <vue-glide
+    v-if="videos.length"
+    class="glider_track"
+    data-glide-el="track"
+    ref="slider"
+    type="slider"
+    :autoplay="false"
+    :breakpoints="{1500: {perView: 5}, 1200: {perView: 4}}"
+  >
+    <vue-glide-slide
+      v-for="(video, idx) in videos"
+      :key="idx">
+      <VideoGlideCard
+        :video="video"
+      />
+    </vue-glide-slide>
+  </vue-glide>
 </template>
 
 <script>
 import { Glide, GlideSlide } from 'vue-glide-js'
-import VideoCard from '@/views/main/components/VideoCard.vue'
+import VideoGlideCard from '@/views/main/components/VideoGlideCard.vue'
 
 export default {
   name: "VideoGlide",
@@ -42,7 +33,7 @@ export default {
   components: {
     [Glide.name]: Glide,
     [GlideSlide.name]: GlideSlide,
-    VideoCard,
+    VideoGlideCard,
   },
   methods: {
   }

@@ -7,7 +7,7 @@ export default {
   name: "Search",
   data: function () {
     return {
-      input: this.$route.param.input,
+      input: this.$route.query.input,
     }
   },
   components: {

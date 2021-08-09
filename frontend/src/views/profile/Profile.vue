@@ -7,7 +7,7 @@
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen" data-bs-toggle="modal" data-bs-target="#showCreateModal">공연 생성</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink">프로필 수정</button></div>
       </div>
-      <div class="profile-btn-line" v-if="inMyProfile">
+      <div class="profile-btn-line" v-if="!inMyProfile">
         <button type="button" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
         <button type="button" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
       </div>
@@ -16,9 +16,8 @@
     <div class="profile-info">
       <div><img :src="myProfile.profileImageUrl" class="profile-img bdcolor-bold-ngreen"></div>
       <div class="profile-detail">
-        <p> <span class="txtcolor-nyellow">나예뽀 {{ myProfile.profileNickname }}</span> 님</p>
+        <p> <span class="txtcolor-nyellow"> {{ myProfile.profileNickname }}</span> 님</p>
         <p> 
-          안녕하세요 나예뽀입니다. 제가 세상의 중심이죠. SPOT LIVE에 오신 것을 환영합니다 
           {{ myProfile.profileDescription }}
         </p>
         <p> {{ myProfile.accountEmail }} </p>
@@ -51,6 +50,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
 import MyShow from './components/MyShow.vue'
 import MyVideo from './components/MyVideo.vue'
 
@@ -64,11 +64,10 @@ export default {
     return {
       inMyProfile: true,
       follow: false,
+      userId: '',
+      profileId: this.$route.query.profileId,
       following: '',
       follower: '',
-      // userId: '',
-      // profileId: Number(this.$route.param.profileId),
-      // 희진님과 프로필 눌러서 param의 프로필 유저 pk번호 데이터 이름 맞추기
       myProfile: [],
       myShows: [],
       myVideos: [],
@@ -77,10 +76,20 @@ export default {
   },
   created: function () {
     this.getUser()
-    this.getMyProfile()
+    if (this.inMyProfile) {
+      this.getMyProfile()
+    } else {
+      this.getProfile()
+    }    
   },
   methods: {
     getUser() {
+      this.userId = this.loginUser.accountEmail
+      if (this.userId == this.profileId) {
+        this.inMyProfile = true
+      } else {
+        this.inMyProfile = false
+      }
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
@@ -98,6 +107,25 @@ export default {
         console.log(error)
       })
     },
+    getProfile() {
+      this.$store.dispatch('requestGetProfile', { profileId : this.profileId})
+      .then((response) => {
+        console.log("getProfile() SUCCESS!!")
+        console.log(response.data)
+        this.myProfile = response.data
+        this.following = response.data.followMyArtistResList
+        this.follower = response.data.followMyFanResList
+        this.myShows = response.data.showInfoResList
+        this.myVideos = response.data.videoResList
+        this.myReservations = response.data.reservationResList
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+  },
+  computed: {
+    ...mapGetters(['loginUser']),
   },
 }
 </script>

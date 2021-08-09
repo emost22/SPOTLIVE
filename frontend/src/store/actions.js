@@ -188,4 +188,9 @@ export default {
 
         return $axios.get(URL)
     },
+    requestGetProfile(context, payload) {
+        const URL = `/auth/user/${payload.profileId}`
+
+        return $axios.get(URL)
+    },
 }
