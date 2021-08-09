@@ -12,6 +12,7 @@ import com.ssafy.spotlive.api.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +41,10 @@ public class ShowInfoController {
     @Autowired
     TimetableService timetableService;
 
-    @PostMapping("/")
+    @PostMapping(
+            value="/",
+            consumes = { MediaType.MULTIPART_FORM_DATA_VALUE },
+            produces = { MediaType.APPLICATION_JSON_VALUE })
     @ApiOperation(value = "공연 정보 등록", notes = "새로운 공연 정보를 등록한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공"),
@@ -49,25 +53,35 @@ public class ShowInfoController {
     })
     public ResponseEntity<Object> insertShowInfo(
             @ApiIgnore @RequestHeader("Authorization") String accessToken,
-            @RequestParam(value = "posterImage", required = false) MultipartFile posterImage,
-            @ApiParam(value = "새로 등록할 회의의 정보", required = true) ShowInfoInsertPostReq showInfoInsertPostReq
+            @RequestPart(value = "posterImage", required = false) MultipartFile posterImage,
+            @RequestPart(value = "showInfoInsertPostReq") ShowInfoInsertPostReq showInfoInsertPostReq
     ){
         /**
          * @Method Name : insertShowInfo
          * @작성자 : 금아현
          * @Method 설명 : 새로운 공연 정보를 등록한다.
          */
+        System.out.println("===========================================================================================================");
+        System.out.println("* DATA: " +  showInfoInsertPostReq);
+        if(showInfoInsertPostReq.getTimetableInsertPostReq() == null) {
+            System.out.println("!!!!!!!!!!========== TIME TABLE이 NULL입니다 ==========!!!!!!!!!!");
+        } else {
+            System.out.println("* SIZE: " +  showInfoInsertPostReq.getTimetableInsertPostReq().size());
+            System.out.println("* TIME_TABLE: " +  showInfoInsertPostReq.getTimetableInsertPostReq());
+        }
+        System.out.println("===========================================================================================================");
+
         int validTokenStatusValue = authService.isValidToken(accessToken);
         if(validTokenStatusValue == 200){
             String[] splitToken = accessToken.split(" ");
             UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
             showInfoInsertPostReq.setAccountEmail(userRes.getAccountEmail());
+            showInfoService.insertShowInfo(showInfoInsertPostReq, posterImage);
         }else if(validTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        showInfoService.insertShowInfo(showInfoInsertPostReq, posterImage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -1,16 +1,20 @@
 <template>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div v-show="isSettingDialogOpen" class="modal fade" id="roomSettingDialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeRoomSettingDialog()"></button>
         </div>
         <div class="modal-body">
           <div class='tabs'>
             <input type='radio' id='r1' name='t' checked>
             <label for='r1' class="tab-label">설정</label>
             <div class='content'>
-              <RoomSettingDialogForm/>
+              <RoomSettingDialogForm
+                :categoryIds="categoryIds"
+                :showInfoList="loginUser.showInfoResList"
+                @form-data="form => videoData = form"
+              />
             </div>
             <input type='radio' id='r2' name='t'>
             <label for='r2' class="tab-label">카메라</label>
@@ -21,14 +25,15 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button" @click="setSetting" data-bs-dismiss="modal">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button" @click="setCreatedVideoDataInVuex()" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script scoped>
+import { mapGetters } from "vuex"
 import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
 import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
 export default {
@@ -39,18 +44,50 @@ export default {
   },
   data: function () {
     return {
-      
+      viewId: 0,
+      categoryIds: [],
+      videoData: {},
     }
   }, 
   methods: {
-    setSetting() {
-      //axios
+    closeRoomSettingDialog: function () {
+      this.$store.dispatch('requestSetIsOpenSettingDialog', 0)
+    },
+    setViewId: function() {
+      viewId = settingDialogViewId
+    },
+    setCreatedVideoDataInVuex: function () {
+      this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
     }
-  }
+    
+  },
+  computed: {
+    ...mapGetters([
+    'settingDialogViewId',
+    'isSettingDialogOpen',
+    'loginUser'
+    ]),
+  },
+  mounted() {
+    this.$store.dispatch('requestGetCategoryIds')
+    .then((response) => {
+      this.categoryIds = response.data
+    })
+
+
+  },
+  beforeUpdate() {
+    
+    if (this.settingDialogViewId == 1) {
+      
+    } else if (this.settingDialogViewId == 2) {
+
+    }
+  },
 }
 </script>
 
-<style>
+<style scoped>
 .tabs {
   top: 51%;
   left: 50%;

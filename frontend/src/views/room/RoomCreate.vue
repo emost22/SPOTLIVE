@@ -1,24 +1,20 @@
 <template>
   <div class="wrapper">
     <div class="full-wide-screen"> 
-      <user-video />
+      <video class="userVideo" ref="myVideo" autoplay/>
     </div>
     <div class="btn-wrapper">
-      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#exampleModal"> 설정 </button>
-      <router-link :to="{ name: 'RoomDetail' }"><button class="bdcolor-bold-npink extra-big-button"> 스트리밍 시작 </button></router-link>
+      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog"> 설정 </button>
+      <button class="bdcolor-bold-npink extra-big-button" @click="startStreaming()"> 스트리밍 시작 </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 import { OpenVidu } from 'openvidu-browser'
-import UserVideo from './components/UserVideo.vue';
 
 export default {
-  components: {
-    UserVideo,
-  },
   name:'RoomCreate',
   data() {
     return  {
@@ -34,12 +30,18 @@ export default {
       this.$store.dispatch("requestInitSession", openvidu)
     },
     async doOpenviduCall() {
-      await this.$store.dispatch("requestGetSessionAndTokenForOpenvidu")
+      await this.$store.dispatch("requestGetSessionForOpenvidu")
       .then((response) => {
-        this.setSessionIdAndTokenForOpenvidu(response.data.sessionId, response.data.token)
-        this.setAllDevices()
-        this.addEventInSession()
-        this.connectSession()
+        console.log(response.data)
+        this.$store.dispatch("requestGetTokenForOpenvidu", { sessionId: response.data })
+        .then((response) => {
+          this.setSessionIdAndTokenForOpenvidu(response.data.sessionId, response.data.token)
+          this.setAllDevices()
+          this.addEventInSession()
+          this.connectSession()
+        }).catch((error) => {
+          console.log(error)
+        })         
       }).catch((error) => {
         console.log(error)
       })
@@ -59,9 +61,29 @@ export default {
     addEventInSession() {
       this.$store.dispatch("requestAddEventInSession")
     },
+    openRoomSettingDialog: function () {
+      this.$store.dispatch('requestSetIsOpenSettingDialog', 1)
+    },
+    startStreaming: function () {
+      let formData = new FormData()
+      for (const p in this.createdVideoData) {
+        formData.append(p, this.createdVideoData[p])
+      }
+      formData.append('accountEmail', this.loginUser.accountEmail)
+      formData.append('sessionId', 1)
+      this.$store.dispatch('requestStartStreaming', formData)
+      .then((response) => {
+        this.$router.push({name: 'RoomDetail', query: { videoId : response.data.videoId }})
+      })
+    }
+  },
+  watch: {
+    mainStreamManager: function(val, oldVal) {
+      this.mainStreamManager.addVideoElement(this.$refs.myVideo);
+    }
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices']),
+    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager']),
   },
 }
 </script>

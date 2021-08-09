@@ -24,6 +24,12 @@ export default {
     audioDevices(state) {
         return state.audioDevices
     },
+    videoDeviceId(state) {
+        return state.videoDeviceId
+    },
+    audioDeviceId(state) {
+        return state.audioDeviceId
+    },
     mainStreamManager(state) {
         return state.mainStreamManager
     },
@@ -33,4 +39,14 @@ export default {
     subscribers(state) {
         return state.subscribers
     },
+    settingDialogViewId(state) {
+        return state.settingDialogViewId
+    },
+    isSettingDialogOpen(state) {
+        return state.isSettingDialogOpen
+    },
+    createdVideoData(state) {
+        return state.createdVideoData
+    }
+
 }

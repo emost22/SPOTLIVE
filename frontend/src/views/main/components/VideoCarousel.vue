@@ -1,12 +1,17 @@
 <template>
-  <carousel-3d>
-    <slide v-for="(video, i) in videos" :index="i" :key="i">
+  <carousel-3d
+  v-if="videos.length"
+  :autoplay="true"
+  :autoplayTimeout="1000"
+  :height="300"
+  >
+    <slide 
+      v-for="(video, i) in videos" 
+      :index="i" 
+      :key="i" 
+      class="carousel-video"
+      >
       <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
-          <!-- <img 
-            :data-index="index" 
-            :class="{ current: isCurrent, onLeft: (leftIndex >= 0), onRight: (rightIndex >= 0) }" 
-            src="~@/assets/icon-streaming.png"
-          > -->
           <VideoCarouselCard
             :data-index="index" 
             :class="{ current: isCurrent, onLeft: (leftIndex >= 0), onRight: (rightIndex >= 0) }" 
@@ -40,5 +45,16 @@ export default {
 </script>
 
 <style>
-
+.carousel-video {
+  margin: 20px;
+}
+.current{
+  border: 2px solid #F84ABF;
+  box-shadow: 
+    0 0 9px #F84ABF,
+    0 0 12px #F84ABF,
+    0 0 20px #F84ABF,
+    0 0 30px #F84ABF,
+    0 0 50px #F84ABF;
+}
 </style>

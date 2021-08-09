@@ -11,17 +11,15 @@ import state from '../store/state'
 Vue.use(VueRouter)
 
 const requireAuth = (to, from, next) => {
-  console.log("ROUTER===============================================")
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("accessToken")
   if (accessToken == null) {
-    console.log("NO LOGIN===============================================")
-    alert("로그인을 먼저 해주세요.");
-    state.isLogin = false;
-    next('/login');
+    alert("로그인을 먼저 해주세요.")
+    state.isLogin = false
+    next('/login')
   } else {
-    console.log("YES LOGIN===============================================")
-    state.isLogin = true;
-    next();
+    state.isLogin = true
+    state.loginUser = JSON.parse(localStorage.getItem("loginUser"))
+    next()
   }
 }
 

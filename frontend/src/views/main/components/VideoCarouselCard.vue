@@ -1,7 +1,6 @@
 <template>
   <div>
-    <img src="~@/assets/icon-profile.png" @click="RoomDetail">
-    <!-- {{ video.thumbnailUrl }} -->
+    <img :src="video.thumbnailUrl" @click="RoomDetail">
   </div>
 </template>
 

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,4 +30,12 @@ public interface ShowInfoRepository extends JpaRepository<ShowInfo, Long> {
      */
     @Transactional
     Long deleteShowInfoByShowInfoId(Long id);
+
+    /**
+     * @Method Name : findShowInfosByUser_AccountEmailIsNotIn
+     * @작성자 : 강용수
+     * @Method 설명 : 등록자가 본인이 아닌 공연을 조회하는 메소드
+     */
+    Optional<List<ShowInfo>> findShowInfosByUser_AccountEmailNot(String accountEmail);
+
 }
