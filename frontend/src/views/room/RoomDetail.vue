@@ -56,6 +56,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+import { OpenVidu } from 'openvidu-browser'
+
 export default {
   name: 'RoomDetail',
   data: function () {
@@ -66,6 +69,12 @@ export default {
       videoTitle: "",
       currentTime: "02:22:01",
       peopleWatching: "0"
+      startTime: "",
+      takenTime: {
+        h: '',
+        m: '',
+        s: '',
+      },
     }
   },
   methods: {
@@ -77,6 +86,14 @@ export default {
       .then(res => {
         console.log(res)
       })
+    startTimer() {
+      setInterval(() => {
+        let total = (new Date().getTime() - new Date(this.startTime).getTime()) / 1000
+        this.takenTime.h = parseInt(total / 3600).toString().padStart(2, '0')
+        this.takenTime.m = parseInt((total % 3600) / 60).toString().padStart(2, '0')
+        this.takenTime.s = parseInt(((total % 3600) % 60)).toString().padStart(2, '0')
+      }, 1000);
+    },
     }
   },
   mounted() {
@@ -85,8 +102,9 @@ export default {
     .then((response) => {
       console.log(response)
       this.videoDescription = response.data.videoDescription
-      this.category = response.data.categoryId
+      this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
+      this.startTime = response.data.startTime
     })
   }
 }
