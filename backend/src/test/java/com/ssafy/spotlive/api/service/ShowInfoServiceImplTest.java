@@ -2,6 +2,7 @@ package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
 import com.ssafy.spotlive.api.request.timetable.TimetableInsertPostReq;
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.repository.ShowInfoRepository;
 import com.ssafy.spotlive.db.repository.TimetableRepository;
@@ -12,18 +13,22 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ShowInfoServiceTest {
+class ShowInfoServiceImplTest {
 
     @Mock
     ShowInfoRepository showInfoRepository;
+
+    @Mock
+    FileUploadService fileUploadService;
 
     @Mock
     MultipartFile multipartFile;
@@ -35,7 +40,7 @@ class ShowInfoServiceTest {
     ShowInfoService showInfoService = new ShowInfoServiceImpl();
 
     @Test
-    void insertShowInfoTest() {
+    void insertShowInfoTest() throws IOException {
         // given
         TimetableInsertPostReq timetableInsertPostReq1 = new TimetableInsertPostReq();
         TimetableInsertPostReq timetableInsertPostReq2 = new TimetableInsertPostReq();
@@ -51,10 +56,11 @@ class ShowInfoServiceTest {
         // when
         ShowInfo showInfo = new ShowInfo();
         showInfo.setShowInfoId(1L);
+        String posterImageUrl = "posterUrl.png";
 
         doReturn(showInfo).when(showInfoRepository).save(anyObject());
         doReturn(showInfo).when(showInfoRepository).getById(1L);
-        doReturn("filename.png").when(multipartFile).getOriginalFilename();
+        doReturn(posterImageUrl).when(fileUploadService).upload(multipartFile);
 
         showInfoService.insertShowInfo(showInfoInsertPostReq, multipartFile);
 
@@ -66,21 +72,38 @@ class ShowInfoServiceTest {
 
     @Test
     void findShowInfoByIdTest() {
-//        ShowInfo showInfo = new ShowInfo();
-//        showInfo.setShowInfoId(1L);
-//        given(showInfoRepository.findShowInfoByShowInfoId(-1L)).willReturn(Optional.of(showInfo));
-//        ShowInfoFindByIdGetRes expected = showInfoService.findShowInfoById(-1L);
-//        assertThat(expected).isNotNull();
-
-        long showInfoId = 1L;
-        showInfoService.findShowInfoById(showInfoId);
-        verify(showInfoRepository).findShowInfoByShowInfoId(showInfoId);
+        //given
+        ShowInfo showInfo = new ShowInfo();
+        showInfo.setShowInfoId(1L);
+        given(showInfoRepository.findShowInfoByShowInfoId(-1L)).willReturn(Optional.of(showInfo));
+        //when
+        ShowInfoFindByIdGetRes expected = showInfoService.findShowInfoById(-1L);
+        //then
+        assertThat(expected).isNotNull();
     }
 
     @Test
     void deleteShowInfoByIdTest() {
-        long showInfoId = 1;
+        //given
+        long showInfoId = 1L;
+        //when
         showInfoService.deleteShowInfoById(showInfoId);
-        verify(showInfoRepository).deleteShowInfoByShowInfoId(showInfoId);
+        //then
+        verify(showInfoRepository, times(1)).deleteShowInfoByShowInfoId(showInfoId);
+    }
+
+
+    @Test
+    void updateShowInfoById() {
+        showInfoService.updateShowInfoById(anyObject(), anyObject(), anyObject());
+        verify(showInfoRepository).save(anyObject());
+    }
+
+    @Test
+    void findShowInfoByUser() {
+        //when
+        showInfoService.findShowInfoByUser(anyObject());
+        //then
+        verify(showInfoRepository).findShowInfosByUser_AccountEmail(anyObject());
     }
 }
