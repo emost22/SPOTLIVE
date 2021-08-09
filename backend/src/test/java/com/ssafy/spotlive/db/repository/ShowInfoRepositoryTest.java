@@ -4,8 +4,11 @@ import com.ssafy.spotlive.db.entity.ShowInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import javax.transaction.Transactional;
 import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @SpringBootTest
@@ -15,16 +18,28 @@ class ShowInfoRepositoryTest {
     private  ShowInfoRepository showInfoRepository;
 
     @Test
+    @Transactional
     void findShowInfoByExistIdTest() {
-        Long existShowInfoId = 1L;
-        Optional<ShowInfo> showInfo = showInfoRepository.findShowInfoByShowInfoId(existShowInfoId);
-        assertThat(showInfo).isNotEmpty();
+        //given
+        ShowInfo showInfo = new ShowInfo();
+        Long showInfoId = showInfoRepository.save(showInfo).getShowInfoId();
+
+        //when
+        Optional<ShowInfo> optionalShowInfo = showInfoRepository.findShowInfoByShowInfoId(showInfoId);
+
+        //then
+        assertThat(optionalShowInfo.get()).isEqualTo(showInfo);
     }
 
     @Test
     void findShowInfoByNotExistIdTest() {
+        //given
         Long notExistShowInfoId = -1L;
+
+        //when
         Optional<ShowInfo> showInfo = showInfoRepository.findShowInfoByShowInfoId(notExistShowInfoId);
+
+        //then
         assertThat(showInfo).isEmpty();
     }
 
