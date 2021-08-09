@@ -332,15 +332,33 @@ public class VideoRepositoryTest {
     @Test
     void findVideosByUser_AccountEmailIn(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         List<String> accountEmailList = new ArrayList<>();
-        accountEmailList.add("sqk8657@naver.com");
-        accountEmailList.add("ahyen@naver.com");
+        accountEmailList.add("emoney96@naver.com");
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         List<Video> videoList = videoRepository.findVideosByUser_AccountEmailIn(accountEmailList).orElse(null);
 
         // then
-        assertThat(videoList.size()).isEqualTo(10);
+        assertThat(videoList.stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
