@@ -138,7 +138,20 @@ export default {
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
     })
-  }
+    if(this.mainStreamManager != undefined) 
+      this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+    this.startTimer()
+    this.addEventForChat()
+  },
+  watch: {
+    mainStreamManager: function(val, oldVal) {
+      if(this.mainStreamManager != undefined) 
+        this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+    }
+  },
+  computed: {
+    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager']),
+  },
 }
 </script>
 
