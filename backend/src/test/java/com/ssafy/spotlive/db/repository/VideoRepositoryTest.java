@@ -54,15 +54,6 @@ public class VideoRepositoryTest {
         user.setUserName("테스트이름");
         user.setPhoneNumber("테스트전화");
         user.setProfileImageUrl("테스트URL");
-//        //두번 째 유저 추가
-//        user.setAccountEmail(testAccountEmail2);
-//        user.setGender("테스트MAN");
-//        user.setAgeRange("테스트10~19");
-//        user.setProfileDescription("테스트프로필");
-//        user.setUserName("테스트이름");
-//        user.setPhoneNumber("테스트전화");
-//        user.setProfileImageUrl("테스트URL");
-//        userRepository.save(user);
 
         category.setCategoryName("카테고리");
 
