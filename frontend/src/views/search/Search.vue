@@ -1,5 +1,6 @@
 <template>
-  <div> 검색결과 {{ input }} {{ search_videos }} 
+  <div> 
+    <div class="txtcolor-ngreen"> '{{ input }}' 에 대한 검색 결과입니다  </div>
     <SearchVideoGrid :videos="search_videos"/>
   </div>
 </template>
@@ -31,8 +32,7 @@ export default {
       .then((response) => {
         console.log("getGetSearchVideos() SUCCESS!!")
         console.log(response.data)
-        this.search_videos = response.data
-        // input 초기화 필요
+        this.search_videos = response.data.videoResList
       })
       .catch((error) => {
         console.log(error)

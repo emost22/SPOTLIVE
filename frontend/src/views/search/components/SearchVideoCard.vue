@@ -1,28 +1,26 @@
 <template>
-  <div>
-    <div class="card glide-card-box">
-      <div 
-        class="glide-card-img-box" 
-        style="background-image: url('video.thumbnailUrl');"
-        @click="goRoomDetail"  
-      >
-        <div class="live-badge" v-if="video.isLive"></div>
-        <!-- <img :src="video.thumbnailUrl" class="glide-card-img-thumbnail"> -->
-        <div>{{ video.videoLength }}</div>
-        <!-- {{ video.startTime }} -->
+  <div class="card glide-card-box">
+    <div 
+      class="glide-card-img-box" 
+      style="background-image: url('video.thumbnailUrl');"
+      @click="goRoomDetail"  
+    >
+      <div class="live-badge" v-if="video.isLive"></div>
+      <!-- <img :src="video.thumbnailUrl" class="glide-card-img-thumbnail"> -->
+      <div>{{ video.videoLength }}</div>
+      <!-- {{ video.startTime }} -->
+    </div>
+    
+    <div class="glide-card-info-box" style="overflow:hidden;">
+      <div>
+        <img :src="video.user.profileImageUrl" class="glide-card-img-profile" @click="goProfile">
       </div>
-      
-      <div class="glide-card-info-box" style="overflow:hidden;">
-        <div>
-          <img :src="video.user.profileImageUrl" class="glide-card-img-profile" @click="goProfile">
-        </div>
-        <div>
-          <p class="text-nowrap overflow-hidden fw-bold glide-card-info-detail">
-            {{ video.videoTitle }}
-          </p>
-          <p class="glide-card-info-detail"> {{ video.user.profileNickname }} </p> 
-        </div>           
-      </div>
+      <div>
+        <p class="text-nowrap overflow-hidden fw-bold glide-card-info-detail">
+          {{ video.videoTitle }}
+        </p>
+        <p class="glide-card-info-detail"> {{ video.user.profileNickname }} </p> 
+      </div>           
     </div>
   </div>
 </template>

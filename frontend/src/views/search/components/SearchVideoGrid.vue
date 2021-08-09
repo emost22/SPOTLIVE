@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <div 
-      v-for="(video, idx) in videos"
-      :key="idx">
-      <SearchVideoCard
-        :video="video"
-      />
+  <div class="search-grid-box">
+    <div v-if="videos.length">
+      <div
+        v-for="(video, idx) in videos"
+        :key="idx">
+        <SearchVideoCard
+          :video="video"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -30,4 +32,8 @@ export default {
 </script>
 
 <style>
+.search-grid-box {
+  display: flex;
+  flex-direction: row;
+}
 </style>
