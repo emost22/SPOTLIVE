@@ -13,27 +13,24 @@
       </div>
       <div>
         <div class="label-alignment"><label class="form-label">영상용도</label>
-        <div class="icon-info"></div>
-        <button type="button" class="btn btn-secondary tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
-  Tooltip on top
-</button>
+        <div class="icon-info" data-bs-toggle="tooltip" data-bs-placement="top" title="용도를 꼭 확인해주세요!💥"></div>
         </div>
         <div class="d-flex mt-1">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
-            <label class="form-check-label" for="forShow">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="1" v-model="form.mode">
+            <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
               공연용
             </label>
           </div>
           <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
-            <label class="form-check-label" for="forAd">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="2" v-model="form.mode">
+            <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
               홍보용
             </label>
           </div>
           <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
-            <label class="form-check-label" for="forCommunicate">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="3" v-model="form.mode">
+            <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
               소통용
             </label>
           </div>
@@ -64,7 +61,7 @@
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-      <div id="liveToast" ref="myToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="8000">
+      <div id="liveToast" ref="myToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="5000">
         <div class="toast-header">
           <strong class="me-auto">공연을 추가하기 위해 프로필로 이동해 주세요</strong>
           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -133,6 +130,13 @@ export default {
   },
   created() {
     this.makeShowInfoIds()
+  },
+  mounted() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return bootstrap.Tooltip.getOrCreateInstance(tooltipTriggerEl)
+    })
+    console.log(tooltipList)
   },
   beforeUpdate() {
     if (this.form.mode == 2 || this.form.mode == 3) {
