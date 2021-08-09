@@ -49,14 +49,19 @@ class CategoryServiceImplTest {
     @Test
     void findCategoryByCategoryName(){
         // given
+        Long categoryId = 2147483648L;
         String categoryName = "kmk 그는 신인가?";
         Category category = new Category();
+        category.setCategoryId(categoryId);
+        category.setCategoryName(categoryName);
 
         // when
         when(categoryRepository.findCategoryByCategoryName(categoryName)).thenReturn(Optional.ofNullable(category));
-        categoryServiceImpl.findCategoryByCategoryName(categoryName);
+        CategoryGetRes categoryGetRes = categoryServiceImpl.findCategoryByCategoryName(categoryName);
 
         // then
         verify(categoryRepository).findCategoryByCategoryName(categoryName);
+        assertThat(categoryGetRes.getCategoryId()).isEqualTo(categoryId);
+        assertThat(categoryGetRes.getCategoryName()).isEqualTo(categoryName);
     }
 }
