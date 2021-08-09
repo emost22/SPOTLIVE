@@ -117,10 +117,10 @@ public class ShowInfoController {
     })
     public ResponseEntity<Object> updateShowInfoById(
             @PathVariable @ApiParam(value = "수정할 공연 정보의 id", required = true) long id,
-            @RequestParam(required = false) MultipartFile posterImage,
-            @ApiParam(value = "수정할 회의의 정보", required = true) ShowInfoUpdatePatchReq showInfoUpdatePatchReq){
+            @RequestPart(value = "posterImage", required = false) MultipartFile posterImage,
+            @RequestPart(value = "showInfoUpdatePatchReq") ShowInfoUpdatePatchReq showInfoUpdatePatchReq){
         /**
-         * @Method Name : updateShowInfo
+         * @Method Name : updateShowInfoById
          * @작성자 : 금아현
          * @Method 설명 : 공연 id로 해당 공연을 수정한다.
          */
