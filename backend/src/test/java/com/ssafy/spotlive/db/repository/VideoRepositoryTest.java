@@ -53,7 +53,7 @@ public class VideoRepositoryTest {
 
         // 위의 객체를 저장
         VideoInsertPostRes videoInsertPostRes = VideoInsertPostRes.of(videoRepository
-                .save(videoInsertPostReq.toVideo(thumbnailUrl, sessionId)));
+                .save(videoInsertPostReq.toVideo(thumbnailUrl)));
 
         // 넣은 값을 꺼내 제대로 들어갔는지 확인
         Optional<Video> videoById = videoRepository.findById(videoInsertPostRes.getVideoId());

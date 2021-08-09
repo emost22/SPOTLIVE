@@ -1,6 +1,8 @@
 package com.ssafy.spotlive.api.response.video;
 
+import com.ssafy.spotlive.api.response.category.CategoryRes;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
+import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.Video;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
@@ -33,8 +35,8 @@ public class VideoFindByIdGetRes {
     String sessionId;
 
     ShowInfoRes showInfoRes;
-    Long categoryId;
-    String accountEmail;
+    CategoryRes categoryRes;
+    UserRes userRes;
     public static VideoFindByIdGetRes of(Video video){
         /**
          * @Method Name : of
@@ -53,8 +55,8 @@ public class VideoFindByIdGetRes {
                     .videoUrl(video.getVideoUrl())
                     .isLive(video.getIsLive())
                     .hit(video.getHit())
-                    .accountEmail(video.getUser().getAccountEmail())
-                    .categoryId(video.getCategory().getCategoryId())
+                    .userRes(UserRes.ofWithoutFollowShowInfoReservationVideo(video.getUser()))
+                    .categoryRes(CategoryRes.of(video.getCategory()))
                     .build();
         } else {
             return VideoFindByIdGetRes.builder()
@@ -67,10 +69,10 @@ public class VideoFindByIdGetRes {
                     .videoUrl(video.getVideoUrl())
                     .isLive(video.getIsLive())
                     .hit(video.getHit())
-                    .accountEmail(video.getUser().getAccountEmail())
+                    .userRes(UserRes.ofWithoutFollowShowInfoReservationVideo(video.getUser()))
+                    .categoryRes(CategoryRes.of(video.getCategory()))
                     .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
                     .sessionId(video.getSessionId())
-                    .categoryId(video.getCategory().getCategoryId())
                     .build();
         }
 
