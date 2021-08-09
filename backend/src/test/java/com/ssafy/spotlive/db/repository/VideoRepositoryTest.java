@@ -121,17 +121,36 @@ public class VideoRepositoryTest {
     @Test
     void findPageVideosByIsLive(){
         // given
+        String insertVideoTitle = "알고리즘 잘하는법";
+        String insertVideoDescription = "kmk님이 알려주실겁니다";
+        String insertMode = "소통";
+        Long insertCategoryId = 2L;
+        Long insertShowInfoId = 6L;
+        String insertAccountEmail = "emoney96@naver.com";
+        String insertSessionId = "123123";
+        String insertThumbnailUrl = "solvedac.png";
+
+        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
+        videoInsertPostReq.setVideoTitle(insertVideoTitle);
+        videoInsertPostReq.setVideoDescription(insertVideoDescription);
+        videoInsertPostReq.setMode(insertMode);
+        videoInsertPostReq.setCategoryId(insertCategoryId);
+        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setAccountEmail(insertAccountEmail);
+        videoInsertPostReq.setSessionId(insertSessionId);
+
         int page = 0;
-        int size = 3;
-        Boolean isLive = false;
+        int size = 2147483647;
+        Boolean isLive = true;
         Sort sort = Sort.by(Sort.Direction.DESC, "hit");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
+        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
         Page<Video> pageVideo = videoRepository.findVideosByIsLive(pageRequest, isLive);
 
         // then
-        assertThat(pageVideo.getTotalElements()).isEqualTo(5);
+        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 
     @Test
