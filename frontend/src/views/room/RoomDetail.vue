@@ -1,7 +1,9 @@
 <template>
   <div class="wrapper">
     <div class="left-side">
-      <div class="wide-screen"></div> 
+      <div class="wide-screen">
+        <video class="userVideo" ref="myVideo" autoplay/>
+      </div> 
       <div class="d-flex flex-row mt-3">
         <div class="d-flex flex-column justify-content-center align-items-center">
           <img src="~@/assets/icon-profile.png" class="profile-img bdcolor-npink">
