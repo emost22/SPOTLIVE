@@ -3,6 +3,7 @@ package com.ssafy.spotlive.api.service;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoInsertPostReq;
 import com.ssafy.spotlive.api.request.showInfo.ShowInfoUpdatePatchReq;
 import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.repository.ShowInfoRepository;
 import com.ssafy.spotlive.db.repository.TimetableRepository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @FileName : ShowInfoServiceImpl
@@ -74,7 +77,7 @@ public class ShowInfoServiceImpl implements ShowInfoService {
     @Override
     public Boolean updateShowInfoById(long id, ShowInfoUpdatePatchReq showInfoUpdatePatchReq, MultipartFile posterImage) {
         /**
-         * @Method Name : updateShowInfo
+         * @Method Name : updateShowInfoById
          * @작성자 : 금아현
          * @Method 설명 : 공연정보를 id로 수정
          */
@@ -110,5 +113,16 @@ public class ShowInfoServiceImpl implements ShowInfoService {
             showInfoUpdatePatchReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq.toTimetable(finalShowInfo)));
         }
         return Boolean.TRUE;
+    }
+
+    @Override
+    public List<ShowInfoRes> findShowInfoByUser(String accountEmail) {
+        /**
+         * @Method Name : findShowInfoByUser
+         * @작성자 : 금아현
+         * @Method 설명 : 공연정보를 유저 이메일로 조회
+         */
+        Optional<List<ShowInfo>> optionalShowInfo = showInfoRepository.findShowInfosByUser_AccountEmail(accountEmail);
+        return optionalShowInfo.map(showInfos -> showInfos.stream().map(showInfo -> ShowInfoRes.of(showInfo)).collect(Collectors.toList())).orElse(null);
     }
 }
