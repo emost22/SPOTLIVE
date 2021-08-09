@@ -14,7 +14,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 public class User {
     @Id
     String accountEmail;
