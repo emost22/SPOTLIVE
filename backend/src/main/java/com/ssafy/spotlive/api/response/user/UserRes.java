@@ -62,4 +62,19 @@ public class UserRes {
                 .followMyFanResList(user.getFanList().stream().map(follow -> FollowMyFanRes.of(follow)).collect(Collectors.toList()))
                 .build();
     }
+
+    public static UserRes ofWithoutFollowShowInfoReservationVideo(User user) {
+        return UserRes.builder()
+                .accountEmail(user.getAccountEmail())
+                .profileNickname(user.getProfileNickname())
+                .userName(user.getUserName())
+                .phoneNumber(user.getPhoneNumber())
+                .profileImageUrl(user.getProfileImageUrl())
+                .profileDescription(user.getProfileDescription())
+                .gender(user.getGender())
+                .ageRange(user.getAgeRange())
+                .accessToken(user.getAccessToken())
+                .refreshToken(user.getRefreshToken())
+                .build();
+    }
 }
