@@ -51,8 +51,6 @@ export default {
 }
 .prev-camera-screen {
   margin-bottom: 30px;
-  height: 80%;
-  background-color: lightgrey;
 }
 .camera-setting-selector {
   background-color: #595959;
@@ -69,8 +67,10 @@ export default {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 .user-video {
-  height: 180px;
+  /* height: 180px;
   width: 480px;
-  margin: 0 auto;
+  margin: 0 auto; */
+  width: 100%;
+  height: 100%;
 }
 </style>
