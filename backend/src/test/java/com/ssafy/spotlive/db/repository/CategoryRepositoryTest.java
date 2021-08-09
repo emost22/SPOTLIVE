@@ -29,6 +29,5 @@ class CategoryRepositoryTest {
         assertThat(category).isNotEqualTo(null);
         assertThat(category.getCategoryName()).isEqualTo(categoryName);
         assertThat(category.getCategoryId()).isEqualTo(insertCategory.getCategoryId());
-        System.out.println(insertCategory.getCategoryId());
     }
 }

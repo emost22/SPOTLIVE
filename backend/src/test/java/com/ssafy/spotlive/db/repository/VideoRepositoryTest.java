@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.db.repository;
 
+import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.db.entity.Category;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.entity.User;
