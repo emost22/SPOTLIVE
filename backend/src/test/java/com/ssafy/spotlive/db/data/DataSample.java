@@ -3,7 +3,6 @@ package com.ssafy.spotlive.db.data;
 import com.github.javafaker.Faker;
 import com.ssafy.spotlive.db.entity.*;
 import com.ssafy.spotlive.db.repository.*;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -39,34 +38,34 @@ public class DataSample {
     @Autowired
     FollowRepository followRepository;
 
-    @Test
-    void 스트리머_데이터_생성() {
-        int n = 10;
-        while( n--> 0) {
-            category.setCategoryId(faker_eng.options().option(1L, 2L, 3L, 4L, 5L));
-            setUser();
-            userRepository.save(user);
-            setShowInfo();
-            showInfoRepository.save(showInfo);
-            setTimeTalbeAndSave();
-            setVideo(user);
-            videoRepository.save(video);
-            userReservation();
-        }
-    }
-    @Test
-    void 시청자_데이터_생성() {
-        int n = 10;
-        while( n--> 0) {
-            setUser();
-            userRepository.save(user);
-            userReservation();
-        }
-    }
-    @Test
-    void 팔로우_데이터_생성() {
-        userFollowing();
-    }
+//    @Test
+//    void 스트리머_데이터_생성() {
+//        int n = 10;
+//        while( n--> 0) {
+//            category.setCategoryId(faker_eng.options().option(1L, 2L, 3L, 4L, 5L));
+//            setUser();
+//            userRepository.save(user);
+//            setShowInfo();
+//            showInfoRepository.save(showInfo);
+//            setTimeTalbeAndSave();
+//            setVideo(user);
+//            videoRepository.save(video);
+//            userReservation();
+//        }
+//    }
+//    @Test
+//    void 시청자_데이터_생성() {
+//        int n = 10;
+//        while( n--> 0) {
+//            setUser();
+//            userRepository.save(user);
+//            userReservation();
+//        }
+//    }
+//    @Test
+//    void 팔로우_데이터_생성() {
+//        userFollowing();
+//    }
 
     private void setUser(){
         user.setAccountEmail(faker_eng.internet().emailAddress());
