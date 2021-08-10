@@ -28,10 +28,12 @@ export default {
 
 <style>
 .filter-btn {
-  width: 110px;
-  height: 30px;
-  border-radius: 15px;
-  margin: 20px;
+  width: 130px;
+  height: 40px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-size: 18px;
 }
 .filter-btn:hover {
   border: 2px solid #04F7CA;

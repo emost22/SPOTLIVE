@@ -100,11 +100,11 @@ export default {
       this.getTotalMainVideos(0, 20, this.filter_category_id)
     },
 
-    getTotalMainVideos(pageValue, sizeValue, catogoryId) {
+    getTotalMainVideos(pageValue, sizeValue, categoryId) {
       this.$store.dispatch('requestGetTotalMainVideos', { 
         pageValue: pageValue,
         sizeValue: sizeValue,
-        catogoryId: catogoryId,
+        categoryId: categoryId,
       }).then((response) => {
         console.log("getTotalMainVideos() SUCCESS!!")
         console.log(response.data)

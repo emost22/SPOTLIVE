@@ -3,9 +3,9 @@
 
     <div> 
       <div class="profile-btn-line" v-if="inMyProfile">
-        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow">예매 내역</button></div>
+        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow" data-bs-toggle="modal" data-bs-target="#MyReservationModal">예매 내역</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen" data-bs-toggle="modal" data-bs-target="#showCreateModal">공연 생성</button></div>
-        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink">프로필 수정</button></div>
+        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink" data-bs-toggle="modal" data-bs-target="#ProfileUpdateModal">프로필 수정</button></div>
       </div>
       <div class="profile-btn-line" v-if="!inMyProfile">
         <button type="button" @click="clickFollowButton" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
