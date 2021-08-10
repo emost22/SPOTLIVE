@@ -71,6 +71,13 @@ export default {
     setViewId: function() {
       viewId = settingDialogViewId
     },
+    roomSettingDialogButton: function () {
+      if (this.settingDialogViewId == 1) {
+        this.setCreatedVideoDataInVuex()
+      } else if (this.settingDialogViewId == 2) {
+        // 수정 axios 보내기
+      }
+    },
     setCreatedVideoDataInVuex: function () {
       this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
     }, 
@@ -94,7 +101,6 @@ export default {
     })
   },
   beforeUpdate() {
-    
     if (this.settingDialogViewId == 1) {
       
     } else if (this.settingDialogViewId == 2) {

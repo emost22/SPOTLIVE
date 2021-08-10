@@ -6,7 +6,7 @@
       </div> 
       <div class="d-flex flex-row mt-3">
         <div class="d-flex flex-column justify-content-center align-items-center">
-          <img src="~@/assets/icon-profile.png" class="profile-img bdcolor-npink">
+          <img :src="this.userThumbnail" class="profile-img bdcolor-npink">
           <img src="~@/assets/icon-live-badge.png" class="badge-design">
         </div>
         <div class="d-flex flex-row justify-content-between detail-top ms-3">
@@ -68,6 +68,7 @@ export default {
       category: "",
       videoTitle: "",
       startTime: "",
+      userThumbnail: "",
       takenTime: {
         h: '',
         m: '',
@@ -189,10 +190,6 @@ export default {
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
-  beforeRouteEnter (to, from, next) {
-    // this.$store.dispatch("requestSetUserOnCreateVideo", true)
-    next()
-  },
   beforeRouteLeave (to, from, next) {
     this.$store.dispatch("requestSetUserOnCreateVideo", false)
     next()
@@ -206,6 +203,7 @@ export default {
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
+      this.userThumbnail = response.data.userRes.profileImageUrl
     })
     if(this.mainStreamManager != undefined) {
       this.mainStreamManager.addVideoElement(this.$refs.myVideo)

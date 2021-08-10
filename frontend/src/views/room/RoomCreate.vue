@@ -32,7 +32,6 @@ export default {
       this.$store.dispatch("requestSetUserOnCreateVideo", false)
     } 
     next()
-    console.log("============================",to, from)
   },
   created() {
     this.initSession(new OpenVidu())
