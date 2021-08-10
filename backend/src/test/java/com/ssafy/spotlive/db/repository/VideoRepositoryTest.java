@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.db.repository;
 
+import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
 import com.ssafy.spotlive.db.entity.Category;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.entity.User;
@@ -150,7 +151,7 @@ public class VideoRepositoryTest {
 
         // when
         Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
-        Page<Video> pageVideo = videoRepository.findVideosByIsLive(pageRequest, isLive);
+        Page<Video> pageVideo = videoRepository.findVideosByIsLiveOrderByHitDesc(pageRequest, isLive);
 
         // then
         assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
@@ -186,7 +187,7 @@ public class VideoRepositoryTest {
 
         // when
         Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
-        Page<Video> pageVideo = videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, isLive, categoryId);
+        Page<Video> pageVideo = videoRepository.findVideosByIsLiveAndCategory_CategoryIdOrderByHitDesc(pageRequest, isLive, categoryId);
 
         // then
         assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
