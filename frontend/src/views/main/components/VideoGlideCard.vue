@@ -6,7 +6,7 @@
         v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
         @click="goRoomDetail"  
       >
-        <div class="live-badge" v-if="video.isLive"></div>
+        <div class="live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
         <div class="time-badge" v-if="!video.isLive">{{ Number(video.videoLength)/60 }}m</div>
         <!-- {{ video.startTime }} -->
       </div>

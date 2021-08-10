@@ -12,11 +12,11 @@
         />
       </div>
       <div>
-        <p class="txtcolor-white-ngreen main-title"> 홍보용 영상</p>
+        <p class="txtcolor-white-nyellow main-title"> 홍보용 영상</p>
         <VideoGlide :videos="ad_videos"/>
         <p class="txtcolor-white-npink main-title"> 공연용 영상</p>
         <VideoGlide :videos="show_videos"/>
-        <p class="txtcolor-white-nyellow main-title"> 소통용 영상</p>
+        <p class="txtcolor-white-ngreen main-title"> 소통용 영상</p>
         <VideoGlide :videos="talk_videos"/>
         <p class="txtcolor-white-npurple main-title"> 실시간 시청자 높은 영상</p>
         <VideoGlide :videos="live_videos"/>

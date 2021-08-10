@@ -7,7 +7,7 @@
         </div>
         <div v-if="open" @click="closeSidebar" class="sidebar-close-item">
           <img src="~@/assets/icon-sidebar-back.png" class="sidebar-icon-img">
-          <p class="txtcolor-white-npink sidebar-top-txt" >Sunbscriber</p>
+          <p class="txtcolor-white-npurple sidebar-top-txt" >Sunbscriber</p>
         </div>
       </div>
       <ul class="navbar-nav" v-for="(following, idx) in following_list" :key="idx">

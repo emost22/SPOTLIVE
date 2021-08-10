@@ -16,7 +16,11 @@
       <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
           <MyShowCard
             :data-index="index" 
-            :class="{ showCurrent: isCurrent, showOnLeft: (leftIndex >= 0), showOnRight: (rightIndex >= 0) }" 
+            :class="{ 
+              showCurrent: isCurrent, 
+              showOnLeft: (leftIndex >= 0), 
+              showOnRight: (rightIndex >=0),
+            }" 
             :show="show"
           />
       </template>
@@ -57,15 +61,6 @@ export default {
     0 0 50px #F84ABF;
 }
 .showOnLeft{
-  border: 2px solid #04F7CA;
-  box-shadow: 
-    0 0 9px #04F7CA,
-    0 0 12px #04F7CA,
-    0 0 20px #04F7CA,
-    0 0 30px #04F7CA,
-    0 0 50px #04F7CA;
-}
-.showOnFinalLeft{
   border: 2px solid #C752FE;
   box-shadow: 
     0 0 9px #C752FE,
@@ -75,21 +70,12 @@ export default {
     0 0 50px #C752FE;
 }
 .showOnRight{
-  border: 2px solid #FEF279;
+  border: 2px solid #C752FE;
   box-shadow: 
-    0 0 9px #FEF279,
-    0 0 12px #FEF279,
-    0 0 20px #FEF279,
-    0 0 30px #FEF279,
-    0 0 50px #FEF279;
-}
-.showOnFinalRight{
-  border: 2px solid #F84ABF;
-  box-shadow: 
-    0 0 9px #F84ABF,
-    0 0 12px #F84ABF,
-    0 0 20px #F84ABF,
-    0 0 30px #F84ABF,
-    0 0 50px #F84ABF;
+    0 0 9px #C752FE,
+    0 0 12px #C752FE,
+    0 0 20px #C752FE,
+    0 0 30px #C752FE,
+    0 0 50px #C752FE;
 }
 </style>
