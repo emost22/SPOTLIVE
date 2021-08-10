@@ -1,11 +1,16 @@
 <template>
   <div>    
     <li class="nav-item">
-      <router-link class="nav-link" :to="{ name: 'Profile', param: { profileId : following.accountEmail } }">
+      <router-link class="nav-link" :to="{ name: 'Profile', query: { profileId : following.accountEmail } }">
         <div class="sidebar-following-info">
-          <div><img src="~@/assets/icon-streaming.png" class="sidebar-following-img"></div>
-          <div v-if="open" class="sidebar-following-nickname txtcolor-white">
-            <p>{{following.profileNickname}}</p>
+          <div 
+            class="sidebar-img-box" 
+            v-bind:style="{ backgroundImage: 'url(' + following.profileImageUrl + ')' }"
+          >
+          </div>
+          <div v-if="following.isLive" class="live-circle-badge bdcolor-npink"></div>
+          <div v-if="open" style="overflow:hidden;">
+            <p class="sidebar-following-nickname txtcolor-white" >{{following.profileNickname}}</p>
           </div>
         </div>
       </router-link>
@@ -30,16 +35,35 @@ export default {
 </script>
 
 <style>
-.sidebar-following-img {
-  width: 50px;
-  height: 50px;
+.live-circle-badge {
+  width: 12px;
+  height: 12px;
   border-radius: 100%;
+  background-color: #F84ABF;
+  box-shadow: 
+    0 0 5px #F84ABF,
+    0 0 10px #F84ABF,
+    0 0 20px #F84ABF;
+  margin-left: -20px;
+  margin-top: -20px;
+  margin-right: 5px;
+}
+.sidebar-img-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-left: 7.5px;
+  margin-right: 15px;
+  overflow:hidden;
+  background-size: cover;
 }
 .sidebar-following-nickname {
-  font-size: 15px;
+  font-size: 20px;
+  margin: 0;
 }
 .sidebar-following-info {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 </style>

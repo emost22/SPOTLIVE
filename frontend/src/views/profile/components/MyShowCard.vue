@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <img :src="show.posterUrl" @click="ShowDetail" >
+  <div class="carousel-card-box">
+    <img :src="show.posterUrl" @click="goShowDetail" class="carousel-card-img">
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
     },
   },
   methods: {
-    ShowDetail: function () {
+    goShowDetail: function () {
       // 내 프로필인 경우 ShowDetailDialog.vue
       // 타인 프로필인 경우 ShowReservationDialog.vue
     },
@@ -23,4 +23,15 @@ export default {
 </script>
 
 <style>
+.carousel-card-box {
+  background-color: none;
+  width: 100%;
+  height: 100%;
+  overflow:hidden;
+}
+.carousel-card-img {
+  min-width: 100%;
+  min-height: 100%;
+  border-color: none;
+}
 </style>

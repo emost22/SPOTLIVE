@@ -68,7 +68,7 @@
 
 <script>
 export default {
-  name: 'RoomSettingDialog',
+  name: 'ShowCreateDialog',
   components: {
   }
 }

@@ -113,8 +113,7 @@ export default {
     },
 
     requestGetFilterButtons() {
-        const URL = '/category/'
-        // 엔드슬래시 전부 제거한 후 pull받고 수정
+        const URL = '/category'
 
         return $axios.get(URL)
     },
@@ -123,8 +122,9 @@ export default {
         const URL = '/main/all'
         const PAGE_VALUE = payload.pageValue
         const SIZE_VALUE = payload.sizeValue
+        const CATEGORY_ID = payload.categoryId
 
-        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
+        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE, categoryId: CATEGORY_ID}})
     },
 
     requestGetAdVideos(context, payload) {
@@ -188,4 +188,29 @@ export default {
 
         return $axios.get(URL)
     },
+    requestGetProfile(context, payload) {
+        const URL = `/auth/user/${payload.profileId}`
+
+        return $axios.get(URL)
+    },
+    requestClickFollowButton(context, payload) {
+        const URL = `/follow/${payload.profileId}`
+
+        return $axios.post(URL)
+    },
+    requestClickUnfollowButton(context, payload) {
+        const URL = `/unfollow/${payload.profileId}`
+
+        return $axios.delete(URL)
+    },
+
+    // Search.vue
+    requestGetSearchVideos(context, payload) {
+        const URL = '/main/search'
+        const KEYWORD_VALUE = payload.keywordValue
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
+
+        return $axios.get(URL, { params: { keyword: KEYWORD_VALUE, page: PAGE_VALUE, size: SIZE_VALUE }})
+    }
 }

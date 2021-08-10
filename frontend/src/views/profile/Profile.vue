@@ -1,27 +1,24 @@
 <template>
-  <div class="txtcolor-white"> 
+  <div class="txtcolor-white profile-box"> 
 
     <div> 
       <div class="profile-btn-line" v-if="inMyProfile">
-        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow">예매 내역</button></div>
+        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow" data-bs-toggle="modal" data-bs-target="#ticketModal">예매 내역</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen" data-bs-toggle="modal" data-bs-target="#showCreateModal">공연 생성</button></div>
-        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink">프로필 수정</button></div>
+        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">프로필 수정</button></div>
       </div>
-      <div class="profile-btn-line" v-if="inMyProfile">
-        <button type="button" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
-        <button type="button" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
+      <div class="profile-btn-line" v-if="!inMyProfile">
+        <button type="button" @click="clickFollowButton" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
+        <button type="button" @click="clickUnfollowButton" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
       </div>
     </div>
 
     <div class="profile-info">
-      <div><img :src="myProfile.profileImageUrl" class="profile-img bdcolor-bold-ngreen"></div>
-      <div class="profile-detail">
-        <p> <span class="txtcolor-nyellow">나예뽀 {{ myProfile.profileNickname }}</span> 님</p>
-        <p> 
-          안녕하세요 나예뽀입니다. 제가 세상의 중심이죠. SPOT LIVE에 오신 것을 환영합니다 
-          {{ myProfile.profileDescription }}
-        </p>
-        <p> {{ myProfile.accountEmail }} </p>
+      <div><img :src="myProfile.profileImageUrl" class="profile-img"></div>
+      <div class="profile-detail d-flex flex-column justify-content-evenly">
+        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ myProfile.profileNickname }}</span> 님</div>
+        <div class="profile-txt"> {{ myProfile.profileDescription }} </div>
+        <div divclass="profile-txt"> {{ myProfile.accountEmail }} </div>
       </div>
       <div class="follow-number">
         <p>FOLLOWING </p>
@@ -34,14 +31,14 @@
     </div>
 
     <div>
-      <p>나의 공연 정보</p>
+      <p class="txtcolor-white-npurple main-title">나의 공연 정보</p>
       <MyShow
         :shows="myShows"
       />
     </div>
 
     <div>
-      <p>나의 동영상</p>
+      <p class="txtcolor-white-ngreen main-title">나의 동영상</p>
       <MyVideo
         :videos="myVideos"
       />
@@ -51,6 +48,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
 import MyShow from './components/MyShow.vue'
 import MyVideo from './components/MyVideo.vue'
 
@@ -64,11 +62,12 @@ export default {
     return {
       inMyProfile: true,
       follow: false,
+      userId: '',
+      profileId: this.$route.query.profileId,
+      // 타인의 프로필에 진입하고 내 프로필을 메인헤더에서 누르면 이동하지 않음 초기화 문제
+      // 검색 뷰에서도 초기화 안 되서 2번째 검색 실패 (computed)
       following: '',
       follower: '',
-      // userId: '',
-      // profileId: Number(this.$route.param.profileId),
-      // 희진님과 프로필 눌러서 param의 프로필 유저 pk번호 데이터 이름 맞추기
       myProfile: [],
       myShows: [],
       myVideos: [],
@@ -77,10 +76,21 @@ export default {
   },
   created: function () {
     this.getUser()
-    this.getMyProfile()
+    console.log(this.profileId)
+    if (this.inMyProfile) {
+      this.getMyProfile()
+    } else {
+      this.getProfile()
+    }    
   },
   methods: {
     getUser() {
+      this.userId = this.loginUser.accountEmail
+      if (this.userId == this.profileId) {
+        this.inMyProfile = true
+      } else {
+        this.inMyProfile = false
+      }
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
@@ -98,16 +108,64 @@ export default {
         console.log(error)
       })
     },
+    getProfile() {
+      this.$store.dispatch('requestGetProfile', { profileId : this.profileId})
+      .then((response) => {
+        console.log("getProfile() SUCCESS!!")
+        console.log(response.data)
+        this.myProfile = response.data
+        this.following = response.data.followMyArtistResList
+        this.follower = response.data.followMyFanResList
+        this.myShows = response.data.showInfoResList
+        this.myVideos = response.data.videoResList
+        this.myReservations = response.data.reservationResList
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    clickFollowButton() {
+      this.$store.dispatch('requestClickFollowButton', { profileId : this.profileId})
+      .then((response) => {
+        console.log("getClickFollowButton() SUCCESS!!")
+        console.log(response.data)
+        this.follow = true
+        this.getProfile()
+        // 실시간 팔로워수 변경 비동기화 문제
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    clickUnfollowButton() {
+      this.$store.dispatch('requestClickUnfollowButton', { profileId : this.profileId})
+      .then((response) => {
+        console.log("getClickUnfollowButton() SUCCESS!!")
+        console.log(response.data)
+        this.follow = false
+        this.getProfile()
+        // 실시간 팔로워수 변경 비동기화 문제
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+  },
+  computed: {
+    ...mapGetters(['loginUser']),
   },
 }
 </script>
 
 <style>
+.profile-box {
+  margin: 25px;
+  margin-right: 25px;
+}
 .profile-btn-line {
   display: flex;
   flex-direction: row-reverse;
   justify-content: end;
-  margin: 20px;
 }
 .profile-btn {
   width: 110px;
@@ -126,13 +184,11 @@ export default {
   height: 150px;
   border-radius: 100%;
 }
-.profile-detail{
+.profile-detail {
   width: 300px;
   height: 150px;
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: 30px;
   text-align: left;
+  margin-left: 30px;
 }
 .follow-number {
   margin-top: auto;
