@@ -25,13 +25,14 @@ export default {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
   beforeRouteEnter (to, from, next) {
-    // this.$store.dispatch("requestSetUserOnCreateVideo", true)
     next()
   },
   beforeRouteLeave (to, from, next) {
-    this.$store.dispatch("requestSetUserOnCreateVideo", false)
-    console.log(to, from)
+    if (to.name != "RoomDetail") {
+      this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    } 
     next()
+    console.log("============================",to, from)
   },
   created() {
     this.initSession(new OpenVidu())
