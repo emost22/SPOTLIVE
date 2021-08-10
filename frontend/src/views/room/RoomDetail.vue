@@ -128,6 +128,29 @@ export default {
     },
     sendChat() {
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
+    },
+    startRecoding() {
+      let today = new Date();
+      this.recordName = "REC_" + this.ovSessionId + "_" + today.getFullYear() + (today.getMonth() + 1) + today.getDate()
+      console.log(this.recordName)
+      const recReq = {
+        session: this.ovSessionId,
+        name: this.recordName,
+        outputMode: "COMPOSED",
+        hasAudio: true,
+        hasVideo: true,
+        recordingLayout:"BEST_FIT",
+        resolution: this.RESOLUTION,
+      }
+      this.$store.dispatch("requestStartRecording", recReq)
+      .then(response => {
+        console.log("the then in startRecoding()...")
+        console.log(response)
+      }).catch(error => {
+        console.log("the error in startRecoding()...")	
+        console.log(error)	
+			})
+    },
     }
   },
   mounted() {
