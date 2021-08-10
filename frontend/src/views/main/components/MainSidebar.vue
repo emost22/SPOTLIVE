@@ -88,6 +88,7 @@ export default {
 }
 .sidebar-open-item {
   height: 60px;
+  width: 55px;
   padding-top: 15px;
 }
 .sidebar-close-item {

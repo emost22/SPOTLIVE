@@ -51,7 +51,14 @@ export default {
 </script>
 
 <style>
-.showCurrent{
+.carousel-3d-container[data-v-07917306]  {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  min-height: 450px;
+  max-height: 450px;
+  border: 0 none;
+}
+.current{
   border: 2px solid #F84ABF;
   box-shadow: 
     0 0 9px #F84ABF,
@@ -60,7 +67,25 @@ export default {
     0 0 30px #F84ABF,
     0 0 50px #F84ABF;
 }
-.showOnLeft{
+.right-1 {
+  border: 2px solid #04F7CA;
+  box-shadow: 
+    0 0 9px #04F7CA,
+    0 0 12px #04F7CA,
+    0 0 20px #04F7CA,
+    0 0 30px #04F7CA,
+    0 0 50px #04F7CA;
+}
+.left-1 {
+  border: 2px solid #FEF279;
+  box-shadow: 
+    0 0 9px #FEF279,
+    0 0 12px #FEF279,
+    0 0 20px #FEF279,
+    0 0 30px #FEF279,
+    0 0 50px #FEF279;
+}
+.right-2 {
   border: 2px solid #C752FE;
   box-shadow: 
     0 0 9px #C752FE,
@@ -69,13 +94,13 @@ export default {
     0 0 30px #C752FE,
     0 0 50px #C752FE;
 }
-.showOnRight{
-  border: 2px solid #C752FE;
+.left-2 {
+  border: 2px solid #F84ABF;
   box-shadow: 
-    0 0 9px #C752FE,
-    0 0 12px #C752FE,
-    0 0 20px #C752FE,
-    0 0 30px #C752FE,
-    0 0 50px #C752FE;
+    0 0 9px #F84ABF,
+    0 0 12px #F84ABF,
+    0 0 20px #F84ABF,
+    0 0 30px #F84ABF,
+    0 0 50px #F84ABF;
 }
 </style>

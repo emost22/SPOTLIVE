@@ -15,12 +15,10 @@
 
     <div class="profile-info">
       <div><img :src="myProfile.profileImageUrl" class="profile-img bdcolor-bold-ngreen"></div>
-      <div class="profile-detail">
-        <p> <span class="txtcolor-nyellow"> {{ myProfile.profileNickname }}</span> 님</p>
-        <p> 
-          {{ myProfile.profileDescription }}
-        </p>
-        <p> {{ myProfile.accountEmail }} </p>
+      <div class="profile-detail d-flex flex-column justify-content-evenly">
+        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ myProfile.profileNickname }}</span> 님</div>
+        <div class="profile-txt"> {{ myProfile.profileDescription }} </div>
+        <div divclass="profile-txt"> {{ myProfile.accountEmail }} </div>
       </div>
       <div class="follow-number">
         <p>FOLLOWING </p>
@@ -67,7 +65,7 @@ export default {
       userId: '',
       profileId: this.$route.query.profileId,
       // 타인의 프로필에 진입하고 내 프로필을 메인헤더에서 누르면 이동하지 않음 초기화 문제
-      // 검색 뷰에서도 초기화 안 되서 2번째 검색 실패
+      // 검색 뷰에서도 초기화 안 되서 2번째 검색 실패 (computed)
       following: '',
       follower: '',
       myProfile: [],
@@ -78,6 +76,7 @@ export default {
   },
   created: function () {
     this.getUser()
+    console.log(this.profileId)
     if (this.inMyProfile) {
       this.getMyProfile()
     } else {
@@ -185,13 +184,11 @@ export default {
   height: 150px;
   border-radius: 100%;
 }
-.profile-detail{
+.profile-detail {
   width: 300px;
   height: 150px;
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: 30px;
   text-align: left;
+  margin-left: 30px;
 }
 .follow-number {
   margin-top: auto;

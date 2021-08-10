@@ -9,8 +9,8 @@
           >
           </div>
           <div v-if="following.isLive" class="live-circle-badge bdcolor-npink"></div>
-          <div v-if="open" class="sidebar-following-nickname txtcolor-white" style="overflow:hidden;">
-            <p>{{following.profileNickname}}</p>
+          <div v-if="open" style="overflow:hidden;">
+            <p class="sidebar-following-nickname txtcolor-white" >{{following.profileNickname}}</p>
           </div>
         </div>
       </router-link>
@@ -44,20 +44,22 @@ export default {
     0 0 5px #F84ABF,
     0 0 10px #F84ABF,
     0 0 20px #F84ABF;
-  margin-left: -7px;
+  margin-left: -20px;
   margin-top: -20px;
+  margin-right: 5px;
 }
 .sidebar-img-box {
   width: 40px;
   height: 40px;
   border-radius: 100%;
   margin-left: 7.5px;
+  margin-right: 15px;
   overflow:hidden;
   background-size: cover;
 }
 .sidebar-following-nickname {
   font-size: 20px;
-  margin-left: 15px;
+  margin: 0;
 }
 .sidebar-following-info {
   display: flex;

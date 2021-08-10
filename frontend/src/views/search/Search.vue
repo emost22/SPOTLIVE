@@ -40,7 +40,7 @@ export default {
     },
   },
   computed: {
-
+    // input 결과 값 지속적으로 관찰
   },
 }
 </script>

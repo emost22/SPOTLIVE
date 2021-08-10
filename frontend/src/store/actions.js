@@ -113,8 +113,7 @@ export default {
     },
 
     requestGetFilterButtons() {
-        const URL = '/category/'
-        // 엔드슬래시 전부 제거한 후 pull받고 수정
+        const URL = '/category'
 
         return $axios.get(URL)
     },
