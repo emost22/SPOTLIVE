@@ -60,6 +60,14 @@ export default {
         context.commit("CONNECT_SESSION_FOR_GUEST")
     },
 
+    requestSetmainStreamManager(context, payload) {
+        context.commit("SET_MAIN_STREAM_MANAGER", payload)
+    },
+
+    requestSetSubscribe(context, payload) {
+        context.commit("SET_SUBSCRIBE", payload)
+    },
+
     requestChangeDevice(context, payload) {
         context.commit("CHANGE_DEVICE", payload)
     },
