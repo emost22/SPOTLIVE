@@ -70,8 +70,7 @@
           등록된 공연이 없다면 <strong class="me-auto">프로필 > 공연 생성 </strong>버튼 클릭하여 상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
         </div>
       </div>
-    </div>
-    
+    </div> 
   </div>
 </template>
 
@@ -88,10 +87,6 @@ export default {
       type: Array,
       default: [],
     },
-    createdVideoData: {
-      type: Object,
-      default: {}
-    }
   },
   data: function () {
     return {
@@ -111,7 +106,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['createdVideoData'])
+    ...mapGetters(['createdVideoData', 'isSettingDialogOpen', 'settingDialogViewId']),
+  },
+  watch: {
+    isSettingDialogOpen(value, oldvalue) {
+      if (value && this.settingDialogViewId==2) {
+        this.form.categoryId = this.createdVideoData.categoryId
+        this.form.fileName = this.createdVideoData.thumbnailImage
+        this.form.videoDescription = this.createdVideoData.videoDescription
+        this.form.videoTitle = this.createdVideoData.videoTitle
+        this.form.showInfoId = this.createdVideoData.showInfoId
+        this.form.showTime = this.createdVideoData.showTime
+      }
+    },
   },
   methods: {
     handleFileChange(e) {

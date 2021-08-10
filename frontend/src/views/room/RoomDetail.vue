@@ -11,9 +11,9 @@
         </div>
         <div class="d-flex flex-row justify-content-between detail-top ms-3">
           <div class="d-flex flex-column">
-            <div class="videoTitle">{{ videoTitle }}</div>
-            <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ category }}</div>
-            <div class="videoDescription">{{ videoDescription }}</div>
+            <div class="videoTitle">{{ this.videoTitle }}</div>
+            <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ this.category }}</div>
+            <div class="videoDescription">{{ this.videoDescription }}</div>
           </div>
           <div>
             <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ subscribers.length }}</span>
@@ -229,10 +229,30 @@ export default {
         console.log("MAIN STREAM MANAGER: WATCH CALL...")
         this.mainStreamManager.addVideoElement(this.$refs.myVideo)
       }
-    }
+    },
+    isSettingDialogOpen(value, oldvalue) {
+      if (value==false && this.settingDialogViewId==2) {
+        this.videoDescription = this.createdVideoData.videoDescription
+        this.category = this.createdVideoData.categoryName
+        this.videoTitle = this.createdVideoData.videoTitle
+      }
+    },
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers', 'onCreateVideoLive', 'RESOLUTION']),
+    ...mapGetters([
+      'loginUser', 
+      'ovSessionId', 
+      'ovToken', 
+      'OV', 
+      'ovSession', 
+      'audioDevices', 
+      'videoDevices', 
+      'createdVideoData', 
+      'mainStreamManager', 
+      'subscribers', 
+      'onCreateVideoLive', 
+      'isSettingDialogOpen', 
+      'settingDialogViewId']),
   },
 }
 </script>

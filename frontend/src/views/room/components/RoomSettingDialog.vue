@@ -86,10 +86,12 @@ export default {
         this.setCreatedVideoDataInVuex()
         console.log('[CLICK CONFIRM BUTTON OF RoomCreate dialog] INSERT VUEX')
       } else if (this.settingDialogViewId == 2) {
-        // 수정 axios 보내기
         this.$store.dispatch('requestUpdateSettingDialog', this.videoId, this.videoData)
         .then(res => {
-          console.log(res)
+          this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
+        })
+        .catch(err =>{
+          alert(err)
         })
         console.log('[CLICK CONFIRM BUTTON OF Roomdetail dialog] update axios')
       }
@@ -120,9 +122,10 @@ export default {
   },
   beforeUpdate() {
     if (this.settingDialogViewId == 1) {
-      
+      console.log("1번이래요")
     } else if (this.settingDialogViewId == 2) {
       // 정보 get axios
+      console.log("2번이래요")
     }
   },
 }
