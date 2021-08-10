@@ -151,6 +151,23 @@ export default {
         console.log(error)	
 			})
     },
+    insertVideoUrlAndCloseStreaming() {
+      console.log("insertVideoUrlAndCloseStreaming() RUN!!!")
+      this.$store.dispatch('requestInsertVideoUrl', { videoId: this.videoId, videoUrl: this.recordURL })
+      .then((response) => {
+        console.log("the then in insertVideoUrl()...")
+        console.log(response)
+        this.$store.dispatch('requestCloseVideo', this.videoId)
+        .then(res => {
+          console.log(res)
+          this.$router.push({ name: 'Main' })
+        }).catch((error) => {
+          console.log(error)
+        })
+      }).catch((error) => {
+        console.log("the error in insertVideoUrl()...")
+        console.log(error)
+      })
     }
   },
   mounted() {
