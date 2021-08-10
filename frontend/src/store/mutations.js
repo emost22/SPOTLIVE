@@ -2,8 +2,6 @@ import { Publisher } from 'openvidu-browser'
 import router from '../router/index'
 import $axios from '../util/axios'
 
-const RESOLUTION = '960x540'
-
 export default {
 
     DO_KAKAO_LOGIN(state, payload) {
@@ -81,7 +79,7 @@ export default {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-                resolution: RESOLUTION,  // The resolution of your video
+                resolution: state.RESOLUTION,  // The resolution of your video
                 frameRate: 30,			// The frame rate of your video
                 insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
                 mirror: false       	// Whether to mirror your local video or not
@@ -121,7 +119,7 @@ export default {
 			videoSource: state.videoDevices[state.videoDeviceId].deviceId, // The source of video. If undefined default webcam
 			publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
 			publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-			resolution: RESOLUTION,  // The resolution of your video
+			resolution: state.RESOLUTION,  // The resolution of your video
 			frameRate: 30,			// The frame rate of your video
 			insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
 			mirror: false       	// Whether to mirror your local video or not
