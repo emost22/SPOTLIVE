@@ -67,13 +67,13 @@ public class MainServiceImpl implements MainService {
          * @작성자 : 강용수
          * @Method 설명 : Query Parameter 조건에 맞는 다시보기 영상들을 조회수 순으로 검색하는 메소드
          */
-        Sort sort = Sort.by(Sort.Direction.DESC, "hit").by(Sort.Direction.DESC, "videoId");
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         if (categoryId == null)
-            return VideoGetRes.of(videoRepository.findVideosByIsLive(pageRequest, false), pageRequest, sort);
+            return VideoGetRes.of(videoRepository.findVideosByIsLiveOrderByHitDesc(pageRequest, false), pageRequest, sort);
         else
-            return VideoGetRes.of(videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, false, categoryId), pageRequest, sort);
+            return VideoGetRes.of(videoRepository.findVideosByIsLiveAndCategory_CategoryIdOrderByHitDesc(pageRequest, false, categoryId), pageRequest, sort);
     }
 
     @Override
@@ -83,37 +83,14 @@ public class MainServiceImpl implements MainService {
          * @작성자 : 강용수
          * @Method 설명 : Query Parameter 조건에 맞는 라이브 영상들을 시청자 수 순으로 검색하는 메소드
          */
-        PageRequest pageRequest = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         VideoGetRes videoGetRes = null;
         if (categoryId == null)
-            videoGetRes = VideoGetRes.of(videoRepository.findVideosByIsLive(pageRequest, true), pageRequest, null);
+            videoGetRes = VideoGetRes.of(videoRepository.findVideosByIsLiveOrderByHitDesc(pageRequest, true), pageRequest, sort);
         else
-            videoGetRes = VideoGetRes.of(videoRepository.findVideosByIsLiveAndCategory_CategoryId(pageRequest, true, categoryId), pageRequest, null);
-
-        Collections.sort(videoGetRes.getVideoResList(), new Comparator<VideoFindMainVideoRes>() {
-            @Override
-            public int compare(VideoFindMainVideoRes v1, VideoFindMainVideoRes v2) {
-                long hit1 = v1.getHitLive();
-                long hit2 = v2.getHitLive();
-
-                if (hit1 < hit2)
-                    return 1;
-                else if (hit1 == hit2){
-                    long videoId1 = v1.getVideoId();
-                    long videoId2 = v2.getVideoId();
-
-                    if (videoId1 < videoId2)
-                        return 1;
-                    else if (videoId1 == videoId2)
-                        return 0;
-                    else
-                        return -1;
-                }
-                else
-                    return -1;
-            }
-        });
+            videoGetRes = VideoGetRes.of(videoRepository.findVideosByIsLiveAndCategory_CategoryIdOrderByHitDesc(pageRequest, true, categoryId), pageRequest, sort);
 
         return videoGetRes;
     }
