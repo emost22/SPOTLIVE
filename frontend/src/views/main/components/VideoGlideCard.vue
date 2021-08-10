@@ -7,7 +7,7 @@
         @click="goRoomDetail"  
       >
         <div class="live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
-        <div class="time-badge" v-if="!video.isLive">{{ Number(video.videoLength)/60 }}m</div>
+        <div class="time-badge" v-if="!video.isLive">{{ Number(video.videoLength)/60 }}:00 </div>
         <!-- {{ video.startTime }} -->
       </div>
       

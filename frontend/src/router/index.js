@@ -36,12 +36,12 @@ const routes = [
     beforeEnter: requireAuth,
     component: Main
   },
-  {
-    path: '/main',
-    name: 'Main',
-    beforeEnter: requireAuth,
-    component: Main
-  },
+  // {
+  //   path: '/main',
+  //   name: 'Main',
+  //   beforeEnter: requireAuth,
+  //   component: Main
+  // },
   {
     path: '/profile',
     name: 'Profile',

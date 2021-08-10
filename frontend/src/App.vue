@@ -5,7 +5,9 @@
       <router-view></router-view>
     </div>
     <RoomSettingDialog/>
+    <ProfileUpdateDialog/>
     <ShowCreateDialog/>
+    <TicketDialog/>
   </div>
 </template>
 
@@ -14,6 +16,8 @@ import { mapGetters } from "vuex"
 import MainHeader from './views/MainHeader.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
 import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
+import ProfileUpdateDialog from './views/profile/components/ProfileUpdateDialog.vue'
+import TicketDialog from './views/profile/components/TicketDialog.vue'
 
 export default ({
   name: "App",
@@ -21,6 +25,8 @@ export default ({
     MainHeader,
     RoomSettingDialog,
     ShowCreateDialog,
+    ProfileUpdateDialog,
+    TicketDialog,
   },
   data: function () {
     return {
