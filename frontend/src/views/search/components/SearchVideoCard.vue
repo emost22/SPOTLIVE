@@ -35,10 +35,10 @@ export default {
   },
   methods: {
     goRoomDetail() {
-      this.$router.push({ name: 'RoomDetail', query: { videoId : this.video.videoId } })
+      this.$router.push({ name: 'RoomDetail', params: { videoId : this.video.videoId } })
     },
     goProfile() {
-      this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })
+      this.$router.push({ name: 'Profile', params: { profileId : this.video.user.accountEmail } })
     },
   },
   computed: {

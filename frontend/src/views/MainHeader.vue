@@ -23,7 +23,7 @@
             <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
-            <div><router-link class="nav-link fw-bold" :to="{ name: 'Profile', query: { profileId : this.loginUser.accountEmail } }"><img src="~@/assets/icon-profile.png" class="header-icon-img"></router-link></div>
+            <div><router-link class="nav-link fw-bold" :to="{ name: 'Profile', params: { profileId : this.loginUser.accountEmail } }"><img src="~@/assets/icon-profile.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
             <div><img src="~@/assets/icon-alarm.png" class="header-icon-img"></div>
@@ -60,7 +60,7 @@ export default ({
     },
     clickSearchBtn: function () {
       if (this.input) {
-        this.$router.push({ name: 'Search', query: { input: this.input } })
+        this.$router.push({ name: 'Search', params: { input: this.input } })
         this.input = ''
       }
       else {

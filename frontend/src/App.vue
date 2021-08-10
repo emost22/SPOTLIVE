@@ -2,7 +2,7 @@
   <div id="app">
     <div class="sticky-top match-parent">
       <MainHeader v-if="isLogin"/>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
     <RoomSettingDialog/>
     <ProfileUpdateDialog/>

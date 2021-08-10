@@ -41,7 +41,7 @@ export default {
       else this.$router.push({ name: 'RoomDetailForReplay', query: { videoId : this.video.videoId } })
     },
     goProfile() {
-      this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })
+      this.$router.push({ name: 'Profile', params: { profileId : this.video.user.accountEmail } })
     },
   },
   computed: {
