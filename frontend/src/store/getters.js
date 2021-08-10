@@ -47,6 +47,9 @@ export default {
     },
     createdVideoData(state) {
         return state.createdVideoData
+    },
+    RESOLUTION(state) {
+        return state.RESOLUTION
     }
 
 }

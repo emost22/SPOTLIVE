@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:8080/api' // 이후 바뀌어야 될 값
 const DEFAULT_CONTENT_TYPE = 'application/json'
 const TOKEN_NAME = 'accessToken'
 const ASTAR = '*'
-const ACCESS_METHODS = 'GET,PUT,POST,PATCH,DELETE'
+const ACCESS_METHODS = 'GET,PUT,POST,PATCH,DELETE,OPTIONS'
 
 const instance = axios.create({
     baseURL: BASE_URL,

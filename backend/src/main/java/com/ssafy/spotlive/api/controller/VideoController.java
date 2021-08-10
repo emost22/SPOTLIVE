@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.controller;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
+import com.ssafy.spotlive.api.request.video.VideoInsertUrlByIdPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
@@ -11,10 +12,7 @@ import com.ssafy.spotlive.api.service.AuthService;
 import com.ssafy.spotlive.api.service.UserService;
 import com.ssafy.spotlive.api.service.UserVideoService;
 import com.ssafy.spotlive.api.service.VideoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -217,6 +215,33 @@ public class VideoController {
                 return new ResponseEntity<>(HttpStatus.OK);
             else
                 return new ResponseEntity<String>("이미 종료됐거나 남의 영상이거나 아무튼 실패함.", HttpStatus.BAD_REQUEST);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/record")
+    @ApiOperation(value = "비디오 URL 추가", notes = "videoId에 해당하는 DB에 RecordURL을 기록한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "종료 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<VideoFindByIdGetRes> insertRecordUrlById(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @RequestBody @ApiParam(value="삽입할 URL 정보", required = true) VideoInsertUrlByIdPostReq videoInsertUrlByIdPostReq) {
+        /**
+         * @Method Name : insertRecordUrlById
+         * @작성자 : 김민권
+         * @Method 설명 : 비디오를 URL을 저장한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            VideoFindByIdGetRes videoFindByIdGetRes = videoService.insertRecordUrlById(videoInsertUrlByIdPostReq);
+            return new ResponseEntity<>(videoFindByIdGetRes, HttpStatus.OK);
         } else if(vaildTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {

@@ -6,6 +6,7 @@ import Profile from '../views/profile/Profile.vue'
 import RoomCreate from '../views/room/RoomCreate.vue'
 import RoomDetail from '../views/room/RoomDetail.vue'
 import RoomDetailForGuest from '../views/room/RoomDetailForGuest.vue'
+import RoomDetailForReplay from '../views/room/RoomDetailForReplay.vue'
 import Search from '../views/search/Search.vue'
 import state from '../store/state'
 
@@ -65,6 +66,12 @@ const routes = [
     name: 'RoomDetailForGuest',
     beforeEnter: requireAuth,
     component: RoomDetailForGuest
+  },
+  {
+    path: '/room/detailforreplay',
+    name: 'RoomDetailForReplay',
+    beforeEnter: requireAuth,
+    component: RoomDetailForReplay
   },
   {
     path: '/search',
