@@ -168,6 +168,6 @@ export default {
     },
 
     SET_SHOW_RESERVATION_INFO(state, payload) {
-        state.showReservationData
+        state.showReservationData = payload
     }
 }

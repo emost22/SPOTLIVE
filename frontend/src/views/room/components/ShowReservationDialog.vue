@@ -3,33 +3,33 @@
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeRoomSettingDialog()"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body mx-2">
           <div class="dialog-profile-info">
-            <div><img src="~@/assets/icon-sidebar-back.png" class="profile-img"></div>
+            <div><img :src="showReservationData.userRes.profileImageUrl" class="profile-img"></div>
             <div class="profile-detail-show-reservation">
-              <div> <span class="txtcolor-nyellow">나예뽀</span> 님</div>
-              <p> jiin20803@naver.com</p>
+              <div> <span class="txtcolor-nyellow">{{ showReservationData.userRes.userName }}</span> 님</div>
+              <p> {{ showReservationData.userRes.accountEmail }}</p>
             </div>
           </div>
           <div class="showInfoWrapper">
             <form>
               <div class="d-flex flex-row mb-3">
                 <div class="d-flex flex-row justify-content-center align-items-center camera-input-bgcolor-light-grey camera-size">
-                  <img :src="posterUrl">
+                  <img :src="showReservationData.posterUrl" class="poster-image">
                 </div>
                 <div class="show-info">
                   <div class="mb-3">
                     <div class="label-alignment"><label class="form-label">공연명</label></div>
                     <div class="d-flex">
-                    {{ showInfoTitle }}
+                    {{ showReservationData.showInfoTitle }}
                     </div>
                   </div>
                   <div class="mb-3">
                     <div class="label-alignment"><label class="form-label">티켓가격</label></div>
                     <div class="d-flex">
-                    {{ price }}
+                    {{ showReservationData.price }}원
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
@@ -45,14 +45,14 @@
                       <div class="label-alignment">
                         <label class="form-label">러닝타임</label>
                       </div>
-                      <input type="text" class="custom-form-control" v-model="runningTime" readonly="readonly" disabled>
+                      <input type="text" class="custom-form-control" v-model="showReservationData.runningTime" readonly="readonly" disabled>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="mb-3 label-alignment">
                 <div ><label class="form-label"> 공연 설명</label></div>
-                <div>{{ showInfoDescription }}</div>
+                <div>{{ showReservationData.showInfoDescription }}</div>
               </div>
             </form>
           </div>
@@ -99,12 +99,9 @@ export default {
   name: 'ShowReservationDialog',
   data: function () {
     return {
-      runningTime: '30분',
-      posterUrl: '',
-      price: '3000원',
-      showInfoDescription: '테스트입니다.테스트입니다.테스트입니다.테스트입니다.테스트입니다.테스트입니다.테스트입니다.',
-      showInfoTitle: '테스트입니다.',
       isReservated: true,
+      showInfoId: '',
+      user: {},
     }
   }, 
   methods: {
@@ -130,17 +127,19 @@ export default {
     'showReservationData'
     ]),
   },
-  watch: {
-    showReservationData: function(val, oldval) {
-      this.runningTime = val.runningTime
-      this.posterUrl = val.posterUrl
-      this.price = val.price
-      this.showInfoDescription = val.showInfoDescription
-      this.showInfoTitle = val.showInfoTitle
-      this.showInfoId = val.showInfoId
-    },
+  mounted() {
+    var modal= this.$refs.showReservationDialog
+      modal.addEventListener('show.bs.modal', function (event) {
+        console.log(this.showReservationData)
+        this.showInfoId = showReservationData.showInfoId
+        this.user = showReservationData.userRes
+        console.log("show")
+      })
+      modal.addEventListener('hidden.bs.modal', function (event) {
+        // do something...
+        console.log("hidden")
+      })
   }
-
 }
 </script>
 
@@ -185,5 +184,10 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.poster-image{
+  width: 100%;
+  height: 100%;
+  background-size: cover;
 }
 </style>

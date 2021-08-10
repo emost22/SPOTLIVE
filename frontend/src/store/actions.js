@@ -142,7 +142,7 @@ export default {
     requestSetShowReservationInfo({ commit }, payload) {
         commit('SET_SHOW_RESERVATION_INFO', payload)
     },
-    
+
     // RoomSettingDialogForm.vue
     requestGetRecentlyTimeTable(context, payload) {
         const URL = `/showinfo/timetable/${payload.showInfoId}`
