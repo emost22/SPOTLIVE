@@ -116,6 +116,17 @@ export default {
 
         return $axios.post(URL, JSON.stringify(payload), { auth: AUTH_REQ })
     },
+
+    requestEndRecording(context, payload) {
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const AUTH_REQ = {
+            username: 'OPENVIDUAPP',
+            password: 'MY_SECRET',
+        }
+        const URL = OPENVIDU_URL + '/openvidu/api/recordings/stop/' + payload.ovSessionId
+
+        return $axios.post(URL, JSON.stringify({}), { auth: AUTH_REQ })
+    },
     // RoomSettingDialogForm.vue
     requestGetRecentlyTimeTable(context, payload) {
         const URL = `/showinfo/timetable/${payload.showInfoId}`
