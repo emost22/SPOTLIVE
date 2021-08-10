@@ -96,6 +96,9 @@ export default {
       this.$store.dispatch('requestCloseVideo', this.videoId)
       .then(res => {
         console.log(res)
+        this.$router.push({ name: 'Main' })
+      }).catch((error) => {
+        console.log(error)
       })
     },
     startTimer() {
@@ -127,7 +130,6 @@ export default {
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
     }
   },
-  
   mounted() {
     this.videoId = this.$route.query.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
