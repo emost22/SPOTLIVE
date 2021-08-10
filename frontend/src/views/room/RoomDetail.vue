@@ -97,6 +97,8 @@ export default {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     },
     closeStreaming() {
+      this.$store.dispatch('requestSetIsOpenSettingDialog', 0)
+      this.$store.dispatch('requestSetCreatedVideoData', {})
       this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
       .then(response => {
         console.log("the then in endRecoding()...")
@@ -198,12 +200,21 @@ export default {
     this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
-      console.log(response)
       this.videoDescription = response.data.videoDescription
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
       this.userThumbnail = response.data.userRes.profileImageUrl
+      var videoData = {
+        categoryId: response.data.categoryRes.categoryId,
+        thumbnailImage: response.data.thumbnailUrl,
+        videoDescription: this.videoDescription,
+        videoTitle: this.videoTitle,
+        showInfoId: this.showInfoRes != null ? this.showInfoRes.showInfoId : '',
+        showTime: this.showInfoRes != null ? this.showInfoRes.showTime : '',
+        mode: response.data.mode,
+      }
+      this.$store.dispatch('requestSetCreatedVideoData', videoData)
     })
     if(this.mainStreamManager != undefined) {
       this.mainStreamManager.addVideoElement(this.$refs.myVideo)

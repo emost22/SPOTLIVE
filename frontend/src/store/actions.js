@@ -145,6 +145,17 @@ export default {
         return $axios.get(URL)
     },
 
+    requestUpdateSettingDialog(context, payload, data) {
+        const URL = `/video/${payload}`
+        console.log(data)
+        console.log(payload)
+        return $axios.patch(URL, data)
+    },
+
+    requestSetVideoId({ commit }, payload) {
+        commit('SET_VIDEO_ID', payload)
+    },
+
     // Main.vue
     requestGetCarouselVideos() {
         const URL = '/main/top'

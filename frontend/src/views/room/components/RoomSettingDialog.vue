@@ -14,6 +14,7 @@
                 :categoryIds="categoryIds"
                 :showInfoList="loginUser.showInfoResList"
                 @form-data="form => videoData = form"
+                :createdVideoData="createdVideoData"
               />
             </div>
             <input type='radio' id='r2' name='t'>
@@ -25,7 +26,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button" @click="setCreatedVideoDataInVuex()" data-bs-dismiss="modal">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button" @click="roomSettingDialogButton()" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>
@@ -71,11 +72,26 @@ export default {
     setViewId: function() {
       viewId = settingDialogViewId
     },
+    checkMode: function() {
+       if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
+        delete this.videoData.showTime
+        if (this.videoData.mode == '소통') {
+          delete this.videoData.showInfoId
+        }
+      } 
+    },
     roomSettingDialogButton: function () {
+      this.checkMode()
       if (this.settingDialogViewId == 1) {
         this.setCreatedVideoDataInVuex()
+        console.log('[CLICK CONFIRM BUTTON OF RoomCreate dialog] INSERT VUEX')
       } else if (this.settingDialogViewId == 2) {
         // 수정 axios 보내기
+        this.$store.dispatch('requestUpdateSettingDialog', this.videoId, this.videoData)
+        .then(res => {
+          console.log(res)
+        })
+        console.log('[CLICK CONFIRM BUTTON OF Roomdetail dialog] update axios')
       }
     },
     setCreatedVideoDataInVuex: function () {
@@ -91,7 +107,9 @@ export default {
     ...mapGetters([
     'settingDialogViewId',
     'isSettingDialogOpen',
-    'loginUser'
+    'loginUser',
+    'createdVideoData',
+    'videoId'
     ]),
   },
   mounted() {
@@ -104,7 +122,7 @@ export default {
     if (this.settingDialogViewId == 1) {
       
     } else if (this.settingDialogViewId == 2) {
-
+      // 정보 get axios
     }
   },
 }

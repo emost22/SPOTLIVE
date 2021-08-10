@@ -53,6 +53,9 @@ export default {
     },
     onCreateVideoLive(state) {
         return state.onCreateVideoLive
+    },
+    videoId(state) {
+        return state.videoId
     }
 
 }

@@ -161,5 +161,9 @@ export default {
 
     SET_USER_ON_CREATE_VIDEO (state, payload) {
         state.onCreateVideoLive = payload
+    },
+    
+    SET_VIDEO_ID (state, payload) {
+        state.videoId = payload
     }
 }

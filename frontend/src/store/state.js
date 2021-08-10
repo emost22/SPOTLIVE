@@ -19,4 +19,5 @@ export default {
     RESOLUTION: '960x540',
     createdVideoData: {},
     onCreateVideoLive: false,
+    videoId: '',
 }

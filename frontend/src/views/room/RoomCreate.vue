@@ -80,6 +80,7 @@ export default {
       let formData = this.makeFormDataForStartStreaming()
       this.$store.dispatch('requestStartStreaming', formData)
       .then((response) => {
+        this.$store.dispatch('requestSetVideoId', response.data.videoId)
         this.$router.push({name: 'RoomDetail', params: { videoId : response.data.videoId }})
       })
     },
@@ -97,7 +98,7 @@ export default {
 
       formData.append('posterImage', this.createdVideoData.thumbnailImage)
       formData.append('videoInsertPostReq', new Blob([JSON.stringify(videoInsertPostReq)] , {type: "application/json"}))
-
+      console.log(formData)
       return formData
     },
     clickToast: function () {
