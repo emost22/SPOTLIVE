@@ -256,27 +256,7 @@ public class MainServiceImpl implements MainService {
                 boolean isLive1 = v1.getIsLive();
                 boolean isLive2 = v2.getIsLive();
 
-                if (isLive1 && isLive2) {
-                    long hitLive1 = v1.getHitLive();
-                    long hitLive2 = v2.getHitLive();
-
-                    if (hitLive1 > hitLive2)
-                        return -1;
-                    else if (hitLive1 == hitLive2) {
-                        long videoId1 = v1.getVideoId();
-                        long videoId2 = v2.getVideoId();
-
-                        if (videoId1 > videoId2)
-                            return -1;
-                        else if (videoId1 == videoId2)
-                            return 0;
-                        else
-                            return 1;
-                    }
-                    else
-                        return 1;
-                }
-                else if (isLive1 && !isLive2) {
+                if (isLive1 && !isLive2) {
                     return -1;
                 }
                 else if (!isLive1 && isLive2) {
