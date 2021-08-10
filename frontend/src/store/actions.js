@@ -103,7 +103,7 @@ export default {
 
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
-        return $axios.patch(URL, payload)
+        return $axios.patch(URL)
     },
 
     // RoomSettingDialogForm.vue
