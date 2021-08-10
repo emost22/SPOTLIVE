@@ -22,6 +22,7 @@
               showOnRight: (rightIndex >=0),
             }" 
             :show="show"
+            :inMyProfile="inMyProfile"
           />
       </template>
     </slide>
@@ -37,6 +38,10 @@ export default {
   props: {
     shows: {
       type: Array,
+      required: true
+    },
+    inMyProfile: {
+      type: Boolean,
       required: true
     }
   },

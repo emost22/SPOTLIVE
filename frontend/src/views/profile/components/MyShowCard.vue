@@ -12,11 +12,25 @@ export default {
       type: Object,
       required: true
     },
+    inMyProfile: {
+      type: Boolean,
+      required: true
+    }
+  },
+  created:function() {
+    console.log(this.show.showInfoId)
+    console.log(this.show.showInfoDescription)
+    console.log(this.show.price)
+    console.log(this.show.runningTime)
+    console.log(this.show.showInfoTitle)
   },
   methods: {
     goShowDetail: function () {
-      // 내 프로필인 경우 ShowDetailDialog.vue
-      // 타인 프로필인 경우 ShowReservationDialog.vue
+      if (this.inMyProfile) {
+        // 내 프로필인 경우 ShowDetailDialog.vue
+      } else {
+        // 타인 프로필인 경우 ShowReservationDialogInProfile.vue
+      }      
     },
   },
 }

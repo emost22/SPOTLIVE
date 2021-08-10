@@ -34,6 +34,7 @@
       <p class="txtcolor-white-npurple main-title">나의 공연 정보</p>
       <MyShow
         :shows="myShows"
+        :inMyProfile="inMyProfile"
       />
     </div>
 
