@@ -60,17 +60,6 @@
       <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-      <div id="liveToast" ref="myToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="5000">
-        <div class="toast-header">
-          <strong class="me-auto">공연을 추가하기 위해 프로필로 이동해 주세요</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          등록된 공연이 없다면 <strong class="me-auto">프로필 > 공연 생성 </strong>버튼 클릭하여 상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
-        </div>
-      </div>
-    </div> 
   </div>
 </template>
 
@@ -137,10 +126,6 @@ export default {
         this.form.showTime = response.data.dateTime
       }).catch((error) => {
       })
-    },
-    clickToast() {
-      var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.myToast)
-      myToast.show()
     },
     makeToolTipsObject () {
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
