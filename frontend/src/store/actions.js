@@ -127,6 +127,12 @@ export default {
 
         return $axios.post(URL, JSON.stringify({}), { auth: AUTH_REQ })
     },
+
+    requestInsertVideoUrl(context, payload) {
+        const URL = '/video/record'
+        return $axios.post(URL, payload)
+    },
+        
     // RoomSettingDialogForm.vue
     requestGetRecentlyTimeTable(context, payload) {
         const URL = `/showinfo/timetable/${payload.showInfoId}`
