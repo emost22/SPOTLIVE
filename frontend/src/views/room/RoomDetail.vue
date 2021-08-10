@@ -85,7 +85,10 @@ export default {
             profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
             charStr: "안녕하세요, 채팅입니다! 2"
           },
-      ]
+      ],
+      recordName: "",
+      recordURL: "",
+      isRecord: true,
     }
   },
   methods: {
@@ -93,13 +96,26 @@ export default {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     },
     closeStreaming() {
-      this.$store.dispatch('requestCloseVideo', this.videoId)
-      .then(res => {
-        console.log(res)
-        this.$router.push({ name: 'Main' })
-      }).catch((error) => {
-        console.log(error)
-      })
+      this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
+      .then(response => {
+        console.log("the then in endRecoding()...")
+        console.log(response)
+        this.recordURL = response.data.url
+        console.log("저장된 URL: " + this.recordURL)
+        if(this.isRecord) this.insertVideoUrlAndCloseStreaming()
+        else {
+          this.$store.dispatch('requestCloseVideo', this.videoId)
+          .then(res => {
+            console.log(res)
+            this.$router.push({ name: 'Main' })
+          }).catch((error) => {
+            console.log(error)
+          })
+        }
+      }).catch(error => {
+        console.log("the error in endRecoding()...")	
+        console.log(error)	
+			})
     },
     startTimer() {
       setInterval(() => {
@@ -196,7 +212,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers']),
+    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers', 'RESOLUTION']),
   },
 }
 </script>
