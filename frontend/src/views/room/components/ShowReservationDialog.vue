@@ -59,7 +59,7 @@
         </div>
         <div class="modal-footer-m">
           <button type="button" class="bdcolor-npink small-button me-5" data-bs-dismiss="modal">닫기</button>
-          <button type="button" class="bdcolor-ngreen small-button" data-bs-dismiss="modal" @click="clickToast()">예약하기</button>
+          <button type="button" class="bdcolor-ngreen small-button" @click="reservateShow()">예약하기</button>
         </div>
       </div>
     </div>
@@ -69,16 +69,27 @@
     </div>
   </div>
   <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-      <div id="liveToast" ref="myToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="5000">
-        <div class="toast-header">
-          <strong class="me-auto">이미 예약된 상태입니다.</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          이미 예약된 상태입니다.
-        </div>
+    <div id="liveToast" ref="alreadyBooked" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="5000">
+      <div class="toast-header">
+        <strong class="me-auto">이미 예약된 상태입니다!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
-    </div> 
+      <div class="toast-body">
+        또 예약하고 싶으신가요~?😁
+      </div>
+    </div>
+  </div> 
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
+    <div id="liveToast" ref="bookCompleted" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="5000">
+      <div class="toast-header">
+        <strong class="me-auto">예약 완료 되었습니다!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        즐겁게 즐기길 바라요 ❤️
+      </div>
+    </div>
+  </div> 
   </div>
 </template>
 
@@ -95,13 +106,26 @@ export default {
       posterUrl: '',
       price: '3000원',
       showInfoDescription: '테스트입니다.테스트입니다.테스트입니다.테스트입니다.테스트입니다.테스트입니다.테스트입니다.',
-      showInfoTitle: '테스트입니다.'
+      showInfoTitle: '테스트입니다.',
+      isReservated: true,
     }
   }, 
   methods: {
-    clickToast() {
-      var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.myToast)
-      myToast.show()
+    reservateShow() {
+      if (this.isReservated) {
+        this.clickToast(1)
+      } else {
+        this.clickToast(2)
+      }
+    },
+    clickToast(viewId) {
+      if (viewId == 1) {
+        var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.alreadyBooked)
+        myToast.show()
+      } else {
+        var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.bookCompleted)
+        myToast.show()
+      }
     },
   },
   computed: {

@@ -338,9 +338,9 @@ label:hover {
   padding: 10px;
 }
 .toast {
-  width: 450px;
+  width: 300px;
   max-width: 100%;
-  font-size: .875rem;
+  font-size: 1rem;
   pointer-events: auto;
   background-color: #6A6A6A;
   background-clip: padding-box;
@@ -358,5 +358,9 @@ label:hover {
   border-bottom: 1px solid rgba(0,0,0,.05);
   border-top-left-radius: calc(.25rem - 1px);
   border-top-right-radius: calc(.25rem - 1px);
+}
+.toast-body {
+  color: white;
+  text-align: left;
 }
 </style>
