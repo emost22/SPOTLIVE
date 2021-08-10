@@ -56,7 +56,7 @@ export default {
   background-size: cover;
 }
 .sidebar-following-nickname {
-  font-size: 15px;
+  font-size: 20px;
   margin-left: 15px;
 }
 .sidebar-following-info {
