@@ -199,7 +199,6 @@ textarea {
   margin-left: 30px;
   margin-right: 30px;
   height: 80%;
-  background-color: lightgrey;
 }
 .modal-design {
   max-height: 700px;
@@ -270,5 +269,51 @@ label:hover {
   top: 50px; right: 0; bottom: 0; left: 0;
   padding: 30px;
   display: none;
+}
+.m-offcanvas-top {
+  width: 70vh;
+  height: 27vh;
+  border-bottom-left-radius: 2vh;
+  border-bottom-right-radius: 2vh;
+}
+.m-offcanvas {
+    background-color: #242424;
+    color: white;
+    margin: 0 auto;
+}
+.offcanvas-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 13px;
+}
+.popUpTitle {
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.offcanvas-body{
+  padding: 10px;
+}
+.toast {
+  width: 450px;
+  max-width: 100%;
+  font-size: .875rem;
+  pointer-events: auto;
+  background-color: #6A6A6A;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.1);
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+  border-radius: .25rem;
+}
+.toast-header {
+  display: flex;
+  align-items: center;
+  padding: .5rem .75rem;
+  color: white;
+  background-color: #595959;
+  background-clip: padding-box;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  border-top-left-radius: calc(.25rem - 1px);
+  border-top-right-radius: calc(.25rem - 1px);
 }
 </style>
