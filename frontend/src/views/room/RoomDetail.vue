@@ -163,8 +163,10 @@ export default {
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
     })
-    if(this.mainStreamManager != undefined) 
+    if(this.mainStreamManager != undefined) {
       this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+      this.startRecoding()
+    }
     this.startTimer()
     this.addEventForChat()
   },
