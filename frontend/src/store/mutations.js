@@ -1,3 +1,4 @@
+import { Publisher } from 'openvidu-browser'
 import router from '../router/index'
 import $axios from '../util/axios'
 
@@ -46,14 +47,6 @@ export default {
             console.log('[OPENVIDU] Found Connection: ', { event })
         })
 
-        state.ovSession.on('streamCreated', ({ stream }) => {
-            let subscriber = state.ovSession.subscribe(stream, undefined)
-            console.log('[OPENVIDU] Add new user: ' + subscriber.id)
-            console.log(subscriber)
-            state.mainStreamManager = subscriber
-            state.subscribers.push(subscriber)
-        })
-
         state.ovSession.on('streamDestroyed', ({ stream }) => {
             console.log('[OPENVIDU] Stream Destroyed!')
             const index = state.subscribers.indexOf(stream.streamManager, 0)
@@ -66,6 +59,16 @@ export default {
             console.log('[OPENVIDU] exception!')
             console.warn(exception)
         })
+    },
+
+    SET_MAIN_STREAM_MANAGER(state, payload) {
+        console.log("MUTATION: SET_MAIN_STREAM_MANAGER() RUN...")
+        state.mainStreamManager = state.ovSession.subscribe(payload.stream, undefined)
+    },
+
+    SET_SUBSCRIBE(state, payload) {
+        console.log("MUTATION: SET_SUBSCRIBE() RUN...")
+        state.ovSession.subscribe(payload.stream, undefined)
     },
     
     CONNECT_SESSION(state) {
@@ -95,10 +98,11 @@ export default {
         console.log("MUTATION: CONNECT_SESSION_FOR_GUEST() RUN...")
         console.log("OV TOKEN: " + state.ovToken)
         console.log("ACCOUNT_EMAIL: " + state.loginUser.accountEmail)
-        state.ovSession.connect(state.ovToken, { clientData: state.loginUser.accountEmail })
+        state.ovSession.connect(state.ovToken, { clientData: "example@example.com" })
         .then((response) => {
-            state.mainStreamManager = state.subscribers[0]
+            console.log("CONNECT_SESSION_FOR_GUEST() SUCCESS!")
         }).catch((error) => {
+            console.log("CONNECT_SESSION_FOR_GUEST() FAIL!")
             console.log('There was an error connecting to the session:', error.code, error.message)
         })
     },
@@ -135,7 +139,7 @@ export default {
     },
 
     SEND_CHAT(state, payload) {
-        console.log("MUTATION: CHANGE_DEVICE() RUN...")
+        console.log("MUTATION: SEND_CHAT() RUN...")
         console.log(payload.chatMsg)
         state.ovSession.signal({
             data: payload.chatMsg,
