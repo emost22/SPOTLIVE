@@ -1,7 +1,11 @@
 <template>
-  <div class="my-video-grid-box">
-    <div v-if="videos.length">
+  <div class="my-video-grid-box container-fluid">
+    <div
+      class="d-flex flex-row flex-wrap row-cols-auto" 
+      v-if="videos.length"
+    >
       <div
+        class="col mx-4"
         v-for="(video, idx) in videos"
         :key="idx">
         <MyVideoCard

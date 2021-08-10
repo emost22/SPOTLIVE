@@ -1,7 +1,11 @@
 <template>
-  <div class="search-grid-box">
-    <div v-if="videos.length">
+  <div class="search-grid-box container-fluid">
+    <div
+      class="d-flex flex-row flex-wrap row-cols-auto"
+      v-if="videos.length"
+    >
       <div
+        class="col mx-4"
         v-for="(video, idx) in videos"
         :key="idx">
         <SearchVideoCard
@@ -12,6 +16,7 @@
     <div v-if="!videos.length">
       <p class="txtcolor-white-nyellow main-title">해당 검색 결과가 존재하지 않습니다.</p>
     </div>
+
   </div>
 </template>
 

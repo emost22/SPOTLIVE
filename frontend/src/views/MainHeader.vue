@@ -60,8 +60,6 @@ export default ({
     },
     clickSearchBtn: function () {
       if (this.input) {
-        console.log(this.input)
-        // Search.vue로 이동하고 검색 결과 axios
         this.$router.push({ name: 'Search', query: { input: this.input } })
         this.input = ''
       }
