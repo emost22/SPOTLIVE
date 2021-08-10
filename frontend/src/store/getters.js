@@ -56,6 +56,9 @@ export default {
     },
     videoId(state) {
         return state.videoId
+    },
+    showReservationData(state) {
+        return state.showReservationData
     }
 
 }

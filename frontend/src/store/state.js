@@ -20,4 +20,5 @@ export default {
     createdVideoData: {},
     onCreateVideoLive: false,
     videoId: '',
+    showReservationData: {}
 }

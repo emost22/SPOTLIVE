@@ -86,7 +86,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body">
-        즐겁게 즐기길 바라요 ❤️
+        즐기길 바라요 ❤️
       </div>
     </div>
   </div> 
@@ -99,9 +99,6 @@ export default {
   name: 'ShowReservationDialog',
   data: function () {
     return {
-      viewId: 0,
-      categoryIds: [],
-      videoData: {},
       runningTime: '30분',
       posterUrl: '',
       price: '3000원',
@@ -130,13 +127,19 @@ export default {
   },
   computed: {
     ...mapGetters([
-    'settingDialogViewId',
-    'isSettingDialogOpen',
-    'loginUser',
-    'createdVideoData',
-    'videoId'
+    'showReservationData'
     ]),
   },
+  watch: {
+    showReservationData: function(val, oldval) {
+      this.runningTime = val.runningTime
+      this.posterUrl = val.posterUrl
+      this.price = val.price
+      this.showInfoDescription = val.showInfoDescription
+      this.showInfoTitle = val.showInfoTitle
+      this.showInfoId = val.showInfoId
+    },
+  }
 
 }
 </script>

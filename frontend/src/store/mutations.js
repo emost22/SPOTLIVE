@@ -165,5 +165,9 @@ export default {
     
     SET_VIDEO_ID (state, payload) {
         state.videoId = payload
+    },
+
+    SET_SHOW_RESERVATION_INFO(state, payload) {
+        state.showReservationData
     }
 }
