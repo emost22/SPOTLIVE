@@ -7,7 +7,6 @@
       <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog"> 설정 </button>
       <button class="bdcolor-bold-npink extra-big-button" @click="startStreaming()"> 스트리밍 시작 </button>
     </div>
- 
   </div>
 </template>
 
@@ -21,7 +20,19 @@ export default {
     return  {
 
     }
-  },  
+  },
+  beforeMount() {
+    this.$store.dispatch("requestSetUserOnCreateVideo", true)
+  },
+  beforeRouteEnter (to, from, next) {
+    // this.$store.dispatch("requestSetUserOnCreateVideo", true)
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    console.log(to, from)
+    next()
+  },
   created() {
     this.initSession(new OpenVidu())
     this.doOpenviduCall()

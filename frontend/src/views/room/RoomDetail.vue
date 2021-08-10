@@ -186,6 +186,17 @@ export default {
       })
     }
   },
+  beforeMount() {
+    this.$store.dispatch("requestSetUserOnCreateVideo", true)
+  },
+  beforeRouteEnter (to, from, next) {
+    // this.$store.dispatch("requestSetUserOnCreateVideo", true)
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    next()
+  },
   mounted() {
     this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
@@ -212,7 +223,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers', 'RESOLUTION']),
+    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers', 'onCreateVideoLive', 'RESOLUTION']),
   },
 }
 </script>

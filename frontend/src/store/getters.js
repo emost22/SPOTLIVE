@@ -50,6 +50,9 @@ export default {
     },
     RESOLUTION(state) {
         return state.RESOLUTION
+    },
+    onCreateVideoLive(state) {
+        return state.onCreateVideoLive
     }
 
 }

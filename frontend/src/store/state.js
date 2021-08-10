@@ -17,5 +17,6 @@ export default {
     publisher: undefined,
     subscribers: [],
     RESOLUTION: '960x540',
-    createdVideoData: {}
+    createdVideoData: {},
+    onCreateVideoLive: false,
 }

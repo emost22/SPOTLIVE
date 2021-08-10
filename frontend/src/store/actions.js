@@ -95,6 +95,10 @@ export default {
         return $axios.post(URL, payload)
     },
 
+    requestSetUserOnCreateVideo({ commit }, payload) {
+        commit('SET_USER_ON_CREATE_VIDEO', payload)
+    },
+
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
