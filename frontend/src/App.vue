@@ -5,7 +5,9 @@
       <router-view></router-view>
     </div>
     <RoomSettingDialog/>
+    <ProfileUpdateDialog/>
     <ShowCreateDialog/>
+    <TicketDialog/>
   </div>
 </template>
 
@@ -14,6 +16,8 @@ import { mapGetters } from "vuex"
 import MainHeader from './views/MainHeader.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
 import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
+import ProfileUpdateDialog from './views/profile/components/ProfileUpdateDialog.vue'
+import TicketDialog from './views/profile/components/TicketDialog.vue'
 
 export default ({
   name: "App",
@@ -21,6 +25,8 @@ export default ({
     MainHeader,
     RoomSettingDialog,
     ShowCreateDialog,
+    ProfileUpdateDialog,
+    TicketDialog,
   },
   data: function () {
     return {
@@ -116,6 +122,34 @@ textarea {
   color: #C752FE;
   text-shadow:
       0 0 9px #C752FE;
+}
+.txtcolor-white-npink {
+  color: #FFFFFF;
+  text-shadow:
+      0 0 9px #F84ABF,
+      0 0 15px #F84ABF,
+      0 0 30px #F84ABF;
+}
+.txtcolor-white-ngreen {
+  color: #FFFFFF;
+  text-shadow:
+      0 0 9px #04F7CA,
+      0 0 15px #04F7CA,
+      0 0 30px #04F7CA;
+}
+.txtcolor-white-nyellow {
+  color: #FFFFFF;
+  text-shadow:
+      0 0 9px #FEF279,
+      0 0 15px #FEF279,
+      0 0 30px #FEF279;
+}
+.txtcolor-white-npurple {
+  color: #FFFFFF;
+  text-shadow:
+      0 0 9px #C752FE,
+      0 0 15px #C752FE,
+      0 0 30px #C752FE;
 }
 .bdcolor-ngreen {
   border: 2px solid #04F7CA;

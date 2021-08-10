@@ -1,30 +1,29 @@
 <template>
-  <div>
-    <div class="main-div">
-      <MainSidebar/>
-      <div class="main-video">
-        <div>
-          상단 카테고리 추천
-          <VideoCarousel :videos="carousel_videos"/>
-        </div>
-        <div>
-          카테고리 버튼
-          <FilterGlide :filters="filter_buttons"/>
-        </div>
-        <div class="row">
-          <p> 홍보용 영상</p>
-          <!-- <VideoGlide :videos="ad_videos"/> -->
-          <p> 공연용 영상</p>
-          <!-- <VideoGlide :videos="show_videos"/> -->
-          <p> 소통용 영상</p>
-          <VideoGlide :videos="talk_videos"/>
-          <p> 실시간 시청자 높은 영상</p>
-          <VideoGlide :videos="live_videos"/>
-          <p> 다시보기 조회순 높은 영상</p>
-          <VideoGlide :videos="replay_videos"/>
-          <p> 내가 팔로우 하는 사람들의 최신 영상</p>
-          <VideoGlide :videos="follow_videos"/>
-        </div>
+  <div class="main-div">
+    <MainSidebar/>
+    <div class="main-video">
+      <div>
+        <VideoCarousel :videos="carousel_videos"/>
+      </div>
+      <div>
+        <FilterGlide 
+          :filters="filter_buttons"
+          @categoryId="getFilterCategoryId"
+        />
+      </div>
+      <div>
+        <p class="txtcolor-white-ngreen main-title"> 홍보용 영상</p>
+        <VideoGlide :videos="ad_videos"/>
+        <p class="txtcolor-white-npink main-title"> 공연용 영상</p>
+        <VideoGlide :videos="show_videos"/>
+        <p class="txtcolor-white-nyellow main-title"> 소통용 영상</p>
+        <VideoGlide :videos="talk_videos"/>
+        <p class="txtcolor-white-npurple main-title"> 실시간 시청자 높은 영상</p>
+        <VideoGlide :videos="live_videos"/>
+        <p class="txtcolor-white-ngreen main-title"> 다시보기 조회순 높은 영상</p>
+        <VideoGlide :videos="replay_videos"/>
+        <p class="txtcolor-white-npink main-title"> 내가 팔로우 하는 사람들의 최신 영상</p>
+        <VideoGlide :videos="follow_videos"/>
       </div>
     </div>
   </div>
@@ -49,6 +48,7 @@ export default {
     return {
       carousel_videos: [],
       filter_buttons: [],
+      filter_category_id: '',
       ad_videos: [],
       show_videos: [],
       talk_videos: [],
@@ -60,12 +60,12 @@ export default {
   created: function () {
     this.getCarouselVideos()
     this.getFilterButtons()
-    this.getAdVideos(0, 20)
-    this.getShowVideos(0, 20)
-    this.getTalkVideos(0, 20)
-    this.getLiveVideos(0, 20)
-    this.getReplayVideos(0, 20)
-    this.getFollowVideos(0, 20)
+    // this.getAdVideos(0, 20)
+    // this.getShowVideos(0, 20)
+    // this.getTalkVideos(0, 20)
+    // this.getLiveVideos(0, 20)
+    // this.getReplayVideos(0, 20)
+    // this.getFollowVideos(0, 20)
     this.getTotalMainVideos(0, 20)
   },
   methods: {
@@ -89,15 +89,22 @@ export default {
         this.filter_buttons = response.data
       })
       .catch((error) => {
-        console.log('필터실패')
         console.log(error)
       })
     },
     
-    getTotalMainVideos(pageValue, sizeValue) {
+    getFilterCategoryId(categoryId) {
+      this.filter_category_id = Number(categoryId)
+      console.log(this.filter_category_id)
+      console.log('emit category id')
+      this.getTotalMainVideos(0, 20, this.filter_category_id)
+    },
+
+    getTotalMainVideos(pageValue, sizeValue, categoryId) {
       this.$store.dispatch('requestGetTotalMainVideos', { 
         pageValue: pageValue,
         sizeValue: sizeValue,
+        categoryId: categoryId,
       }).then((response) => {
         console.log("getTotalMainVideos() SUCCESS!!")
         console.log(response.data)
@@ -108,6 +115,7 @@ export default {
         this.live_videos = response.data.liveVideoGetRes.videoResList
         this.replay_videos = response.data.replayVideoGetRes.videoResList
         this.follow_videos = response.data.followVideoGetRes.videoResList
+        console.log(this.live_videos)
       }).catch((error) => {
         console.log(error)
       })
@@ -203,10 +211,17 @@ export default {
   display: flex;
   align-items: stretch;
   min-height: 100vh;
+  min-width: 100vh;
 }
 .main-video {
-  width: 100%;
+  margin-right: 75px;
+  margin-left: 75px;
+  padding: 0px;
   min-height: 100vh;
-  margin: 20px;
+  min-width: 100vh;
+}
+.main-title {
+  font-size: 20px;
+  text-align: start;
 }
 </style>
