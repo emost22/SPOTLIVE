@@ -16,5 +16,6 @@ export default {
     mainStreamManager: undefined,
     publisher: undefined,
     subscribers: [],
+    RESOLUTION: '960x540',
     createdVideoData: {}
 }
