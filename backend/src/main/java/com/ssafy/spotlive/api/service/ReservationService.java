@@ -7,6 +7,6 @@ package com.ssafy.spotlive.api.service;
  */
 public interface ReservationService {
     Boolean insertReservation(String accountEmail, Long timetableId);
-    Long deleteReservationById(long timetableId, String accountEmail);
+    Long deleteReservationById(String accessToken, long timetableId);
     Boolean findReservationById(long timetableId, String accountEmail);
 }

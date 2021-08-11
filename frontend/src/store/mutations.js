@@ -23,6 +23,16 @@ export default {
         state.ovSession = state.OV.initSession()
     },
 
+    LOGOUT(state, payload) {
+        console.log("MUTATION: LOGOUT() RUN...")
+        state.isLogin = false
+        localStorage.removeItem('loginUser')
+        localStorage.removeItem('accessToken')
+
+        $axios.defaults.headers['Authorization'] = ''
+        router.push({ name: "Login" })
+    },
+
     SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU(state, payload) {
         console.log("MUTATION: SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU() RUN...")
         state.ovSessionId = payload.ovSessionId
@@ -99,6 +109,17 @@ export default {
         state.ovSession.connect(state.ovToken, { clientData: "example@example.com" })
         .then((response) => {
             console.log("CONNECT_SESSION_FOR_GUEST() SUCCESS!")
+            console.log("MUTATION: SEND_JOIN() RUN...")
+            console.log(state.loginUser.accountEmail)
+            state.ovSession.signal({
+                data: state.loginUser.accountEmail,
+                to: [],                     
+                type: 'join-video'
+            }).then(() => {
+                console.log('JOIN SIGNAL successfully sent');
+            }).catch(error => {
+                console.error(error);
+            })
         }).catch((error) => {
             console.log("CONNECT_SESSION_FOR_GUEST() FAIL!")
             console.log('There was an error connecting to the session:', error.code, error.message)
@@ -136,15 +157,44 @@ export default {
         console.log("MUTATION: CHANGE_DEVICE() DONE...")
     },
 
+    LEAVE_SESSION(state, payload) {
+        console.log("MUTATION: LEAVE_SESSION() RUN...")
+        state.ovSession.disconnect()
+    },
+
+    SET_DEFAULT_FOR_OPENVIDU(state, payload) {
+        state.mainStreamManager = undefined
+        state.publisher = undefined
+        state.subscribers = []
+        state.OV = undefined
+        state.ovSession = undefined
+        state.ovSessionId = ''
+        state.ovToken = ''
+    },
+
     SEND_CHAT(state, payload) {
         console.log("MUTATION: SEND_CHAT() RUN...")
         console.log(payload.chatMsg)
         state.ovSession.signal({
             data: payload.chatMsg,
             to: [],                     
-            type: 'my-chat'             
+            type: 'my-chat'
         }).then(() => {
             console.log('Message successfully sent');
+        }).catch(error => {
+            console.error(error);
+        })
+    },
+    
+    SEND_EXIT(state) {
+        console.log("MUTATION: SEND_EXIT() RUN...")
+        console.log(state.loginUser.accountEmail)
+        state.ovSession.signal({
+            data: state.loginUser.accountEmail,
+            to: [],                     
+            type: 'exit-video'
+        }).then(() => {
+            console.log('EXIT SIGNAL successfully sent');
         }).catch(error => {
             console.error(error);
         })

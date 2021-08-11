@@ -54,7 +54,6 @@ export default {
       this.$router.push({ name: 'Main' })
     },
   },
-  
   created() {
     console.log("MOUNTED!!!")
     console.log(this.loginUser)

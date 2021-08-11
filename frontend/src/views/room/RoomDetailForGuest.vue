@@ -17,7 +17,7 @@
           </div>
           <div class="d-flex flex-column">
             <div>
-              <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ peopleWatching }}</span>
+              <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ hit }}</span>
               <span class="current-time"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
             </div>
             <div v-if="isLive==false" class="d-flex flex-column align-items-center mt-3">
@@ -53,6 +53,7 @@
         </div>
       </div>
       <div v-if="isLive" class="d-flex flex-column align-items-center mt-3">
+        <button class="bdcolor-nyellow extra-big-button m-1" @click="closeStreaming()">나가기</button>
         <button v-if="mode=='홍보'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showReservationDialog">예약하기</button>
         <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showInfoDialog">공연 상세 정보 보기</button>
       </div>
@@ -82,7 +83,7 @@ export default {
         m: '',
         s: '',
       },
-      peopleWatching: "0",
+      hit: 0,
       chatMsg: "",
       chatList: [
         {
@@ -94,19 +95,13 @@ export default {
           userName: "김민권2",
           profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
           charStr: "안녕하세요, 채팅입니다! 2"
-          },
+        },
       ]
     }
   },
   methods: {
-    openRoomSettingDialog() {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
-    },
     closeStreaming() {
-      this.$store.dispatch('requestCloseVideo', this.videoId)
-      .then(res => {
-        console.log(res)
-      })
+      this.$router.push({ name: 'Main' })
     },
     startTimer() {
       setInterval(() => {
@@ -127,6 +122,7 @@ export default {
         this.addEventForChat()
         this.connectSessionForGuest()
         this.addEventFormainStreamManager()
+        this.addEventForJoinAndExit()
       }).catch((error) => {
         console.log(error)
       })
@@ -146,6 +142,19 @@ export default {
         }).catch((error) => {
           console.log(error)
         })
+      })
+    },
+    addEventForJoinAndExit() {
+      this.ovSession.on('signal:join-video', (event) => {
+        let eventAccountEmail = event.data
+        console.log('[OPENVIDU] JOIN ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
+      })
+      
+      this.ovSession.on('signal:exit-video', (event) => {
+        let eventAccountEmail = event.data
+        console.log('[OPENVIDU] EXIT ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
       })
     },
     addEventFormainStreamManager() {
@@ -173,11 +182,38 @@ export default {
     },
     sendChat() {
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
-    }
+    }, 
+    sendJoin() {
+      this.$store.dispatch("requestSendJoin")
+    }, 
+    sendExit() {
+      this.$store.dispatch("requestSendExit")
+    }, 
+    updateVideoInfo() {
+      this.$store.dispatch('requestGetRoomDetail', this.videoId)
+      .then((response) => {
+        console.log(response)
+        this.videoDescription = response.data.videoDescription
+        this.category = response.data.categoryRes.categoryName
+        this.videoTitle = response.data.videoTitle
+        this.startTime = response.data.startTime
+        this.hit = response.data.hit
+      })
+    },
   },
-  
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch('requestMinusHit', { videoId: this.videoId })
+    .then((response) => {
+      console.log(response)
+      this.sendExit()
+      this.$store.dispatch('requestLeaveSession')
+      this.$store.dispatch('requestSetDefaultForOpenvidu')
+    }).catch((error) => console.log(error))
+    next()
+  },
   mounted() {
     this.videoId = this.$route.params.videoId
+    this.$store.dispatch('requestPlusHit', { videoId: this.videoId })
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
       console.log(response)
@@ -189,6 +225,7 @@ export default {
       this.startTime = response.data.startTime
       this.sessionId = response.data.sessionId
       this.mainStreamAccountEmail = response.data.userRes.accountEmail
+      this.hit = response.data.hit
       var showInfoData = {
         runningTime: response.data.showInfoRes.runningTime,
         posterUrl: response.data.showInfoRes.posterUrl,
