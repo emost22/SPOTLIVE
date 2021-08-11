@@ -118,6 +118,7 @@ export default {
         this.addEventForChat()
         this.connectSessionForGuest()
         this.addEventFormainStreamManager()
+        this.addEventForJoinAndExit()
       }).catch((error) => {
         console.log(error)
       })
@@ -137,6 +138,19 @@ export default {
         }).catch((error) => {
           console.log(error)
         })
+      })
+    },
+    addEventForJoinAndExit() {
+      this.ovSession.on('signal:join-video', (event) => {
+        let eventAccountEmail = event.data
+        console.log('[OPENVIDU] JOIN ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
+      })
+      
+      this.ovSession.on('signal:exit-video', (event) => {
+        let eventAccountEmail = event.data
+        console.log('[OPENVIDU] EXIT ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
       })
     },
     addEventFormainStreamManager() {
