@@ -142,6 +142,19 @@ export default {
         })
       })
     },
+    addEventForJoinAndExit() {
+      this.ovSession.on('signal:join-video', (event) => {
+        let eventAccountEmail = event.data
+        console.log('[OPENVIDU] JOIN ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
+      })
+      
+      this.ovSession.on('signal:exit-video', (event) => {
+        let eventAccountEmail = event.data
+        console.log('[OPENVIDU] EXIT ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
+      })
+    },
     sendChat() {
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
     },
