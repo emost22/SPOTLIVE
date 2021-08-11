@@ -76,7 +76,7 @@ export default {
       var date = this.reservation.timetableFindByReservationRes.dateTime.substr(0,10).split(" ")[0]
       var tmpDate = date.split("-")
       this.showDate =  tmpDate[1] + "/" + tmpDate[2]
-      this.showTime = this.reservation.timetableFindByReservationRes.dateTime.substr(11,15)
+      this.showTime = this.reservation.timetableFindByReservationRes.dateTime.substring(11,15)
       // 시간 문자열 슬라이싱 추가해주세요 날짜는 했어요!
     },
     clickReservationDeleteButton() {
