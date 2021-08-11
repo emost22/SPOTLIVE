@@ -109,6 +109,17 @@ export default {
         state.ovSession.connect(state.ovToken, { clientData: "example@example.com" })
         .then((response) => {
             console.log("CONNECT_SESSION_FOR_GUEST() SUCCESS!")
+            console.log("MUTATION: SEND_JOIN() RUN...")
+            console.log(state.loginUser.accountEmail)
+            state.ovSession.signal({
+                data: state.loginUser.accountEmail,
+                to: [],                     
+                type: 'join-video'
+            }).then(() => {
+                console.log('JOIN SIGNAL successfully sent');
+            }).catch(error => {
+                console.error(error);
+            })
         }).catch((error) => {
             console.log("CONNECT_SESSION_FOR_GUEST() FAIL!")
             console.log('There was an error connecting to the session:', error.code, error.message)
@@ -169,6 +180,20 @@ export default {
             type: 'my-chat'             
         }).then(() => {
             console.log('Message successfully sent');
+        }).catch(error => {
+            console.error(error);
+        })
+    },
+    
+    SEND_EXIT(state) {
+        console.log("MUTATION: SEND_EXIT() RUN...")
+        console.log(state.loginUser.accountEmail)
+        state.ovSession.signal({
+            data: state.loginUser.accountEmail,
+            to: [],                     
+            type: 'exit-video'
+        }).then(() => {
+            console.log('EXIT SIGNAL successfully sent');
         }).catch(error => {
             console.error(error);
         })
