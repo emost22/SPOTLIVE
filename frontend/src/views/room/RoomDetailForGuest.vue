@@ -75,7 +75,7 @@ export default {
         m: '',
         s: '',
       },
-      peopleWatching: "0",
+      hit: 0,
       chatMsg: "",
       chatList: [
         {
@@ -179,6 +179,18 @@ export default {
     sendChat() {
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
     }
+    updateVideoInfo() {
+      this.$store.dispatch('requestGetRoomDetail', this.videoId)
+      .then((response) => {
+        console.log(response)
+        this.videoDescription = response.data.videoDescription
+        this.category = response.data.categoryRes.categoryName
+        this.videoTitle = response.data.videoTitle
+        this.startTime = response.data.startTime
+        this.hit = response.data.hit
+      })
+    },
+  },
   },
   
   mounted() {
