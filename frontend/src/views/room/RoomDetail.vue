@@ -49,7 +49,27 @@
       </div>
       <div class="d-flex flex-column align-items-center mt-3">
         <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
-        <button class="bdcolor-nyellow extra-big-button m-1" @click="closeStreaming()">스트리밍 종료</button>
+        <button class="bdcolor-nyellow extra-big-button m-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" >스트리밍 종료</button>
+      </div>
+    </div>
+    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <h5 class="popUpTitle">종료하시겠습니까?</h5>
+        저장하기를 클릭하시면<br>
+        <strong>프로필 > 내 영상</strong>에서 다시볼 수 있습니다.<br>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="true" id="record" v-model="isRecord">
+          <label class="form-check-label" for="record">
+            영상 저장하기
+          </label>
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+          <div><button type="button" class="bdcolor-npink small-button mx-3">취소</button></div>
+          <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas" @click="closeStreaming()">확인</button></div>
+        </div>
       </div>
     </div>
   </div>
@@ -337,5 +357,14 @@ export default {
   height: 20px;
   margin-top: -10px;
   margin-left: -1px;
+}
+.form-check .form-check-input {
+  float: none;
+  margin-right: 10px;
+}
+.form-check {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  margin-left: -1.5rem;
 }
 </style>
