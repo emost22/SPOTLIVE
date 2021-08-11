@@ -209,7 +209,11 @@ export default {
     SET_CREATEVIDEO_DATA (state, payload) {
         state.createdVideoData = payload
     },
-
+    
+    SET_GETSHOW_DATA (state, payload) {
+        state.getShowData = payload
+    },
+    
     DELETE_TICKET_DATA(state, payload) {
         console.log("=====================뮤테이션======================")
         var i = 0
