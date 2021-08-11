@@ -25,6 +25,10 @@ export default {
         return $axios.get(URL)
     },
 
+    requestLogout(context, payload) {
+        context.commit("LOGOUT")
+    },
+
     // RoomCreate.vue (민권)
     requestInitSession(context, payload) {
         context.commit("INIT_SESSION", payload)
