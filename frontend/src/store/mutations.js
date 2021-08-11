@@ -146,6 +146,20 @@ export default {
         console.log("MUTATION: CHANGE_DEVICE() DONE...")
     },
 
+    LEAVE_SESSION(state, payload) {
+        console.log("MUTATION: LEAVE_SESSION() RUN...")
+        
+        state.ovSession.disconnect()
+
+        state.mainStreamManager = undefined
+        state.publisher = undefined
+        state.subscribers = []
+        state.OV = undefined
+        state.ovSession = undefined
+        state.ovSessionId = ''
+        state.ovToken = ''
+    },
+
     SEND_CHAT(state, payload) {
         console.log("MUTATION: SEND_CHAT() RUN...")
         console.log(payload.chatMsg)
