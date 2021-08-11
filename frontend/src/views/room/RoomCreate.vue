@@ -7,7 +7,6 @@
       <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog"> 설정 </button>
       <button class="bdcolor-bold-npink extra-big-button" @click="startStreaming()"> 스트리밍 시작 </button>
     </div>
- 
   </div>
 </template>
 
@@ -21,7 +20,19 @@ export default {
     return  {
 
     }
-  },  
+  },
+  beforeMount() {
+    this.$store.dispatch("requestSetUserOnCreateVideo", true)
+  },
+  beforeRouteEnter (to, from, next) {
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name != "RoomDetail") {
+      this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    } 
+    next()
+  },
   created() {
     this.initSession(new OpenVidu())
     this.doOpenviduCall()
@@ -69,6 +80,7 @@ export default {
       let formData = this.makeFormDataForStartStreaming()
       this.$store.dispatch('requestStartStreaming', formData)
       .then((response) => {
+        this.$store.dispatch('requestSetVideoId', response.data.videoId)
         this.$router.push({name: 'RoomDetail', params: { videoId : response.data.videoId }})
       })
     },
@@ -86,7 +98,7 @@ export default {
 
       formData.append('posterImage', this.createdVideoData.thumbnailImage)
       formData.append('videoInsertPostReq', new Blob([JSON.stringify(videoInsertPostReq)] , {type: "application/json"}))
-
+      console.log(formData)
       return formData
     },
     clickToast: function () {

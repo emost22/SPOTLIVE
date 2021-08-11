@@ -7,7 +7,7 @@
         </div>
         <div class="modal-body d-flex flex-column align-items-center ticket-box">
           <div
-            v-for="(reservation, idx) in reservations"
+            v-for="(reservation, idx) in loginUser.reservationResList"
             :key="idx"
           >
             <TicketCard
@@ -39,9 +39,11 @@ export default {
   },
   created: function () {
     this.getReservation()
+    console.log("[티켓다이알로그] 예약정보 리스트:", this.reservations)
   },
   methods: {
     getReservation() {
+      console.log("겟레저베이션")
       this.userId = this.loginUser.accountEmail
       this.reservations = this.loginUser.reservationResList
     },

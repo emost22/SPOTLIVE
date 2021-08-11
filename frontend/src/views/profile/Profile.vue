@@ -161,6 +161,9 @@ export default {
   computed: {
     ...mapGetters(['loginUser']),
   },
+  watch() {
+    this.profileId
+  },
 }
 </script>
 
