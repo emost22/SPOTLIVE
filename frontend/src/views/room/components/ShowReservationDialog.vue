@@ -38,14 +38,14 @@
                         <label class="form-label">공연 시간</label>
                       </div>
                       <select class="custom-select-control-m">
-                        <option :key="i" :value="d.v.timetableId" v-for="(d, i) in timetables">{{ d.t.dateTime }}</option>
+                        <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
-                    <div class="me-3">
+                    <div>
                       <div class="label-alignment">
                         <label class="form-label">러닝타임</label>
                       </div>
-                      <input type="text" class="custom-form-control" v-model="showReservationData.runningTime" readonly="readonly" disabled>
+                      <input type="text" class="custom-form-control" v-model="showReservationDataRunningTime" readonly="readonly" disabled>
                     </div>
                   </div>
                 </div>
@@ -122,12 +122,26 @@ export default {
         myToast.show()
       }
     },
+    formatter(date) {
+      var dateTime = new Date(date)
+      var month = dateTime.getMonth()
+      month = month >= 10 ? month : '0' + month
+      var day = dateTime.getDate()
+      day = day >= 10 ? day : '0' + day
+      var hours = dateTime.getHours()
+      hours = hours >= 10 ? hours : '0' + hours
+      var minutes = dateTime.getMinutes()
+      minutes = minutes >= 10 ? minutes : '0' + minutes
+      return `${month}/${day} ${hours}:${minutes}`
+    },
     getShowInfoTimeTable() {
       this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
         .then(res => {
           console.log(res.data.timetables)
-          res.data.timetables.forEach((dateTime, timetableId) => {
-            this.timetables.push({ v: timetableId, t: dateTime})
+          res.data.timetables.forEach((timetable) => {
+            var date = this.formatter(timetable.dateTime)
+            
+            this.timetables.push({ v: timetable.timetableId, t: date})
           })
         })
     }
@@ -136,6 +150,9 @@ export default {
     ...mapGetters([
     'showReservationData'
     ]),
+    showReservationDataRunningTime: function () {
+      return this.showReservationData.runningTime+' min'
+    }
   },
   watch: {
     showReservationData: function(val, oldval) {
