@@ -277,4 +277,45 @@ public class VideoController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PatchMapping("/join/{videoId}")
+    @ApiOperation(value = "조회수 1 증가", notes = "비디오 아이디를 입력받아 조회수를 1 증가한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "조회수 증가 성공"),
+            @ApiResponse(code = 204, message = "비디오Id로 해당 비디오 조회 실패"),
+            @ApiResponse(code = 400, message = "조회 오류"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateVideoHitPlusById(
+            @PathVariable Long videoId) {
+        /**
+         * @Method Name : updateVideoHitPlusById
+         * @작성자 : 권영린
+         * @Method 설명 : 비디오Id에 해당하는 비디오데이터의 조회수(hit)을 1 증가시킨다.
+         */
+        if(videoService.updateVideoHitPlusById(videoId))
+            return new ResponseEntity<String>("조회수 증가 성공", HttpStatus.CREATED);
+        else
+            return new ResponseEntity<String>("없는 아이디 조회로 실패", HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/exit/{videoId}")
+    @ApiOperation(value = "조회수 1 감소", notes = "비디오 아이디를 입력받아 조회수를 1 감소시킨다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "조회수 감소 성공"),
+            @ApiResponse(code = 204, message = "비디오Id로 해당 비디오 조회 실패"),
+            @ApiResponse(code = 400, message = "조회 오류"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateVideoHitMinusById(
+            @PathVariable Long videoId) {
+        /**
+         * @Method Name : updateVideoHitMinusById
+         * @작성자 : 권영린
+         * @Method 설명 : 비디오Id에 해당하는 비디오데이터의 조회수(hit)을 1 감소시킨다.
+         */
+        if(videoService.updateVideoHitMinusById(videoId))
+            return new ResponseEntity<String>("조회수 증가 성공", HttpStatus.CREATED);
+        else
+            return new ResponseEntity<String>("없는 아이디 조회로 실패", HttpStatus.NO_CONTENT);
+    }
 }
