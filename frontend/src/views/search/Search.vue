@@ -1,7 +1,10 @@
 <template>
   <div class="search-box"> 
     <div class="txtcolor-white-ngreen main-title"> '{{ input }}' 에 대한 검색 결과입니다  </div>
-    <SearchVideoGrid :videos="search_videos"/>
+    <SearchVideoGrid
+      :videos="search_videos"
+      :keywordValue="input"
+    />
   </div>
 </template>
 
@@ -13,14 +16,16 @@ export default {
   data: function () {
     return {
       input: this.$route.params.input,
-      search_videos: []
+      search_videos: [],
+      pageValue: 0,
+      sizeValue: 20
     }
   },
   components: {
     SearchVideoGrid,
   },
   created: function () {
-    this.getSearchs(this.input, 0, 20)
+    this.getSearchs(this.input, this.pageValue, this.sizeValue)
   },
   methods: {
     getSearchs(keywordValue, pageValue, sizeValue) {
