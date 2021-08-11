@@ -1,5 +1,5 @@
 <template>
-  <div class="bgcolor-deep-grey nav-sidebar close-sidebar overflow-auto">
+  <div class="bgcolor-deep-grey nav-sidebar close-sidebar">
     <nav class="nav flex-column">
       <div>
         <div v-if="!open" @click="openSidebar" class="sidebar-open-item">

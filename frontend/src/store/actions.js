@@ -107,6 +107,7 @@ export default {
 
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
+        return $axios.patch(URL, payload)
         return $axios.patch(URL)
     },
 
@@ -255,5 +256,11 @@ export default {
         const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { keyword: KEYWORD_VALUE, page: PAGE_VALUE, size: SIZE_VALUE }})
-    }
+    },
+
+    // ProfileUpdateDialog.vue
+    requestUpdateProfile(context, payload) {
+        const URL = `/auth/user`
+        return $axios.patch(URL, payload)
+    },
 }
