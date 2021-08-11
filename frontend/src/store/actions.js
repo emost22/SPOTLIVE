@@ -255,4 +255,10 @@ export default {
         const URL = `/auth/user`
         return $axios.patch(URL, payload)
     },
+    
+    // TicketCard.vue
+    requestDeleteTicket(context, payload) {
+      const URL = `/reservation/${payload.timetableId}`
+      return $axios.delete(URL)
+    }
 }
