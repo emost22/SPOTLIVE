@@ -59,6 +59,8 @@ export default {
     },
     showReservationData(state) {
         return state.showReservationData
-    }
-
+    },
+    getShowData(state) {
+        return state.getShowData
+    },
 }

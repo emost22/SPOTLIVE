@@ -169,5 +169,9 @@ export default {
 
     SET_SHOW_RESERVATION_INFO(state, payload) {
         state.showReservationData = payload
-    }
+    },
+
+    SET_GETSHOW_DATA (state, payload) {
+        state.getShowData = payload
+    },
 }

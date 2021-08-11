@@ -39,6 +39,7 @@ export default {
   },
   created: function () {
     this.getReservation()
+    console.log(this.reservations)
   },
   methods: {
     getReservation() {
