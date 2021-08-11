@@ -1,5 +1,12 @@
 <template>
-  <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
+  <div 
+    class="modal fade" 
+    id="ticketModal" 
+    ref="ticketDialog" 
+    tabindex="-1" 
+    aria-labelledby="ticketModalLabel" 
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
@@ -13,6 +20,7 @@
             <TicketCard
              :reservation="reservation"
              :idx="idx"
+             @closeTicketDialog="closeTicketDialog"
             />
           </div> 
         </div>
@@ -39,14 +47,18 @@ export default {
   },
   created: function () {
     this.getReservation()
-    console.log("[티켓다이알로그] 예약정보 리스트:", this.reservations)
   },
   methods: {
     getReservation() {
-      console.log("겟레저베이션")
       this.userId = this.loginUser.accountEmail
       this.reservations = this.loginUser.reservationResList
     },
+    closeTicketDialog() {
+      console.log(this.$refs)
+      var ticketDialog = bootstrap.Modal.getInstance(this.$refs.ticketDialog)
+      ticketDialog.hide()
+
+    }
   },
   computed: {
     ...mapGetters(['loginUser',]),
