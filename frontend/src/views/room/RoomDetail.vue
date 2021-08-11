@@ -57,7 +57,6 @@
 
 <script>
 import { mapGetters } from "vuex"
-import { OpenVidu } from 'openvidu-browser'
 
 export default {
   name: 'RoomDetail',

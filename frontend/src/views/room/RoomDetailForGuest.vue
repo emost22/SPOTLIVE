@@ -87,7 +87,7 @@ export default {
           userName: "김민권2",
           profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
           charStr: "안녕하세요, 채팅입니다! 2"
-          },
+        },
       ]
     }
   },
