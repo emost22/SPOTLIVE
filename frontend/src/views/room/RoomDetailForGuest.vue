@@ -16,7 +16,7 @@
             <div class="videoDescription">{{ videoDescription }}</div>
           </div>
           <div>
-            <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ peopleWatching }}</span>
+            <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ hit }}</span>
             <span class="current-time"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
           </div>
         </div>
@@ -48,7 +48,6 @@
         
       </div>
       <div class="d-flex flex-column align-items-center mt-3">
-        <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
         <button class="bdcolor-nyellow extra-big-button m-1" @click="closeStreaming()">스트리밍 종료</button>
       </div>
     </div>
@@ -92,11 +91,7 @@ export default {
     }
   },
   methods: {
-    openRoomSettingDialog() {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
-    },
     closeStreaming() {
-      this.$store.dispatch('requestLeaveSession')
       this.$router.push({ name: 'Main' })
     },
     startTimer() {
@@ -197,10 +192,19 @@ export default {
       })
     },
   },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch('requestMinusHit', { videoId: this.videoId })
+    .then((response) => {
+      console.log(response)
+      this.sendExit()
+      this.$store.dispatch('requestLeaveSession')
+      this.$store.dispatch('requestSetDefaultForOpenvidu')
+    }).catch((error) => console.log(error))
+    next()
   },
-  
   mounted() {
     this.videoId = this.$route.params.videoId
+    this.$store.dispatch('requestPlusHit', { videoId: this.videoId })
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
       console.log(response)
@@ -210,6 +214,7 @@ export default {
       this.startTime = response.data.startTime
       this.sessionId = response.data.sessionId
       this.mainStreamAccountEmail = response.data.userRes.accountEmail
+      this.hit = response.data.hit
       
       this.initSession(new OpenVidu())
       this.doOpenviduCall()
