@@ -100,7 +100,6 @@ export default {
       var tmpDay = day.split("-")
       this.date =  tmpDay[1] + "/" + tmpDay[2]
       this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
-      // 시간 문자열 슬라이싱 추가해주세요 날짜는 했어요!
     },
     clickReservationDeleteButton() {
       // 예약 삭제 axios actions.js에서 요청
@@ -117,6 +116,9 @@ export default {
         time: this.time,
       }
       this.$store.dispatch('requestGetShowData', showData)
+      // ShowReservationDialogInProfile에 공연 정보 전송
+      // TicketDialog닫는 이벤트 리스너? 추가 부탁 
+      // ShowReservationDialogInProfile 모달창 열기는 이미 구현되어있는데 안 닫아져서 밑에 묻혀서 열리는 상태
     },
   },
   computed: {
