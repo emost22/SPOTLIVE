@@ -110,6 +110,10 @@ export default {
         return $axios.patch(URL)
     },
 
+    requestLeaveSession(context, payload) {
+        context.commit("LEAVE_SESSION")
+    },
+
     requestStartRecording(context, payload) {
         const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
         const AUTH_REQ = {
