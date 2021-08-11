@@ -3,8 +3,8 @@
     v-if="shows.length"
     :width="200" 
     :height="300"
-    :autoplay="false"
-    :autoplayTimeout="1200"
+    :autoplay="true"
+    :autoplayTimeout="1500"
     :space="300"
     :display="5"
   >
@@ -22,6 +22,7 @@
               showOnRight: (rightIndex >=0),
             }" 
             :show="show"
+            :inMyProfile="inMyProfile"
           />
       </template>
     </slide>
@@ -37,6 +38,10 @@ export default {
   props: {
     shows: {
       type: Array,
+      required: true
+    },
+    inMyProfile: {
+      type: Boolean,
       required: true
     }
   },

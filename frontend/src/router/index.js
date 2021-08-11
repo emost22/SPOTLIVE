@@ -37,14 +37,8 @@ const routes = [
     beforeEnter: requireAuth,
     component: Main
   },
-  // {
-  //   path: '/main',
-  //   name: 'Main',
-  //   beforeEnter: requireAuth,
-  //   component: Main
-  // },
   {
-    path: '/profile',
+    path: '/profile/:profileId',
     name: 'Profile',
     beforeEnter: requireAuth,
     component: Profile
@@ -56,7 +50,7 @@ const routes = [
     component: RoomCreate
   },
   {
-    path: '/room/detail',
+    path: '/room/detail/:videoId',
     name: 'RoomDetail',
     beforeEnter: requireAuth,
     component: RoomDetail
@@ -74,7 +68,7 @@ const routes = [
     component: RoomDetailForReplay
   },
   {
-    path: '/search',
+    path: '/search/:input',
     name: 'Search',
     beforeEnter: requireAuth,
     component: Search

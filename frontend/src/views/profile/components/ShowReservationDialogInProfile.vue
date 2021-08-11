@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 수정 삭제 -->
+    <!-- 예약 팝업 -->
   </div>
 </template>
 
@@ -8,13 +8,10 @@
 import { mapGetters } from "vuex"
 
 export default {
-  name: 'ShowDetailDialog',
+  name: 'ShowReservationDialogInProfile',
   data: function() {
     return {
       showId: '',
-      userId: '',
-      profileNickname: '',
-      profileImageUrl: '',
     }
   },
   created: function () {
@@ -22,10 +19,7 @@ export default {
   },
   methods: {
     getShow() {
-      // this.showId = 
-      this.userId = this.loginUser.accountEmail
-      this.profileNickname = this.loginUser.profileNickname
-      this.profileImageUrl = this.loginUser.profileImageUrl
+      this.showId = this.loginUser.accountEmail
     },
   },
   computed: {

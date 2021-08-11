@@ -2,11 +2,13 @@
   <div id="app">
     <div class="sticky-top match-parent">
       <MainHeader v-if="isLogin"/>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
     <RoomSettingDialog/>
     <ProfileUpdateDialog/>
     <ShowCreateDialog/>
+    <ShowDetailDialog/>
+    <ShowReservationDialogInProfile/>
     <TicketDialog/>
   </div>
 </template>
@@ -16,6 +18,8 @@ import { mapGetters } from "vuex"
 import MainHeader from './views/MainHeader.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
 import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
+import ShowDetailDialog from './views/profile/components/ShowDetailDialog.vue'
+import ShowReservationDialogInProfile from './views/profile/components/ShowReservationDialogInProfile.vue'
 import ProfileUpdateDialog from './views/profile/components/ProfileUpdateDialog.vue'
 import TicketDialog from './views/profile/components/TicketDialog.vue'
 
@@ -25,6 +29,8 @@ export default ({
     MainHeader,
     RoomSettingDialog,
     ShowCreateDialog,
+    ShowDetailDialog,
+    ShowReservationDialogInProfile,
     ProfileUpdateDialog,
     TicketDialog,
   },
