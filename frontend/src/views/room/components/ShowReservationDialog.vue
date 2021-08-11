@@ -124,23 +124,15 @@ export default {
     },
     formatter(date) {
       var dateTime = new Date(date)
-      var month = dateTime.getMonth()
-      month = month >= 10 ? month : '0' + month
-      var day = dateTime.getDate()
-      day = day >= 10 ? day : '0' + day
-      var hours = dateTime.getHours()
-      hours = hours >= 10 ? hours : '0' + hours
-      var minutes = dateTime.getMinutes()
-      minutes = minutes >= 10 ? minutes : '0' + minutes
-      return `${month}/${day} ${hours}:${minutes}`
+      
+      return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()} 
+        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable() {
       this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
         .then(res => {
-          console.log(res.data.timetables)
           res.data.timetables.forEach((timetable) => {
             var date = this.formatter(timetable.dateTime)
-            
             this.timetables.push({ v: timetable.timetableId, t: date})
           })
         })
@@ -164,13 +156,9 @@ export default {
         _this.getShowInfoTimeTable()
       })
       modal.addEventListener('hidden.bs.modal', function (event) {
-        console.log("hidden")
       })
     }
   },
-  mounted() {
-    
-  }
 }
 </script>
 
