@@ -1,6 +1,12 @@
 <template>
   <div>
-    <!-- 예약 팝업 -->
+  <div class="modal fade" id="showReservationInProfileModal" tabindex="-1" aria-labelledby="showReservationInProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog bdcolor-bold-npurple modal-design">
+      <div class="modal-content-m">
+        예약
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 

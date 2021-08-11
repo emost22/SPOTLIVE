@@ -296,4 +296,9 @@ export default {
         const URL = `/auth/user`
         return $axios.patch(URL, payload)
     },
+
+    // MyShowCard.vue
+    requestGetShowData({ commit }, payload) {
+        commit('SET_GETSHOW_DATA', payload)
+    },
 }

@@ -18,6 +18,7 @@ export default {
     subscribers: [],
     RESOLUTION: '960x540',
     createdVideoData: {},
+    getShowData: {},
     onCreateVideoLive: false,
     videoId: '',
     showReservationData: {
