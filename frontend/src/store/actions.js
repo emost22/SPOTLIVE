@@ -149,7 +149,17 @@ export default {
         const URL = '/video/record'
         return $axios.post(URL, payload)
     },
-        
+
+    requestPlusHit(context, payload) {
+        const URL = `/video/join/${payload.videoId}`
+        return $axios.patch(URL)
+    },
+
+    requestMinusHit(context, payload) {
+        const URL = `/video/exit/${payload.videoId}`
+        return $axios.patch(URL)
+    },
+
     // RoomSettingDialogForm.vue
     requestGetRecentlyTimeTable(context, payload) {
         const URL = `/showinfo/timetable/${payload.showInfoId}`
