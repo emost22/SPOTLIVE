@@ -159,9 +159,10 @@ export default {
 
     LEAVE_SESSION(state, payload) {
         console.log("MUTATION: LEAVE_SESSION() RUN...")
-        
         state.ovSession.disconnect()
+    },
 
+    SET_DEFAULT_FOR_OPENVIDU(state, payload) {
         state.mainStreamManager = undefined
         state.publisher = undefined
         state.subscribers = []
@@ -177,7 +178,7 @@ export default {
         state.ovSession.signal({
             data: payload.chatMsg,
             to: [],                     
-            type: 'my-chat'             
+            type: 'my-chat'
         }).then(() => {
             console.log('Message successfully sent');
         }).catch(error => {
