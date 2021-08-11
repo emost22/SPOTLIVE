@@ -3,8 +3,8 @@
     v-if="shows.length"
     :width="200" 
     :height="300"
-    :autoplay="false"
-    :autoplayTimeout="1200"
+    :autoplay="true"
+    :autoplayTimeout="1500"
     :space="300"
     :display="5"
   >

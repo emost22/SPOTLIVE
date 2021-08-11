@@ -84,6 +84,12 @@ export default {
       this.getProfile()
     }    
   },
+  mounted: function () {
+    this.profileId = this.$route.params.profileId
+  },
+  unmounted: function () {
+    this.profileId=''
+  },
   methods: {
     getUser() {
       this.userId = this.loginUser.accountEmail

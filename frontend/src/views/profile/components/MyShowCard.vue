@@ -19,10 +19,10 @@ export default {
   },
   created:function() {
     console.log(this.show.showInfoId)
-    console.log(this.show.showInfoDescription)
-    console.log(this.show.price)
-    console.log(this.show.runningTime)
-    console.log(this.show.showInfoTitle)
+    // console.log(this.show.showInfoDescription)
+    // console.log(this.show.price)
+    // console.log(this.show.runningTime)
+    // console.log(this.show.showInfoTitle)
   },
   methods: {
     goShowDetail: function () {

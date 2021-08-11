@@ -9,7 +9,12 @@
           <span class="txtcolor-npink logo">LIVE</span>
         </router-link>
         <div class="search">
-          <input type="text" class="bgcolor-mid-deep-grey txtcolor-white search-input" v-model.trim="input" placeholder="검색할 내용을 입력하세요">
+          <input type="text" 
+            class="bgcolor-mid-deep-grey txtcolor-white search-input" 
+            v-model.trim="input" 
+            placeholder="검색할 내용을 입력하세요"
+            @keyup.enter="clickSearchBtn"
+          >
           <button type="button"
             class="bgcolor-mid-deep-grey txtcolor-white search-btn text-align-center" 
             :disabled="!this.validSearch" 
