@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isSettingDialogOpen" class="modal fade" id="roomSettingDialog" ref="roomSettingDialog" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="roomSettingDialog" ref="roomSettingDialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
@@ -12,7 +12,6 @@
             <div class='content'>
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
-                :showInfoList="loginUser.showInfoResList"
                 @form-data="form => videoData = form"
                 :createdVideoData="createdVideoData"
               />
@@ -60,18 +59,11 @@ export default {
   },
   data: function () {
     return {
-      viewId: 0,
       categoryIds: [],
       videoData: {},
     }
   }, 
   methods: {
-    closeRoomSettingDialog: function () {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 0)
-    },
-    setViewId: function() {
-      viewId = settingDialogViewId
-    },
     checkMode: function() {
        if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
         delete this.videoData.showTime
@@ -82,19 +74,7 @@ export default {
     },
     roomSettingDialogButton: function () {
       this.checkMode()
-      if (this.settingDialogViewId == 1) {
-        this.setCreatedVideoDataInVuex()
-        console.log('[CLICK CONFIRM BUTTON OF RoomCreate dialog] INSERT VUEX')
-      } else if (this.settingDialogViewId == 2) {
-        this.$store.dispatch('requestUpdateSettingDialog', this.videoId, this.videoData)
-        .then(res => {
-          this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
-        })
-        .catch(err =>{
-          alert(err)
-        })
-        console.log('[CLICK CONFIRM BUTTON OF Roomdetail dialog] update axios')
-      }
+      this.setCreatedVideoDataInVuex()
     },
     setCreatedVideoDataInVuex: function () {
       this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
@@ -119,14 +99,6 @@ export default {
     .then((response) => {
       this.categoryIds = response.data
     })
-  },
-  beforeUpdate() {
-    if (this.settingDialogViewId == 1) {
-      console.log("1번이래요")
-    } else if (this.settingDialogViewId == 2) {
-      // 정보 get axios
-      console.log("2번이래요")
-    }
   },
 }
 </script>

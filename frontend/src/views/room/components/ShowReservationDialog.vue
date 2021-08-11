@@ -109,6 +109,7 @@ export default {
     reservateShow() {
       this.$store.dispatch('requestShowIsReservated', this.timetableId)
       .then(res => {
+          console.log(res.status == 204)
           if (res.status == 200) {
           this.clickToast(1)
         } else if (res.status == 204){

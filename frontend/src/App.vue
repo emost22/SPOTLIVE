@@ -5,6 +5,7 @@
       <router-view :key="$route.fullPath"></router-view>
     </div>
     <RoomSettingDialog/>
+    <RoomSettingUpdateDialog/>
     <ProfileUpdateDialog/>
     <ShowCreateDialog/>
     <ShowDetailDialog/>
@@ -19,6 +20,7 @@
 import { mapGetters } from "vuex"
 import MainHeader from './views/MainHeader.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
+import RoomSettingUpdateDialog from './views/room/components/RoomSettingUpdateDialog.vue'
 import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
 import ShowDetailDialog from './views/profile/components/ShowDetailDialog.vue'
 import ShowUpdateDialog from './views/profile/components/ShowUpdateDialog.vue'
@@ -32,6 +34,7 @@ export default ({
   components: {
     MainHeader,
     RoomSettingDialog,
+    RoomSettingUpdateDialog,
     ShowCreateDialog,
     ShowDetailDialog,
     ShowUpdateDialog,

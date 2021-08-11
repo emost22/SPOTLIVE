@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="d-flex flex-column align-items-center mt-3">
-        <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
+        <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingUpdateDialog" >스트리밍 수정</button>
         <button class="bdcolor-nyellow extra-big-button m-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" >스트리밍 종료</button>
       </div>
     </div>
@@ -102,9 +102,6 @@ export default {
     }
   },
   methods: {
-    openRoomSettingDialog() {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
-    },
     closeStreaming() {
       this.$router.push({ name: 'Main' })
     },
