@@ -21,13 +21,13 @@
                 </div>
                 <div class="show-info">
                   <div class="mb-3">
-                    <div class="label-alignment"><label class="form-label">공연명</label></div>
+                    <div class="label-alignment"><label class="form-label label-in-dialog">공연명</label></div>
                     <div class="d-flex">
                     {{ showReservationData.showInfoTitle }}
                     </div>
                   </div>
                   <div class="mb-3">
-                    <div class="label-alignment"><label class="form-label">티켓가격</label></div>
+                    <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
                     <div class="d-flex">
                     {{ showReservationData.price }}원
                     </div>
@@ -35,7 +35,7 @@
                   <div class="mb-3 d-flex">
                     <div class="me-3">
                       <div class="label-alignment">
-                        <label class="form-label">공연 시간</label>
+                        <label class="form-label label-in-dialog">공연 시간</label>
                       </div>
                       <select class="custom-select-control-m">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
@@ -43,7 +43,7 @@
                     </div>
                     <div>
                       <div class="label-alignment">
-                        <label class="form-label">러닝타임</label>
+                        <label class="form-label label-in-dialog">러닝타임</label>
                       </div>
                       <input type="text" class="custom-form-control" v-model="showReservationDataRunningTime" readonly="readonly" disabled>
                     </div>
@@ -51,7 +51,7 @@
                 </div>
               </div>
               <div class="mb-3 label-alignment">
-                <div ><label class="form-label"> 공연 설명</label></div>
+                <div ><label class="form-label label-in-dialog"> 공연 설명</label></div>
                 <div>{{ showReservationData.showInfoDescription }}</div>
               </div>
             </form>
@@ -208,5 +208,9 @@ export default {
   width: 100%;
   height: 100%;
   background-size: cover;
+}
+.label-in-dialog {
+  font-size: 1.05rem;
+  font-weight: bold;
 }
 </style>
