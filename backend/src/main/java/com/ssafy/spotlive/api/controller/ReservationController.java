@@ -76,19 +76,16 @@ public class ReservationController {
          * @Method 설명 : timetableId와 accountEmail로 해당 예약을 삭제한다.
          */
         int validTokenStatusValue = authService.isValidToken(accessToken);
-        String accountEmail;
-        if(validTokenStatusValue == 200){
+        if(validTokenStatusValue == 200) {
             String[] splitToken = accessToken.split(" ");
-            UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
-            accountEmail = userRes.getAccountEmail();
-        }else if(validTokenStatusValue == 401) {
+            Long exist = reservationService.deleteReservationById(splitToken[1], timetableId);
+            if(exist == 1) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else if(validTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Long exist = reservationService.deleteReservationById(timetableId, accountEmail);
-        if(exist == 1) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{timetableId}")

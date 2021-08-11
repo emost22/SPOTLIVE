@@ -48,14 +48,15 @@ public class ReservationServiceImpl implements ReservationService{
     }
 
     @Override
-    public Long deleteReservationById(long timetableId, String accountEmail) {
+    public Long deleteReservationById(String accessToken, long timetableId) {
         /**
          * @Method Name : deleteReservationById
          * @작성자 : 금아현
          * @Method 설명 : 예약 정보를 id로 삭제
          */
+        String accountEmail = userRepository.findUserByAccessToken(accessToken).get().getAccountEmail();
         return reservationRepository.deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail);
-    }
+   }
 
     @Override
     public Boolean findReservationById(long timetableId, String accountEmail) {

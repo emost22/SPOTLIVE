@@ -16,7 +16,7 @@
             <div class="videoDescription">{{ this.videoDescription }}</div>
           </div>
           <div>
-            <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ subscribers.length }}</span>
+            <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ hit }}</span>
             <span class="current-time"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
           </div>
         </div>
@@ -92,6 +92,7 @@ export default {
         m: '',
         s: '',
       },
+      hit: 0,
       chatMsg: "",
       chatList: [
           {
@@ -115,28 +116,7 @@ export default {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     },
     closeStreaming() {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 0)
-      this.$store.dispatch('requestSetCreatedVideoData', {})
-      this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
-      .then(response => {
-        console.log("the then in endRecoding()...")
-        console.log(response)
-        this.recordURL = response.data.url
-        console.log("저장된 URL: " + this.recordURL)
-        if(this.isRecord) this.insertVideoUrlAndCloseStreaming()
-        else {
-          this.$store.dispatch('requestCloseVideo', this.videoId)
-          .then(res => {
-            console.log(res)
-            this.$router.push({ name: 'Main' })
-          }).catch((error) => {
-            console.log(error)
-          })
-        }
-      }).catch(error => {
-        console.log("the error in endRecoding()...")	
-        console.log(error)	
-			})
+      this.$router.push({ name: 'Main' })
     },
     startTimer() {
       setInterval(() => {
@@ -161,6 +141,19 @@ export default {
         }).catch((error) => {
           console.log(error)
         })
+      })
+    },
+    addEventForJoinAndExit() {
+      this.ovSession.on('signal:join-video', (event) => {
+        let eventAccountEmail = event.data
+        console.log('[OPENVIDU] JOIN ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
+      })
+      
+      this.ovSession.on('signal:exit-video', (event) => {
+        let eventAccountEmail = event.data
+        console.log('[OPENVIDU] EXIT ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
       })
     },
     sendChat() {
@@ -196,8 +189,8 @@ export default {
         console.log(response)
         this.$store.dispatch('requestCloseVideo', this.videoId)
         .then(res => {
+          this.$store.dispatch('requestSetDefaultForOpenvidu')
           console.log(res)
-          this.$router.push({ name: 'Main' })
         }).catch((error) => {
           console.log(error)
         })
@@ -205,14 +198,21 @@ export default {
         console.log("the error in insertVideoUrl()...")
         console.log(error)
       })
-    }
+    },
+    updateVideoInfo() {
+      this.$store.dispatch('requestGetRoomDetail', this.videoId)
+      .then((response) => {
+        console.log(response)
+        this.videoDescription = response.data.videoDescription
+        this.category = response.data.categoryRes.categoryName
+        this.videoTitle = response.data.videoTitle
+        this.startTime = response.data.startTime
+        this.hit = response.data.hit
+      })
+    },
   },
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
-  },
-  beforeRouteLeave (to, from, next) {
-    this.$store.dispatch("requestSetUserOnCreateVideo", false)
-    next()
   },
   mounted() {
     this.videoId = this.$route.params.videoId
@@ -222,6 +222,7 @@ export default {
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
+      this.hit = response.data.hit
       this.userThumbnail = response.data.userRes.profileImageUrl
       var videoData = {
         categoryId: response.data.categoryRes.categoryId,
@@ -240,6 +241,31 @@ export default {
     }
     this.startTimer()
     this.addEventForChat()
+    this.addEventForJoinAndExit()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
+    .then(response => {
+      console.log("the then in endRecoding()...")
+      console.log(response)
+      this.recordURL = response.data.url
+      console.log("저장된 URL: " + this.recordURL)
+      if(this.isRecord) this.insertVideoUrlAndCloseStreaming()
+      else {
+        this.$store.dispatch('requestCloseVideo', this.videoId)
+        .then(res => {
+          console.log(res)
+          this.$store.dispatch('requestLeaveSession')
+        }).catch((error) => {
+          console.log(error)
+        })
+      }
+      next()
+    }).catch(error => {
+      console.log("the error in endRecoding()...")	
+      console.log(error)	
+		}) 
   },
   watch: {
     mainStreamManager: function(val, oldVal) {
