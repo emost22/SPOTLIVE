@@ -6,14 +6,14 @@
       </div> 
       <div class="d-flex flex-row mt-3">
         <div class="d-flex flex-column justify-content-center align-items-center">
-          <img src="~@/assets/icon-profile.png" class="profile-img bdcolor-npink">
+          <img :src="this.userThumbnail" class="profile-img bdcolor-npink">
           <img src="~@/assets/icon-live-badge.png" class="badge-design">
         </div>
         <div class="d-flex flex-row justify-content-between detail-top ms-3">
           <div class="d-flex flex-column">
-            <div class="videoTitle">{{ videoTitle }}</div>
-            <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ category }}</div>
-            <div class="videoDescription">{{ videoDescription }}</div>
+            <div class="videoTitle">{{ this.videoTitle }}</div>
+            <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ this.category }}</div>
+            <div class="videoDescription">{{ this.videoDescription }}</div>
           </div>
           <div>
             <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ subscribers.length }}</span>
@@ -68,6 +68,7 @@ export default {
       category: "",
       videoTitle: "",
       startTime: "",
+      userThumbnail: "",
       takenTime: {
         h: '',
         m: '',
@@ -96,6 +97,8 @@ export default {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     },
     closeStreaming() {
+      this.$store.dispatch('requestSetIsOpenSettingDialog', 0)
+      this.$store.dispatch('requestSetCreatedVideoData', {})
       this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
       .then(response => {
         console.log("the then in endRecoding()...")
@@ -186,15 +189,32 @@ export default {
       })
     }
   },
+  beforeMount() {
+    this.$store.dispatch("requestSetUserOnCreateVideo", true)
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    next()
+  },
   mounted() {
     this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
-      console.log(response)
       this.videoDescription = response.data.videoDescription
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
+      this.userThumbnail = response.data.userRes.profileImageUrl
+      var videoData = {
+        categoryId: response.data.categoryRes.categoryId,
+        thumbnailImage: response.data.thumbnailUrl,
+        videoDescription: this.videoDescription,
+        videoTitle: this.videoTitle,
+        showInfoId: this.showInfoRes != null ? this.showInfoRes.showInfoId : '',
+        showTime: this.showInfoRes != null ? this.showInfoRes.showTime : '',
+        mode: response.data.mode,
+      }
+      this.$store.dispatch('requestSetCreatedVideoData', videoData)
     })
     if(this.mainStreamManager != undefined) {
       this.mainStreamManager.addVideoElement(this.$refs.myVideo)
@@ -209,10 +229,30 @@ export default {
         console.log("MAIN STREAM MANAGER: WATCH CALL...")
         this.mainStreamManager.addVideoElement(this.$refs.myVideo)
       }
-    }
+    },
+    isSettingDialogOpen(value, oldvalue) {
+      if (value==false && this.settingDialogViewId==2) {
+        this.videoDescription = this.createdVideoData.videoDescription
+        this.category = this.createdVideoData.categoryName
+        this.videoTitle = this.createdVideoData.videoTitle
+      }
+    },
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers', 'RESOLUTION']),
+    ...mapGetters([
+      'loginUser', 
+      'ovSessionId', 
+      'ovToken', 
+      'OV', 
+      'ovSession', 
+      'audioDevices', 
+      'videoDevices', 
+      'createdVideoData', 
+      'mainStreamManager', 
+      'subscribers', 
+      'onCreateVideoLive', 
+      'isSettingDialogOpen', 
+      'settingDialogViewId']),
   },
 }
 </script>

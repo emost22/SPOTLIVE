@@ -152,11 +152,22 @@ export default {
     
     SET_IS_OPEN_SETTING_DIALOG(state, payload) {
         state.isSettingDialogOpen = !state.isSettingDialogOpen
-        console.log(!state.isSettingDialogOpen)
         state.settingDialogViewId = payload
     },
 
     SET_CREATEVIDEO_DATA (state, payload) {
         state.createdVideoData = payload
+    },
+
+    SET_USER_ON_CREATE_VIDEO (state, payload) {
+        state.onCreateVideoLive = payload
+    },
+    
+    SET_VIDEO_ID (state, payload) {
+        state.videoId = payload
+    },
+
+    SET_SHOW_RESERVATION_INFO(state, payload) {
+        state.showReservationData = payload
     }
 }

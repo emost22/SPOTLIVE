@@ -17,5 +17,20 @@ export default {
     publisher: undefined,
     subscribers: [],
     RESOLUTION: '960x540',
-    createdVideoData: {}
+    createdVideoData: {},
+    onCreateVideoLive: false,
+    videoId: '',
+    showReservationData: {
+        runningTime: '',
+        posterUrl: '',
+        price: '',
+        showInfoDescription: '',
+        showInfoId: '',
+        showInfoTitle: '',
+        userRes: {
+          accountEmail:'',
+          userName: '',
+          profileImageUrl:''
+        }
+      }
 }

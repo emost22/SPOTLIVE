@@ -83,6 +83,7 @@ export default {
 
     requestGetCategoryIds(context) {
         const URL = '/category/'
+        
         return $axios.get(URL)
     },
 
@@ -92,17 +93,24 @@ export default {
 
     requestStartStreaming(context, payload) {
         const URL = '/video/insert'
+
         return $axios.post(URL, payload)
+    },
+
+    requestSetUserOnCreateVideo({ commit }, payload) {
+        commit('SET_USER_ON_CREATE_VIDEO', payload)
     },
 
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
+
         return $axios.get(URL)
     },
 
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
+
         return $axios.patch(URL, payload)
         return $axios.patch(URL)
     },
@@ -134,11 +142,44 @@ export default {
         return $axios.post(URL, payload)
     },
         
+    
+    requestSetShowReservationInfo({ commit }, payload) {
+        commit('SET_SHOW_RESERVATION_INFO', payload)
+    },
+
+    requestGetShowTimetable(context, payload) {
+        const URL = `/showinfo/${payload}`
+
+        return $axios.get(URL)
+    },
+
     // RoomSettingDialogForm.vue
     requestGetRecentlyTimeTable(context, payload) {
         const URL = `/showinfo/timetable/${payload.showInfoId}`
         console.log(URL)
         return $axios.get(URL)
+    },
+
+    requestUpdateSettingDialog(context, payload, data) {
+        const URL = `/video/${payload}`
+
+        return $axios.patch(URL, data)
+    },
+
+    requestSetVideoId({ commit }, payload) {
+        commit('SET_VIDEO_ID', payload)
+    },
+
+    requestShowIsReservated(context, payload) {
+        const URL = `/reservation/${payload}`
+
+        return $axios.get(URL)
+    },
+
+    requestReservateShow(context, payload) {
+        const URL = `/reservation/${payload.timetableId}`
+
+        return $axios.post(URL)
     },
 
     // Main.vue

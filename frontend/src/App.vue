@@ -10,6 +10,7 @@
     <ShowDetailDialog/>
     <ShowReservationDialogInProfile/>
     <TicketDialog/>
+    <ShowReservationDialog/>
   </div>
 </template>
 
@@ -22,6 +23,7 @@ import ShowDetailDialog from './views/profile/components/ShowDetailDialog.vue'
 import ShowReservationDialogInProfile from './views/profile/components/ShowReservationDialogInProfile.vue'
 import ProfileUpdateDialog from './views/profile/components/ProfileUpdateDialog.vue'
 import TicketDialog from './views/profile/components/TicketDialog.vue'
+import ShowReservationDialog from './views/room/components/ShowReservationDialog.vue'
 
 export default ({
   name: "App",
@@ -33,6 +35,7 @@ export default ({
     ShowReservationDialogInProfile,
     ProfileUpdateDialog,
     TicketDialog,
+    ShowReservationDialog,
   },
   data: function () {
     return {
@@ -335,9 +338,9 @@ label:hover {
   padding: 10px;
 }
 .toast {
-  width: 450px;
+  width: 300px;
   max-width: 100%;
-  font-size: .875rem;
+  font-size: 1rem;
   pointer-events: auto;
   background-color: #6A6A6A;
   background-clip: padding-box;
@@ -355,5 +358,9 @@ label:hover {
   border-bottom: 1px solid rgba(0,0,0,.05);
   border-top-left-radius: calc(.25rem - 1px);
   border-top-right-radius: calc(.25rem - 1px);
+}
+.toast-body {
+  color: white;
+  text-align: left;
 }
 </style>

@@ -17,19 +17,19 @@
         </div>
         <div class="d-flex mt-1">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="1" v-model="form.mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
             <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
               공연용
             </label>
           </div>
           <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="2" v-model="form.mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
             <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
               홍보용
             </label>
           </div>
           <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="3" v-model="form.mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
             <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
               소통용
             </label>
@@ -60,22 +60,11 @@
       <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-      <div id="liveToast" ref="myToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="5000">
-        <div class="toast-header">
-          <strong class="me-auto">공연을 추가하기 위해 프로필로 이동해 주세요</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          등록된 공연이 없다면 <strong class="me-auto">프로필 > 공연 생성 </strong>버튼 클릭하여 상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
-        </div>
-      </div>
-    </div>
-    
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'RoomSettingDialogForm',
   props: {
@@ -86,7 +75,7 @@ export default {
     showInfoList: {
       type: Array,
       default: [],
-    }
+    },
   },
   data: function () {
     return {
@@ -104,6 +93,21 @@ export default {
       showInfoIds: [],
       toast: null,
     }
+  },
+  computed: {
+    ...mapGetters(['createdVideoData', 'isSettingDialogOpen', 'settingDialogViewId']),
+  },
+  watch: {
+    isSettingDialogOpen(value, oldvalue) {
+      if (value && this.settingDialogViewId==2) {
+        this.form.categoryId = this.createdVideoData.categoryId
+        this.form.fileName = this.createdVideoData.thumbnailImage
+        this.form.videoDescription = this.createdVideoData.videoDescription
+        this.form.videoTitle = this.createdVideoData.videoTitle
+        this.form.showInfoId = this.createdVideoData.showInfoId
+        this.form.showTime = this.createdVideoData.showTime
+      }
+    },
   },
   methods: {
     handleFileChange(e) {
@@ -123,25 +127,24 @@ export default {
       }).catch((error) => {
       })
     },
-    clickToast() {
-      var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.myToast)
-      myToast.show()
+    makeToolTipsObject () {
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return bootstrap.Tooltip.getOrCreateInstance(tooltipTriggerEl)
+      })
     }
   },
   created() {
     this.makeShowInfoIds()
   },
   mounted() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return bootstrap.Tooltip.getOrCreateInstance(tooltipTriggerEl)
-    })
-    console.log(tooltipList)
+    this.makeToolTipsObject()
   },
   beforeUpdate() {
-    if (this.form.mode == 2 || this.form.mode == 3) {
-      delete this.form.showTime
-      if (this.form.mode == 3) {
+    console.log("asdf")
+    if (this.form.mode == '홍보' || this.form.mode == '소통') {
+        delete this.form.showTime
+      if (this.form.mode == '소통') {
         delete this.form.showInfoId
       }
     } 

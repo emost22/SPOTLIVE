@@ -15,14 +15,20 @@
             <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ category }}</div>
             <div class="videoDescription">{{ videoDescription }}</div>
           </div>
-          <div>
-            <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ peopleWatching }}</span>
-            <span class="current-time"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
+          <div class="d-flex flex-column">
+            <div>
+              <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ peopleWatching }}</span>
+              <span class="current-time"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
+            </div>
+            <div v-if="isLive==false" class="d-flex flex-column align-items-center mt-3">
+              <button v-if="mode=='홍보'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showReservationDialog">예약하기</button>
+              <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#ShowInfoDialog">공연 상세 정보 보기</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="right-side d-flex flex-column flex-end">
+    <div v-if="isLive" class="right-side d-flex flex-column flex-end">
       <div class="chatting-part" style="position: relative;">
         <div class="chatting-screen">
           <div class="row" v-for="(chat, index) in chatList" :key="index">
@@ -47,9 +53,9 @@
         </div>
         
       </div>
-      <div class="d-flex flex-column align-items-center mt-3">
-        <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
-        <button class="bdcolor-nyellow extra-big-button m-1" @click="closeStreaming()">스트리밍 종료</button>
+      <div v-if="isLive" class="d-flex flex-column align-items-center mt-3">
+        <button v-if="mode=='홍보'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showReservationDialog">예약하기</button>
+        <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showInfoDialog">공연 상세 정보 보기</button>
       </div>
     </div>
   </div>
@@ -69,6 +75,8 @@ export default {
       videoDescription: "",
       category: "",
       videoTitle: "",
+      isLive:"",
+      mode: "",
       startTime: "",
       takenTime: {
         h: '',
@@ -177,11 +185,28 @@ export default {
       this.videoDescription = response.data.videoDescription
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
+      this.isLive = response.data.isLive
+      this.mode = response.data.mode
       this.startTime = response.data.startTime
       this.sessionId = response.data.sessionId
       this.mainStreamAccountEmail = response.data.userRes.accountEmail
+      var showInfoData = {
+        runningTime: response.data.showInfoRes.runningTime,
+        posterUrl: response.data.showInfoRes.posterUrl,
+        price: response.data.showInfoRes.price,
+        showInfoDescription: response.data.showInfoRes.showInfoDescription,
+        showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+        showInfoTitle: response.data.showInfoRes.showInfoTitle,
+        userRes: {
+          accountEmail: response.data.userRes.accountEmail,
+          userName: response.data.userRes.userName,
+          profileImageUrl:response.data.userRes.profileImageUrl
+        }
+      }
+      this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
       this.initSession(new OpenVidu())
       this.doOpenviduCall()
+      
     })
     this.startTimer()
   },
