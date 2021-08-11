@@ -80,6 +80,14 @@ export default {
         context.commit("SEND_CHAT", payload)
     },
 
+    requestSendJoin(context) {
+        context.commit("SEND_JOIN")
+    },
+
+    requestSendExit(context) {
+        context.commit("SEND_EXIT")
+    },
+
     // RoomCreate.vue (희진)
     requestSetIsOpenSettingDialog({ commit }, payload) {
         commit('SET_IS_OPEN_SETTING_DIALOG', payload)
