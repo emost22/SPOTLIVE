@@ -23,6 +23,16 @@ export default {
         state.ovSession = state.OV.initSession()
     },
 
+    LOGOUT(state, payload) {
+        console.log("MUTATION: LOGOUT() RUN...")
+        state.isLogin = false
+        localStorage.removeItem('loginUser')
+        localStorage.removeItem('accessToken')
+
+        $axios.defaults.headers['Authorization'] = ''
+        router.push({ name: "Login" })
+    },
+
     SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU(state, payload) {
         console.log("MUTATION: SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU() RUN...")
         state.ovSessionId = payload.ovSessionId
