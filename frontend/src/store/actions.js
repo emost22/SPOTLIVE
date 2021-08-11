@@ -143,6 +143,11 @@ export default {
         commit('SET_SHOW_RESERVATION_INFO', payload)
     },
 
+    requestGetShowTimetable(context, payload) {
+        const URL = `/showinfo/${payload}`
+        return $axios.get(URL)
+    },
+
     // RoomSettingDialogForm.vue
     requestGetRecentlyTimeTable(context, payload) {
         const URL = `/showinfo/timetable/${payload.showInfoId}`

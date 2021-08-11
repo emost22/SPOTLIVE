@@ -20,5 +20,17 @@ export default {
     createdVideoData: {},
     onCreateVideoLive: false,
     videoId: '',
-    showReservationData: {}
+    showReservationData: {
+        runningTime: '',
+        posterUrl: '',
+        price: '',
+        showInfoDescription: '',
+        showInfoId: '',
+        showInfoTitle: '',
+        userRes: {
+          accountEmail:'',
+          userName: '',
+          profileImageUrl:''
+        }
+      }
 }

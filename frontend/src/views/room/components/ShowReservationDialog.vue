@@ -121,24 +121,34 @@ export default {
         myToast.show()
       }
     },
+    getShowInfoTimeTable() {
+      this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
+        .then(res => {
+          console.log(res)
+        })
+    }
   },
   computed: {
     ...mapGetters([
     'showReservationData'
     ]),
   },
-  mounted() {
-    var modal= this.$refs.showReservationDialog
+  watch: {
+    showReservationData: function(val, oldval) {
+      var modal= this.$refs.showReservationDialog
+      var _this = this
       modal.addEventListener('show.bs.modal', function (event) {
-        console.log(this.showReservationData)
-        this.showInfoId = showReservationData.showInfoId
-        this.user = showReservationData.userRes
-        console.log("show")
+        _this.showInfoId = val.showInfoId
+        _this.user = val.userRes
+        _this.getShowInfoTimeTable()
       })
       modal.addEventListener('hidden.bs.modal', function (event) {
-        // do something...
         console.log("hidden")
       })
+    }
+  },
+  mounted() {
+    
   }
 }
 </script>
