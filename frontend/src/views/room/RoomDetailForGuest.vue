@@ -65,6 +65,7 @@ export default {
     return {
       videoId:"",
       sessionId: "",
+      mainStreamAccountEmail: "",
       videoDescription: "",
       category: "",
       videoTitle: "",
@@ -77,15 +78,15 @@ export default {
       peopleWatching: "0",
       chatMsg: "",
       chatList: [
-          {
-            userName: "김민권1",
-            profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
-            charStr: "안녕하세요, 채팅입니다! 1"
-          },
-          {
-            userName: "김민권2",
-            profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
-            charStr: "안녕하세요, 채팅입니다! 2"
+        {
+          userName: "김민권1",
+          profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
+          charStr: "안녕하세요, 채팅입니다! 1"
+        },
+        {
+          userName: "김민권2",
+          profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
+          charStr: "안녕하세요, 채팅입니다! 2"
           },
       ]
     }
@@ -118,6 +119,7 @@ export default {
         this.addEventInSession()
         this.addEventForChat()
         this.connectSessionForGuest()
+        this.addEventFormainStreamManager()
       }).catch((error) => {
         console.log(error)
       })
@@ -139,6 +141,17 @@ export default {
         })
       })
     },
+    addEventFormainStreamManager() {
+      this.ovSession.on('streamCreated', ({ stream }) => {
+        let streamAccountEmail = JSON.parse(stream.connection.data).clientData
+        console.log("addEventFormainStreamManager() run! (mainStreamAccountEmail=" + this.mainStreamAccountEmail + ", streamAccountEmail=" + streamAccountEmail + ")")
+        if(this.mainStreamAccountEmail == streamAccountEmail) {
+          this.$store.dispatch("requestSetmainStreamManager", { stream: stream })
+        } else {
+          this.$store.dispatch("requestSetSubscribe", { stream: stream })
+        }
+      })
+    },
     setSessionIdAndTokenForOpenvidu(sessionId, token) {
       this.$store.dispatch("requestSetSessionIdAndTokenForOpenvidu", {
         ovSessionId: sessionId,
@@ -157,6 +170,8 @@ export default {
   },
   
   mounted() {
+    console.log("MOUNTED!!!")
+    console.log(this.loginUser)
     this.videoId = this.$route.query.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
@@ -166,6 +181,7 @@ export default {
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
       this.sessionId = response.data.sessionId
+      this.mainStreamAccountEmail = response.data.userRes.accountEmail
       this.initSession(new OpenVidu())
       this.doOpenviduCall()
     })
@@ -173,8 +189,10 @@ export default {
   },
   watch: {
     mainStreamManager: function(val, oldVal) {
-      if(this.mainStreamManager != undefined) 
+      if(this.mainStreamManager != undefined) {
+        console.log("MAIN STREAM MANAGER: WATCH CALL...")
         this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+      }
     }
   },
   computed: {

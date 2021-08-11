@@ -37,7 +37,8 @@ export default {
   },
   methods: {
     goRoomDetail() {
-      this.$router.push({ name: 'RoomDetail', query: { videoId : this.video.videoId } })
+      if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', query: { videoId : this.video.videoId } })
+      else this.$router.push({ name: 'RoomDetailForReplay', query: { videoId : this.video.videoId } })
     },
     goProfile() {
       this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })

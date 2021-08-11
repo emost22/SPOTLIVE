@@ -33,7 +33,10 @@ export default {
   },
   watch: {
     mainStreamManager: function(val, oldVal) {
-      this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+      if(this.mainStreamManager != undefined) {
+        console.log("MAIN STREAM MANAGER: WATCH CALL...")
+        this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+      }
     }
   },
   computed: {
