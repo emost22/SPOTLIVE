@@ -51,7 +51,6 @@
             <button class="small-button col-md-5" @click="sendChat()"> 전송 </button>
           </div>
         </div>
-        
       </div>
       <div v-if="isLive" class="d-flex flex-column align-items-center mt-3">
         <button v-if="mode=='홍보'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showReservationDialog">예약하기</button>

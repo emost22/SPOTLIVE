@@ -45,7 +45,6 @@
             <button class="small-button col-md-5" @click="sendChat()"> 전송 </button>
           </div>
         </div>
-        
       </div>
       <div class="d-flex flex-column align-items-center mt-3">
         <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
@@ -77,7 +76,6 @@
 
 <script>
 import { mapGetters } from "vuex"
-import { OpenVidu } from 'openvidu-browser'
 
 export default {
   name: 'RoomDetail',
