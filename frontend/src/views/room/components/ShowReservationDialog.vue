@@ -113,7 +113,13 @@ export default {
           if (res.status == 200) {
           this.clickToast(1)
         } else if (res.status == 204){
-          this.clickToast(2)
+          this.$store.dispatch('requestReservateShow', {timetableId: this.timetableId})
+          .then(res => {
+            this.clickToast(2)
+          })
+          .catch(err => {
+            alert(err)
+          })
         }
       })
     },

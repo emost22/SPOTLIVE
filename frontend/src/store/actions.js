@@ -83,6 +83,7 @@ export default {
 
     requestGetCategoryIds(context) {
         const URL = '/category/'
+        
         return $axios.get(URL)
     },
 
@@ -92,6 +93,7 @@ export default {
 
     requestStartStreaming(context, payload) {
         const URL = '/video/insert'
+
         return $axios.post(URL, payload)
     },
 
@@ -102,11 +104,13 @@ export default {
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
+
         return $axios.get(URL)
     },
 
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
+
         return $axios.patch(URL, payload)
         return $axios.patch(URL)
     },
@@ -145,6 +149,7 @@ export default {
 
     requestGetShowTimetable(context, payload) {
         const URL = `/showinfo/${payload}`
+
         return $axios.get(URL)
     },
 
@@ -157,6 +162,7 @@ export default {
 
     requestUpdateSettingDialog(context, payload, data) {
         const URL = `/video/${payload}`
+
         return $axios.patch(URL, data)
     },
 
@@ -165,8 +171,15 @@ export default {
     },
 
     requestShowIsReservated(context, payload) {
-        const URL = `reservation/${payload}`
+        const URL = `/reservation/${payload}`
+
         return $axios.get(URL)
+    },
+
+    requestReservateShow(context, payload) {
+        const URL = `/reservation/${payload.timetableId}`
+
+        return $axios.post(URL)
     },
 
     // Main.vue
