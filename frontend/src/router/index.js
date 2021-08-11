@@ -56,13 +56,13 @@ const routes = [
     component: RoomDetail
   },
   {
-    path: '/room/detailforguest',
+    path: '/room/detailforguest/:videoId',
     name: 'RoomDetailForGuest',
     beforeEnter: requireAuth,
     component: RoomDetailForGuest
   },
   {
-    path: '/room/detailforreplay',
+    path: '/room/detailforreplay/:videoId',
     name: 'RoomDetailForReplay',
     beforeEnter: requireAuth,
     component: RoomDetailForReplay
