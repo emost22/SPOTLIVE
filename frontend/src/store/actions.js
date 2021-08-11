@@ -157,13 +157,16 @@ export default {
 
     requestUpdateSettingDialog(context, payload, data) {
         const URL = `/video/${payload}`
-        console.log(data)
-        console.log(payload)
         return $axios.patch(URL, data)
     },
 
     requestSetVideoId({ commit }, payload) {
         commit('SET_VIDEO_ID', payload)
+    },
+
+    requestShowIsReservated(context, payload) {
+        const URL = `reservation/${payload}`
+        return $axios.get(URL)
     },
 
     // Main.vue

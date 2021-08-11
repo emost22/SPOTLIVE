@@ -37,7 +37,7 @@
                       <div class="label-alignment">
                         <label class="form-label label-in-dialog">공연 시간</label>
                       </div>
-                      <select class="custom-select-control-m">
+                      <select class="custom-select-control-m" v-model="timetableId">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
@@ -99,19 +99,23 @@ export default {
   name: 'ShowReservationDialog',
   data: function () {
     return {
-      isReservated: true,
       showInfoId: '',
       timetables: [],
       user: {},
+      timetableId: '',
     }
   }, 
   methods: {
     reservateShow() {
-      if (this.isReservated) {
-        this.clickToast(1)
-      } else {
-        this.clickToast(2)
-      }
+      this.$store.dispatch('requestShowIsReservated', this.timetableId)
+      .then(res => {
+          console.log(res.status == 204)
+          if (res.status == 200) {
+          this.clickToast(1)
+        } else if (res.status == 204){
+          this.clickToast(2)
+        }
+      })
     },
     clickToast(viewId) {
       if (viewId == 1) {
@@ -131,6 +135,7 @@ export default {
     getShowInfoTimeTable() {
       this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
         .then(res => {
+          this.timetableId = res.data.timetables[0].timetableId
           res.data.timetables.forEach((timetable) => {
             var date = this.formatter(timetable.dateTime)
             this.timetables.push({ v: timetable.timetableId, t: date})
