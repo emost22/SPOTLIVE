@@ -6,12 +6,13 @@
     >
       <div
         class="col mx-4"
-        v-for="(video, idx) in videos"
+        v-for="(video, idx) in subVideo"
         :key="idx">
         <MyVideoCard
           :video="video"
         />
       </div>
+      <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
     </div>
     <div v-if="!videos.length">
       <p class="txtcolor-white-nyellow main-title">저장된 동영상이 존재하지 않습니다.</p>
@@ -30,10 +31,54 @@ export default {
       required: true
     }
   },
+  data(){
+    return {
+      pageValue: 0,
+      sizeValue: 20,
+      subVideo: this.$props.videos
+    }
+  },
+  created(){
+    console.log(this.$props.videos.length)
+    console.log(this.subVideo)
+    console.log('Call created')
+    setTimeout(() => {
+      console.log('setTimeout');
+      if(this.pageValue < this.$props.videos.length){
+        for(var i = this.pageValue; i < this.pageValue + this.sizeValue && i < this.$props.videos.length; i++){
+          this.subVideo.push(this.$props.videos[i])
+        }
+        this.pageValue += this.sizeValue
+        console.log(this.subVideo)
+      }
+    }, 1000)
+  },
   components: {
     MyVideoCard,
   },
   methods: {
+    infiniteHandler($state){
+      console.log('Call infiniteHandler Method')
+      setTimeout(() => {
+        console.log('props' + this.$props.videos.length)
+        if(this.pageValue < this.$props.videos.length){
+          $state.loaded()
+          for(var i = this.pageValue; i < this.pageValue + this.sizeValue && i < this.$props.videos.length; i++){
+            this.subVideo.push(this.$props.videos[i])
+          }
+          this.pageValue += this.sizeValue
+          console.log(this.subVideo)
+          console.log(this.pageValue)
+
+          if(this.pageValue >= this.$props.videos.length){
+            $state.complete()
+          }
+        }
+        else{
+          $state.complete()
+        }
+      }, 1000)
+    },
   }
 }
 </script>
