@@ -46,16 +46,13 @@ export default ({
   },
   data: function () {
     return {
-      isLogin: false,
       validSearch: true,
       input: '',
     }
   },
   methods: {
     logout: function () {
-      this.isLogin = false
-      this.$store.dispatch('logout', this.isLogin)
-      localStorage.removeItem('jwt')
+      this.$store.dispatch('requestLogout')
       this.$router.push({ name: 'Login' })
     },
     clickSearchBtn: function () {
@@ -69,7 +66,7 @@ export default ({
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'isLogin']),
+    ...mapGetters(['loginUser']),
     // FilterButton.vue에서 클릭 이벤트가 일어나면 카테고리 아이디를 받아서 인자를 넣어보자
   },
 })
