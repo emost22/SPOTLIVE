@@ -115,12 +115,15 @@ export default {
 
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
-        return $axios.patch(URL, payload)
         return $axios.patch(URL)
     },
 
     requestLeaveSession(context, payload) {
         context.commit("LEAVE_SESSION")
+    },
+    
+    requestSetDefaultForOpenvidu(context, payload) {
+        context.commit("SET_DEFAULT_FOR_OPENVIDU")
     },
 
     requestStartRecording(context, payload) {
