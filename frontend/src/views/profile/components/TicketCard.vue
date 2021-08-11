@@ -1,27 +1,43 @@
 <template>
   <div>
     <div class="ticket-img-num" v-if="open">
-      <div class="ticket-title">{{showTitle}}</div>
+      <div class="ticket-title">{{title}}</div>
       <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{showRunningTime}}분</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{showDate}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{showTime}}</button></div>
+        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
+        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{date}}</button></div>
+        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{time}}</button></div>
       </div>
       <div class="ticket-btn-line">
-        <div class="ticket-btn-box"><button @click="clickShowDetailButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button></div>
+        <div
+          class="ticket-btn-box" 
+          data-bs-toggle="modal" 
+          data-bs-target="#showReservationInProfileModal"
+          @click="clickShowReservationInProfileButton" 
+        >
+          <button @click="clickShowDetailButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
+        </div>
         <div class="ticket-btn-box"><button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">예약 취소</button></div>
       </div>
     </div>
     <div class="ticket-img-str" v-if="!open">
-      <div class="ticket-title">{{showTitle}}</div>
+      <div class="ticket-title">{{title}}</div>
       <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{showRunningTime}}분</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{showDate}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{showTime}}</button></div>
+        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
+        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{date}}</button></div>
+        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{time}}</button></div>
       </div>
       <div class="ticket-btn-line">
-        <div class="ticket-btn-box"><button @click="clickShowDetailButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button></div>
-        <div class="ticket-btn-box"><button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">예약 취소</button></div>
+        <div 
+          class="ticket-btn-box" 
+          data-bs-toggle="modal" 
+          data-bs-target="#showReservationInProfileModal"
+          @click="clickShowReservationInProfileButton" 
+        >
+          <button class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
+        </div>
+        <div class="ticket-btn-box">
+          <button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">예약 취소</button>
+        </div>
       </div>
     </div>
   </div>
@@ -47,17 +63,19 @@ export default {
       open: false,
       userId: '',
       showId : '',
-      showTitle: '',
-      showRunningTime : '',
-      showDate : '',
-      showTime : '',
+      title: '',
+      description: '',
+      posterUrl: '',
+      price: '',
+      runningTime : '',
+      date : '',
+      time : '',
     }
   },
   created: function () {
     this.getUser()
     this.getTicketImg()
     this.getReservation()
-    console.log(this.showTitle)
   },
   methods: {
     getUser() {
@@ -72,20 +90,35 @@ export default {
     },
     getReservation() {
       this.showId = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoId
-      this.showTitle = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle
-      this.showRunningTime = this.reservation.timetableFindByReservationRes.showInfoRes.runningTime
-      var date = this.reservation.timetableFindByReservationRes.dateTime.substr(0,10).split(" ")[0]
-      var tmpDate = date.split("-")
-      this.showDate =  tmpDate[1] + "/" + tmpDate[2]
-      this.showTime = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
-      // 시간 문자열 슬라이싱 추가해주세요 날짜는 했어요!
+      this.title = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle
+      this.description  = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoDescription
+      this.posterUrl  = this.reservation.timetableFindByReservationRes.showInfoRes.posterUrl
+      this.price  = this.reservation.timetableFindByReservationRes.showInfoRes.price
+      this.runningTime = this.reservation.timetableFindByReservationRes.showInfoRes.runningTime
+      var day = this.reservation.timetableFindByReservationRes.dateTime.substr(0,10).split(" ")[0]
+      var tmpDay = day.split("-")
+      this.date =  tmpDay[1] + "/" + tmpDay[2]
+      this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
     },
     clickReservationDeleteButton() {
       // 예약 삭제 axios actions.js에서 요청
     },
-    clickShowDetailButton() {
-      // 예약 공연 상세 정보 조회 다이얼로그(ShowReservationDialog.vue) 
-      // 티켓 다이얼로그 닫고 공연 상세 정보 조회 다이얼로그 오픈 이건 아직 미완성이라 나중에 
+    clickShowReservationInProfileButton() {
+      var showData = {
+        showId: this.showId,
+        title: this.title,
+        description: this.description,
+        posterUrl: this.posterUrl,
+        price: this.price,
+        runningTime: this.runningTime,
+        date: this.date,
+        time: this.time,
+      }
+      this.$store.dispatch('requestGetShowData', showData)
+      // ShowReservationDialogInProfile에 공연 정보 전송
+      // $('#ticketModal').modal("hide")
+      // TicketDialog닫는 이벤트 리스너? 추가 부탁 위에꺼 안 먹는 듯 위치 어디에 둬야할지 찾기!
+      // ShowReservationDialogInProfile 모달창 열기는 이미 구현되어있는데 안 닫아져서 밑에 묻혀서 열리는 상태
     },
   },
   computed: {

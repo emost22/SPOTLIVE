@@ -34,6 +34,9 @@ export default {
       required: true
     }
   },
+  created: function() {
+    console.log(this.show)
+  },
   methods: {
     goShowDetail: function () {
       var showData = {
@@ -43,7 +46,7 @@ export default {
         posterUrl: this.show.posterUrl,
         price: this.show.price,
         runningTime: this.show.runningTime,
-        // 공연시간 datetime
+        timetables: this.show.timetables,
       }
       this.$store.dispatch('requestGetShowData', showData)
     },
