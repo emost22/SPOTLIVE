@@ -277,4 +277,21 @@ public class VideoController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PostMapping("/join/{videoId}")
+    @ApiOperation(value = "조회수 1 증가", notes = "비디오 아이디를 입력받아 조회수를 1 증가한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 400, message = "조회 오류"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateVideoHitPlusById(
+            @PathVariable Long videoId) {
+        /**
+         * @Method Name : updateVideoHitPlusById
+         * @작성자 : 권영린
+         * @Method 설명 : 비디오Id에 해당하는 비디오데이터의 조회수(hit)을 1 증가시킨다.
+         */
+        videoService.updateVideoHitPlusById(videoId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }
