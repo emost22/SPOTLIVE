@@ -1,39 +1,37 @@
 <template>
   <div>
     <div class="ticket-img-num" v-if="open">
-      <div class="ticket-title">{{title}}</div>
+      <div class="ticket-title">{{this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle}}</div>
       <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
         <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{date}}</button></div>
         <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{time}}</button></div>
+        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
       </div>
       <div class="ticket-btn-line">
         <div
           class="ticket-btn-box" 
           data-bs-toggle="modal" 
           data-bs-target="#showReservationInProfileModal"
-          @click="clickShowReservationInProfileButton" 
         >
-          <button @click="clickShowDetailButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
+          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
         </div>
         <div class="ticket-btn-box"><button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">예약 취소</button></div>
       </div>
     </div>
     <div class="ticket-img-str" v-if="!open">
-      <div class="ticket-title">{{title}}</div>
+      <div class="ticket-title">{{this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle}}</div>
       <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
         <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{date}}</button></div>
         <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{time}}</button></div>
+        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
       </div>
       <div class="ticket-btn-line">
         <div 
           class="ticket-btn-box" 
           data-bs-toggle="modal" 
           data-bs-target="#showReservationInProfileModal"
-          @click="clickShowReservationInProfileButton" 
         >
-          <button class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
+          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
         </div>
         <div class="ticket-btn-box">
           <button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">예약 취소</button>
@@ -45,8 +43,8 @@
 
 <script>
 import { mapGetters } from "vuex"
-
 export default {
+  
   name: 'TicketCard',
   props: {
     reservation: {
@@ -70,12 +68,20 @@ export default {
       runningTime : '',
       date : '',
       time : '',
+      timetableId : '',
     }
   },
-  created: function () {
+  created() {
     this.getUser()
     this.getTicketImg()
     this.getReservation()
+  },
+  watch: {
+    reservation(val, oldVal) {
+      this.getUser()
+      this.getTicketImg()
+      this.getReservation()
+    }
   },
   methods: {
     getUser() {
@@ -99,9 +105,10 @@ export default {
       var tmpDay = day.split("-")
       this.date =  tmpDay[1] + "/" + tmpDay[2]
       this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
+      this.timetableId = this.reservation.timetableFindByReservationRes.timetableId
     },
     clickReservationDeleteButton() {
-      // 예약 삭제 axios actions.js에서 요청
+      this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})
     },
     clickShowReservationInProfileButton() {
       var showData = {
@@ -115,10 +122,10 @@ export default {
         time: this.time,
       }
       this.$store.dispatch('requestGetShowData', showData)
-      // ShowReservationDialogInProfile에 공연 정보 전송
-      // $('#ticketModal').modal("hide")
-      // TicketDialog닫는 이벤트 리스너? 추가 부탁 위에꺼 안 먹는 듯 위치 어디에 둬야할지 찾기!
-      // ShowReservationDialogInProfile 모달창 열기는 이미 구현되어있는데 안 닫아져서 밑에 묻혀서 열리는 상태
+      this.closeTicketDialog()
+    },
+    closeTicketDialog() {
+      this.$emit('closeTicketDialog')
     },
   },
   computed: {

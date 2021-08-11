@@ -322,6 +322,20 @@ export default {
         const URL = `/auth/user`
         return $axios.patch(URL, payload)
     },
+    
+    // TicketCard.vue
+  requestDeleteTicket(context, payload) {
+    const URL = `/reservation/${payload.timetableId}`
+    $axios.delete(URL)
+      .then(({ status }) => {
+        if (status == 204) {
+          console.log('삭제 성공!')
+          context.commit("DELETE_TICKET_DATA", {timetableId : payload.timetableId})
+        } else {
+          console.log('삭제 실패!')
+        }
+      })
+    },
 
     // MyShowCard.vue
     requestGetShowData({ commit }, payload) {
