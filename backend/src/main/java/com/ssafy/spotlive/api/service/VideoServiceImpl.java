@@ -297,6 +297,18 @@ public class VideoServiceImpl implements VideoService{
         }
     }
 
+    @Override
+    public Boolean updateVideoHitMinusById(Long videoId) {
+        Optional<Video> videoById = videoRepository.findById(videoId);
+        if(videoById.isPresent()){
+            videoById.get().setHit(videoById.get().getHit()-1);
+            videoRepository.save(videoById.get());
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
     public String makeSessionId() {
         String sessionId = "session";
         for(int i = 0; i < 8; i++) sessionId = sessionId + String.valueOf(new Random().nextInt(9) + 1);
@@ -309,4 +321,6 @@ public class VideoServiceImpl implements VideoService{
         userVideoId.setVideo(userVideo.getVideo().getVideoId());
         return userVideoId;
     }
+
+
 }

@@ -28,4 +28,5 @@ public interface VideoService {
     VideoOpenViduSessionGetRes createToken(String sessionId);
     int closeSession(String sessionId);
     Boolean updateVideoHitPlusById(Long videoId);
+    Boolean updateVideoHitMinusById(Long videoId);
 }
