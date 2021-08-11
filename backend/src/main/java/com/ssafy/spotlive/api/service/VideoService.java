@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
+import com.ssafy.spotlive.api.request.video.VideoInsertUrlByIdPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
@@ -21,8 +22,10 @@ public interface VideoService {
     Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq, String accountEmail);
     Boolean updateVideoEndTimeById(Long videoId, String accountEmail);
     List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail);
+    VideoFindByIdGetRes insertRecordUrlById(VideoInsertUrlByIdPostReq videoInsertUrlByIdPostReq);
 
     String createSession();
     VideoOpenViduSessionGetRes createToken(String sessionId);
     int closeSession(String sessionId);
+
 }

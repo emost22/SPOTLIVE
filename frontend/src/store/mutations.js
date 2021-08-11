@@ -1,7 +1,6 @@
+import { Publisher } from 'openvidu-browser'
 import router from '../router/index'
 import $axios from '../util/axios'
-
-const RESOLUTION = '960x540'
 
 export default {
 
@@ -46,14 +45,6 @@ export default {
             console.log('[OPENVIDU] Found Connection: ', { event })
         })
 
-        state.ovSession.on('streamCreated', ({ stream }) => {
-            let subscriber = state.ovSession.subscribe(stream, undefined)
-            console.log('[OPENVIDU] Add new user: ' + subscriber.id)
-            console.log(subscriber)
-            state.mainStreamManager = subscriber
-            state.subscribers.push(subscriber)
-        })
-
         state.ovSession.on('streamDestroyed', ({ stream }) => {
             console.log('[OPENVIDU] Stream Destroyed!')
             const index = state.subscribers.indexOf(stream.streamManager, 0)
@@ -67,6 +58,16 @@ export default {
             console.warn(exception)
         })
     },
+
+    SET_MAIN_STREAM_MANAGER(state, payload) {
+        console.log("MUTATION: SET_MAIN_STREAM_MANAGER() RUN...")
+        state.mainStreamManager = state.ovSession.subscribe(payload.stream, undefined)
+    },
+
+    SET_SUBSCRIBE(state, payload) {
+        console.log("MUTATION: SET_SUBSCRIBE() RUN...")
+        state.ovSession.subscribe(payload.stream, undefined)
+    },
     
     CONNECT_SESSION(state) {
         console.log("MUTATION: CONNECT_SESSION() RUN...")
@@ -78,7 +79,7 @@ export default {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-                resolution: RESOLUTION,  // The resolution of your video
+                resolution: state.RESOLUTION,  // The resolution of your video
                 frameRate: 30,			// The frame rate of your video
                 insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
                 mirror: false       	// Whether to mirror your local video or not
@@ -95,10 +96,11 @@ export default {
         console.log("MUTATION: CONNECT_SESSION_FOR_GUEST() RUN...")
         console.log("OV TOKEN: " + state.ovToken)
         console.log("ACCOUNT_EMAIL: " + state.loginUser.accountEmail)
-        state.ovSession.connect(state.ovToken, { clientData: state.loginUser.accountEmail })
+        state.ovSession.connect(state.ovToken, { clientData: "example@example.com" })
         .then((response) => {
-            state.mainStreamManager = state.subscribers[0]
+            console.log("CONNECT_SESSION_FOR_GUEST() SUCCESS!")
         }).catch((error) => {
+            console.log("CONNECT_SESSION_FOR_GUEST() FAIL!")
             console.log('There was an error connecting to the session:', error.code, error.message)
         })
     },
@@ -117,7 +119,7 @@ export default {
 			videoSource: state.videoDevices[state.videoDeviceId].deviceId, // The source of video. If undefined default webcam
 			publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
 			publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-			resolution: RESOLUTION,  // The resolution of your video
+			resolution: state.RESOLUTION,  // The resolution of your video
 			frameRate: 30,			// The frame rate of your video
 			insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
 			mirror: false       	// Whether to mirror your local video or not
@@ -135,7 +137,7 @@ export default {
     },
 
     SEND_CHAT(state, payload) {
-        console.log("MUTATION: CHANGE_DEVICE() RUN...")
+        console.log("MUTATION: SEND_CHAT() RUN...")
         console.log(payload.chatMsg)
         state.ovSession.signal({
             data: payload.chatMsg,

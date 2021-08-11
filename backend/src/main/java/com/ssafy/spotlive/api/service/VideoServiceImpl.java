@@ -2,6 +2,7 @@ package com.ssafy.spotlive.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
+import com.ssafy.spotlive.api.request.video.VideoInsertUrlByIdPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoFindByIdGetRes;
@@ -168,6 +169,8 @@ public class VideoServiceImpl implements VideoService{
         }
 
         video.setEndTime(LocalDateTime.now());
+        video.setSessionId("CLOSED_SESSION");
+        video.setIsLive(false);
         videoRepository.save(video);
 
         // User Video 삭제
@@ -188,6 +191,18 @@ public class VideoServiceImpl implements VideoService{
          */
         return videoRepository.findVideosByUserAccountEmail(accountEmail).stream()
                 .map(video -> VideoFindAllByUserIdGetRes.of(video)).collect((Collectors.toList()));
+    }
+
+    @Override
+    public VideoFindByIdGetRes insertRecordUrlById(VideoInsertUrlByIdPostReq videoInsertUrlByIdPostReq) {
+        /**
+         * @Method Name : insertRecordUrlById
+         * @작성자 : 김민권
+         * @Method 설명 : 비디오 URL을 추가한다.
+         */
+        Video video = videoRepository.findById(videoInsertUrlByIdPostReq.getVideoId()).get();
+        video.setVideoUrl(videoInsertUrlByIdPostReq.getVideoUrl());
+        return VideoFindByIdGetRes.of(videoRepository.save(video));
     }
 
     @Override

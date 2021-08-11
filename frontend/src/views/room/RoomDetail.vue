@@ -85,7 +85,10 @@ export default {
             profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
             charStr: "안녕하세요, 채팅입니다! 2"
           },
-      ]
+      ],
+      recordName: "",
+      recordURL: "",
+      isRecord: true,
     }
   },
   methods: {
@@ -93,10 +96,26 @@ export default {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     },
     closeStreaming() {
-      this.$store.dispatch('requestCloseVideo', this.videoId)
-      .then(res => {
-        console.log(res)
-      })
+      this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
+      .then(response => {
+        console.log("the then in endRecoding()...")
+        console.log(response)
+        this.recordURL = response.data.url
+        console.log("저장된 URL: " + this.recordURL)
+        if(this.isRecord) this.insertVideoUrlAndCloseStreaming()
+        else {
+          this.$store.dispatch('requestCloseVideo', this.videoId)
+          .then(res => {
+            console.log(res)
+            this.$router.push({ name: 'Main' })
+          }).catch((error) => {
+            console.log(error)
+          })
+        }
+      }).catch(error => {
+        console.log("the error in endRecoding()...")	
+        console.log(error)	
+			})
     },
     startTimer() {
       setInterval(() => {
@@ -125,9 +144,48 @@ export default {
     },
     sendChat() {
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
+    },
+    startRecoding() {
+      let today = new Date();
+      this.recordName = "REC_" + this.ovSessionId + "_" + today.getFullYear() + (today.getMonth() + 1) + today.getDate()
+      console.log(this.recordName)
+      const recReq = {
+        session: this.ovSessionId,
+        name: this.recordName,
+        outputMode: "COMPOSED",
+        hasAudio: true,
+        hasVideo: true,
+        recordingLayout:"BEST_FIT",
+        resolution: this.RESOLUTION,
+      }
+      this.$store.dispatch("requestStartRecording", recReq)
+      .then(response => {
+        console.log("the then in startRecoding()...")
+        console.log(response)
+      }).catch(error => {
+        console.log("the error in startRecoding()...")	
+        console.log(error)	
+			})
+    },
+    insertVideoUrlAndCloseStreaming() {
+      console.log("insertVideoUrlAndCloseStreaming() RUN!!!")
+      this.$store.dispatch('requestInsertVideoUrl', { videoId: this.videoId, videoUrl: this.recordURL })
+      .then((response) => {
+        console.log("the then in insertVideoUrl()...")
+        console.log(response)
+        this.$store.dispatch('requestCloseVideo', this.videoId)
+        .then(res => {
+          console.log(res)
+          this.$router.push({ name: 'Main' })
+        }).catch((error) => {
+          console.log(error)
+        })
+      }).catch((error) => {
+        console.log("the error in insertVideoUrl()...")
+        console.log(error)
+      })
     }
   },
-  
   mounted() {
     this.videoId = this.$route.query.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
@@ -138,19 +196,23 @@ export default {
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
     })
-    if(this.mainStreamManager != undefined) 
+    if(this.mainStreamManager != undefined) {
       this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+      this.startRecoding()
+    }
     this.startTimer()
     this.addEventForChat()
   },
   watch: {
     mainStreamManager: function(val, oldVal) {
-      if(this.mainStreamManager != undefined) 
+      if(this.mainStreamManager != undefined) {
+        console.log("MAIN STREAM MANAGER: WATCH CALL...")
         this.mainStreamManager.addVideoElement(this.$refs.myVideo)
+      }
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers']),
+    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers', 'RESOLUTION']),
   },
 }
 </script>
