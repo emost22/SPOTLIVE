@@ -96,10 +96,8 @@ export default {
       this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
     },
     closeStreaming() {
-      this.$store.dispatch('requestCloseVideo', this.videoId)
-      .then(res => {
-        console.log(res)
-      })
+      this.$store.dispatch('requestLeaveSession')
+      this.$router.push({ name: 'Main' })
     },
     startTimer() {
       setInterval(() => {
@@ -182,6 +180,7 @@ export default {
       this.startTime = response.data.startTime
       this.sessionId = response.data.sessionId
       this.mainStreamAccountEmail = response.data.userRes.accountEmail
+      
       this.initSession(new OpenVidu())
       this.doOpenviduCall()
     })

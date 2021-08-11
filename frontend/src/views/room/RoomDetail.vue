@@ -107,6 +107,7 @@ export default {
           this.$store.dispatch('requestCloseVideo', this.videoId)
           .then(res => {
             console.log(res)
+            this.$store.dispatch('requestLeaveSession')
             this.$router.push({ name: 'Main' })
           }).catch((error) => {
             console.log(error)
@@ -176,6 +177,7 @@ export default {
         this.$store.dispatch('requestCloseVideo', this.videoId)
         .then(res => {
           console.log(res)
+          this.$store.dispatch('requestLeaveSession')
           this.$router.push({ name: 'Main' })
         }).catch((error) => {
           console.log(error)
