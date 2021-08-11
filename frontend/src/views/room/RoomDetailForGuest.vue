@@ -178,7 +178,13 @@ export default {
     },
     sendChat() {
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
-    }
+    }, 
+    sendJoin() {
+      this.$store.dispatch("requestSendJoin")
+    }, 
+    sendExit() {
+      this.$store.dispatch("requestSendExit")
+    }, 
     updateVideoInfo() {
       this.$store.dispatch('requestGetRoomDetail', this.videoId)
       .then((response) => {
