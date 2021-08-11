@@ -12,7 +12,7 @@ export default {
   name: "Search",
   data: function () {
     return {
-      input: this.$route.query.input,
+      input: this.$route.params.input,
       search_videos: []
     }
   },
@@ -39,8 +39,8 @@ export default {
       })
     },
   },
-  computed: {
-    // input 결과 값 지속적으로 관찰
+  watch() {
+    this.input
   },
 }
 </script>

@@ -170,9 +170,7 @@ export default {
   },
   
   mounted() {
-    console.log("MOUNTED!!!")
-    console.log(this.loginUser)
-    this.videoId = this.$route.query.videoId
+    this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
       console.log(response)

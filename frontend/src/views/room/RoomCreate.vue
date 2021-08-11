@@ -69,7 +69,7 @@ export default {
       let formData = this.makeFormDataForStartStreaming()
       this.$store.dispatch('requestStartStreaming', formData)
       .then((response) => {
-        this.$router.push({name: 'RoomDetail', query: { videoId : response.data.videoId }})
+        this.$router.push({name: 'RoomDetail', params: { videoId : response.data.videoId }})
       })
     },
     makeFormDataForStartStreaming() {

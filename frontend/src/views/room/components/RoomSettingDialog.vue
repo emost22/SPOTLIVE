@@ -77,7 +77,7 @@ export default {
     routeToProfile: function () {
       var roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
       roomSettingModal.hide()
-      this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
+      this.$router.push({name: 'Profile', params: { profileId : this.loginUser.accountEmail }})
     }
   },
   computed: {
