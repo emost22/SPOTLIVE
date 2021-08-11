@@ -51,7 +51,7 @@ export default {
         this.pageValue += this.sizeValue
         console.log(this.subVideo)
       }
-    }, 1000)
+    }, 1500)
   },
   components: {
     MyVideoCard,
