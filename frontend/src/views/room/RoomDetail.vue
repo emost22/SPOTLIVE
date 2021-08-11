@@ -6,14 +6,14 @@
       </div> 
       <div class="d-flex flex-row mt-3">
         <div class="d-flex flex-column justify-content-center align-items-center">
-          <img src="~@/assets/icon-profile.png" class="profile-img bdcolor-npink">
+          <img :src="this.userThumbnail" class="profile-img bdcolor-npink">
           <img src="~@/assets/icon-live-badge.png" class="badge-design">
         </div>
         <div class="d-flex flex-row justify-content-between detail-top ms-3">
           <div class="d-flex flex-column">
-            <div class="videoTitle">{{ videoTitle }}</div>
-            <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ category }}</div>
-            <div class="videoDescription">{{ videoDescription }}</div>
+            <div class="videoTitle">{{ this.videoTitle }}</div>
+            <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ this.category }}</div>
+            <div class="videoDescription">{{ this.videoDescription }}</div>
           </div>
           <div>
             <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ hit }}</span>
@@ -45,11 +45,30 @@
             <button class="small-button col-md-5" @click="sendChat()"> 전송 </button>
           </div>
         </div>
-        
       </div>
       <div class="d-flex flex-column align-items-center mt-3">
         <button class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog">스트리밍 수정</button>
-        <button class="bdcolor-nyellow extra-big-button m-1" @click="closeStreaming()">스트리밍 종료</button>
+        <button class="bdcolor-nyellow extra-big-button m-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" >스트리밍 종료</button>
+      </div>
+    </div>
+    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <h5 class="popUpTitle">종료하시겠습니까?</h5>
+        저장하기를 클릭하시면<br>
+        <strong>프로필 > 내 영상</strong>에서 다시볼 수 있습니다.<br>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="true" id="record" v-model="isRecord">
+          <label class="form-check-label" for="record">
+            영상 저장하기
+          </label>
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+          <div><button type="button" class="bdcolor-npink small-button mx-3">취소</button></div>
+          <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas" @click="closeStreaming()">확인</button></div>
+        </div>
       </div>
     </div>
   </div>
@@ -67,6 +86,7 @@ export default {
       category: "",
       videoTitle: "",
       startTime: "",
+      userThumbnail: "",
       takenTime: {
         h: '',
         m: '',
@@ -191,16 +211,29 @@ export default {
       })
     },
   },
+  beforeMount() {
+    this.$store.dispatch("requestSetUserOnCreateVideo", true)
+  },
   mounted() {
     this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
-      console.log(response)
       this.videoDescription = response.data.videoDescription
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
       this.hit = response.data.hit
+      this.userThumbnail = response.data.userRes.profileImageUrl
+      var videoData = {
+        categoryId: response.data.categoryRes.categoryId,
+        thumbnailImage: response.data.thumbnailUrl,
+        videoDescription: this.videoDescription,
+        videoTitle: this.videoTitle,
+        showInfoId: this.showInfoRes != null ? this.showInfoRes.showInfoId : '',
+        showTime: this.showInfoRes != null ? this.showInfoRes.showTime : '',
+        mode: response.data.mode,
+      }
+      this.$store.dispatch('requestSetCreatedVideoData', videoData)
     })
     if(this.mainStreamManager != undefined) {
       this.mainStreamManager.addVideoElement(this.$refs.myVideo)
@@ -211,6 +244,7 @@ export default {
     this.addEventForJoinAndExit()
   },
   beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("requestSetUserOnCreateVideo", false)
     this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
     .then(response => {
       console.log("the then in endRecoding()...")
@@ -239,10 +273,30 @@ export default {
         console.log("MAIN STREAM MANAGER: WATCH CALL...")
         this.mainStreamManager.addVideoElement(this.$refs.myVideo)
       }
-    }
+    },
+    isSettingDialogOpen(value, oldvalue) {
+      if (value==false && this.settingDialogViewId==2) {
+        this.videoDescription = this.createdVideoData.videoDescription
+        this.category = this.createdVideoData.categoryName
+        this.videoTitle = this.createdVideoData.videoTitle
+      }
+    },
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager', 'subscribers', 'RESOLUTION']),
+    ...mapGetters([
+      'loginUser', 
+      'ovSessionId', 
+      'ovToken', 
+      'OV', 
+      'ovSession', 
+      'audioDevices', 
+      'videoDevices', 
+      'createdVideoData', 
+      'mainStreamManager', 
+      'subscribers', 
+      'onCreateVideoLive', 
+      'isSettingDialogOpen', 
+      'settingDialogViewId']),
   },
 }
 </script>
@@ -327,5 +381,14 @@ export default {
   height: 20px;
   margin-top: -10px;
   margin-left: -1px;
+}
+.form-check .form-check-input {
+  float: none;
+  margin-right: 10px;
+}
+.form-check {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  margin-left: -1.5rem;
 }
 </style>

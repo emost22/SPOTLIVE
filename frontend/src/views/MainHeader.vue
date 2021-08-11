@@ -23,8 +23,7 @@
           </button>
         </div>        
         <ul class="navbar-nav">
-          <!-- 송출자가 라이브인 경우 스트리밍 버튼 제거 -->
-          <li class="nav-item header-item">
+          <li class="nav-item header-item" v-if="this.onCreateVideoLive==false">
             <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
@@ -71,7 +70,7 @@ export default ({
     }
   },
   computed: {
-    ...mapGetters(['loginUser']),
+    ...mapGetters(['loginUser', 'isLogin', 'onCreateVideoLive']),
     // FilterButton.vue에서 클릭 이벤트가 일어나면 카테고리 아이디를 받아서 인자를 넣어보자
   },
 })

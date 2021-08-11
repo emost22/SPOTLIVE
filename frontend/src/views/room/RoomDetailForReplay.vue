@@ -17,18 +17,14 @@
             <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ category }}</div>
             <div class="videoDescription">{{ videoDescription }}</div>
           </div>
-          <div>
-            
+          <div class="d-flex flex-column">
+            <div class="d-flex flex-column align-items-center mt-3">
+              <button class="bdcolor-nyellow extra-big-button m-1" @click="exitReplay()"> 나가기 </button>
+              <button v-if="mode=='홍보'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showReservationDialog">예약하기</button>
+              <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#ShowInfoDialog">공연 상세 정보 보기</button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="right-side d-flex flex-column flex-end">
-      <div class="chatting-part" style="position: relative;">
-
-      </div>
-      <div class="d-flex flex-column align-items-center mt-3">
-        <button class="bdcolor-nyellow extra-big-button m-1" @click="exitReplay()"> 나가기 </button>
       </div>
     </div>
   </div>
@@ -47,6 +43,7 @@ export default {
       category: "",
       videoTitle: "",
       videoUrl: "",
+      mode: "",
     }
   },
   methods: {
@@ -69,6 +66,21 @@ export default {
       this.videoTitle = response.data.videoTitle
       this.mainStreamAccountEmail = response.data.userRes.mainStreamAccountEmail
       this.videoUrl = response.data.videoUrl
+      this.mode = response.data.mode
+      var showInfoData = {
+        runningTime: response.data.showInfoRes.runningTime,
+        posterUrl: response.data.showInfoRes.posterUrl,
+        price: response.data.showInfoRes.price,
+        showInfoDescription: response.data.showInfoRes.showInfoDescription,
+        showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+        showInfoTitle: response.data.showInfoRes.showInfoTitle,
+        userRes: {
+          accountEmail: response.data.userRes.accountEmail,
+          userName: response.data.userRes.userName,
+          profileImageUrl:response.data.userRes.profileImageUrl
+        }
+      }
+      this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
     })
   },
   computed: {

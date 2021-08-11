@@ -50,6 +50,17 @@ export default {
     },
     RESOLUTION(state) {
         return state.RESOLUTION
-    }
-
+    },
+    onCreateVideoLive(state) {
+        return state.onCreateVideoLive
+    },
+    videoId(state) {
+        return state.videoId
+    },
+    showReservationData(state) {
+        return state.showReservationData
+    },
+    getShowData(state) {
+        return state.getShowData
+    },
 }
