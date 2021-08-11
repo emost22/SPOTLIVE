@@ -86,7 +86,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body">
-        즐기길 바라요 ❤️
+        멋진 공연 즐겨봐요❤️
       </div>
     </div>
   </div> 
