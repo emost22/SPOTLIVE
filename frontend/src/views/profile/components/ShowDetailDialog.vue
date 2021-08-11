@@ -34,6 +34,7 @@
                         <label class="form-label">공연 시간 <button class="calendar-plus-button"></button></label>
                       </div>
                       <select class="custom-select-control" aria-label="Default select showDetail">
+                        {{ getShowData.timetables}}
                         <option selected>7/29 13:00</option>
                         <option value="1">One</option>
                         <option value="2">One</option>
@@ -79,6 +80,7 @@ export default {
       description : '',
       price : '',
       runningTime : '',
+      timetables: '',
       userId: '',
       profileNickname: '',
       profileImageUrl: '',
@@ -95,7 +97,7 @@ export default {
       this.posterUrl = this.getShowData.posterUrl
       this.price = this.getShowData.price
       this.runningTime = this.getShowData.runningTime
-
+      this.timetables = this.getShowData.timetables
       this.userId = this.loginUser.accountEmail
       this.profileNickname = this.loginUser.profileNickname
       this.profileImageUrl = this.loginUser.profileImageUrl

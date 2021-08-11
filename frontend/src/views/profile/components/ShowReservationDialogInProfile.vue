@@ -3,6 +3,12 @@
     <div class="modal fade" id="showReservationInProfileModal" tabindex="-1" aria-labelledby="showReservationInProfileModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
         예약 {{ getShowData.title }}
+        <!-- 타인이 내 프로필에서 들어오는 경우 인자 -->
+        {{ getShowData.showId}}
+        {{ getShowData.timetables }}
+        <!-- 나의 예약내역에서 들어오는 경우 인자 -->
+        {{ getShowData.date }}
+        {{ getShowData.time }}
         <!-- <div class="modal-content-m">
           <div class="modal-header no-border">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -88,9 +94,7 @@ export default {
   methods: {
   },
   computed: {
-    ...mapGetters([
-      'loginUser', 'getShowData',
-    ]),
+    ...mapGetters(['loginUser', 'getShowData',]),
   },
   watch: {
   },
