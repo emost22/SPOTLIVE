@@ -3,7 +3,7 @@ package com.ssafy.spotlive.api.response.user;
 import com.ssafy.spotlive.api.response.follow.FollowMyArtistRes;
 import com.ssafy.spotlive.api.response.follow.FollowMyFanRes;
 import com.ssafy.spotlive.api.response.reservation.ReservationRes;
-import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoFindByIdGetRes;
 import com.ssafy.spotlive.api.response.video.VideoRes;
 import com.ssafy.spotlive.db.entity.User;
 import lombok.Builder;
@@ -36,7 +36,7 @@ public class UserRes {
     String ageRange;
     String accessToken;
     String refreshToken;
-    List<ShowInfoRes> showInfoResList = new ArrayList<>();
+    List<ShowInfoFindByIdGetRes> showInfoResList = new ArrayList<>();
     List<ReservationRes> reservationResList = new ArrayList<>();
     List<VideoRes> videoResList = new ArrayList<>();
     List<FollowMyArtistRes> followMyArtistResList = new ArrayList<>();
@@ -55,7 +55,7 @@ public class UserRes {
                 .ageRange(user.getAgeRange())
                 .accessToken(user.getAccessToken())
                 .refreshToken(user.getRefreshToken())
-                .showInfoResList(user.getShowInfoList().stream().map(showInfo -> ShowInfoRes.of(showInfo)).collect(Collectors.toList()))
+                .showInfoResList(user.getShowInfoList().stream().map(showInfo -> ShowInfoFindByIdGetRes.of(showInfo)).collect(Collectors.toList()))
                 .reservationResList(user.getReservationList().stream().map(reservation -> ReservationRes.of(reservation)).collect(Collectors.toList()))
                 .videoResList(user.getVideoList().stream().map(video -> VideoRes.of(video)).collect(Collectors.toList()))
                 .followMyArtistResList(user.getArtistList().stream().map(follow -> FollowMyArtistRes.of(follow)).collect(Collectors.toList()))
