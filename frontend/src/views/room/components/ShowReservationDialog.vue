@@ -38,7 +38,7 @@
                         <label class="form-label">공연 시간</label>
                       </div>
                       <select class="custom-select-control-m">
-                        <option selected>7/29 13:00</option>
+                        <option :key="i" :value="d.v.timetableId" v-for="(d, i) in timetables">{{ d.t.dateTime }}</option>
                       </select>
                     </div>
                     <div class="me-3">
@@ -101,6 +101,7 @@ export default {
     return {
       isReservated: true,
       showInfoId: '',
+      timetables: [],
       user: {},
     }
   }, 
@@ -124,7 +125,10 @@ export default {
     getShowInfoTimeTable() {
       this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
         .then(res => {
-          console.log(res)
+          console.log(res.data.timetables)
+          res.data.timetables.forEach((dateTime, timetableId) => {
+            this.timetables.push({ v: timetableId, t: dateTime})
+          })
         })
     }
   },
