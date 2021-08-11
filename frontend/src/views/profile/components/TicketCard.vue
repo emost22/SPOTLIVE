@@ -51,6 +51,7 @@ export default {
       showRunningTime : '',
       showDate : '',
       showTime : '',
+      timetableId : '',
     }
   },
   created: function () {
@@ -76,11 +77,20 @@ export default {
       var date = this.reservation.timetableFindByReservationRes.dateTime.substr(0,10).split(" ")[0]
       var tmpDate = date.split("-")
       this.showDate =  tmpDate[1] + "/" + tmpDate[2]
-      this.showTime = this.reservation.timetableFindByReservationRes.dateTime.substring(11,15)
-      // 시간 문자열 슬라이싱 추가해주세요 날짜는 했어요!
+      this.showTime = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
+      this.timetableId = this.reservation.timetableFindByReservationRes.timetableId
     },
     clickReservationDeleteButton() {
       // 예약 삭제 axios actions.js에서 요청
+      this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})
+      .then((response) => {
+        console.log("티켓 삭제 성공!!")
+        console.log(response)
+
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     },
     clickShowDetailButton() {
       // 예약 공연 상세 정보 조회 다이얼로그(ShowReservationDialog.vue) 
@@ -130,6 +140,8 @@ export default {
   border-radius: 15px;
   margin-left: 20px;
   margin-bottom: 10px;
+  font-size: 15px;
+  text-align: center;
 }
 .ticket-btn-box {
   width: 110px;
