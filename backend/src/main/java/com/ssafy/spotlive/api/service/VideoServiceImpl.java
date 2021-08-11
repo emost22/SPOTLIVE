@@ -171,6 +171,7 @@ public class VideoServiceImpl implements VideoService{
         video.setEndTime(LocalDateTime.now());
         video.setSessionId("CLOSED_SESSION");
         video.setIsLive(false);
+        video.setHit(0L);
         videoRepository.save(video);
 
         // User Video 삭제
