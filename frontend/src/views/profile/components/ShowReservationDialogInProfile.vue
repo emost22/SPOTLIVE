@@ -185,10 +185,10 @@ export default {
 }
 .show-img {
   margin: 20px;
-  min-width: 150px;
-  max-width: 150px;
-  min-height: 200px;
-  max-height: 200px;
+  min-width: 160px;
+  max-width: 160px;
+  min-height: 220px;
+  max-height: 220px;
 }
 .show-info {
   margin: 20px;

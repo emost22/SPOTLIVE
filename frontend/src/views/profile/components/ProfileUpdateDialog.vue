@@ -120,7 +120,7 @@ export default {
 .profile-update-img-box {
   display: flex;
   direction: row;
-  margin-left: 8%;
+  margin-left: 5%;
 }
 .profile-update-img {
   width: 180px;

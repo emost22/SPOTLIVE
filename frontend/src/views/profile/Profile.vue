@@ -30,16 +30,16 @@
       </div>
     </div>
 
-    <div>
-      <p class="txtcolor-white-npurple main-title">나의 공연 정보</p>
+    <div class="mx-5">
+      <div class="txtcolor-white-npurple main-title">나의 공연 정보</div>
       <MyShow
         :shows="myShows"
         :inMyProfile="inMyProfile"
       />
     </div>
 
-    <div>
-      <p class="txtcolor-white-ngreen main-title">나의 동영상</p>
+    <div class="mx-5">
+      <div class="txtcolor-white-ngreen main-title mb-5">나의 동영상</div>
       <MyVideo
         :videos="myVideos"
         :inMyProfile="inMyProfile"
@@ -206,6 +206,12 @@ export default {
   width: 150px;
   height: 150px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF,
+    0 0 35px #FFFFFF;
 }
 .profile-detail {
   width: 300px;
