@@ -223,4 +223,8 @@ export default {
   font-size: 1.05rem;
   font-weight: bold;
 }
+.showInfoWrapper {
+  margin-left: 20px;
+  margin-right: 20px;
+}
 </style>

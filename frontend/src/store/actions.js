@@ -336,6 +336,11 @@ export default {
         }
       })
     },
+    requestGetTimetables(context, payload) {
+        const URL = `/showinfo/${payload.showId}`
+        console.log(URL)
+        return $axios.get(URL)
+    },
 
     // MyShowCard.vue
     requestGetShowData({ commit }, payload) {
