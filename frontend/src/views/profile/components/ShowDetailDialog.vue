@@ -1,69 +1,64 @@
 <template>
   <div>
   <div class="modal fade" id="showDetailModal" ref="showDetailModal" tabindex="-1" aria-labelledby="showDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog bdcolor-bold-npurple modal-design">
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
+      
       <div class="modal-content-m">
+
         <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="information-header mt-3 ms-3">공연 상세 정보</div>
+          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body mx-3">
             <form>
               <div class="d-flex flex-row mb-3">
                 <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
                 <div class="profile-small-detail">
-                  <div> {{ loginUser.profileNickname }} </div>
-                  <div> {{ loginUser.accountEmail }} </div>
+                  <div>{{ loginUser.profileNickname }}님</div>
+                  <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
-              <div class="d-flex flex-row justify-content-evenly mb-3">
-                <div><img :src="getShowData.posterUrl" class="show-detail-img"></div>
+
+              <div class="d-flex flex-row">    
+                <div><img :src="getShowData.posterUrl" class="show-img"></div>
                 <div class="show-info">
                   <div class="mb-3">
-                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label">공연명</label></div>
+                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label label-in-dialog">공연명</label></div>
                     <div>{{ getShowData.title }}</div>
                   </div>
-                  <div class="mb-3">
-                    <div class="label-alignment"><label for="showDetailFormControlInput2" class="form-label">티켓가격</label></div>
-                    <div class="d-flex">
-                    <div>{{ getShowData.price }}</div>
+                  <div class="mb-3 d-flex">
+                    <div class="flex-fill me-3">
+                      <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
+                      <div class="d-flex">{{ getShowData.price }}원</div>
+                    </div>
+                    <div class="flex-fill me-3">
+                      <div class="label-alignment"><label class="form-label label-in-dialog">러닝타임</label></div>
+                      <div class="d-flex">{{ getShowData.runningTime }}min</div>                      
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
-                      <div class="label-alignment">
-                        <label class="form-label">공연 시간</label>
-                      </div>
-                      <!-- <select class="custom-select-control-m" v-model="timetableId">
+                      <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
+                      <select class="custom-select-control-m show-timetablelist" aria-label="Default select showDetail" v-model="timetableId">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                      </select> -->
-                      <select class="custom-select-control" aria-label="Default select showDetail" v-model="timetableId">
-                        <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                        <!-- 삭제 버튼  -->
                       </select>
                     </div>
-                    <div class="flex-fill me-3">
-                      <div class="label-alignment">
-                        <label class="form-label" for="showDetailFormControlInput4">
-                          러닝타임
-                        </label>   
-                      </div>
-                      <div class="custom-form-control">
-                        {{ getShowData.runningTime }} min
-                      </div>
-                    </div>
                   </div>
+                  
                 </div>
               </div>
-              <div class="mb-3">
-                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
-                <div class="showdata-description">{{ getShowData.description }}</div>
+
+              <div class="show-description mb-3">
+                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label label-in-dialog"> 공연 설명</label></div>
+                <div>{{ getShowData.description }}</div>
               </div>
             </form>
         </div>
-        <div class="modal-footer-m">
+        <div class="modal-footer-m my-3">
           <div><button class="bdcolor-ngreen small-button mx-3" data-bs-toggle="offcanvas" data-bs-target="#deleteShowInfo" aria-controls="deleteShowInfo">삭제</button></div>
           <div><button type="button" @click="updateShow()" class="bdcolor-npink small-button mx-3" data-bs-toggle="modal" data-bs-target="#showUpdateModal">수정</button></div>
         </div>
+
       </div>
     </div>
             <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteShowInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
@@ -72,12 +67,12 @@
                 </div>
                 <div class="offcanvas-body">
                   <div class="mt-3">
-                    <h5 class="popUpTitle">
-                      삭제 시 해당 데이터는 복구할 수 없습니다.<br>
-                      정말로 삭제하시겠습니까?
-                    </h5>
+                    <div>
+                      <p class="popUpTitle">삭제 시 해당 데이터는 복구할 수 없습니다.</p> 
+                      <p class="popUpTitle">정말로 삭제하시겠습니까?</p> 
+                    </div>
                   </div>
-                  <div class="d-flex justify-content-end show-detail-popup">
+                  <div class="d-flex justify-content-end show-popup">
                     <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
                     <div><button type="button" @click="deleteShow()" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">확인</button></div>
                   </div>
@@ -145,25 +140,71 @@ export default {
 </script>
 
 <style scoped>
-/* show-detail-어찌구로 시작하는 클래스로 정의해주세요 다른 곳과 겹치지 않게 아님 scoped */
-.show-detail-img {
-  min-width: 150px;
-  max-width: 150px;
-  min-height: 200px;
-  max-height: 200px;
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
+}
+.profile-small-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+.profile-small-detail{
+  width: 100px;
+  height: 50px;
+  margin-left: 30px;
+  text-align: left;
+}
+.show-modal-design {
+  max-height: 700px;
+  min-width: 500px;
+  width: 70%;
+  background-color: #242424;
+  color: white;
+}
+.show-img {
+  margin: 20px;
+  min-width: 160px;
+  max-width: 160px;
+  min-height: 220px;
+  max-height: 220px;
 }
 .show-info {
-  margin-left: 10px;
+  margin: 20px;
   text-align: start;
 }
-.showdata-description {
+.show-description {
+  margin-left: 20px;
+  margin-right: 20px;
   text-align: start;
 }
-.show-detail-popup {
+.show-popup {
   margin-top: 50px;
 }
 .popUpTitle {
   text-align: left;
+  font-weight: bold;
+  font-size: 15px;
   padding: 0 10%;
+}
+.show-timetable {
+  width: 160px;
+}
+.custom-select-control-m {
+  background-color: #595959;
+  padding: .375rem 2.25rem .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 0px;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.label-in-dialog {
+  font-size: 1.05rem;
+  font-weight: bold;
 }
 </style>

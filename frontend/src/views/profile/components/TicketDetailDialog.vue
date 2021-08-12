@@ -1,80 +1,68 @@
 <template>
   <div>
-    <div class="modal fade" id="ticketDetailModal" ref="ticketDetailModal"
-      tabindex="-1" aria-labelledby="ticketDetailModalLabel" aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
+    <div class="modal fade" id="ticketDetailModal" ref="ticketDetailModal" tabindex="-1" aria-labelledby="ticketDetailModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
+        
         <div class="modal-content-m">
+          
           <div class="modal-header no-border">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="information-header mt-3 ms-3">예약 상세 정보</div>
+            <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body mx-2">
-            <div class="dialog-profile-info">
-              <div><img :src="getShowData.profileImageUrl" class="profile-img"></div>
-              <div class="profile-detail-show-reservation">
-                <div> <span class="txtcolor-nyellow">{{ getShowData.profileNickname }}</span> 님</div>
-                <p> {{ getShowData.userId }}</p>
+
+          <div class="modal-body mx-3">
+            <form>
+              <div class="d-flex flex-row mb-3">
+                <div><img :src="getShowData.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
+                <div class="profile-small-detail">
+                  <div>{{ getShowData.profileNickname }}님</div>
+                  <p>{{ getShowData.userId }}</p>
+                </div>
               </div>
-            </div>
-            <div class="showInfoWrapper">
-              <form>
-                <div class="d-flex flex-row mb-3">
-                  <div class="d-flex flex-row justify-content-center align-items-center camera-input-bgcolor-light-grey camera-size">
-                    <img :src="getShowData.posterUrl" class="poster-image">
+
+              <div class="d-flex flex-row">                  
+                <div><img :src="getShowData.posterUrl" class="show-img"></div>        
+                <div class="show-info">                 
+                  <div class="mb-3">
+                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label label-in-dialog">공연명</label></div>
+                    <div>{{ getShowData.title }}</div>
                   </div>
-                  <div class="show-info">
-                    <div class="mb-3">
-                      <div class="label-alignment"><label class="form-label label-in-dialog">공연명</label></div>
-                      <div class="d-flex">
-                      {{ getShowData.title }}
-                      </div>
-                    </div>
-                    <div class="mb-3">
+                  <div class="mb-3 d-flex">
+                    <div class="flex-fill me-3">
                       <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
-                      <div class="d-flex">
-                      {{ getShowData.price }}원
-                      </div>
+                      <div class="d-flex">{{ getShowData.price }}원</div>
                     </div>
-                    <div class="mb-3 d-flex">
-                      <div class="me-3">
-                        <div class="label-alignment">
-                          <label class="form-label label-in-dialog">공연 시간</label>
-                        </div>
-                        <!-- <select class="custom-select-control" aria-label="Default select showDetail" v-model="timetableId">
-                          <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                          삭제 버튼
-                        </select> -->
-                        <input type="text" class="custom-form-control" v-model="dateTime" readonly="readonly" disabled>
-                      </div>
-                      <div>
-                        <div class="label-alignment">
-                          <label class="form-label label-in-dialog">러닝타임</label>
-                        </div>
-                        <!-- <div class="d-flex">
-                          {{ getShowData.runningTime }}분
-                        </div> -->
-                        <input type="text" class="custom-form-control" v-model="getShowData.runningTime" readonly="readonly" disabled>
-                      </div>
+                    <div class="flex-fill me-3">
+                      <div class="label-alignment"><label class="form-label label-in-dialog">러닝타임</label></div>
+                      <div class="d-flex">{{ getShowData.runningTime }}min</div>                      
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex">
+                    <div class="flex-fill me-3">
+                      <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
+                      <div> {{dateTime}} </div>
                     </div>
                   </div>
                 </div>
-                <div class="mb-3 label-alignment">
-                  <div ><label class="form-label label-in-dialog"> 공연 설명</label></div>
-                  <div>{{ getShowData.description }}</div>
-                </div>
-              </form>
-            </div>
+              </div>
+              <div class="show-description mb-3">
+                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label label-in-dialog"> 공연 설명</label></div>
+                <div>{{ getShowData.description }}</div>
+              </div>
+            </form>
           </div>
-          <div class="modal-footer-m">
+          
+          <div class="modal-footer-m my-3">
             <button 
               type="button" 
-              class="bdcolor-npink small-button me-5" 
+              class="bdcolor-npink small-button" 
               @click="clearGetShowData()" 
               data-bs-dismiss="modal"
             >
               닫기
             </button>
           </div>
+
         </div>
       </div>
     </div>
@@ -121,69 +109,55 @@ export default {
     getShowData(val, oldVal) {
       this.getShowInfoTimeTable(this.getShowData.timetables)
       var modal= this.$refs.showDetailModal
-      // var _this = this
-      // modal.addEventListener('hidden.bs.modal', function (event) {
-      //   console.log('제발')
-      //   _this.timetables = []
-      // })
     }
   },
 }
 </script>
 
 <style scoped>
-
-.btn-close {
-  background-image: url('~@/assets/icon-x.png');
-  opacity: 1;
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
 }
-.btn-close:hover {
-  background-image: url('~@/assets/icon-x.png');
-}
-.profile-img {
+.profile-small-img {
   width: 50px;
   height: 50px;
   border-radius: 100%;
 }
-.profile-detail-show-reservation{
-  margin-top: auto;
-  margin-bottom: auto;
+.profile-small-detail{
+  width: 100px;
+  height: 50px;
   margin-left: 30px;
   text-align: left;
 }
-.dialog-profile-info{
-  display: flex;
-  flex-direction: row;
-  margin: 20px;
-}
-.camera-size {
-  width: 280px;
-  margin-right: 18px;
-}
-.custom-select-control-m {
-  background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
-  font-size: 1rem;
-  font-weight: 400;
+.show-modal-design {
+  max-height: 700px;
+  min-width: 500px;
+  width: 70%;
+  background-color: #242424;
   color: white;
-  background-repeat: no-repeat;
-  background-position: right .75rem center;
-  background-size: 16px 12px;
-  border: 0px;
-  border-radius: .25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
-.poster-image{
-  width: 100%;
-  height: 100%;
-  background-size: cover;
+.show-img {
+  margin: 20px;
+  min-width: 160px;
+  max-width: 160px;
+  min-height: 220px;
+  max-height: 220px;
+}
+.show-info {
+  margin: 20px;
+  text-align: start;
+}
+.show-description {
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: start;
+}
+.show-timetable {
+  width: 160px;
 }
 .label-in-dialog {
   font-size: 1.05rem;
   font-weight: bold;
-}
-.showInfoWrapper {
-  margin-left: 20px;
-  margin-right: 20px;
 }
 </style>

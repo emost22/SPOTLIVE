@@ -95,9 +95,11 @@ export default {
     
     getFilterCategoryId(categoryId) {
       this.filter_category_id = Number(categoryId)
-      console.log(this.filter_category_id)
-      console.log('emit category id')
-      this.getTotalMainVideos(0, 20, this.filter_category_id)
+      if (Number(categoryId) == 0) {
+        this.getTotalMainVideos(0, 20)
+      } else {
+        this.getTotalMainVideos(0, 20, this.filter_category_id)
+      }
     },
 
     getTotalMainVideos(pageValue, sizeValue, categoryId) {

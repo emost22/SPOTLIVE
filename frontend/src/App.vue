@@ -257,7 +257,7 @@ textarea {
 }
 .modal-design {
   max-height: 700px;
-  min-width: 600px;
+  min-width: 550px;
   width: 70%;
   background-color: #242424;
   color: white;
