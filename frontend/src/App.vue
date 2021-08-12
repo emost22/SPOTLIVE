@@ -363,4 +363,7 @@ label:hover {
   color: white;
   text-align: left;
 }
+.offcanvas {
+  z-index: 1060;
+}
 </style>
