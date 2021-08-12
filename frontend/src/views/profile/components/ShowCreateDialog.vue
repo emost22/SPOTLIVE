@@ -1,10 +1,10 @@
 <template>
-  <div class="modal fade" id="showCreateModal" tabindex="-1" aria-labelledby="showCreateModalLabel" aria-hidden="true">
+  <div class="modal fade" id="showCreateModal" ref="showCreateModal"  tabindex="-1" aria-labelledby="showCreateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-create-modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
           <div class="information-header mt-3 ms-3">공연 정보 생성</div>
-          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button @click="clearShowCreateData" type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body mx-3">
             <form>
@@ -146,6 +146,23 @@ export default {
       var dateTime = new Date(date)
       return `${dateTime.toLocaleString()}`
     },
+    clearShowCreateData() {
+      var modal= this.$refs.showCreateModal
+      var _this = this
+      modal.addEventListener('hidden.bs.modal', function (event) {
+        _this.timetables = []
+        _this.showInfoTitle = ''
+        _this.showInfoDescription = ''
+        _this.price = ''
+        _this.runningTime = ''
+        _this.posterImage = ''
+        _this.preview = ''
+        _this.datetime = ''
+        _this.timetables = []
+        _this.selected = ''
+        _this.timtetableReq = []
+      })
+    },
     clickShowPostButton(){
       let formData = new FormData()
       let showInfoInsertPostReq = {
@@ -160,9 +177,10 @@ export default {
       formData.append('showInfoInsertPostReq', new Blob([JSON.stringify(showInfoInsertPostReq)], {type: "application/json"}))
       this.$store.dispatch('requestPostShow', formData)
       .then((response) => {
-        
+        this.clearShowCreateData()
       }).catch(error => {
         console.log(error)
+        this.clearShowCreateData()
       })
     }
   },
