@@ -129,19 +129,22 @@ export default {
     },
     addEventForChat() {
       this.ovSession.on('signal:my-chat', (event) => {
-        let givenCharStr = event.data
+        let givenData = String(event.data)
+        let givenDataSplit = givenData.split("####")
+        let chatStr = givenDataSplit[0]
+        let imageUrl = givenDataSplit[1]
+        let userName = givenDataSplit[2]
         let userId = JSON.parse(event.from.data).clientData
-        console.log('[OPENVIDU] Get Chat data: ' + givenCharStr + ', UserId: ' + userId)
-        this.$store.dispatch("requestGetUserByAccountEmail", { accountEmail: userId })
-        .then((response) => {
-          this.chatList.push({
-            userName: response.data.userName,
-            profileImg: response.data.profileImageUrl,
-            charStr: givenCharStr,
-          })
-        }).catch((error) => {
-          console.log(error)
+        console.log('[OPENVIDU] Get Chat data: ' + chatStr + ', UserId: ' + userId + ", imageUrl: " + imageUrl + ", userName: " + userName)
+        this.chatList.unshift({
+          userName: userName,
+          profileImg: imageUrl,
+          charStr: chatStr,
         })
+
+        if(this.chatList.length > this.MAX_CHAT_LIST_SIZE) {
+          this.chatList.pop()
+        }
       })
     },
     addEventForJoinAndExit() {
@@ -181,8 +184,10 @@ export default {
       this.$store.dispatch("requestAddEventInSession")
     },
     sendChat() {
+      if(this.chatMsg == "") return
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
-    }, 
+      this.chatMsg = ""
+    },
     sendJoin() {
       this.$store.dispatch("requestSendJoin")
     }, 
@@ -258,7 +263,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'mainStreamManager', 'ovSession']),
+    ...mapGetters(['loginUser', 'mainStreamManager', 'ovSession', 'MAX_CHAT_LIST_SIZE']),
   },
 }
 </script>
