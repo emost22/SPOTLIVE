@@ -9,10 +9,10 @@
         <div class="modal-body mx-3">
             <form>
               <div class="d-flex flex-row mb-3">
-                <div><img :src="profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
+                <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
                 <div class="profile-small-detail">
-                  <div> {{ profileNickname }} </div>
-                  <div> {{ userId }} </div>
+                  <div> {{ loginUser.profileNickname }} </div>
+                  <div> {{ loginUser.accountEmail }} </div>
                 </div>
               </div>
               <div class="d-flex flex-row justify-content-evenly mb-3">
@@ -61,11 +61,10 @@
             </form>
         </div>
         <div class="modal-footer-m">
-          <div><button @click="clickDeleteShow()" class="bdcolor-ngreen small-button mx-3" data-bs-toggle="offcanvas" data-bs-target="#deleteShowInfo" aria-controls="deleteShowInfo">삭제</button></div>
-          <div><button type="button" class="bdcolor-npink small-button mx-3">수정</button></div>
+          <div><button class="bdcolor-ngreen small-button mx-3" data-bs-toggle="offcanvas" data-bs-target="#deleteShowInfo" aria-controls="deleteShowInfo">삭제</button></div>
+          <div><button type="button" @click="updateShow()" class="bdcolor-npink small-button mx-3" data-bs-toggle="modal" data-bs-target="#showUpdateModal">수정</button></div>
         </div>
       </div>
-              
     </div>
             <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteShowInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
                 <div class="offcanvas-header">
@@ -97,25 +96,15 @@ export default {
     return {
       timetableId: '',
       timetables: [],
-      userId: '',
-      profileNickname: '',
-      profileImageUrl: '',
     }
-  },
-  created: function () {
-    this.getShow()
   },
   mounted() {
     this.getShowInfoTimeTable()
   },
   methods: {
-    getShow() {
-      this.userId = this.loginUser.accountEmail
-      this.profileNickname = this.loginUser.profileNickname
-      this.profileImageUrl = this.loginUser.profileImageUrl
-    },
-    clickDeleteShow() {
-      console.log('Call clickDeleteShow Method')
+    updateShow(){
+      var showDetailModal = bootstrap.Modal.getInstance(this.$refs.showDetailModal)
+      showDetailModal.hide()
     },
     deleteShow(){
       var showDetailModal = bootstrap.Modal.getInstance(this.$refs.showDetailModal)
