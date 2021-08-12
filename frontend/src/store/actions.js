@@ -350,7 +350,15 @@ export default {
     requestGetShowData({ commit }, payload) {
         commit('SET_GETSHOW_DATA', payload)
     },
-
+    // TicketDetailDialog.vud
+    requestDeleteGetShowData({ commit }) {
+        commit('DELETE_GETSHOW_DATA')
+    },
+    //ShowCreateDialog.vue
+    requestPostShow(context, payload){
+      const URL = `/showinfo/`
+      return $axios.post(URL, payload)
+    },
     // ShowDetailDialog.vue
     requestDeleteShowInfo(context, payload) {
         const URL = `/showinfo/${payload}`

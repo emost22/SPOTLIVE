@@ -7,27 +7,29 @@
     aria-hidden="true"
   >
     <div class="modal-dialog bdcolor-bold-npurple modal-design">
+
       <div class="modal-content-m">
         <div class="modal-header no-border">
-          <div class="profile-update-header">프로필 수정</div>
+          <div class="profile-update-header mt-3 ms-3">프로필 수정</div>
           <button
             type="button"
-            class="btn-close"
+            class="btn-close me-2 mt-1"
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
         </div>
+
         <div class="modal-body mx-3 profile-update-box">
-          <div><img :src="profileImageUrl" class="profile-update-img" /></div>
-          <div class="profile-update-info">
-            <div class="label-alignment">닉네임</div>
-            <input class="custom-form-control" v-model="profileNickname" />
-            <div class="label-alignment">개인 설명</div>
-            <input class="custom-form-control" v-model="profileDescription" />
+          <div class="profile-update-img-box"><img :src="loginUser.profileImageUrl" class="profile-update-img" /></div>
+          <div>
+            <div class="label-alignment profile-update-info mb-2">닉네임</div>
+            <div class="profile-update-info profile-update-info mb-2"><input class="custom-form-control" v-model="profileNickname" /></div>
+            <div class="label-alignment profile-update-info mb-2">소개</div>
+            <div class="profile-update-info"><textarea class="custom-form-control" v-model="profileDescription" rows="3"/></div> 
           </div>
         </div>
 
-        <div class="modal-footer-m">
+        <div class="modal-footer-m my-3">
           <div>
             <button
               data-bs-dismiss="modal"
@@ -104,10 +106,8 @@ export default {
 
 <style>
 .profile-update-header {
-  margin: 5px;
   font-size: 20px;
-  display: flex;
-  align-items: center;
+  font-weight: bold;
 }
 .profile-update-box {
   display: flex;
@@ -117,13 +117,17 @@ export default {
   align-content: space-around;
   align-items: center;
 }
+.profile-update-img-box {
+  display: flex;
+  direction: row;
+  margin-left: 5%;
+}
 .profile-update-img {
-  width: 100px;
-  height: 100px;
+  width: 180px;
+  height: 180px;
   border-radius: 100%;
 }
 .profile-update-info {
   text-align: left;
-  margin-left: 20px;
 }
 </style>

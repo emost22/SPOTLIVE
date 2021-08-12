@@ -40,7 +40,7 @@ export default {
       videoLength: 0, 
     }
   },
-  created:function() {
+  created: function() {
     this.getVideoLength()
   },
   methods: {

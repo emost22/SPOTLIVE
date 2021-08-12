@@ -168,12 +168,14 @@ public class VideoController {
             @ApiIgnore @RequestHeader("Authorization") String accessToken,
             @PathVariable long videoId,
             @RequestPart(value = "thumbnailImage", required = false) MultipartFile thumbnailImage,
-            @RequestPart(value = "showInfoInsertPostReq", required = false) VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
+            @RequestPart(value = "videoUpdateByIdPatchReq", required = false) VideoUpdateByIdPatchReq videoUpdateByIdPatchReq) {
         /**
          * @Method Name : updateVideoById
          * @작성자 : 권영린
          * @Method 설명 : 비디오를 수정한다.
          */
+        System.out.println("===============================================");
+        System.out.println(videoUpdateByIdPatchReq);
         int vaildTokenStatusValue = authService.isValidToken(accessToken);
 
         if(vaildTokenStatusValue == 200) {

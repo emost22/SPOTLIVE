@@ -60,14 +60,13 @@ export default {
     this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
-      console.log(response)
       this.videoDescription = response.data.videoDescription
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
       this.mainStreamAccountEmail = response.data.userRes.mainStreamAccountEmail
       this.videoUrl = response.data.videoUrl
       this.mode = response.data.mode
-      if(mode != '소통') {
+      if(this.mode != '소통') {
         var showInfoData = {
           runningTime: response.data.showInfoRes.runningTime,
           posterUrl: response.data.showInfoRes.posterUrl,
@@ -81,6 +80,7 @@ export default {
             profileImageUrl:response.data.userRes.profileImageUrl
           }
         }
+        console.log(showInfoData)
         this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
       }
     })

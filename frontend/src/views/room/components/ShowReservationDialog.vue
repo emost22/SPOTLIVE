@@ -69,7 +69,7 @@
     </div>
   </div>
   <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-    <div id="liveToast" ref="alreadyBooked" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="5000">
+    <div id="liveToast" ref="alreadyBooked" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="3000">
       <div class="toast-header">
         <strong class="me-auto">이미 예약된 상태입니다!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -80,7 +80,7 @@
     </div>
   </div> 
   <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-    <div id="liveToast" ref="bookCompleted" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="5000">
+    <div id="liveToast" ref="bookCompleted" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="3000">
       <div class="toast-header">
         <strong class="me-auto">예약 완료 되었습니다!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>

@@ -7,7 +7,7 @@
     aria-labelledby="ticketModalLabel" 
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple ticket-modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -67,6 +67,13 @@ export default {
 </script>
 
 <style>
+.ticket-modal-design {
+  max-height: 700px;
+  min-width: 500px;
+  width: 70%;
+  background-color: #242424;
+  color: white;
+}
 .ticket-box {
   margin: 0;
 }
