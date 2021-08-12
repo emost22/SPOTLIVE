@@ -40,6 +40,9 @@ export default {
   methods: {
     goShowDetail: function () {
       var showData = {
+        userId: this.show.userRes.accountEmail,
+        profileNickname: this.show.userRes.profileNickname,
+        profileImageUrl: this.show.userRes.profileImageUrl,
         showId: this.show.showInfoId,
         title: this.show.showInfoTitle,
         description: this.show.showInfoDescription,

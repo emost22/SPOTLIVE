@@ -174,9 +174,14 @@ export default {
 
     SEND_CHAT(state, payload) {
         console.log("MUTATION: SEND_CHAT() RUN...")
+        let chatStr = payload.chatMsg
+        let imgUrl = state.loginUser.profileImageUrl
+        let userName = state.loginUser.userName
+
+        let sendData = chatStr + "####" + imgUrl + "####" + userName
         console.log(payload.chatMsg)
         state.ovSession.signal({
-            data: payload.chatMsg,
+            data: sendData,
             to: [],                     
             type: 'my-chat'
         }).then(() => {
@@ -202,6 +207,7 @@ export default {
     
     SET_IS_OPEN_SETTING_DIALOG(state, payload) {
         state.isSettingDialogOpen = !state.isSettingDialogOpen
+        console.log(!state.isSettingDialogOpen)
         state.settingDialogViewId = payload
     },
 
@@ -212,7 +218,7 @@ export default {
     SET_USER_ON_CREATE_VIDEO (state, payload) {
         state.onCreateVideoLive = payload
     },
-    
+
     SET_VIDEO_ID (state, payload) {
         state.videoId = payload
     },
@@ -220,8 +226,31 @@ export default {
     SET_SHOW_RESERVATION_INFO(state, payload) {
         state.showReservationData = payload
     },
-
+    
     SET_GETSHOW_DATA (state, payload) {
         state.getShowData = payload
     },
+    
+    DELETE_TICKET_DATA(state, payload) {
+        console.log("=====================뮤테이션======================")
+        var i = 0
+        console.log("삭제할 타임테이블 아이디 : ",payload.timetableId)
+        state.loginUser.reservationResList.forEach(element => {
+            console.log("현재 예약 정보 : ", element)
+            if (element.timetableFindByReservationRes.timetableId == payload.timetableId) {
+                console.log("i번째 인덱스 삭제: ",i)
+                console.log("그게 이거 ",state.loginUser.reservationResList[i])
+                let reservation = state.loginUser.reservationResList.splice(i, 1)
+                console.log(reservation, "이거 삭제완료")
+                console.log(state.loginUser.reservationResList, "남은 예약 정보")
+            } else {
+                
+            }
+            i++
+        });
+    },
+
+    SET_FILENAME_OF_VIDEO (state, payload) {
+        state.fileNamevuex = payload
+    }
 }

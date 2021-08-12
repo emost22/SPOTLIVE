@@ -1,5 +1,6 @@
 package com.ssafy.spotlive.api.response.showInfo;
 
+import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class ShowInfoRes {
     String posterUrl;
     int runningTime;
     Long price;
+    UserRes userRes;
+
 
     public static ShowInfoRes of(ShowInfo showInfo){
         /**
@@ -33,6 +36,7 @@ public class ShowInfoRes {
                 .posterUrl(showInfo.getPosterUrl())
                 .runningTime(showInfo.getRunningTime())
                 .price(showInfo.getPrice())
+                .userRes(UserRes.ofWithoutFollowShowInfoReservationVideo(showInfo.getUser()))
                 .build();
     }
 }
