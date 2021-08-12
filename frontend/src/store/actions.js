@@ -327,4 +327,10 @@ export default {
     requestGetShowData({ commit }, payload) {
         commit('SET_GETSHOW_DATA', payload)
     },
+
+    //ShowCreateDialog.vue
+    requestPostShow(context, payload){
+      const URL = `/showinfo/`
+      return $axios.post(URL, payload)
+    }
 }
