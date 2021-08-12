@@ -301,4 +301,11 @@ export default {
     requestGetShowData({ commit }, payload) {
         commit('SET_GETSHOW_DATA', payload)
     },
+
+    // ShowDetailDialog.vue
+    requestDeleteShowInfo(context, payload) {
+        const URL = `/showinfo/${payload}`
+
+        return $axios.delete(URL)
+    }
 }
