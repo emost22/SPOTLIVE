@@ -1,20 +1,11 @@
 <template>
   <div>
     <div class="modal fade" id="showReservationInProfileModal" ref="showReservationInProfileModal" tabindex="-1" aria-labelledby="showReservationInProfileModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
-        <!-- 예약 {{ getShowData.title }}
-        타인이 내 프로필에서 들어오는 경우 인자
-        {{ getShowData.userId}}
-        {{ getShowData.profileImageUrl}}
-        {{ getShowData.profileNickname}}
-        {{ getShowData.showId}}
-        {{ getShowData.timetables }} -->
-        <!-- 나의 예약내역에서 들어오는 경우 인자 -->
-        <!-- {{ getShowData.date }} -->
-        <!-- {{ getShowData.time }} -->
+      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
         <div class="modal-content-m">
           <div class="modal-header no-border">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="profile-update-header mt-3 ms-3">공연 상세 정보</div>
+          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body mx-2">
             <div class="dialog-profile-info">
@@ -27,40 +18,32 @@
             <div class="showInfoWrapper">
               <form>
                 <div class="d-flex flex-row mb-3">
-                  <div class="d-flex flex-row justify-content-center align-items-center camera-input-bgcolor-light-grey camera-size">
+                  <div class="d-flex flex-row justify-content-center align-items-center">
                     <img :src="getShowData.posterUrl" class="poster-image">
                   </div>
                   <div class="show-info">
                     <div class="mb-3">
                       <div class="label-alignment"><label class="form-label label-in-dialog">공연명</label></div>
-                      <div class="d-flex">
-                      {{ getShowData.title }}
-                      </div>
+                      <div class="d-flex">{{ getShowData.title }}</div>
                     </div>
-                    <div class="mb-3">
-                      <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
-                      <div class="d-flex">
-                      {{ getShowData.price }}원
+                    <div class="mb-3 d-flex">
+                      <div class="flex-fill me-3">
+                        <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
+                        <div class="d-flex">{{ getShowData.price }}원</div>
+                      </div>
+                      <div class="flex-fill me-3">
+                        <div class="label-alignment"><label class="form-label label-in-dialog">러닝타임</label></div>
+                        <div class="d-flex">{{ getShowData.runningTime }}min</div>                      
                       </div>
                     </div>
                     <div class="mb-3 d-flex">
-                      <div class="me-3">
+                      <div class="flex-fill me-3">
                         <div class="label-alignment">
                           <label class="form-label label-in-dialog">공연 시간</label>
                         </div>
                         <select class="custom-select-control" aria-label="Default select showDetail" v-model="timetableId">
                           <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                          <!-- 삭제 버튼  -->
                         </select>
-                      </div>
-                      <div>
-                        <div class="label-alignment">
-                          <label class="form-label label-in-dialog">러닝타임</label>
-                        </div>
-                        <!-- <div class="d-flex">
-                          {{ getShowData.runningTime }}분
-                        </div> -->
-                        <input type="text" class="custom-form-control" v-model="getShowData.runningTime" readonly="readonly" disabled>
                       </div>
                     </div>
                   </div>
@@ -72,7 +55,7 @@
               </form>
             </div>
           </div>
-          <div class="modal-footer-m">
+          <div class="modal-footer-m my-3">
             <button type="button" class="bdcolor-npink small-button me-5" @click="clearTimeTableArray()" data-bs-dismiss="modal">닫기</button>
             <button type="button" class="bdcolor-ngreen small-button" @click="reservateShow()">예약하기</button>
           </div>
@@ -176,20 +159,19 @@ export default {
     getShowData(val, oldVal) {
       console.log(this.getShowData.timetables)
       this.getShowInfoTimeTable(this.getShowData.timetables)
-      
-      // var modal= this.$refs.showReservationInProfileModal
-      // var _this = this
-      // modal.addEventListener('hidden.bs.modal', function (event) {
-      //   console.log('제발')
-      //   _this.timetables = []
-      // })
     },
   },
 }
 </script>
 
 <style scoped>
-
+.show-modal-design {
+  max-height: 700px;
+  min-width: 500px;
+  width: 70%;
+  background-color: #242424;
+  color: white;
+}
 .btn-close {
   background-image: url('~@/assets/icon-x.png');
   opacity: 1;
@@ -231,9 +213,10 @@ export default {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 .poster-image{
-  width: 100%;
-  height: 100%;
-  background-size: cover;
+  min-width: 150px;
+  max-width: 150px;
+  min-height: 200px;
+  max-height: 200px;
 }
 .label-in-dialog {
   font-size: 1.05rem;

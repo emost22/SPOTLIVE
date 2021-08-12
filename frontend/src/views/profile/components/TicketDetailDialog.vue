@@ -1,14 +1,17 @@
 <template>
   <div>
-    <div class="modal fade" id="ticketDetailModal" ref="ticketDetailModal"
-      tabindex="-1" aria-labelledby="ticketDetailModalLabel" aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
+    <div class="modal fade" id="ticketDetailModal" ref="ticketDetailModal" tabindex="-1" aria-labelledby="ticketDetailModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
+        
         <div class="modal-content-m">
+          
           <div class="modal-header no-border">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="profile-update-header mt-3 ms-3">예약 상세 정보</div>
+            <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+
           <div class="modal-body mx-2">
+
             <div class="dialog-profile-info">
               <div><img :src="getShowData.profileImageUrl" class="profile-img"></div>
               <div class="profile-detail-show-reservation">
@@ -16,12 +19,15 @@
                 <p> {{ getShowData.userId }}</p>
               </div>
             </div>
+
             <div class="showInfoWrapper">
               <form>
                 <div class="d-flex flex-row mb-3">
+                  
                   <div class="d-flex flex-row justify-content-center align-items-center camera-input-bgcolor-light-grey camera-size">
                     <img :src="getShowData.posterUrl" class="poster-image">
                   </div>
+                  
                   <div class="show-info">
                     <div class="mb-3">
                       <div class="label-alignment"><label class="form-label label-in-dialog">공연명</label></div>
@@ -29,33 +35,23 @@
                       {{ getShowData.title }}
                       </div>
                     </div>
+
                     <div class="mb-3">
                       <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
                       <div class="d-flex">
                       {{ getShowData.price }}원
                       </div>
                     </div>
+
                     <div class="mb-3 d-flex">
                       <div class="me-3">
                         <div class="label-alignment">
                           <label class="form-label label-in-dialog">공연 시간</label>
                         </div>
-                        <!-- <select class="custom-select-control" aria-label="Default select showDetail" v-model="timetableId">
-                          <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                          삭제 버튼
-                        </select> -->
                         <input type="text" class="custom-form-control" v-model="dateTime" readonly="readonly" disabled>
                       </div>
-                      <div>
-                        <div class="label-alignment">
-                          <label class="form-label label-in-dialog">러닝타임</label>
-                        </div>
-                        <!-- <div class="d-flex">
-                          {{ getShowData.runningTime }}분
-                        </div> -->
-                        <input type="text" class="custom-form-control" v-model="getShowData.runningTime" readonly="readonly" disabled>
-                      </div>
                     </div>
+
                   </div>
                 </div>
                 <div class="mb-3 label-alignment">
@@ -65,7 +61,8 @@
               </form>
             </div>
           </div>
-          <div class="modal-footer-m">
+          
+          <div class="modal-footer-m my-3">
             <button 
               type="button" 
               class="bdcolor-npink small-button me-5" 
@@ -132,7 +129,13 @@ export default {
 </script>
 
 <style scoped>
-
+.show-modal-design {
+  max-height: 700px;
+  min-width: 500px;
+  width: 70%;
+  background-color: #242424;
+  color: white;
+}
 .btn-close {
   background-image: url('~@/assets/icon-x.png');
   opacity: 1;

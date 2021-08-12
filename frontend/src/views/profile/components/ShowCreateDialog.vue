@@ -5,7 +5,7 @@
         <div class="modal-header no-border">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body mx-3">
+        <div class="modal-body mx-2">
             <form>
               <div class="d-flex flex-row mb-3">
                 <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
@@ -26,10 +26,8 @@
                       </div>
                     </div>
                     <div class="camera-input-bgcolor-light-grey show-img" v-else>
-                      <!-- <div class="show-img"> -->
-                        <label class="camera-input-button" for="input-file"/>
-                        <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
-                      <!-- </div> -->
+                      <label class="camera-input-button" for="input-file"/>
+                      <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
                     </div>
                   </div>
                 </div>
