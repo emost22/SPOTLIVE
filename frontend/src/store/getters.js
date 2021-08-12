@@ -57,6 +57,9 @@ export default {
     videoId(state) {
         return state.videoId
     },
+    MAX_CHAT_LIST_SIZE(state) {
+        return state.MAX_CHAT_LIST_SIZE
+    },
     showReservationData(state) {
         return state.showReservationData
     },
