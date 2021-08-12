@@ -42,6 +42,7 @@
       <p class="txtcolor-white-ngreen main-title">나의 동영상</p>
       <MyVideo
         :videos="myVideos"
+        :inMyProfile="inMyProfile"
       />
     </div>
 
@@ -84,11 +85,14 @@ export default {
       this.getProfile()
     }    
   },
-  mounted: function () {
-    this.profileId = this.$route.params.profileId
+  beforeMount() {
+    this.$store.dispatch("")
   },
-  unmounted: function () {
-    this.profileId=''
+  beforeRouteEnter (to, from, next) {
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    next()
   },
   methods: {
     getUser() {
