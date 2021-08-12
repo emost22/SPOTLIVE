@@ -76,7 +76,7 @@ export default {
       myReservations: [],
     }
   },
-  created: function () {
+  created() {
     this.getUser()
     console.log(this.profileId)
     if (this.inMyProfile) {
@@ -85,15 +85,29 @@ export default {
       this.getProfile()
     }    
   },
-  beforeMount() {
-    this.$store.dispatch("")
+  mounted() {
+    console.log('마운트')
+    this.profileId = this.$route.params.profileId
+  },
+  updated() {
+    console.log('업데이트')
+    this.profileId = this.$route.params.profileId
   },
   beforeRouteEnter (to, from, next) {
+    console.log('라우터 엔터')
+    // this.profileId = this.$route.params.profileId
     next()
   },
   beforeRouteLeave (to, from, next) {
+    console.log('라우터 리브')
+    this.profileId = ''
     next()
   },
+  // watch: {
+  //   mainStreamManager: function(val, oldVal) {
+      
+  //   },
+  // },
   methods: {
     getUser() {
       this.userId = this.loginUser.accountEmail
@@ -164,9 +178,6 @@ export default {
   },
   computed: {
     ...mapGetters(['loginUser']),
-  },
-  watch() {
-    this.profileId
   },
 }
 </script>
