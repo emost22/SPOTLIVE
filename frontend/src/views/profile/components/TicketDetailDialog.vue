@@ -1,17 +1,9 @@
 <template>
   <div>
-    <div class="modal fade" id="showReservationInProfileModal" ref="showReservationInProfileModal" tabindex="-1" aria-labelledby="showReservationInProfileModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ticketDetailModal" ref="ticketDetailModal"
+      tabindex="-1" aria-labelledby="ticketDetailModalLabel" aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
-        <!-- 예약 {{ getShowData.title }}
-        타인이 내 프로필에서 들어오는 경우 인자
-        {{ getShowData.userId}}
-        {{ getShowData.profileImageUrl}}
-        {{ getShowData.profileNickname}}
-        {{ getShowData.showId}}
-        {{ getShowData.timetables }} -->
-        <!-- 나의 예약내역에서 들어오는 경우 인자 -->
-        <!-- {{ getShowData.date }} -->
-        <!-- {{ getShowData.time }} -->
         <div class="modal-content-m">
           <div class="modal-header no-border">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -48,10 +40,11 @@
                         <div class="label-alignment">
                           <label class="form-label label-in-dialog">공연 시간</label>
                         </div>
-                        <select class="custom-select-control" aria-label="Default select showDetail" v-model="timetableId">
+                        <!-- <select class="custom-select-control" aria-label="Default select showDetail" v-model="timetableId">
                           <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                          <!-- 삭제 버튼  -->
-                        </select>
+                          삭제 버튼
+                        </select> -->
+                        <input type="text" class="custom-form-control" v-model="dateTime" readonly="readonly" disabled>
                       </div>
                       <div>
                         <div class="label-alignment">
@@ -73,33 +66,17 @@
             </div>
           </div>
           <div class="modal-footer-m">
-            <button type="button" class="bdcolor-npink small-button me-5" @click="clearTimeTableArray()" data-bs-dismiss="modal">닫기</button>
-            <button type="button" class="bdcolor-ngreen small-button" @click="reservateShow()">예약하기</button>
+            <button 
+              type="button" 
+              class="bdcolor-npink small-button me-5" 
+              @click="clearGetShowData()" 
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
           </div>
         </div>
       </div>
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-      <div id="liveToast" ref="alreadyBooked" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="3000">
-        <div class="toast-header">
-          <strong class="me-auto">이미 예약된 상태입니다!</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          또 예약하고 싶으신가요~?😁
-        </div>
-      </div>
-    </div> 
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-      <div id="liveToast" ref="bookCompleted" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="3000">
-        <div class="toast-header">
-          <strong class="me-auto">예약 완료 되었습니다!</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          멋진 공연 즐겨봐요❤️
-        </div>
-      </div>
-    </div> 
     </div>
   </div>
 </template>
@@ -108,7 +85,7 @@
 import { mapGetters } from "vuex"
 
 export default {
-  name: 'ShowReservationDialogInProfile',
+  name: 'TicketDetailDialog',
   data: function() {
     return {
       showInfoDescription : '',
@@ -118,7 +95,8 @@ export default {
       price: '',
       runningTime: '',
       timetableId: '',
-      timetables: [],
+      timetables: '',
+      dateTime: '',
     }
   },
   created: function () {
@@ -127,46 +105,13 @@ export default {
     formatter(date) {
       var dateTime = new Date(date)
       
-      return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}
-      ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
+      return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()} ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable(timetables) {
-      this.timetableId = timetables[0].timetableId
-      let length = timetables.length
-      this.timetables=[]
-      for(var i = 0; i < length; i++){
-        var date = this.formatter(timetables[i].dateTime)
-        this.timetables.push({ v: timetables[i].timetableId, t: date})
-      }
+      this.dateTime = this.formatter(timetables[0].dateTime)
     },
-    clearTimeTableArray() {
-      this.timetables = []
-    },
-    reservateShow() {
-      console.log(this.timetableId," 이 쇼아이디로 예약하기 클릭했음")
-      this.$store.dispatch('requestShowIsReservated', this.timetableId)
-      .then(({ status} ) => {
-        if(status == 200) {
-          this.clickToast(1)
-        } else if(status == 204) { // 예약안한 공연이므로 예약 axios 한번 더 호출
-          this.clickToast(2)
-          this.$store.dispatch('requestReservateShow', {timetableId : this.timetableId})
-        } else {
-          console.log("requestShowIsReservated Fail...")
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    },
-    clickToast(viewId) {
-      if (viewId == 1) {
-        var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.alreadyBooked)
-        myToast.show()
-      } else {
-        var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.bookCompleted)
-        myToast.show()
-      }
+    clearGetShowData() {
+      // this.$store.dispatch('requestDeleteGetShowData')
     },
   },
   computed: {
@@ -174,16 +119,14 @@ export default {
   },
   watch: {
     getShowData(val, oldVal) {
-      console.log(this.getShowData.timetables)
       this.getShowInfoTimeTable(this.getShowData.timetables)
-      
-      // var modal= this.$refs.showReservationInProfileModal
+      var modal= this.$refs.showDetailModal
       // var _this = this
       // modal.addEventListener('hidden.bs.modal', function (event) {
       //   console.log('제발')
       //   _this.timetables = []
       // })
-    },
+    }
   },
 }
 </script>
