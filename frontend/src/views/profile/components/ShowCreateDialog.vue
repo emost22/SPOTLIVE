@@ -172,6 +172,9 @@ export default {
 </script>
 
 <style>
+
+@import '../../../../node_modules/vue-datetime/dist/vue-datetime.css';
+
 .calendar-plus-button {
   width: 20px;
   height: 20px;
@@ -184,7 +187,7 @@ export default {
   background-position: center;
 }
 .camera-input-button{
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   width: 40px;
@@ -199,8 +202,11 @@ export default {
   margin-top: 50%;
 }
 .show-img {
-  width: 100%;
+  /* min-width: 100px; */
+  /* min-height: 200px; */
   margin-right: 20px;
+  width: 100%;
+  height: 100%;
 }
 .show-info {
   width: 100%;
@@ -215,5 +221,120 @@ export default {
   height: 50px;
   margin-left: 30px;
   text-align: left;
+}
+
+.show-poster-input{
+  display: none;
+}
+/* .preview-img{
+  width: 100%;
+  height: 100%;
+} */
+.file-preview-container {
+  min-width: 240px;
+  min-height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.file-close-button {
+  position: absolute;
+  /* align-items: center; */
+  line-height: 18px;
+  z-index: 99;
+  font-size: 18px;
+  top: 10px;
+  color: #fff;
+  font-weight: bold;
+  background-color: #666666;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+.file-preview-wrapper {
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    position: relative;
+}
+.vdatetime-input{
+  display: block;
+  background-color: #595959;
+  border: 0px;
+  color: white;
+  border-radius: .25rem;
+  padding: .375rem .75rem;
+}
+.custom-select-control-m {
+  background-color: #595959;
+  padding: .375rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 0px;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.datetime-theme .vdatetime-popup__header,
+.datetime-theme .vdatetime-calendar__month__day--selected > span > span,
+.datetime-theme .vdatetime-calendar__month__day--selected:hover > span > span {
+  background: #242424;
+}
+
+.vdatetime-popup__actions__button {
+  color: white
+}
+.datetime-theme .vdatetime-year-picker__item--selected,
+.datetime-theme .vdatetime-time-picker__item--selected,
+.datetim-theme .vdatetime-popup__actions__button {
+  color: white;
+}
+
+.datetime-theme .vdatetime-popup{
+  background-color: #242424;
+  color: white
+}
+
+.btn-add-timetable{
+  display: block;
+  width: 100%;
+  background-color: #595959;
+  border: 0px;
+  border-radius: .25rem;
+  margin-top: 32px;
+  margin-left: 1rem;
+  border-radius: .25rem;
+  padding: .375rem .75rem;
+  
+}
+.btn-remove-timetable{
+  display: block;
+  width: 100%;
+  background-color: #595959;
+  border: 0px;
+  border-radius: .25rem;
+  margin-left: 1rem;
+  border-radius: .25rem;
+  padding: .375rem .75rem;
+}
+.show-img-box{
+  width: 100%;
+  height: 100%;
+  overflow:hidden;
+}
+.show-preview{
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  border-color: none;
 }
 </style>
