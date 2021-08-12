@@ -23,6 +23,16 @@ export default {
         state.ovSession = state.OV.initSession()
     },
 
+    LOGOUT(state, payload) {
+        console.log("MUTATION: LOGOUT() RUN...")
+        state.isLogin = false
+        localStorage.removeItem('loginUser')
+        localStorage.removeItem('accessToken')
+
+        $axios.defaults.headers['Authorization'] = ''
+        router.push({ name: "Login" })
+    },
+
     SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU(state, payload) {
         console.log("MUTATION: SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU() RUN...")
         state.ovSessionId = payload.ovSessionId
@@ -99,6 +109,17 @@ export default {
         state.ovSession.connect(state.ovToken, { clientData: "example@example.com" })
         .then((response) => {
             console.log("CONNECT_SESSION_FOR_GUEST() SUCCESS!")
+            console.log("MUTATION: SEND_JOIN() RUN...")
+            console.log(state.loginUser.accountEmail)
+            state.ovSession.signal({
+                data: state.loginUser.accountEmail,
+                to: [],                     
+                type: 'join-video'
+            }).then(() => {
+                console.log('JOIN SIGNAL successfully sent');
+            }).catch(error => {
+                console.error(error);
+            })
         }).catch((error) => {
             console.log("CONNECT_SESSION_FOR_GUEST() FAIL!")
             console.log('There was an error connecting to the session:', error.code, error.message)
@@ -136,13 +157,28 @@ export default {
         console.log("MUTATION: CHANGE_DEVICE() DONE...")
     },
 
+    LEAVE_SESSION(state, payload) {
+        console.log("MUTATION: LEAVE_SESSION() RUN...")
+        state.ovSession.disconnect()
+    },
+
+    SET_DEFAULT_FOR_OPENVIDU(state, payload) {
+        state.mainStreamManager = undefined
+        state.publisher = undefined
+        state.subscribers = []
+        state.OV = undefined
+        state.ovSession = undefined
+        state.ovSessionId = ''
+        state.ovToken = ''
+    },
+
     SEND_CHAT(state, payload) {
         console.log("MUTATION: SEND_CHAT() RUN...")
         console.log(payload.chatMsg)
         state.ovSession.signal({
             data: payload.chatMsg,
             to: [],                     
-            type: 'my-chat'             
+            type: 'my-chat'
         }).then(() => {
             console.log('Message successfully sent');
         }).catch(error => {
@@ -150,28 +186,50 @@ export default {
         })
     },
     
+    SEND_EXIT(state) {
+        console.log("MUTATION: SEND_EXIT() RUN...")
+        console.log(state.loginUser.accountEmail)
+        state.ovSession.signal({
+            data: state.loginUser.accountEmail,
+            to: [],                     
+            type: 'exit-video'
+        }).then(() => {
+            console.log('EXIT SIGNAL successfully sent');
+        }).catch(error => {
+            console.error(error);
+        })
+    },
+    
     SET_IS_OPEN_SETTING_DIALOG(state, payload) {
         state.isSettingDialogOpen = !state.isSettingDialogOpen
+        console.log(!state.isSettingDialogOpen)
         state.settingDialogViewId = payload
     },
 
     SET_CREATEVIDEO_DATA (state, payload) {
         state.createdVideoData = payload
     },
-
-    SET_USER_ON_CREATE_VIDEO (state, payload) {
-        state.onCreateVideoLive = payload
-    },
     
-    SET_VIDEO_ID (state, payload) {
-        state.videoId = payload
-    },
-
-    SET_SHOW_RESERVATION_INFO(state, payload) {
-        state.showReservationData = payload
-    },
-
     SET_GETSHOW_DATA (state, payload) {
         state.getShowData = payload
+    },
+    
+    DELETE_TICKET_DATA(state, payload) {
+        console.log("=====================뮤테이션======================")
+        var i = 0
+        console.log("삭제할 타임테이블 아이디 : ",payload.timetableId)
+        state.loginUser.reservationResList.forEach(element => {
+            console.log("현재 예약 정보 : ", element)
+            if (element.timetableFindByReservationRes.timetableId == payload.timetableId) {
+                console.log("i번째 인덱스 삭제: ",i)
+                console.log("그게 이거 ",state.loginUser.reservationResList[i])
+                let reservation = state.loginUser.reservationResList.splice(i, 1)
+                console.log(reservation, "이거 삭제완료")
+                console.log(state.loginUser.reservationResList, "남은 예약 정보")
+            } else {
+                
+            }
+            i++
+        });
     },
 }

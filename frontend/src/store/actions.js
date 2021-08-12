@@ -25,6 +25,10 @@ export default {
         return $axios.get(URL)
     },
 
+    requestLogout(context, payload) {
+        context.commit("LOGOUT")
+    },
+
     // RoomCreate.vue (민권)
     requestInitSession(context, payload) {
         context.commit("INIT_SESSION", payload)
@@ -76,6 +80,14 @@ export default {
         context.commit("SEND_CHAT", payload)
     },
 
+    requestSendJoin(context) {
+        context.commit("SEND_JOIN")
+    },
+
+    requestSendExit(context) {
+        context.commit("SEND_EXIT")
+    },
+
     // RoomCreate.vue (희진)
     requestSetIsOpenSettingDialog({ commit }, payload) {
         commit('SET_IS_OPEN_SETTING_DIALOG', payload)
@@ -110,9 +122,15 @@ export default {
 
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
-
-        return $axios.patch(URL, payload)
         return $axios.patch(URL)
+    },
+
+    requestLeaveSession(context, payload) {
+        context.commit("LEAVE_SESSION")
+    },
+    
+    requestSetDefaultForOpenvidu(context, payload) {
+        context.commit("SET_DEFAULT_FOR_OPENVIDU")
     },
 
     requestStartRecording(context, payload) {
@@ -141,15 +159,23 @@ export default {
         const URL = '/video/record'
         return $axios.post(URL, payload)
     },
+
+    requestPlusHit(context, payload) {
+        const URL = `/video/join/${payload.videoId}`
+        return $axios.patch(URL)
+    },
+
+    requestMinusHit(context, payload) {
+        const URL = `/video/exit/${payload.videoId}`
+        return $axios.patch(URL)
+    },
         
-    
     requestSetShowReservationInfo({ commit }, payload) {
         commit('SET_SHOW_RESERVATION_INFO', payload)
     },
 
     requestGetShowTimetable(context, payload) {
         const URL = `/showinfo/${payload}`
-
         return $axios.get(URL)
     },
 
@@ -295,6 +321,25 @@ export default {
     requestUpdateProfile(context, payload) {
         const URL = `/auth/user`
         return $axios.patch(URL, payload)
+    },
+    
+    // TicketCard.vue
+  requestDeleteTicket(context, payload) {
+    const URL = `/reservation/${payload.timetableId}`
+    $axios.delete(URL)
+      .then(({ status }) => {
+        if (status == 204) {
+          console.log('삭제 성공!')
+          context.commit("DELETE_TICKET_DATA", {timetableId : payload.timetableId})
+        } else {
+          console.log('삭제 실패!')
+        }
+      })
+    },
+    requestGetTimetables(context, payload) {
+        const URL = `/showinfo/${payload.showId}`
+        console.log(URL)
+        return $axios.get(URL)
     },
 
     // MyShowCard.vue

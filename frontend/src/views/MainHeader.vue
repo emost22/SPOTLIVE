@@ -50,16 +50,13 @@ export default ({
   },
   data: function () {
     return {
-      isLogin: false,
       validSearch: true,
       input: '',
     }
   },
   methods: {
     logout: function () {
-      this.isLogin = false
-      this.$store.dispatch('logout', this.isLogin)
-      localStorage.removeItem('jwt')
+      this.$store.dispatch('requestLogout')
       this.$router.push({ name: 'Login' })
     },
     clickSearchBtn: function () {
