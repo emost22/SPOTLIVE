@@ -242,6 +242,8 @@ export default {
     this.chatList.push(welcomeChat)
   },
   beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("requestSetCreatedVideoData", {})
+    this.$store.dispatch("requestSetFileNameOfVideo", "")
     this.$store.dispatch("requestSetUserOnCreateVideo", false)
     this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
     .then(response => {
@@ -272,12 +274,10 @@ export default {
         this.mainStreamManager.addVideoElement(this.$refs.myVideo)
       }
     },
-    isSettingDialogOpen(value, oldvalue) {
-      if (value==false && this.settingDialogViewId==2) {
-        this.videoDescription = this.createdVideoData.videoDescription
-        this.category = this.createdVideoData.categoryName
-        this.videoTitle = this.createdVideoData.videoTitle
-      }
+    createdVideoData(value, oldvalue) {
+      this.videoDescription = this.createdVideoData.videoDescription
+      this.category = this.createdVideoData.categoryName
+      this.videoTitle = this.createdVideoData.videoTitle
     },
   },
   computed: {
