@@ -78,24 +78,22 @@ export default {
   },
   created() {
     this.getUser()
+    console.log('크리에이트')
     console.log(this.profileId)
     if (this.inMyProfile) {
       this.getMyProfile()
+      console.log('내프로필')
     } else {
       this.getProfile()
+      console.log('타인프로필')
     }    
   },
   mounted() {
     console.log('마운트')
     this.profileId = this.$route.params.profileId
   },
-  updated() {
-    console.log('업데이트')
-    this.profileId = this.$route.params.profileId
-  },
   beforeRouteEnter (to, from, next) {
     console.log('라우터 엔터')
-    // this.profileId = this.$route.params.profileId
     next()
   },
   beforeRouteLeave (to, from, next) {
