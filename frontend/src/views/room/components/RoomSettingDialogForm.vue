@@ -96,7 +96,7 @@ export default {
         videoTitle: '',
         showInfoId: '',
         showTime:'',
-        mode: '',
+        mode: '공연',
       },
       thumbnail: '',
       fileName:'',
@@ -120,7 +120,7 @@ export default {
             videoTitle: '',
             showInfoId: '',
             showTime:'',
-            mode: '',
+            mode: '공연',
           }
           this.fileName = ''
       } else {
