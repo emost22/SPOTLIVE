@@ -11,7 +11,7 @@
         <div
           class="ticket-btn-box" 
           data-bs-toggle="modal" 
-          data-bs-target="#showReservationInProfileModal"
+          data-bs-target="#ticketDetailModal"
         >
           <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
         </div>
@@ -29,12 +29,16 @@
         <div 
           class="ticket-btn-box" 
           data-bs-toggle="modal" 
-          data-bs-target="#showReservationInProfileModal"
+          data-bs-target="#ticketDetailModal"
         >
-          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
+          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">
+            예약 상세
+          </button>
         </div>
         <div class="ticket-btn-box">
-          <button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">예약 취소</button>
+          <button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">
+            예약 취소
+          </button>
         </div>
       </div>
     </div>
@@ -107,28 +111,14 @@ export default {
       this.date =  tmpDay[1] + "/" + tmpDay[2]
       this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
       this.timetableId = this.reservation.timetableFindByReservationRes.timetableId
+      this.dateTime = this.reservation.timetableFindByReservationRes.dateTime
+      this.timetables = []
+      this.timetables.push({dateTime: this.dateTime, timetableId : this.timetableId})
     },
     clickReservationDeleteButton() {
       this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})
     },
     clickShowReservationInProfileButton() {
-      console.log("공연정보 가져오기 시도")
-      this.$store.dispatch('requestGetTimetables', {showId : this.showId})
-      .then((response) => {
-        if(response.status == 200){
-            console.log("requestGetTimetables() SUCCESS!!")
-            console.log(response.data)
-            this.timetables = response.data.timetables
-            console.log(this.timetables)
-        }
-        else{
-            console.log("requestGetTimetables() Fail.........")
-        }
-      })
-      .catch((error) => {
-          console.log(error)
-      })
-      
       var showData = {
         userId: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.accountEmail,
         profileNickname: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileNickname,
@@ -140,11 +130,31 @@ export default {
         price: this.price,
         runningTime: this.runningTime,
         timetables: this.timetables,
-        // date: this.date,
-        // time: this.time,
       }
       this.$store.dispatch('requestGetShowData', showData)
-      this.closeTicketDialog()
+      // 티켓 카드뷰에서 할게 아니었음!! 일단 보류
+      // this.$store.dispatch('requestGetTimetables', {showId : this.showId})
+      // .then((response) => {
+      //   this.closeTicketDialog()
+      //   this.timetables = response.data.timetables
+      //   var showData = {
+      //     userId: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.accountEmail,
+      //     profileNickname: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileNickname,
+      //     profileImageUrl: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileImageUrl,
+      //     showId: this.showId,
+      //     title: this.title,
+      //     description: this.description,
+      //     posterUrl: this.posterUrl,
+      //     price: this.price,
+      //     runningTime: this.runningTime,
+      //     timetables: this.timetables,
+      //   }
+      //   this.$store.dispatch('requestGetShowData', showData)
+      // })
+      // .catch((error) => {
+      //     console.log("requestGetTimetables() Fail.........")
+      //     console.log(error)
+      // })
     },
     closeTicketDialog() {
       this.$emit('closeTicketDialog')

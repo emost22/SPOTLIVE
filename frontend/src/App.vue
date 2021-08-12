@@ -11,8 +11,9 @@
     <ShowDetailDialog/>
     <ShowUpdateDialog/>
     <ShowReservationDialogInProfile/>
-    <TicketDialog/>
     <ShowReservationDialog/>
+    <TicketDialog/>
+    <TicketDetailDialog/>
     <ShowInfoDialogNowPlaying/>
   </div>
 </template>
@@ -29,6 +30,7 @@ import ShowReservationDialogInProfile from './views/profile/components/ShowReser
 import ProfileUpdateDialog from './views/profile/components/ProfileUpdateDialog.vue'
 import TicketDialog from './views/profile/components/TicketDialog.vue'
 import ShowReservationDialog from './views/room/components/ShowReservationDialog.vue'
+import TicketDetailDialog from './views/profile/components/TicketDetailDialog.vue'
 import ShowInfoDialogNowPlaying from './views/room/components/ShowInfoDialogNowPlaying.vue'
 
 export default ({
@@ -44,6 +46,7 @@ export default ({
     ProfileUpdateDialog,
     TicketDialog,
     ShowReservationDialog,
+    TicketDetailDialog,
     ShowInfoDialogNowPlaying,
   },
   data: function () {
