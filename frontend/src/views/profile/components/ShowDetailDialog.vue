@@ -6,13 +6,11 @@
       <div class="modal-content-m">
 
         <div class="modal-header no-border">
-          <div class="mt-3 ms-3">공연 상세 정보</div>
+          <div class="information-header mt-3 ms-3">공연 상세 정보</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        
         <div class="modal-body mx-3">
             <form>
-
               <div class="d-flex flex-row mb-3">
                 <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
                 <div class="profile-small-detail">
@@ -22,10 +20,10 @@
               </div>
 
               <div class="d-flex flex-row">    
-                <div class="show-img-box"><img :src="getShowData.posterUrl" class="show-img"></div>
+                <div><img :src="getShowData.posterUrl" class="show-img"></div>
                 <div class="show-info">
                   <div class="mb-3">
-                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label">공연명</label></div>
+                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label label-in-dialog">공연명</label></div>
                     <div>{{ getShowData.title }}</div>
                   </div>
                   <div class="mb-3 d-flex">
@@ -40,26 +38,27 @@
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
-                      <div class="label-alignment"><label class="form-label">공연 시간</label></div>
-                      <select class="custom-select-control show-timetablelist" aria-label="Default select showDetail" v-model="timetableId">
+                      <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
+                      <select class="custom-select-control-m show-timetablelist" aria-label="Default select showDetail" v-model="timetableId">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
                   </div>
+                  
                 </div>
               </div>
 
               <div class="show-description mb-3">
-                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
+                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label label-in-dialog"> 공연 설명</label></div>
                 <div>{{ getShowData.description }}</div>
               </div>
-
             </form>
         </div>
         <div class="modal-footer-m my-3">
           <div><button class="bdcolor-ngreen small-button mx-3" data-bs-toggle="offcanvas" data-bs-target="#deleteShowInfo" aria-controls="deleteShowInfo">삭제</button></div>
           <div><button type="button" @click="updateShow()" class="bdcolor-npink small-button mx-3" data-bs-toggle="modal" data-bs-target="#showUpdateModal">수정</button></div>
         </div>
+
       </div>
     </div>
             <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteShowInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
@@ -141,6 +140,21 @@ export default {
 </script>
 
 <style scoped>
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
+}
+.profile-small-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+.profile-small-detail{
+  width: 100px;
+  height: 50px;
+  margin-left: 30px;
+  text-align: left;
+}
 .show-modal-design {
   max-height: 700px;
   min-width: 500px;
@@ -173,5 +187,22 @@ export default {
 }
 .show-timetable {
   width: 160px;
+}
+.custom-select-control-m {
+  background-color: #595959;
+  padding: .375rem 2.25rem .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 0px;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.label-in-dialog {
+  font-size: 1.05rem;
+  font-weight: bold;
 }
 </style>

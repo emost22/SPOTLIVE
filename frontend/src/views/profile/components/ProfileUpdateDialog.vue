@@ -107,7 +107,7 @@ export default {
 <style>
 .profile-update-header {
   font-size: 20px;
-  display: flex;
+  font-weight: bold;
 }
 .profile-update-box {
   display: flex;

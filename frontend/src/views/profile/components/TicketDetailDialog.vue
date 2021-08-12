@@ -6,7 +6,7 @@
         <div class="modal-content-m">
           
           <div class="modal-header no-border">
-            <div class="mt-3 ms-3">예약 상세 정보</div>
+            <div class="information-header mt-3 ms-3">예약 상세 정보</div>
             <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
@@ -21,10 +21,10 @@
               </div>
 
               <div class="d-flex flex-row">                  
-                <div class="show-img-box"><img :src="getShowData.posterUrl" class="show-img"></div>        
+                <div><img :src="getShowData.posterUrl" class="show-img"></div>        
                 <div class="show-info">                 
                   <div class="mb-3">
-                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label">공연명</label></div>
+                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label label-in-dialog">공연명</label></div>
                     <div>{{ getShowData.title }}</div>
                   </div>
                   <div class="mb-3 d-flex">
@@ -39,18 +39,16 @@
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
-                      <div class="label-alignment"><label class="form-label">공연 시간</label></div>
+                      <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
                       <div> {{dateTime}} </div>
                     </div>
                   </div>
                 </div>
               </div>
-
               <div class="show-description mb-3">
-                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
+                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label label-in-dialog"> 공연 설명</label></div>
                 <div>{{ getShowData.description }}</div>
               </div>
-
             </form>
           </div>
           
@@ -64,6 +62,7 @@
               닫기
             </button>
           </div>
+
         </div>
       </div>
     </div>
@@ -116,6 +115,21 @@ export default {
 </script>
 
 <style scoped>
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
+}
+.profile-small-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+.profile-small-detail{
+  width: 100px;
+  height: 50px;
+  margin-left: 30px;
+  text-align: left;
+}
 .show-modal-design {
   max-height: 700px;
   min-width: 500px;
@@ -141,5 +155,9 @@ export default {
 }
 .show-timetable {
   width: 160px;
+}
+.label-in-dialog {
+  font-size: 1.05rem;
+  font-weight: bold;
 }
 </style>
