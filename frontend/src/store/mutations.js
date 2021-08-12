@@ -215,21 +215,16 @@ export default {
     },
     
     DELETE_TICKET_DATA(state, payload) {
-        console.log("=====================뮤테이션======================")
         var i = 0
-        console.log("삭제할 타임테이블 아이디 : ",payload.timetableId)
         state.loginUser.reservationResList.forEach(element => {
-            console.log("현재 예약 정보 : ", element)
             if (element.timetableFindByReservationRes.timetableId == payload.timetableId) {
-                console.log("i번째 인덱스 삭제: ",i)
-                console.log("그게 이거 ",state.loginUser.reservationResList[i])
-                let reservation = state.loginUser.reservationResList.splice(i, 1)
-                console.log(reservation, "이거 삭제완료")
-                console.log(state.loginUser.reservationResList, "남은 예약 정보")
-            } else {
-                
+                state.loginUser.reservationResList.splice(i, 1)
             }
             i++
         });
+    },
+
+    DELETE_GETSHOW_DATA(state) {
+        state.getShowData = {}
     },
 }
