@@ -99,7 +99,6 @@ export default {
     }
   },
   mounted() {
-    this.getShowInfoTimeTable()
   },
   methods: {
     updateShow(){
@@ -120,6 +119,7 @@ export default {
     },
     getShowInfoTimeTable(timetables) {
       this.timetableId = timetables[0].timetableId
+      this.timetables = []
       for(var i = 0; i < timetables.length; i++){
         var date = this.formatter(timetables[i].dateTime)
         this.timetables.push({ v: timetables[i].timetableId, t: date})
