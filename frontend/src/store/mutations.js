@@ -249,4 +249,8 @@ export default {
             i++
         });
     },
+
+    SET_FILENAME_OF_VIDEO (state, payload) {
+        state.fileNamevuex = payload
+    }
 }

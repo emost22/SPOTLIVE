@@ -66,4 +66,7 @@ export default {
     getShowData(state) {
         return state.getShowData
     },
+    fileNamevuex(state) {
+        return state.fileNamevuex
+    }
 }

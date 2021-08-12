@@ -18,7 +18,7 @@ export default {
   name:'RoomCreate',
   data() {
     return  {
-
+      
     }
   },
   beforeMount() {
@@ -95,7 +95,6 @@ export default {
         "accountEmail": this.loginUser.accountEmail,
         "sessionId": this.ovSessionId,
       }
-
       formData.append('posterImage', this.createdVideoData.thumbnailImage)
       formData.append('videoInsertPostReq', new Blob([JSON.stringify(videoInsertPostReq)] , {type: "application/json"}))
       console.log(formData)
