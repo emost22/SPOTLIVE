@@ -174,9 +174,14 @@ export default {
 
     SEND_CHAT(state, payload) {
         console.log("MUTATION: SEND_CHAT() RUN...")
+        let chatStr = payload.chatMsg
+        let imgUrl = state.loginUser.profileImageUrl
+        let userName = state.loginUser.userName
+
+        let sendData = chatStr + "####" + imgUrl + "####" + userName
         console.log(payload.chatMsg)
         state.ovSession.signal({
-            data: payload.chatMsg,
+            data: sendData,
             to: [],                     
             type: 'my-chat'
         }).then(() => {
@@ -209,6 +214,18 @@ export default {
     SET_CREATEVIDEO_DATA (state, payload) {
         state.createdVideoData = payload
     },
+
+    SET_USER_ON_CREATE_VIDEO (state, payload) {
+        state.onCreateVideoLive = payload
+    },
+
+    SET_VIDEO_ID (state, payload) {
+        state.videoId = payload
+    },
+
+    SET_SHOW_RESERVATION_INFO(state, payload) {
+        state.showReservationData = payload
+    },
     
     SET_GETSHOW_DATA (state, payload) {
         state.getShowData = payload
@@ -232,4 +249,8 @@ export default {
             i++
         });
     },
+
+    SET_FILENAME_OF_VIDEO (state, payload) {
+        state.fileNamevuex = payload
+    }
 }

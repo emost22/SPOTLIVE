@@ -113,6 +113,10 @@ export default {
         commit('SET_USER_ON_CREATE_VIDEO', payload)
     },
 
+    requestSetFileNameOfVideo({ commit }, payload) {
+        commit('SET_FILENAME_OF_VIDEO', payload)
+    },
+
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
