@@ -351,6 +351,11 @@ export default {
         commit('SET_GETSHOW_DATA', payload)
     },
 
+    //ShowCreateDialog.vue
+    requestPostShow(context, payload){
+      const URL = `/showinfo/`
+      return $axios.post(URL, payload)
+    },
     // ShowDetailDialog.vue
     requestDeleteShowInfo(context, payload) {
         const URL = `/showinfo/${payload}`
