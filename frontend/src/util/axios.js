@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://i5a405.p.ssafy.io:8443/api' // 이후 바뀌어야 될 값
+const BASE_URL = 'https://i5a405.p.ssafy.io:8080/api' // 이후 바뀌어야 될 값
 const DEFAULT_CONTENT_TYPE = 'application/json'
 const TOKEN_NAME = 'accessToken'
 const ASTAR = '*'
