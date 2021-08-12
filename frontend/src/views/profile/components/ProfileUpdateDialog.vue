@@ -22,14 +22,14 @@
         <div class="modal-body mx-3 profile-update-box">
           <div class="profile-update-img-box"><img :src="loginUser.profileImageUrl" class="profile-update-img" /></div>
           <div>
-            <div class="label-alignment profile-update-info">닉네임</div>
-            <div class="profile-update-info profile-update-info"><input class="custom-form-control" v-model="profileNickname" /></div>
-            <div class="label-alignment profile-update-info">개인 설명</div>
-            <div class="profile-update-info"><input class="custom-form-control" v-model="profileDescription" /></div> 
+            <div class="label-alignment profile-update-info mb-2">닉네임</div>
+            <div class="profile-update-info profile-update-info mb-2"><input class="custom-form-control" v-model="profileNickname" /></div>
+            <div class="label-alignment profile-update-info mb-2">소개</div>
+            <div class="profile-update-info"><textarea class="custom-form-control" v-model="profileDescription" rows="3"/></div> 
           </div>
         </div>
 
-        <div class="modal-footer-m">
+        <div class="modal-footer-m my-3">
           <div>
             <button
               data-bs-dismiss="modal"
@@ -130,6 +130,5 @@ export default {
 .profile-update-info {
   text-align: left;
   margin-left: 20px;
-  margin-bottom: 10px;
 }
 </style>
