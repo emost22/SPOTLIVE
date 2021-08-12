@@ -1,35 +1,35 @@
 <template>
-  <div class="modal fade" id="showCreateModal" tabindex="-1" aria-labelledby="showCreateModalLabel" aria-hidden="true">
-    <div class="modal-dialog bdcolor-bold-npurple modal-design modal-dialog-scrollable">
+  <div class="modal fade" id="showCreateModal" ref="showCreateModal"  tabindex="-1" aria-labelledby="showCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-create-modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="information-header mt-3 ms-3">공연 정보 생성</div>
+          <button @click="clearShowCreateData" type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body mx-3">
             <form>
-              <div class="d-flex flex-row mb-3">
-                <div><img :src="profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
+              <div class="d-flex flex-row mb-3 ms-3">
+                <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
                 <div class="profile-small-detail">
-                  <div> {{ profileNickname }} </div>
-                  <div> {{ userId }} </div>
+                  <div> {{ loginUser.profileNickname }} </div>
+                  <div> {{ loginUser.accountEmail }} </div>
                 </div>
               </div>
-              <div class="d-flex flex-row justify-content-evenly mb-3">
+
+              <div class="d-flex flex-row">
                 <div class="file-preview-container">
                   <div class="file-preview-wrapper">
                     <div class="show-img" v-if="preview">
                       <div class="show-img-box">
-                      <div class="file-close-button" @click="fileDeleteButton">
-                        x
-                      </div>
+                        <div class="file-close-button" @click="fileDeleteButton">
+                          x
+                        </div>
                         <img :src="preview" class="show-preview">
                       </div>
                     </div>
                     <div class="camera-input-bgcolor-light-grey show-img" v-else>
-                      <!-- <div class="show-img"> -->
-                        <label class="camera-input-button" for="input-file"/>
-                        <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
-                      <!-- </div> -->
+                      <label class="camera-input-button" for="input-file"/>
+                      <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
                     </div>
                   </div>
                 </div>
@@ -62,7 +62,7 @@
                   </div>
                   <div class="mb-3 d-flex">
                   <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <select class="custom-select-control" v-model="selected">
+                      <select class="show-create-timetable" v-model="selected">
                         <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                           {{ formatter(d.dateTime) }}
                         </option>
@@ -75,13 +75,14 @@
                 </div>
               </div>
               </div>
-              <div class="mb-3">
+
+              <div class="mb-3 mx-3">
                 <div class="label-alignment"><label for="showCreateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
                 <textarea class="custom-form-control" id="showCreateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
               </div>
             </form>
         </div>
-        <div class="modal-footer-m">
+        <div class="modal-footer-m my-3">
           <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
           <div><button @click="clickShowPostButton" type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="modal">등록</button></div>
         </div>
@@ -145,6 +146,23 @@ export default {
       var dateTime = new Date(date)
       return `${dateTime.toLocaleString()}`
     },
+    clearShowCreateData() {
+      var modal= this.$refs.showCreateModal
+      var _this = this
+      modal.addEventListener('hidden.bs.modal', function (event) {
+        _this.timetables = []
+        _this.showInfoTitle = ''
+        _this.showInfoDescription = ''
+        _this.price = ''
+        _this.runningTime = ''
+        _this.posterImage = ''
+        _this.preview = ''
+        _this.datetime = ''
+        _this.timetables = []
+        _this.selected = ''
+        _this.timtetableReq = []
+      })
+    },
     clickShowPostButton(){
       let formData = new FormData()
       let showInfoInsertPostReq = {
@@ -159,9 +177,10 @@ export default {
       formData.append('showInfoInsertPostReq', new Blob([JSON.stringify(showInfoInsertPostReq)], {type: "application/json"}))
       this.$store.dispatch('requestPostShow', formData)
       .then((response) => {
-        
+        this.clearShowCreateData()
       }).catch(error => {
         console.log(error)
+        this.clearShowCreateData()
       })
     }
   },
@@ -174,7 +193,13 @@ export default {
 <style>
 
 @import '../../../../node_modules/vue-datetime/dist/vue-datetime.css';
-
+.show-create-modal-design {
+  max-height: 700px;
+  min-width: 650px;
+  width: 70%;
+  background-color: #242424;
+  color: white;
+}
 .calendar-plus-button {
   width: 20px;
   height: 20px;
@@ -209,7 +234,7 @@ export default {
   height: 100%;
 }
 .show-info {
-  width: 100%;
+  width: 300px;
 }
 .profile-small-img {
   width: 50px;
@@ -231,8 +256,11 @@ export default {
   height: 100%;
 } */
 .file-preview-container {
-  min-width: 240px;
-  min-height: 300px;
+  margin: 20px;
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 250px;
+  max-height: 250px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -303,9 +331,25 @@ export default {
   color: white
 }
 
+.show-create-timetable {
+  width: 220px;
+  background-color: #595959;
+  padding: .375rem 2.25rem .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 0px;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 .btn-add-timetable{
   display: block;
-  width: 100%;
+  width: 65px;
+  height: 37px;
+  font-size: 16px;
   background-color: #595959;
   border: 0px;
   border-radius: .25rem;
@@ -317,7 +361,9 @@ export default {
 }
 .btn-remove-timetable{
   display: block;
-  width: 100%;
+  width: 65px;
+  height: 37px;
+  font-size: 16px;
   background-color: #595959;
   border: 0px;
   border-radius: .25rem;
@@ -336,5 +382,9 @@ export default {
   min-height: 100%;
   max-height: 100%;
   border-color: none;
+}
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
 }
 </style>

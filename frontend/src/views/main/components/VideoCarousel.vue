@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style>
-.carousel-3d-container[data-v-07917306]  {
+.carousel-3d-container[data-v-07917306] {
   padding-top: 50px;
   padding-bottom: 50px;
   min-height: 450px;
