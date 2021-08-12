@@ -69,6 +69,7 @@ export default {
       date : '',
       time : '',
       timetableId : '',
+      timetables: [],
     }
   },
   created() {
@@ -111,15 +112,36 @@ export default {
       this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})
     },
     clickShowReservationInProfileButton() {
+      console.log("공연정보 가져오기 시도")
+      this.$store.dispatch('requestGetTimetables', {showId : this.showId})
+      .then((response) => {
+        if(response.status == 200){
+            console.log("requestGetTimetables() SUCCESS!!")
+            console.log(response.data)
+            this.timetables = response.data.timetables
+            console.log(this.timetables)
+        }
+        else{
+            console.log("requestGetTimetables() Fail.........")
+        }
+      })
+      .catch((error) => {
+          console.log(error)
+      })
+      
       var showData = {
+        userId: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.accountEmail,
+        profileNickname: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileNickname,
+        profileImageUrl: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileImageUrl,
         showId: this.showId,
         title: this.title,
         description: this.description,
         posterUrl: this.posterUrl,
         price: this.price,
         runningTime: this.runningTime,
-        date: this.date,
-        time: this.time,
+        timetables: this.timetables,
+        // date: this.date,
+        // time: this.time,
       }
       this.$store.dispatch('requestGetShowData', showData)
       this.closeTicketDialog()
