@@ -3,10 +3,11 @@
     <div class="container">
       <div class="flux">Spot </div>
       <div class="flicking">L<span id="offset">I</span>VE</div>
-    </div>
-    <button class="bdcolor-nyellow kakaobtn" @click="moveToKakaoLoginPage">
+      <button class="bdcolor-nyellow kakaobtn" @click="moveToKakaoLoginPage">
       Kakaotalk Login
     </button>
+    </div>
+    
   </div>
 </template>
 
@@ -59,10 +60,9 @@ export default {
   min-width: 250px;
   background: none;
   color: white;
-  font-size: 24px;
+  font-size: 2rem;
   font-weight: bold;
   margin-top: 80px;
-  margin-left: 740px;
 }
 
 @font-face {
@@ -71,19 +71,23 @@ export default {
 }
 
 .container {
+  position: absolute;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 350px;
-  margin-left: 600px;
+  margin-left: 550px;
+  width: fit-content;
+  bottom: 20vh;
+  right: 15vw;
 }
 
 .flux {
   font-family: neon;
   color: #04F7CA;
-  font-size: 9vw;
+  font-size: 10rem;
   line-height: 5vw;
 }
 
@@ -105,9 +109,8 @@ export default {
 .flicking {
   color:#F84ABF;
   font-family: 'neon', sans-serif;
-  font-size: 9vw;
+  font-size: 10rem;
   animation: text-flicker 3s linear infinite;
-
 }
 
 #offset {
