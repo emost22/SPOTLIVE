@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="left-side">
+    <div class="main-screen">
       <div class="wide-screen">
         <video class="userVideo" controls v-if="videoUrl != ''">
           <source :src="videoUrl" type="video/mp4">
@@ -92,16 +92,12 @@ export default {
 </script>
 
 <style scoped>
-.left-side {
+.main-screen {
   flex-grow: 10;
   height: 100%;
   margin-right: 10px;
 }
-.right-side {
-  width: 30%;
-}
 .userVideo {
-  min-width: 100%;
   min-height: 100%;
 }
 .wide-screen {
