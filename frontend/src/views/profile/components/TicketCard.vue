@@ -31,10 +31,14 @@
           data-bs-toggle="modal" 
           data-bs-target="#ticketDetailModal"
         >
-          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
+          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">
+            예약 상세
+          </button>
         </div>
         <div class="ticket-btn-box">
-          <button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">예약 취소</button>
+          <button @click="clickReservationDeleteButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple">
+            예약 취소
+          </button>
         </div>
       </div>
     </div>
@@ -107,8 +111,9 @@ export default {
       this.date =  tmpDay[1] + "/" + tmpDay[2]
       this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
       this.timetableId = this.reservation.timetableFindByReservationRes.timetableId
+      this.dateTime = this.reservation.timetableFindByReservationRes.dateTime
       this.timetables = []
-      this.timetables.push(this.date + " " + this.time)
+      this.timetables.push({dateTime: this.dateTime, timetableId : this.timetableId})
     },
     clickReservationDeleteButton() {
       this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})

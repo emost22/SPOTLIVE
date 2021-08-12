@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="modal fade" id="ticketDetailModal" 
+    <div class="modal fade" id="ticketDetailModal" ref="ticketDetailModal"
       tabindex="-1" aria-labelledby="ticketDetailModalLabel" aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
@@ -102,11 +102,16 @@ export default {
   created: function () {
   },
   methods: {
+    formatter(date) {
+      var dateTime = new Date(date)
+      
+      return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()} ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
+    },
     getShowInfoTimeTable(timetables) {
-      this.dateTime = timetables[0]
+      this.dateTime = this.formatter(timetables[0].dateTime)
     },
     clearGetShowData() {
-      this.$store.dispatch('requestDeleteGetShowData')
+      // this.$store.dispatch('requestDeleteGetShowData')
     },
   },
   computed: {
@@ -115,6 +120,12 @@ export default {
   watch: {
     getShowData(val, oldVal) {
       this.getShowInfoTimeTable(this.getShowData.timetables)
+      var modal= this.$refs.showDetailModal
+      // var _this = this
+      // modal.addEventListener('hidden.bs.modal', function (event) {
+      //   console.log('제발')
+      //   _this.timetables = []
+      // })
     }
   },
 }

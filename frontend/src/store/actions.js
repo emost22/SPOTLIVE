@@ -351,7 +351,7 @@ export default {
         commit('SET_GETSHOW_DATA', payload)
     },
     // TicketDetailDialog.vud
-    requestDeleteGetShowData() {
+    requestDeleteGetShowData({ commit }) {
         commit('DELETE_GETSHOW_DATA')
     },
     // ShowDetailDialog.vue

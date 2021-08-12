@@ -127,12 +127,14 @@ export default {
     formatter(date) {
       var dateTime = new Date(date)
       
-      return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()} 
-        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
+      return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}
+      ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable(timetables) {
       this.timetableId = timetables[0].timetableId
-      for(var i = 0; i < timetables.length; i++){
+      let length = timetables.length
+      this.timetables=[]
+      for(var i = 0; i < length; i++){
         var date = this.formatter(timetables[i].dateTime)
         this.timetables.push({ v: timetables[i].timetableId, t: date})
       }
@@ -172,13 +174,15 @@ export default {
   },
   watch: {
     getShowData(val, oldVal) {
+      console.log(this.getShowData.timetables)
       this.getShowInfoTimeTable(this.getShowData.timetables)
-      var modal= this.$refs.showReservationInProfileModal
-      var _this = this
-      modal.addEventListener('hidden.bs.modal', function (event) {
-        console.log('제발')
-        _this.timetables = []
-      })
+      
+      // var modal= this.$refs.showReservationInProfileModal
+      // var _this = this
+      // modal.addEventListener('hidden.bs.modal', function (event) {
+      //   console.log('제발')
+      //   _this.timetables = []
+      // })
     },
   },
 }
