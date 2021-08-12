@@ -1,12 +1,13 @@
 <template>
   <div class="bgcolor-deep-grey nav-sidebar close-sidebar">
     <nav class="nav flex-column">
-      <div >
-        <div v-if="!open" @click="openSidebar">
+      <div>
+        <div v-if="!open" @click="openSidebar" class="sidebar-open-item">
           <img src="~@/assets/icon-sidebar.png" class="sidebar-icon-img">
         </div>
         <div v-if="open" @click="closeSidebar" class="sidebar-close-item">
           <img src="~@/assets/icon-sidebar-back.png" class="sidebar-icon-img">
+          <p class="txtcolor-white-npurple sidebar-top-txt" >Sunbscriber</p>
         </div>
       </div>
       <ul class="navbar-nav" v-for="(following, idx) in following_list" :key="idx">
@@ -74,8 +75,8 @@ export default {
 
 <style>
 .open-sidebar {
-  min-width: 300px;
-  max-width: 300px;
+  min-width: 250px;
+  max-width: 250px;
   display: block;
   padding: 5px;
 }
@@ -85,15 +86,26 @@ export default {
   display: block;
   padding: 5px;
 }
+.sidebar-open-item {
+  height: 60px;
+  width: 55px;
+  padding-top: 15px;
+}
 .sidebar-close-item {
+  height: 60px;
   display: flex;
   flex-direction: row-reverse;
-  justify-content: end;
-  margin: 5px;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 15px;
 }
 .sidebar-icon-img {
   width: 15px;
   height: 15px;
-  margin: 5px;
+}
+.sidebar-top-txt {
+  font-size: 20px;
+  margin-top: 15px;
+  margin-left: 15px;
 }
 </style>

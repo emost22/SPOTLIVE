@@ -2,10 +2,18 @@
   <div id="app">
     <div class="sticky-top match-parent">
       <MainHeader v-if="isLogin"/>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
     <RoomSettingDialog/>
+    <RoomSettingUpdateDialog/>
+    <ProfileUpdateDialog/>
     <ShowCreateDialog/>
+    <ShowDetailDialog/>
+    <ShowUpdateDialog/>
+    <ShowReservationDialogInProfile/>
+    <TicketDialog/>
+    <ShowReservationDialog/>
+    <ShowInfoDialogNowPlaying/>
   </div>
 </template>
 
@@ -13,14 +21,30 @@
 import { mapGetters } from "vuex"
 import MainHeader from './views/MainHeader.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
+import RoomSettingUpdateDialog from './views/room/components/RoomSettingUpdateDialog.vue'
 import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
+import ShowDetailDialog from './views/profile/components/ShowDetailDialog.vue'
+import ShowUpdateDialog from './views/profile/components/ShowUpdateDialog.vue'
+import ShowReservationDialogInProfile from './views/profile/components/ShowReservationDialogInProfile.vue'
+import ProfileUpdateDialog from './views/profile/components/ProfileUpdateDialog.vue'
+import TicketDialog from './views/profile/components/TicketDialog.vue'
+import ShowReservationDialog from './views/room/components/ShowReservationDialog.vue'
+import ShowInfoDialogNowPlaying from './views/room/components/ShowInfoDialogNowPlaying.vue'
 
 export default ({
   name: "App",
   components: {
     MainHeader,
     RoomSettingDialog,
+    RoomSettingUpdateDialog,
     ShowCreateDialog,
+    ShowDetailDialog,
+    ShowUpdateDialog,
+    ShowReservationDialogInProfile,
+    ProfileUpdateDialog,
+    TicketDialog,
+    ShowReservationDialog,
+    ShowInfoDialogNowPlaying,
   },
   data: function () {
     return {
@@ -117,6 +141,34 @@ textarea {
   text-shadow:
       0 0 9px #C752FE;
 }
+.txtcolor-white-npink {
+  color: #FFFFFF;
+  text-shadow:
+      0 0 9px #F84ABF,
+      0 0 15px #F84ABF,
+      0 0 30px #F84ABF;
+}
+.txtcolor-white-ngreen {
+  color: #FFFFFF;
+  text-shadow:
+      0 0 9px #04F7CA,
+      0 0 15px #04F7CA,
+      0 0 30px #04F7CA;
+}
+.txtcolor-white-nyellow {
+  color: #FFFFFF;
+  text-shadow:
+      0 0 9px #FEF279,
+      0 0 15px #FEF279,
+      0 0 30px #FEF279;
+}
+.txtcolor-white-npurple {
+  color: #FFFFFF;
+  text-shadow:
+      0 0 9px #C752FE,
+      0 0 15px #C752FE,
+      0 0 30px #C752FE;
+}
 .bdcolor-ngreen {
   border: 2px solid #04F7CA;
   box-shadow: 
@@ -199,7 +251,6 @@ textarea {
   margin-left: 30px;
   margin-right: 30px;
   height: 80%;
-  background-color: lightgrey;
 }
 .modal-design {
   max-height: 700px;
@@ -270,5 +321,58 @@ label:hover {
   top: 50px; right: 0; bottom: 0; left: 0;
   padding: 30px;
   display: none;
+}
+.m-offcanvas-top {
+  width: 70vh;
+  height: 27vh;
+  border-bottom-left-radius: 2vh;
+  border-bottom-right-radius: 2vh;
+}
+.m-offcanvas {
+    background-color: #242424;
+    color: white;
+    margin: 0 auto;
+}
+.offcanvas-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 13px;
+}
+.popUpTitle {
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.offcanvas-body{
+  padding: 10px;
+}
+.toast {
+  width: 300px;
+  max-width: 100%;
+  font-size: 1rem;
+  pointer-events: auto;
+  background-color: #6A6A6A;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.1);
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+  border-radius: .25rem;
+}
+.toast-header {
+  display: flex;
+  align-items: center;
+  padding: .5rem .75rem;
+  color: white;
+  background-color: #595959;
+  background-clip: padding-box;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  border-top-left-radius: calc(.25rem - 1px);
+  border-top-right-radius: calc(.25rem - 1px);
+}
+.toast-body {
+  color: white;
+  text-align: left;
+}
+.offcanvas {
+  z-index: 1060;
 }
 </style>

@@ -47,6 +47,26 @@ export default {
     },
     createdVideoData(state) {
         return state.createdVideoData
+    },
+    RESOLUTION(state) {
+        return state.RESOLUTION
+    },
+    onCreateVideoLive(state) {
+        return state.onCreateVideoLive
+    },
+    videoId(state) {
+        return state.videoId
+    },
+    MAX_CHAT_LIST_SIZE(state) {
+        return state.MAX_CHAT_LIST_SIZE
+    },
+    showReservationData(state) {
+        return state.showReservationData
+    },
+    getShowData(state) {
+        return state.getShowData
+    },
+    fileNamevuex(state) {
+        return state.fileNamevuex
     }
-
 }

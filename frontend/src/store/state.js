@@ -16,5 +16,24 @@ export default {
     mainStreamManager: undefined,
     publisher: undefined,
     subscribers: [],
-    createdVideoData: {}
+    RESOLUTION: '1024x576',
+    MAX_CHAT_LIST_SIZE: 20,
+    createdVideoData: {},
+    getShowData: {},
+    onCreateVideoLive: false,
+    videoId: '',
+    showReservationData: {
+        runningTime: '',
+        posterUrl: '',
+        price: '',
+        showInfoDescription: '',
+        showInfoId: '',
+        showInfoTitle: '',
+        userRes: {
+          accountEmail:'',
+          userName: '',
+          profileImageUrl:''
+        }
+      },
+    fileNamevuex: '',
 }

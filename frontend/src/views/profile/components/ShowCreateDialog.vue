@@ -8,10 +8,10 @@
         <div class="modal-body mx-3">
             <form>
               <div class="d-flex flex-row mb-3">
-                <div><img src="~@/assets/icon-profile.png" class="profile-small-img bdcolor-bold-npink"></div>
+                <div><img :src="profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
                 <div class="profile-small-detail">
-                  <div> 나예뽀님</div>
-                  <div> email@naver.com </div>
+                  <div> {{ profileNickname }} </div>
+                  <div> {{ userId }} </div>
                 </div>
               </div>
               <div class="d-flex flex-row justify-content-evenly mb-3">
@@ -24,29 +24,28 @@
                     <input type="email" class="custom-form-control" id="showCreateFormControlInput1">
                   </div>
                   <div class="mb-3">
-                    <div class="label-alignment"><label for="showCreateFormControlInput3" class="form-label">티켓가격</label></div>
+                    <div class="label-alignment"><label for="showCreateFormControlInput2" class="form-label">티켓가격</label></div>
                     <div class="d-flex">
-                    <input type="text" class="custom-form-control" id="showCreateFormControlInput1">
+                    <input type="text" class="custom-form-control" id="showCreateFormControlInput2">
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
                       <div class="label-alignment">
-                        <label class="form-label">공연 시간</label>
-                        <button class="calendar-plus-button"></button>
+                        <label class="form-label">공연 시간 <button class="calendar-plus-button"></button></label>
                       </div>
                       <select class="custom-select-control" aria-label="Default select showCreate">
                         <option selected>7/29 13:00</option>
-                        <!-- 삭제 버튼  -->
                         <option value="1">One</option>
                         <option value="2">One</option>
+                        <!-- 삭제 버튼  -->
                       </select>
                     </div>
                     <div class="flex-fill me-3">
                       <div class="label-alignment">
-                        <label class="form-label">러닝타임</label>
+                        <label class="form-label" for="showCreateFormControlInput4">러닝타임</label>
                       </div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput1">
+                      <input type="text" class="custom-form-control" id="showCreateFormControlInput4">
                     </div>
                   </div>
                 </div>
@@ -67,10 +66,30 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default {
-  name: 'RoomSettingDialog',
-  components: {
-  }
+  name: 'ShowCreateDialog',
+  data: function() {
+    return {
+      userId: '',
+      profileNickname: '',
+      profileImageUrl: '',
+    }
+  },
+  created: function () {
+    this.getUser()
+  },
+  methods: {
+    getUser() {
+      this.userId = this.loginUser.accountEmail
+      this.profileNickname = this.loginUser.profileNickname
+      this.profileImageUrl = this.loginUser.profileImageUrl
+    },
+  },
+  computed: {
+    ...mapGetters(['loginUser',]),
+  },
 }
 </script>
 
@@ -98,6 +117,8 @@ export default {
   background-image: url('~@/assets/icon-camera-input.png');
   background-repeat: no-repeat;
   background-position: center;
+  margin: auto;
+  margin-top: 50%;
 }
 .show-img {
   width: 100%;

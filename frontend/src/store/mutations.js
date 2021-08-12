@@ -1,7 +1,6 @@
+import { Publisher } from 'openvidu-browser'
 import router from '../router/index'
 import $axios from '../util/axios'
-
-const RESOLUTION = '960x540'
 
 export default {
 
@@ -22,6 +21,16 @@ export default {
         console.log("MUTATION: INIT_SESSION() RUN...")
         state.OV = payload
         state.ovSession = state.OV.initSession()
+    },
+
+    LOGOUT(state, payload) {
+        console.log("MUTATION: LOGOUT() RUN...")
+        state.isLogin = false
+        localStorage.removeItem('loginUser')
+        localStorage.removeItem('accessToken')
+
+        $axios.defaults.headers['Authorization'] = ''
+        router.push({ name: "Login" })
     },
 
     SET_SESSION_ID_AND_TOKEN_FOR_OPENVIDU(state, payload) {
@@ -46,14 +55,6 @@ export default {
             console.log('[OPENVIDU] Found Connection: ', { event })
         })
 
-        state.ovSession.on('streamCreated', ({ stream }) => {
-            let subscriber = state.ovSession.subscribe(stream, undefined)
-            console.log('[OPENVIDU] Add new user: ' + subscriber.id)
-            console.log(subscriber)
-            state.mainStreamManager = subscriber
-            state.subscribers.push(subscriber)
-        })
-
         state.ovSession.on('streamDestroyed', ({ stream }) => {
             console.log('[OPENVIDU] Stream Destroyed!')
             const index = state.subscribers.indexOf(stream.streamManager, 0)
@@ -67,6 +68,16 @@ export default {
             console.warn(exception)
         })
     },
+
+    SET_MAIN_STREAM_MANAGER(state, payload) {
+        console.log("MUTATION: SET_MAIN_STREAM_MANAGER() RUN...")
+        state.mainStreamManager = state.ovSession.subscribe(payload.stream, undefined)
+    },
+
+    SET_SUBSCRIBE(state, payload) {
+        console.log("MUTATION: SET_SUBSCRIBE() RUN...")
+        state.ovSession.subscribe(payload.stream, undefined)
+    },
     
     CONNECT_SESSION(state) {
         console.log("MUTATION: CONNECT_SESSION() RUN...")
@@ -78,7 +89,7 @@ export default {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-                resolution: RESOLUTION,  // The resolution of your video
+                resolution: state.RESOLUTION,  // The resolution of your video
                 frameRate: 30,			// The frame rate of your video
                 insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
                 mirror: false       	// Whether to mirror your local video or not
@@ -95,10 +106,22 @@ export default {
         console.log("MUTATION: CONNECT_SESSION_FOR_GUEST() RUN...")
         console.log("OV TOKEN: " + state.ovToken)
         console.log("ACCOUNT_EMAIL: " + state.loginUser.accountEmail)
-        state.ovSession.connect(state.ovToken, { clientData: state.loginUser.accountEmail })
+        state.ovSession.connect(state.ovToken, { clientData: "example@example.com" })
         .then((response) => {
-            state.mainStreamManager = state.subscribers[0]
+            console.log("CONNECT_SESSION_FOR_GUEST() SUCCESS!")
+            console.log("MUTATION: SEND_JOIN() RUN...")
+            console.log(state.loginUser.accountEmail)
+            state.ovSession.signal({
+                data: state.loginUser.accountEmail,
+                to: [],                     
+                type: 'join-video'
+            }).then(() => {
+                console.log('JOIN SIGNAL successfully sent');
+            }).catch(error => {
+                console.error(error);
+            })
         }).catch((error) => {
+            console.log("CONNECT_SESSION_FOR_GUEST() FAIL!")
             console.log('There was an error connecting to the session:', error.code, error.message)
         })
     },
@@ -117,7 +140,7 @@ export default {
 			videoSource: state.videoDevices[state.videoDeviceId].deviceId, // The source of video. If undefined default webcam
 			publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
 			publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-			resolution: RESOLUTION,  // The resolution of your video
+			resolution: state.RESOLUTION,  // The resolution of your video
 			frameRate: 30,			// The frame rate of your video
 			insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
 			mirror: false       	// Whether to mirror your local video or not
@@ -134,15 +157,49 @@ export default {
         console.log("MUTATION: CHANGE_DEVICE() DONE...")
     },
 
+    LEAVE_SESSION(state, payload) {
+        console.log("MUTATION: LEAVE_SESSION() RUN...")
+        state.ovSession.disconnect()
+    },
+
+    SET_DEFAULT_FOR_OPENVIDU(state, payload) {
+        state.mainStreamManager = undefined
+        state.publisher = undefined
+        state.subscribers = []
+        state.OV = undefined
+        state.ovSession = undefined
+        state.ovSessionId = ''
+        state.ovToken = ''
+    },
+
     SEND_CHAT(state, payload) {
-        console.log("MUTATION: CHANGE_DEVICE() RUN...")
+        console.log("MUTATION: SEND_CHAT() RUN...")
+        let chatStr = payload.chatMsg
+        let imgUrl = state.loginUser.profileImageUrl
+        let userName = state.loginUser.userName
+
+        let sendData = chatStr + "####" + imgUrl + "####" + userName
         console.log(payload.chatMsg)
         state.ovSession.signal({
-            data: payload.chatMsg,
+            data: sendData,
             to: [],                     
-            type: 'my-chat'             
+            type: 'my-chat'
         }).then(() => {
             console.log('Message successfully sent');
+        }).catch(error => {
+            console.error(error);
+        })
+    },
+    
+    SEND_EXIT(state) {
+        console.log("MUTATION: SEND_EXIT() RUN...")
+        console.log(state.loginUser.accountEmail)
+        state.ovSession.signal({
+            data: state.loginUser.accountEmail,
+            to: [],                     
+            type: 'exit-video'
+        }).then(() => {
+            console.log('EXIT SIGNAL successfully sent');
         }).catch(error => {
             console.error(error);
         })
@@ -156,5 +213,44 @@ export default {
 
     SET_CREATEVIDEO_DATA (state, payload) {
         state.createdVideoData = payload
+    },
+
+    SET_USER_ON_CREATE_VIDEO (state, payload) {
+        state.onCreateVideoLive = payload
+    },
+
+    SET_VIDEO_ID (state, payload) {
+        state.videoId = payload
+    },
+
+    SET_SHOW_RESERVATION_INFO(state, payload) {
+        state.showReservationData = payload
+    },
+    
+    SET_GETSHOW_DATA (state, payload) {
+        state.getShowData = payload
+    },
+    
+    DELETE_TICKET_DATA(state, payload) {
+        console.log("=====================뮤테이션======================")
+        var i = 0
+        console.log("삭제할 타임테이블 아이디 : ",payload.timetableId)
+        state.loginUser.reservationResList.forEach(element => {
+            console.log("현재 예약 정보 : ", element)
+            if (element.timetableFindByReservationRes.timetableId == payload.timetableId) {
+                console.log("i번째 인덱스 삭제: ",i)
+                console.log("그게 이거 ",state.loginUser.reservationResList[i])
+                let reservation = state.loginUser.reservationResList.splice(i, 1)
+                console.log(reservation, "이거 삭제완료")
+                console.log(state.loginUser.reservationResList, "남은 예약 정보")
+            } else {
+                
+            }
+            i++
+        });
+    },
+
+    SET_FILENAME_OF_VIDEO (state, payload) {
+        state.fileNamevuex = payload
     }
 }

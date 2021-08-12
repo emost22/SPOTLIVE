@@ -6,6 +6,7 @@ import Profile from '../views/profile/Profile.vue'
 import RoomCreate from '../views/room/RoomCreate.vue'
 import RoomDetail from '../views/room/RoomDetail.vue'
 import RoomDetailForGuest from '../views/room/RoomDetailForGuest.vue'
+import RoomDetailForReplay from '../views/room/RoomDetailForReplay.vue'
 import Search from '../views/search/Search.vue'
 import state from '../store/state'
 
@@ -37,13 +38,7 @@ const routes = [
     component: Main
   },
   {
-    path: '/main',
-    name: 'Main',
-    beforeEnter: requireAuth,
-    component: Main
-  },
-  {
-    path: '/profile',
+    path: '/profile/:profileId',
     name: 'Profile',
     beforeEnter: requireAuth,
     component: Profile
@@ -55,19 +50,25 @@ const routes = [
     component: RoomCreate
   },
   {
-    path: '/room/detail',
+    path: '/room/detail/:videoId',
     name: 'RoomDetail',
     beforeEnter: requireAuth,
     component: RoomDetail
   },
   {
-    path: '/room/detailforguest',
+    path: '/room/detailforguest/:videoId',
     name: 'RoomDetailForGuest',
     beforeEnter: requireAuth,
     component: RoomDetailForGuest
   },
   {
-    path: '/search',
+    path: '/room/detailforreplay/:videoId',
+    name: 'RoomDetailForReplay',
+    beforeEnter: requireAuth,
+    component: RoomDetailForReplay
+  },
+  {
+    path: '/search/:input',
     name: 'Search',
     beforeEnter: requireAuth,
     component: Search

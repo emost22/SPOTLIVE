@@ -1,37 +1,57 @@
 <template>
-  <div> 검색결과 {{ input }} </div>
+  <div class="search-box"> 
+    <div class="txtcolor-white-ngreen main-title"> '{{ input }}' 에 대한 검색 결과입니다  </div>
+    <SearchVideoGrid
+      :videos="search_videos"
+      :keywordValue="input"
+    />
+  </div>
 </template>
 
 <script>
+import SearchVideoGrid from '@/views/search/components/SearchVideoGrid.vue'
+
 export default {
   name: "Search",
   data: function () {
     return {
-      input: this.$route.param.input,
+      input: this.$route.params.input,
+      search_videos: [],
+      pageValue: 0,
+      sizeValue: 20
     }
   },
   components: {
-  },
-  methods: {
-    // setToken: function () {
-    //   const token = localStorage.getItem('jwt')
-    //   const config = {
-    //     Authorization: `JWT ${token}`
-    //   }
-    //   return config
-    // },
-    getSearchs: function () {
-    },
+    SearchVideoGrid,
   },
   created: function () {
-    this.getSearchs()
+    this.getSearchs(this.input, this.pageValue, this.sizeValue)
   },
-  computed: {
-
+  methods: {
+    getSearchs(keywordValue, pageValue, sizeValue) {
+      this.$store.dispatch('requestGetSearchVideos', { 
+        keywordValue: keywordValue,
+        pageValue: pageValue,
+        sizeValue: sizeValue,
+      })
+      .then((response) => {
+        console.log("getGetSearchVideos() SUCCESS!!")
+        console.log(response.data)
+        this.search_videos = response.data.videoResList
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+  },
+  watch() {
+    this.input
   },
 }
 </script>
 
 <style>
-
+.search-box {
+  margin: 50px;
+}
 </style>

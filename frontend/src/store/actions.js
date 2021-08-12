@@ -25,6 +25,10 @@ export default {
         return $axios.get(URL)
     },
 
+    requestLogout(context, payload) {
+        context.commit("LOGOUT")
+    },
+
     // RoomCreate.vue (민권)
     requestInitSession(context, payload) {
         context.commit("INIT_SESSION", payload)
@@ -60,12 +64,28 @@ export default {
         context.commit("CONNECT_SESSION_FOR_GUEST")
     },
 
+    requestSetmainStreamManager(context, payload) {
+        context.commit("SET_MAIN_STREAM_MANAGER", payload)
+    },
+
+    requestSetSubscribe(context, payload) {
+        context.commit("SET_SUBSCRIBE", payload)
+    },
+
     requestChangeDevice(context, payload) {
         context.commit("CHANGE_DEVICE", payload)
     },
 
     requestSendChat(context, payload) {
         context.commit("SEND_CHAT", payload)
+    },
+
+    requestSendJoin(context) {
+        context.commit("SEND_JOIN")
+    },
+
+    requestSendExit(context) {
+        context.commit("SEND_EXIT")
     },
 
     // RoomCreate.vue (희진)
@@ -75,6 +95,7 @@ export default {
 
     requestGetCategoryIds(context) {
         const URL = '/category/'
+        
         return $axios.get(URL)
     },
 
@@ -84,18 +105,82 @@ export default {
 
     requestStartStreaming(context, payload) {
         const URL = '/video/insert'
+
         return $axios.post(URL, payload)
+    },
+
+    requestSetUserOnCreateVideo({ commit }, payload) {
+        commit('SET_USER_ON_CREATE_VIDEO', payload)
+    },
+
+    requestSetFileNameOfVideo({ commit }, payload) {
+        commit('SET_FILENAME_OF_VIDEO', payload)
     },
 
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
+
         return $axios.get(URL)
     },
 
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
-        return $axios.patch(URL, payload)
+        return $axios.patch(URL)
+    },
+
+    requestLeaveSession(context, payload) {
+        context.commit("LEAVE_SESSION")
+    },
+    
+    requestSetDefaultForOpenvidu(context, payload) {
+        context.commit("SET_DEFAULT_FOR_OPENVIDU")
+    },
+
+    requestStartRecording(context, payload) {
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const AUTH_REQ = {
+            username: 'OPENVIDUAPP',
+            password: 'MY_SECRET',
+        }
+        const URL = OPENVIDU_URL + '/openvidu/api/recordings/start'
+
+        return $axios.post(URL, JSON.stringify(payload), { auth: AUTH_REQ })
+    },
+
+    requestEndRecording(context, payload) {
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const AUTH_REQ = {
+            username: 'OPENVIDUAPP',
+            password: 'MY_SECRET',
+        }
+        const URL = OPENVIDU_URL + '/openvidu/api/recordings/stop/' + payload.ovSessionId
+
+        return $axios.post(URL, JSON.stringify({}), { auth: AUTH_REQ })
+    },
+
+    requestInsertVideoUrl(context, payload) {
+        const URL = '/video/record'
+        return $axios.post(URL, payload)
+    },
+
+    requestPlusHit(context, payload) {
+        const URL = `/video/join/${payload.videoId}`
+        return $axios.patch(URL)
+    },
+
+    requestMinusHit(context, payload) {
+        const URL = `/video/exit/${payload.videoId}`
+        return $axios.patch(URL)
+    },
+        
+    requestSetShowReservationInfo({ commit }, payload) {
+        commit('SET_SHOW_RESERVATION_INFO', payload)
+    },
+
+    requestGetShowTimetable(context, payload) {
+        const URL = `/showinfo/${payload}`
+        return $axios.get(URL)
     },
 
     // RoomSettingDialogForm.vue
@@ -103,6 +188,28 @@ export default {
         const URL = `/showinfo/timetable/${payload.showInfoId}`
         console.log(URL)
         return $axios.get(URL)
+    },
+
+    requestUpdateSettingDialog(context, payload, data) {
+        const URL = `/video/${payload}`
+
+        return $axios.patch(URL, data)
+    },
+
+    requestSetVideoId({ commit }, payload) {
+        commit('SET_VIDEO_ID', payload)
+    },
+
+    requestShowIsReservated(context, payload) {
+        const URL = `/reservation/${payload}`
+
+        return $axios.get(URL)
+    },
+
+    requestReservateShow(context, payload) {
+        const URL = `/reservation/${payload.timetableId}`
+
+        return $axios.post(URL)
     },
 
     // Main.vue
@@ -113,8 +220,7 @@ export default {
     },
 
     requestGetFilterButtons() {
-        const URL = '/category/'
-        // 엔드슬래시 전부 제거한 후 pull받고 수정
+        const URL = '/category'
 
         return $axios.get(URL)
     },
@@ -123,8 +229,9 @@ export default {
         const URL = '/main/all'
         const PAGE_VALUE = payload.pageValue
         const SIZE_VALUE = payload.sizeValue
+        const CATEGORY_ID = payload.categoryId
 
-        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
+        return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE, categoryId: CATEGORY_ID}})
     },
 
     requestGetAdVideos(context, payload) {
@@ -188,4 +295,66 @@ export default {
 
         return $axios.get(URL)
     },
+    requestGetProfile(context, payload) {
+        const URL = `/auth/user/${payload.profileId}`
+
+        return $axios.get(URL)
+    },
+    requestClickFollowButton(context, payload) {
+        const URL = `/follow/${payload.profileId}`
+
+        return $axios.post(URL)
+    },
+    requestClickUnfollowButton(context, payload) {
+        const URL = `/unfollow/${payload.profileId}`
+
+        return $axios.delete(URL)
+    },
+
+    // Search.vue
+    requestGetSearchVideos(context, payload) {
+        const URL = '/main/search'
+        const KEYWORD_VALUE = payload.keywordValue
+        const PAGE_VALUE = payload.pageValue
+        const SIZE_VALUE = payload.sizeValue
+
+        return $axios.get(URL, { params: { keyword: KEYWORD_VALUE, page: PAGE_VALUE, size: SIZE_VALUE }})
+    },
+
+    // ProfileUpdateDialog.vue
+    requestUpdateProfile(context, payload) {
+        const URL = `/auth/user`
+        return $axios.patch(URL, payload)
+    },
+    
+    // TicketCard.vue
+  requestDeleteTicket(context, payload) {
+    const URL = `/reservation/${payload.timetableId}`
+    $axios.delete(URL)
+      .then(({ status }) => {
+        if (status == 204) {
+          console.log('삭제 성공!')
+          context.commit("DELETE_TICKET_DATA", {timetableId : payload.timetableId})
+        } else {
+          console.log('삭제 실패!')
+        }
+      })
+    },
+    requestGetTimetables(context, payload) {
+        const URL = `/showinfo/${payload.showId}`
+        console.log(URL)
+        return $axios.get(URL)
+    },
+
+    // MyShowCard.vue
+    requestGetShowData({ commit }, payload) {
+        commit('SET_GETSHOW_DATA', payload)
+    },
+
+    // ShowDetailDialog.vue
+    requestDeleteShowInfo(context, payload) {
+        const URL = `/showinfo/${payload}`
+
+        return $axios.delete(URL)
+    }
 }

@@ -1,6 +1,6 @@
 <template>
   <!-- v-if="!isLogin" -->
-  <div class="bgcolor-deep-grey nav-header">
+  <div class="nav-header bgcolor-deep-grey">
     <nav class="navbar navbar-expand">
       <div class="container-fluid">
         <router-link class="navbar-brand" :to="{ name: 'Main' }">
@@ -9,7 +9,12 @@
           <span class="txtcolor-npink logo">LIVE</span>
         </router-link>
         <div class="search">
-          <input type="text" class="bgcolor-mid-deep-grey txtcolor-white search-input" v-model.trim="input" placeholder="검색할 내용을 입력하세요">
+          <input type="text" 
+            class="bgcolor-mid-deep-grey txtcolor-white search-input" 
+            v-model.trim="input" 
+            placeholder="검색할 내용을 입력하세요"
+            @keyup.enter="clickSearchBtn"
+          >
           <button type="button"
             class="bgcolor-mid-deep-grey txtcolor-white search-btn text-align-center" 
             :disabled="!this.validSearch" 
@@ -18,12 +23,11 @@
           </button>
         </div>        
         <ul class="navbar-nav">
-          <!-- 송출자가 라이브인 경우 스트리밍 버튼 제거 -->
-          <li class="nav-item header-item">
+          <li class="nav-item header-item" v-if="this.onCreateVideoLive==false">
             <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
-            <div><router-link class="nav-link fw-bold" :to="{ name: 'Profile' }"><img src="~@/assets/icon-profile.png" class="header-icon-img"></router-link></div>
+            <div><router-link class="nav-link fw-bold" :to="{ name: 'Profile', params: { profileId : this.loginUser.accountEmail } }"><img src="~@/assets/icon-profile.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
             <div><img src="~@/assets/icon-alarm.png" class="header-icon-img"></div>
@@ -46,23 +50,19 @@ export default ({
   },
   data: function () {
     return {
-      isLogin: false,
       validSearch: true,
       input: '',
     }
   },
   methods: {
     logout: function () {
-      this.isLogin = false
-      this.$store.dispatch('logout', this.isLogin)
-      localStorage.removeItem('jwt')
+      this.$store.dispatch('requestLogout')
       this.$router.push({ name: 'Login' })
     },
     clickSearchBtn: function () {
       if (this.input) {
-        console.log(this.input)
-        // Search.vue로 이동하고 검색 결과 axios
-        this.$router.push({ name: 'Search', param: { input: this.input } })
+        this.$router.push({ name: 'Search', params: { input: this.input } })
+        this.input = ''
       }
       else {
         console.log('검색할 내용을 입력하세요')
@@ -70,7 +70,7 @@ export default ({
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'isLogin']),
+    ...mapGetters(['loginUser', 'isLogin', 'onCreateVideoLive']),
     // FilterButton.vue에서 클릭 이벤트가 일어나면 카테고리 아이디를 받아서 인자를 넣어보자
   },
 })
@@ -78,6 +78,7 @@ export default ({
 
 <style>
 .nav-header {
+  width: 100%;
   height: 65px;
   display: block;
 }

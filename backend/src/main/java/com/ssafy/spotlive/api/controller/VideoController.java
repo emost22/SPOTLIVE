@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.controller;
 
 import com.ssafy.spotlive.api.request.video.VideoInsertPostReq;
+import com.ssafy.spotlive.api.request.video.VideoInsertUrlByIdPostReq;
 import com.ssafy.spotlive.api.request.video.VideoUpdateByIdPatchReq;
 import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.api.response.video.VideoFindAllByUserIdGetRes;
@@ -11,10 +12,7 @@ import com.ssafy.spotlive.api.service.AuthService;
 import com.ssafy.spotlive.api.service.UserService;
 import com.ssafy.spotlive.api.service.UserVideoService;
 import com.ssafy.spotlive.api.service.VideoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -224,6 +222,33 @@ public class VideoController {
         }
     }
 
+    @PostMapping("/record")
+    @ApiOperation(value = "비디오 URL 추가", notes = "videoId에 해당하는 DB에 RecordURL을 기록한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "종료 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<VideoFindByIdGetRes> insertRecordUrlById(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken,
+            @RequestBody @ApiParam(value="삽입할 URL 정보", required = true) VideoInsertUrlByIdPostReq videoInsertUrlByIdPostReq) {
+        /**
+         * @Method Name : insertRecordUrlById
+         * @작성자 : 김민권
+         * @Method 설명 : 비디오를 URL을 저장한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            VideoFindByIdGetRes videoFindByIdGetRes = videoService.insertRecordUrlById(videoInsertUrlByIdPostReq);
+            return new ResponseEntity<>(videoFindByIdGetRes, HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/list/{accountEmail}")
     @ApiOperation(value = "특정 유저 영상 리스트 조회", notes = "user email를 요청받아 해당 유저의 저장된 영상리스트를 응답한다.")
     @ApiResponses({
@@ -251,5 +276,46 @@ public class VideoController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @PatchMapping("/join/{videoId}")
+    @ApiOperation(value = "조회수 1 증가", notes = "비디오 아이디를 입력받아 조회수를 1 증가한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "조회수 증가 성공"),
+            @ApiResponse(code = 204, message = "비디오Id로 해당 비디오 조회 실패"),
+            @ApiResponse(code = 400, message = "조회 오류"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateVideoHitPlusById(
+            @PathVariable Long videoId) {
+        /**
+         * @Method Name : updateVideoHitPlusById
+         * @작성자 : 권영린
+         * @Method 설명 : 비디오Id에 해당하는 비디오데이터의 조회수(hit)을 1 증가시킨다.
+         */
+        if(videoService.updateVideoHitPlusById(videoId))
+            return new ResponseEntity<String>("조회수 증가 성공", HttpStatus.CREATED);
+        else
+            return new ResponseEntity<String>("없는 아이디 조회로 실패", HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/exit/{videoId}")
+    @ApiOperation(value = "조회수 1 감소", notes = "비디오 아이디를 입력받아 조회수를 1 감소시킨다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "조회수 감소 성공"),
+            @ApiResponse(code = 204, message = "비디오Id로 해당 비디오 조회 실패"),
+            @ApiResponse(code = 400, message = "조회 오류"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateVideoHitMinusById(
+            @PathVariable Long videoId) {
+        /**
+         * @Method Name : updateVideoHitMinusById
+         * @작성자 : 권영린
+         * @Method 설명 : 비디오Id에 해당하는 비디오데이터의 조회수(hit)을 1 감소시킨다.
+         */
+        if(videoService.updateVideoHitMinusById(videoId))
+            return new ResponseEntity<String>("조회수 증가 성공", HttpStatus.CREATED);
+        else
+            return new ResponseEntity<String>("없는 아이디 조회로 실패", HttpStatus.NO_CONTENT);
     }
 }

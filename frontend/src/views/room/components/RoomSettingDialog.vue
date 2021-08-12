@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isSettingDialogOpen" class="modal fade" id="roomSettingDialog" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="roomSettingDialog" ref="roomSettingDialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
@@ -12,8 +12,11 @@
             <div class='content'>
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
-                :showInfoList="loginUser.showInfoResList"
                 @form-data="form => videoData = form"
+                :showInfoList="[]"
+                :showInUpdate="false"
+                :createdVideoData="createdVideoData"
+                :closing="closing"
               />
             </div>
             <input type='radio' id='r2' name='t'>
@@ -25,10 +28,25 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button" @click="setCreatedVideoDataInVuex()" data-bs-dismiss="modal">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button" @click="roomSettingDialogButton()" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>
+    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-header">
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <h5 class="popUpTitle">공연을 추가하기 위해 프로필로 이동해주세요</h5>
+      등록된 공연이 없다면<br>
+      <strong>프로필 > 공연 생성</strong> 버튼 클릭하여<br>
+      상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
+      <div class="d-flex justify-content-center mt-4">
+        <!-- <div><button type="button" class="bdcolor-ngreen small-button mx-3">취소</button></div> -->
+        <div><button type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas" @click="routeToProfile()">프로필로 가기</button></div>
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -44,45 +62,57 @@ export default {
   },
   data: function () {
     return {
-      viewId: 0,
       categoryIds: [],
       videoData: {},
+      closing: true,
     }
   }, 
   methods: {
-    closeRoomSettingDialog: function () {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 0)
+    checkMode: function() {
+       if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
+        delete this.videoData.showTime
+        if (this.videoData.mode == '소통') {
+          delete this.videoData.showInfoId
+        }
+      } 
     },
-    setViewId: function() {
-      viewId = settingDialogViewId
+    roomSettingDialogButton: function () {
+      // 확인 버튼 누르면 모드 체크하고 vuex에 저장됨 -> update에서 쓸 예정임.
+      this.checkMode()
+      this.setCreatedVideoDataInVuex()
     },
     setCreatedVideoDataInVuex: function () {
       this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
+    }, 
+    routeToProfile: function () {
+      var roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
+      roomSettingModal.hide()
+      this.$router.push({name: 'Profile', params: { profileId : this.loginUser.accountEmail }})
     }
-    
   },
   computed: {
     ...mapGetters([
-    'settingDialogViewId',
-    'isSettingDialogOpen',
-    'loginUser'
+    'loginUser',
+    'createdVideoData'
     ]),
   },
   mounted() {
+    // 오픈되었을 때 아무것도 안함, 
+    // 클로즈 되었을 때 closing되었다고 form에 알려줌 -> form이 자기자신 초기화함
+    var modal= this.$refs.roomSettingDialog
+    var _this = this
+    modal.addEventListener('show.bs.modal', function (event) {
+      _this.closing = false
+      console.log('RoomsettingDialog show')
+    })
+    modal.addEventListener('hidden.bs.modal', function (event) {
+      _this.closing = true
+      console.log('RoomsettingDialog hidden')
+    })
     this.$store.dispatch('requestGetCategoryIds')
     .then((response) => {
       this.categoryIds = response.data
     })
-
-
-  },
-  beforeUpdate() {
-    
-    if (this.settingDialogViewId == 1) {
-      
-    } else if (this.settingDialogViewId == 2) {
-
-    }
   },
 }
 </script>
