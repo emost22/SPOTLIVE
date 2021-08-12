@@ -88,21 +88,22 @@ export default {
       console.log('타인프로필')
     }    
   },
-  mounted() {
-    console.log('마운트')
-    this.profileId = this.$route.params.profileId
-  },
-  beforeRouteEnter (to, from, next) {
-    console.log('라우터 엔터')
-    next()
-  },
   beforeRouteLeave (to, from, next) {
-    console.log('라우터 리브')
     this.profileId = ''
     next()
   },
   // watch: {
-  //   mainStreamManager: function(val, oldVal) {
+  //   loginUser: function(val, oldVal) {
+  //     this.getUser()
+  //     console.log('프로필 수정 변화 워치')
+  //     console.log(this.profileId)
+  //     if (this.inMyProfile) {
+  //       this.getMyProfile()
+  //       console.log('내프로필 변화')
+  //     } else {
+  //       this.getProfile()
+  //       console.log('타인프로필 변화')
+  //     }    
   //   },
   // },
   methods: {

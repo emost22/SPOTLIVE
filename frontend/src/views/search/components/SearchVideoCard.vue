@@ -6,7 +6,7 @@
       @click="goRoomDetail"  
     >
       <div class="live-badge" v-if="video.isLive"></div>
-      <div class="time-badge" v-if="!video.isLive">{{ Number(video.videoLength)/60 }}m</div>
+      <div class="time-badge" v-if="!video.isLive">{{ videoLength }}</div>
     </div>
     <!-- {{ video.startTime }} -->
   
@@ -33,7 +33,21 @@ export default {
       required: true
     },
   },
+  data: function() {
+    return {
+      videoLength: 0, 
+    }
+  },
+  created: function() {
+    this.getVideoLength()
+  },
   methods: {
+    getVideoLength() {
+      var seconds = Number(this.video.videoLength)
+      var min = parseInt((seconds%3600)/60) < 10 ? '0'+ parseInt((seconds%3600)/60) : parseInt((seconds%3600)/60)
+      var sec = seconds % 60 < 10 ? '0'+seconds % 60 : seconds % 60
+      this.videoLength = min+":" + sec
+    },
     goRoomDetail() {
       if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
       else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })

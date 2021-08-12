@@ -183,6 +183,7 @@ export default {
 }
 .popUpTitle {
   text-align: left;
+  font-weight: bold;
   font-size: 15px;
   padding: 0 10%;
 }
