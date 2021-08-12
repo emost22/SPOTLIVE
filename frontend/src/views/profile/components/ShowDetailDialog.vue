@@ -1,32 +1,33 @@
 <template>
   <div>
   <div class="modal fade" id="showDetailModal" ref="showDetailModal" tabindex="-1" aria-labelledby="showDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog bdcolor-bold-npurple show-modal-design">
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
+      
       <div class="modal-content-m">
+
         <div class="modal-header no-border">
-          <div class="profile-update-header mt-3 ms-3">공연 상세 정보</div>
+          <div class="mt-3 ms-3">공연 상세 정보</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body mx-3">
             <form>
+
               <div class="d-flex flex-row mb-3">
                 <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
                 <div class="profile-small-detail">
-                  <div> {{ loginUser.profileNickname }} </div>
-                  <div> {{ loginUser.accountEmail }} </div>
+                  <div>{{ loginUser.profileNickname }}님</div>
+                  <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
-              <div class="d-flex flex-row">
-                
-                <div class="show-img-box"><img :src="getShowData.posterUrl" class="show-img"></div>
 
+              <div class="d-flex flex-row">    
+                <div class="show-img-box"><img :src="getShowData.posterUrl" class="show-img"></div>
                 <div class="show-info">
-                  
                   <div class="mb-3">
                     <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label">공연명</label></div>
                     <div>{{ getShowData.title }}</div>
                   </div>
-
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
                       <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
@@ -37,7 +38,6 @@
                       <div class="d-flex">{{ getShowData.runningTime }}min</div>                      
                     </div>
                   </div>
-
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
                       <div class="label-alignment"><label class="form-label">공연 시간</label></div>
@@ -46,7 +46,6 @@
                       </select>
                     </div>
                   </div>
-
                 </div>
               </div>
 

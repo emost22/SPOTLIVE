@@ -2,12 +2,16 @@
   <div>
     <div class="modal fade" id="showReservationInProfileModal" ref="showReservationInProfileModal" tabindex="-1" aria-labelledby="showReservationInProfileModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
+        
         <div class="modal-content-m">
+          
           <div class="modal-header no-border">
-          <div class="profile-update-header mt-3 ms-3">공연 상세 정보</div>
+          <div class="mt-3 ms-3">공연 상세 정보</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+
           <div class="modal-body mx-2">
+
             <div class="dialog-profile-info">
               <div><img :src="getShowData.profileImageUrl" class="profile-img"></div>
               <div class="profile-detail-show-reservation">
@@ -15,6 +19,7 @@
                 <p> {{ getShowData.userId }}</p>
               </div>
             </div>
+
             <div class="showInfoWrapper">
               <form>
                 <div class="d-flex flex-row mb-3">
@@ -36,6 +41,8 @@
                         <div class="d-flex">{{ getShowData.runningTime }}min</div>                      
                       </div>
                     </div>
+
+
                     <div class="mb-3 d-flex">
                       <div class="flex-fill me-3">
                         <div class="label-alignment">
@@ -46,13 +53,17 @@
                         </select>
                       </div>
                     </div>
+                  
                   </div>
                 </div>
+
                 <div class="mb-3 label-alignment">
                   <div ><label class="form-label label-in-dialog"> 공연 설명</label></div>
                   <div>{{ getShowData.description }}</div>
                 </div>
+
               </form>
+
             </div>
           </div>
           <div class="modal-footer-m my-3">
