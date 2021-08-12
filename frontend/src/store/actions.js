@@ -346,4 +346,9 @@ export default {
     requestGetShowData({ commit }, payload) {
         commit('SET_GETSHOW_DATA', payload)
     },
+
+    // TicketDetailDialog.vud
+    requestDeleteGetShowData() {
+        commit('DELETE_GETSHOW_DATA')
+    },
 }
