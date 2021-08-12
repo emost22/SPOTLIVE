@@ -13,6 +13,10 @@
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
                 @form-data="form => videoData = form"
+                :showInfoList="[]"
+                :showInUpdate="showInUpdate"
+                :createdVideoData="createdVideoData"
+                :closing="closing"
               />
             </div>
             <input type='radio' id='rr2' name='u'>
@@ -24,7 +28,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-npink small-button" @click="roomSettingDialogButton()" data-bs-dismiss="modal">확인</button>
+          <button type="button" class="bdcolor-npink small-button" @click="roomSettingUpdateDialogButton()">확인</button>
         </div>
       </div>
     </div>
@@ -59,6 +63,8 @@ export default {
     return {
       categoryIds: [],
       videoData: {},
+      showInUpdate: false,
+      closing: true,
     }
   }, 
   methods: {
@@ -70,14 +76,21 @@ export default {
         }
       } 
     },
-    roomSettingDialogButton: function () {
+    roomSettingUpdateDialogButton: function () {
+      // 버튼 누르면 데이터 업데이트하는 로직 탐
+      // 성공하면 vuex에 저장되어있는 created 데이터 갱신됨.
+      // videoId는 현재 켜져있는 라이브의 videoId임 -> 라이브 끌 때 초기화 해줘.
       this.checkMode()
+      console.log(this.videoData)
       this.$store.dispatch('requestUpdateSettingDialog', this.videoId, this.videoData)
       .then(res => {
+        // 제대로 갱신돼 비디오데이터에 있을거 다있음 근데 FileName에 왜 아무것도없는지 모르겠음
         this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
+        var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
+        roomSettingUpdateDialog.hide()
       })
       .catch(err =>{
-        alert(err)
+        alert('라이브 영상 수정을 하다 오류가 났어요! 다시 시도해주세요!')
       })
     },
     routeToProfile: function () {
@@ -88,14 +101,25 @@ export default {
   },
   computed: {
     ...mapGetters([
-    'settingDialogViewId',
-    'isSettingDialogOpen',
     'loginUser',
-    'createdVideoData',
-    'videoId'
+    'videoId',
+    'createdVideoData'
     ]),
   },
   mounted() {
+    // 오픈되었을 때 업데이트에서 켜졌다고 form에 알려줌 -> form에서 현재 켜져있는 라이브 데이터 가져와서 넣어줌, 
+    // 클로즈 되었을 때 closing되었다고 form에 알려줌 -> form이 자기자신 초기화함
+    var modal= this.$refs.roomSettingUpdateDialog
+    var _this = this
+    modal.addEventListener('show.bs.modal', function (event) {
+      _this.showInUpdate = true
+      _this.closing = false
+      console.log('RoomsettingUpdateDialog show')
+    })
+    modal.addEventListener('hidden.bs.modal', function (event) {
+      _this.closing = true
+      console.log('RoomsettingUpdateDialog hidden')
+    })
     this.$store.dispatch('requestGetCategoryIds')
     .then((response) => {
       this.categoryIds = response.data

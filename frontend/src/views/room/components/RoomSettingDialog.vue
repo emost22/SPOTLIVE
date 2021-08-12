@@ -13,7 +13,10 @@
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
                 @form-data="form => videoData = form"
+                :showInfoList="[]"
+                :showInUpdate="false"
                 :createdVideoData="createdVideoData"
+                :closing="closing"
               />
             </div>
             <input type='radio' id='r2' name='t'>
@@ -61,6 +64,7 @@ export default {
     return {
       categoryIds: [],
       videoData: {},
+      closing: true,
     }
   }, 
   methods: {
@@ -73,6 +77,7 @@ export default {
       } 
     },
     roomSettingDialogButton: function () {
+      // 확인 버튼 누르면 모드 체크하고 vuex에 저장됨 -> update에서 쓸 예정임.
       this.checkMode()
       this.setCreatedVideoDataInVuex()
     },
@@ -87,14 +92,23 @@ export default {
   },
   computed: {
     ...mapGetters([
-    'settingDialogViewId',
-    'isSettingDialogOpen',
     'loginUser',
-    'createdVideoData',
-    'videoId'
+    'createdVideoData'
     ]),
   },
   mounted() {
+    // 오픈되었을 때 아무것도 안함, 
+    // 클로즈 되었을 때 closing되었다고 form에 알려줌 -> form이 자기자신 초기화함
+    var modal= this.$refs.roomSettingDialog
+    var _this = this
+    modal.addEventListener('show.bs.modal', function (event) {
+      _this.closing = false
+      console.log('RoomsettingDialog show')
+    })
+    modal.addEventListener('hidden.bs.modal', function (event) {
+      _this.closing = true
+      console.log('RoomsettingDialog hidden')
+    })
     this.$store.dispatch('requestGetCategoryIds')
     .then((response) => {
       this.categoryIds = response.data

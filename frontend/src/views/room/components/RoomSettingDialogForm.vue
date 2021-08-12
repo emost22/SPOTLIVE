@@ -76,6 +76,16 @@ export default {
       type: Array,
       default: [],
     },
+    showInUpdate: {
+      type: Boolean,
+      default: false
+    },
+    createdVideoData: {
+      type: Object,
+    },
+    closing: {
+      type: Boolean
+    }
   },
   data: function () {
     return {
@@ -86,7 +96,7 @@ export default {
         videoTitle: '',
         showInfoId: '',
         showTime:'',
-        mode: '공연',
+        mode: '',
       },
       thumbnail: '',
       fileName:'',
@@ -95,24 +105,39 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['createdVideoData', 'isSettingDialogOpen', 'settingDialogViewId']),
+    ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex']),
   },
   watch: {
-    isSettingDialogOpen(value, oldvalue) {
-      if (value && this.settingDialogViewId==2) {
-        this.form.categoryId = this.createdVideoData.categoryId
-        this.form.fileName = this.createdVideoData.thumbnailImage
-        this.form.videoDescription = this.createdVideoData.videoDescription
-        this.form.videoTitle = this.createdVideoData.videoTitle
-        this.form.showInfoId = this.createdVideoData.showInfoId
-        this.form.showTime = this.createdVideoData.showTime
+    closing(value, oldvalue) {
+      if (value == true) {
+          this.form = {
+            categoryId: '1',
+            thumbnailImage: [], // 파일이 들어감
+            videoDescription: '',
+            videoTitle: '',
+            showInfoId: '',
+            showTime:'',
+            mode: '',
+          }
+          this.fileName = ''
+      } else {
+        this.form.categoryId = this.$props.createdVideoData.categoryId
+        console.log(this.fileNamevuex)
+        this.fileName = this.fileNamevuex
+        this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
+        this.form.videoDescription = this.$props.createdVideoData.videoDescription
+        this.form.videoTitle = this.$props.createdVideoData.videoTitle
+        this.form.showInfoId = this.$props.createdVideoData.showInfoId
+        this.form.showTime = this.$props.createdVideoData.showTime
+        this.form.mode = this.$props.createdVideoData.mode
       }
     },
   },
   methods: {
     handleFileChange(e) {
-      this.form.thumbnailImage = e.target.files[0]
-      this.fileName = e.target.files[0].name
+      this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
+      this.fileName = e.target.files[0].name // 파일이름을 넣음
+      this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {
       this.showInfoList.filter((showInfo, index) => {
@@ -141,13 +166,6 @@ export default {
     this.makeToolTipsObject()
   },
   beforeUpdate() {
-    console.log("asdf")
-    if (this.form.mode == '홍보' || this.form.mode == '소통') {
-        delete this.form.showTime
-      if (this.form.mode == '소통') {
-        delete this.form.showInfoId
-      }
-    } 
     this.$emit('form-data', this.form)
   }
 }
