@@ -51,7 +51,7 @@
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
       <div class="d-flex">
         <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
-        <input class="custom-form-control" v-model="fileName" readonly="readonly" disabled="disabled"/>
+        <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
         <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
         </label>
       </div>
@@ -108,6 +108,9 @@ export default {
     ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex']),
   },
   watch: {
+    fileNamevuex(value, oldvalue) {
+      this.fileName = value
+    },
     closing(value, oldvalue) {
       if (value == true) {
           this.form = {
@@ -122,7 +125,6 @@ export default {
           this.fileName = ''
       } else {
         this.form.categoryId = this.$props.createdVideoData.categoryId
-        console.log(this.fileNamevuex)
         this.fileName = this.fileNamevuex
         this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
         this.form.videoDescription = this.$props.createdVideoData.videoDescription
