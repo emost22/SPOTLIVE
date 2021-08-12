@@ -8,10 +8,10 @@
         <div class="modal-body mx-3">
             <form>
               <div class="d-flex flex-row mb-3">
-                <div><img :src="profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
+                <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
                 <div class="profile-small-detail">
-                  <div> {{ profileNickname }} </div>
-                  <div> {{ userId }} </div>
+                  <div> {{ loginUser.profileNickname }} </div>
+                  <div> {{ loginUser.accountEmail }} </div>
                 </div>
               </div>
               <div class="d-flex flex-row justify-content-evenly mb-3">
