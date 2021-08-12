@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade" id="showUpdateModal" tabindex="-1" aria-labelledby="showUpdateModalLabel" aria-hidden="true">
-    <div class="modal-dialog bdcolor-bold-npurple modal-design modal-dialog-scrollable">
+    <!-- <div class="modal-dialog bdcolor-bold-npurple modal-design modal-dialog-scrollable">
       <div class="modal-content-m">
         <div class="modal-header no-border">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -16,7 +16,7 @@
               </div>
               <div class="d-flex flex-row justify-content-evenly mb-3">
                 
-                <!-- <div>
+                <div>
                   <label class="camera-input-button" for="input-file"/>
                   <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
                   <div v-if="preview">
@@ -24,7 +24,7 @@
                   </div>
                   <div v-else class="camera-input-bgcolor-light-grey show-img">
                   </div>
-                </div> -->
+                </div>
 
                 <div class="file-preview-container">
                   <div class="file-preview-wrapper">
@@ -95,7 +95,7 @@
           <div><button @click="clickShowPostButton" type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="modal">등록</button></div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
