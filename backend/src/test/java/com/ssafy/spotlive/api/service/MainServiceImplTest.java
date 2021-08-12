@@ -87,7 +87,8 @@ class MainServiceImplTest {
         Long categoryId1 = 6L;
         Long categoryId2 = null;
         Boolean isLive = true;
-        PageRequest pageRequest = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
         when(videoRepository.findVideosByIsLiveOrderByHitDesc(pageRequest, isLive)).thenReturn(pageVideo);
