@@ -67,10 +67,10 @@
                 </div>
                 <div class="offcanvas-body">
                   <div class="mt-3">
-                    <h5 class="popUpTitle">
-                      삭제 시 해당 데이터는 복구할 수 없습니다.<br>
-                      정말로 삭제하시겠습니까?
-                    </h5>
+                    <div>
+                      <p class="popUpTitle">삭제 시 해당 데이터는 복구할 수 없습니다.</p> 
+                      <p class="popUpTitle">정말로 삭제하시겠습니까?</p> 
+                    </div>
                   </div>
                   <div class="d-flex justify-content-end show-popup">
                     <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
@@ -183,6 +183,7 @@ export default {
 }
 .popUpTitle {
   text-align: left;
+  font-size: 15px;
   padding: 0 10%;
 }
 .show-timetable {
