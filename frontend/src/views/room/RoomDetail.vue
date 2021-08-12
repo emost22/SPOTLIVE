@@ -23,26 +23,27 @@
       </div>
     </div>
     <div class="right-side d-flex flex-column flex-end">
-      <div class="chatting-part" style="position: relative;">
-        <div class="chatting-screen">
-          <div class="row" v-for="(chat, index) in chatList" :key="index">
-            <div class="col-md-2" style="text-align: center">
-              <img :src="chat.profileImg" class="profile-img bdcolor-bold-ngreen">
+      <div class="chatting-part">
+        <div class="chatting-screen d-flex flex-column-reverse">
+          <div class="chat-diagram" v-for="(chat, index) in chatList" :key="index">
+            <div class="profile-img-div">
+              <img :src="chat.profileImg" class="profile-chat-img">
             </div>
-            <div class="col-md-6 profile-detail">
-              <p> 
-                <span class="txtcolor-nyellow"> {{ chat.userName }}</span> 님 <br>
+            <div class="profile-chat-div">
+              <div class="mb-2 txtcolor-white">
+                <strong> {{ chat.userName }}</strong>
+              </div>
+              <div class="txtcolor-white">
                 {{ chat.charStr }}
-              </p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="row" style="position: absolute; bottom: 0px;">
-          <div class="input-part col-md-7">
-            <input type="text" v-model="chatMsg">
+        <div class="align-items-center" style="">
+          <div class="input-part">
+            <input class="chat-input" type="text" v-model="chatMsg" @keyup.enter="sendChat">
           </div>
-          <div class="col-md-2">
-            <button class="small-button col-md-5" @click="sendChat()"> 전송 </button>
+          <div>
           </div>
         </div>
       </div>
@@ -94,18 +95,7 @@ export default {
       },
       hit: 0,
       chatMsg: "",
-      chatList: [
-          {
-            userName: "김민권1",
-            profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
-            charStr: "안녕하세요, 채팅입니다! 1"
-          },
-          {
-            userName: "김민권2",
-            profileImg: "https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/8d67d654ab214180bb5aacb1ecb62a93.jpeg",
-            charStr: "안녕하세요, 채팅입니다! 2"
-          },
-      ],
+      chatList: [],
       recordName: "",
       recordURL: "",
       isRecord: true,
@@ -128,19 +118,22 @@ export default {
     },
     addEventForChat() {
       this.ovSession.on('signal:my-chat', (event) => {
-        let givenCharStr = event.data
+        let givenData = String(event.data)
+        let givenDataSplit = givenData.split("####")
+        let chatStr = givenDataSplit[0]
+        let imageUrl = givenDataSplit[1]
+        let userName = givenDataSplit[2]
         let userId = JSON.parse(event.from.data).clientData
-        console.log('[OPENVIDU] Get Chat data: ' + givenCharStr + ', UserId: ' + userId)
-        this.$store.dispatch("requestGetUserByAccountEmail", { accountEmail: userId })
-        .then((response) => {
-          this.chatList.push({
-            userName: response.data.userName,
-            profileImg: response.data.profileImageUrl,
-            charStr: givenCharStr,
-          })
-        }).catch((error) => {
-          console.log(error)
+        console.log('[OPENVIDU] Get Chat data: ' + chatStr + ', UserId: ' + userId + ", imageUrl: " + imageUrl + ", userName: " + userName)
+        this.chatList.unshift({
+          userName: userName,
+          profileImg: imageUrl,
+          charStr: chatStr,
         })
+
+        if(this.chatList.length > this.MAX_CHAT_LIST_SIZE) {
+          this.chatList.pop()
+        }
       })
     },
     addEventForJoinAndExit() {
@@ -157,7 +150,9 @@ export default {
       })
     },
     sendChat() {
+      if(this.chatMsg == "") return
       this.$store.dispatch("requestSendChat", { chatMsg: this.chatMsg })
+      this.chatMsg = ""
     },
     startRecoding() {
       let today = new Date();
@@ -242,6 +237,12 @@ export default {
     this.startTimer()
     this.addEventForChat()
     this.addEventForJoinAndExit()
+    let welcomeChat = {
+      userName: this.loginUser.userName,
+      profileImg: this.loginUser.profileImageUrl,
+      charStr: "[SPOTLIVE] 방송을 시작합니다. 멋진 공연과 소통을 기대하겠습니다."
+    }
+    this.chatList.push(welcomeChat)
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch("requestSetUserOnCreateVideo", false)
@@ -296,7 +297,8 @@ export default {
       'subscribers', 
       'onCreateVideoLive', 
       'isSettingDialogOpen', 
-      'settingDialogViewId']),
+      'settingDialogViewId',
+      'MAX_CHAT_LIST_SIZE']),
   },
 }
 </script>
@@ -307,16 +309,42 @@ export default {
   height: 100%;
   margin-right: 10px;
 }
+.right-side {
+  width: 30%;
+}
+.userVideo {
+  min-width: 100%;
+  min-height: 100%;
+}
 .wide-screen {
   height: 80%;
-  background-color: lightgrey;
+  overflow: hidden;
+  background-color: #242424;
 }
 .chatting-part {  
   background-color: #242424;
+  overflow: hidden;
   height: 80%;
 }
 .chatting-screen {
-  
+  height: 85%;
+  overflow: auto;
+}
+.chatting-screen::-webkit-scrollbar{ 
+  display: none; 
+}
+.chat-diagram {
+  margin: 10px;
+  margin-left: 30px;
+  margin-top: 15px;
+  padding-right: 20px;
+  height: fit-content;
+  display: flex; 
+}
+.profile-chat-div {
+  text-align: left;
+  margin-left: 20px;
+  font-size: 13px;
 }
 .wrapper {
   width: 100%;
@@ -329,13 +357,46 @@ export default {
   height: 100%;
   margin-left: 10px;
 }
-.input-part > input {
-  width: 100%;
-  margin: 5px;
+.input-part {
+  margin-top: 20px
+}
+.chat-input {
+  color: white;
+  width: 90%;
+  margin: 10px;
+  outline: none;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 1;
+  background-color: #242424;
+}
+.chat-input:focus {
+  animation-name: border-focus;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  box-shadow: 0 5px 6px -6px #d780ff;
+}
+@keyframes border-focus {
+  from {
+    border-color: #6A6A6A;
+  }
+  to {
+    border-color: #C752FE;
+  }
+}
+.input-part > button {
+  width: 20%;
+  height: 32px;
+}
+.profile-chat-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
 }
 .profile-img {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border-radius: 100%;
 }
 .watching-people > img {

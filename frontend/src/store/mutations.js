@@ -174,9 +174,14 @@ export default {
 
     SEND_CHAT(state, payload) {
         console.log("MUTATION: SEND_CHAT() RUN...")
+        let chatStr = payload.chatMsg
+        let imgUrl = state.loginUser.profileImageUrl
+        let userName = state.loginUser.userName
+
+        let sendData = chatStr + "####" + imgUrl + "####" + userName
         console.log(payload.chatMsg)
         state.ovSession.signal({
-            data: payload.chatMsg,
+            data: sendData,
             to: [],                     
             type: 'my-chat'
         }).then(() => {

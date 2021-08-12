@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
-    <div class="left-side">
+    <div class="main-screen">
       <div class="wide-screen">
-        <video controls width="1000" v-if="videoUrl != ''">
+        <video class="userVideo" controls v-if="videoUrl != ''">
           <source :src="videoUrl" type="video/mp4">
         </video>
       </div> 
@@ -67,20 +67,22 @@ export default {
       this.mainStreamAccountEmail = response.data.userRes.mainStreamAccountEmail
       this.videoUrl = response.data.videoUrl
       this.mode = response.data.mode
-      var showInfoData = {
-        runningTime: response.data.showInfoRes.runningTime,
-        posterUrl: response.data.showInfoRes.posterUrl,
-        price: response.data.showInfoRes.price,
-        showInfoDescription: response.data.showInfoRes.showInfoDescription,
-        showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
-        showInfoTitle: response.data.showInfoRes.showInfoTitle,
-        userRes: {
-          accountEmail: response.data.userRes.accountEmail,
-          userName: response.data.userRes.userName,
-          profileImageUrl:response.data.userRes.profileImageUrl
+      if(mode != '소통') {
+        var showInfoData = {
+          runningTime: response.data.showInfoRes.runningTime,
+          posterUrl: response.data.showInfoRes.posterUrl,
+          price: response.data.showInfoRes.price,
+          showInfoDescription: response.data.showInfoRes.showInfoDescription,
+          showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+          showInfoTitle: response.data.showInfoRes.showInfoTitle,
+          userRes: {
+            accountEmail: response.data.userRes.accountEmail,
+            userName: response.data.userRes.userName,
+            profileImageUrl:response.data.userRes.profileImageUrl
+          }
         }
+        this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
       }
-      this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
     })
   },
   computed: {
@@ -90,21 +92,43 @@ export default {
 </script>
 
 <style scoped>
-.left-side {
+.main-screen {
   flex-grow: 10;
   height: 100%;
   margin-right: 10px;
 }
+.userVideo {
+  min-height: 100%;
+}
 .wide-screen {
   height: 80%;
-  background-color: lightgrey;
+  overflow: hidden;
+  background-color: #242424;
 }
 .chatting-part {  
   background-color: #242424;
+  overflow: hidden;
   height: 80%;
 }
 .chatting-screen {
-  
+  height: 85%;
+  overflow: auto;
+}
+.chatting-screen::-webkit-scrollbar{ 
+  display: none; 
+}
+.chat-diagram {
+  margin: 10px;
+  margin-left: 30px;
+  margin-top: 15px;
+  padding-right: 20px;
+  height: fit-content;
+  display: flex; 
+}
+.profile-chat-div {
+  text-align: left;
+  margin-left: 20px;
+  font-size: 13px;
 }
 .wrapper {
   width: 100%;
@@ -117,13 +141,46 @@ export default {
   height: 100%;
   margin-left: 10px;
 }
-.input-part > input {
-  width: 100%;
-  margin: 5px;
+.input-part {
+  margin-top: 20px
+}
+.chat-input {
+  color: white;
+  width: 90%;
+  margin: 10px;
+  outline: none;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 1;
+  background-color: #242424;
+}
+.chat-input:focus {
+  animation-name: border-focus;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  box-shadow: 0 5px 6px -6px #d780ff;
+}
+@keyframes border-focus {
+  from {
+    border-color: #6A6A6A;
+  }
+  to {
+    border-color: #C752FE;
+  }
+}
+.input-part > button {
+  width: 20%;
+  height: 32px;
+}
+.profile-chat-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
 }
 .profile-img {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border-radius: 100%;
 }
 .watching-people > img {
@@ -169,5 +226,14 @@ export default {
   height: 20px;
   margin-top: -10px;
   margin-left: -1px;
+}
+.form-check .form-check-input {
+  float: none;
+  margin-right: 10px;
+}
+.form-check {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  margin-left: -1.5rem;
 }
 </style>
