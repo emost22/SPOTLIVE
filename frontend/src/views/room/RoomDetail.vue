@@ -275,9 +275,8 @@ export default {
       }
     },
     createdVideoData(value, oldvalue) {
-      this.videoDescription = this.createdVideoData.videoDescription
-      this.category = this.createdVideoData.categoryName
-      this.videoTitle = this.createdVideoData.videoTitle
+      console.log("바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야")
+      this.updateVideoInfo()
     },
   },
   computed: {
