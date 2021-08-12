@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="showReservationDialog" ref="showReservationDialog" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="showInfoDialogNowPlaying" ref="showInfoDialogNowPlaying" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
@@ -58,38 +58,10 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-npink small-button me-5" data-bs-dismiss="modal">닫기</button>
-          <button type="button" class="bdcolor-ngreen small-button" @click="reservateShow()">예약하기</button>
+          <button type="button" class="bdcolor-ngreen small-button" data-bs-dismiss="modal">닫기</button>
         </div>
       </div>
     </div>
-    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
-    <div class="offcanvas-header">
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-  </div>
-  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-    <div id="liveToast" ref="alreadyBooked" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="3000">
-      <div class="toast-header">
-        <strong class="me-auto">이미 예약된 상태입니다!</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        또 예약하고 싶으신가요~?😁
-      </div>
-    </div>
-  </div> 
-  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-    <div id="liveToast" ref="bookCompleted" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="3000">
-      <div class="toast-header">
-        <strong class="me-auto">예약 완료 되었습니다!</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        멋진 공연 즐겨봐요❤️
-      </div>
-    </div>
-  </div> 
   </div>
 </template>
 
@@ -106,32 +78,6 @@ export default {
     }
   }, 
   methods: {
-    reservateShow() {
-      this.$store.dispatch('requestShowIsReservated', this.timetableId)
-      .then(res => {
-          console.log(res.status == 204)
-          if (res.status == 200) {
-          this.clickToast(1)
-        } else if (res.status == 204){
-          this.$store.dispatch('requestReservateShow', {timetableId: this.timetableId})
-          .then(res => {
-            this.clickToast(2)
-          })
-          .catch(err => {
-            alert(err)
-          })
-        }
-      })
-    },
-    clickToast(viewId) {
-      if (viewId == 1) {
-        var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.alreadyBooked)
-        myToast.show()
-      } else {
-        var myToast = bootstrap.Toast.getOrCreateInstance(this.$refs.bookCompleted)
-        myToast.show()
-      }
-    },
     formatter(date) {
       var dateTime = new Date(date)
       
@@ -159,7 +105,7 @@ export default {
   },
   watch: {
     showReservationData: function(val, oldval) {
-      var modal= this.$refs.showReservationDialog
+      var modal= this.$refs.showInfoDialogNowPlaying
       var _this = this
       modal.addEventListener('show.bs.modal', function (event) {
         _this.showInfoId = val.showInfoId
@@ -223,9 +169,5 @@ export default {
 .label-in-dialog {
   font-size: 1.05rem;
   font-weight: bold;
-}
-.showInfoWrapper {
-  margin-left: 20px;
-  margin-right: 20px;
 }
 </style>

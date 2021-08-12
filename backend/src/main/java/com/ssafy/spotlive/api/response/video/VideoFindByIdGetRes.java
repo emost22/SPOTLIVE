@@ -57,6 +57,7 @@ public class VideoFindByIdGetRes {
                     .hit(video.getHit())
                     .userRes(UserRes.ofWithoutFollowShowInfoReservationVideo(video.getUser()))
                     .categoryRes(CategoryRes.of(video.getCategory()))
+                    .sessionId(video.getSessionId())
                     .build();
         } else {
             return VideoFindByIdGetRes.builder()

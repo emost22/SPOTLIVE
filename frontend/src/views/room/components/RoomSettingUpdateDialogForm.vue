@@ -51,7 +51,7 @@
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
       <div class="d-flex">
         <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
-        <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
+        <input class="custom-form-control" v-model="fileName" readonly="readonly" disabled="disabled"/>
         <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
         </label>
       </div>
@@ -66,7 +66,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  name: 'RoomSettingDialogForm',
+  name: 'RoomSettingUpdateDialogForm',
   props: {
     categoryIds: {
       type: Array,
@@ -76,16 +76,6 @@ export default {
       type: Array,
       default: [],
     },
-    showInUpdate: {
-      type: Boolean,
-      default: false
-    },
-    createdVideoData: {
-      type: Object,
-    },
-    closing: {
-      type: Boolean
-    }
   },
   data: function () {
     return {
@@ -105,41 +95,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex']),
+    ...mapGetters(['createdVideoData', 'isSettingDialogOpen', 'settingDialogViewId']),
   },
   watch: {
-    fileNamevuex(value, oldvalue) {
-      this.fileName = value
-    },
-    closing(value, oldvalue) {
-      if (value == true) {
-          this.form = {
-            categoryId: '1',
-            thumbnailImage: [], // 파일이 들어감
-            videoDescription: '',
-            videoTitle: '',
-            showInfoId: '',
-            showTime:'',
-            mode: '공연',
-          }
-          this.fileName = ''
-      } else {
-        this.form.categoryId = this.$props.createdVideoData.categoryId
-        this.fileName = this.fileNamevuex
-        this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
-        this.form.videoDescription = this.$props.createdVideoData.videoDescription
-        this.form.videoTitle = this.$props.createdVideoData.videoTitle
-        this.form.showInfoId = this.$props.createdVideoData.showInfoId
-        this.form.showTime = this.$props.createdVideoData.showTime
-        this.form.mode = this.$props.createdVideoData.mode
+    isSettingDialogOpen(value, oldvalue) {
+      if (value && this.settingDialogViewId==2) {
+        this.form.categoryId = this.createdVideoData.categoryId
+        this.form.fileName = this.createdVideoData.thumbnailImage
+        this.form.videoDescription = this.createdVideoData.videoDescription
+        this.form.videoTitle = this.createdVideoData.videoTitle
+        this.form.showInfoId = this.createdVideoData.showInfoId
+        this.form.showTime = this.createdVideoData.showTime
       }
     },
   },
   methods: {
     handleFileChange(e) {
-      this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
-      this.fileName = e.target.files[0].name // 파일이름을 넣음
-      this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
+      this.form.thumbnailImage = e.target.files[0]
+      this.fileName = e.target.files[0].name
     },
     makeShowInfoIds() {
       this.showInfoList.filter((showInfo, index) => {
@@ -168,6 +141,13 @@ export default {
     this.makeToolTipsObject()
   },
   beforeUpdate() {
+    console.log("asdf")
+    if (this.form.mode == '홍보' || this.form.mode == '소통') {
+        delete this.form.showTime
+      if (this.form.mode == '소통') {
+        delete this.form.showInfoId
+      }
+    } 
     this.$emit('form-data', this.form)
   }
 }

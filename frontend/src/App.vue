@@ -5,13 +5,16 @@
       <router-view :key="$route.fullPath"></router-view>
     </div>
     <RoomSettingDialog/>
+    <RoomSettingUpdateDialog/>
     <ProfileUpdateDialog/>
     <ShowCreateDialog/>
     <ShowDetailDialog/>
+    <ShowUpdateDialog/>
     <ShowReservationDialogInProfile/>
     <ShowReservationDialog/>
     <TicketDialog/>
     <TicketDetailDialog/>
+    <ShowInfoDialogNowPlaying/>
   </div>
 </template>
 
@@ -19,26 +22,32 @@
 import { mapGetters } from "vuex"
 import MainHeader from './views/MainHeader.vue'
 import RoomSettingDialog from './views/room/components/RoomSettingDialog.vue'
+import RoomSettingUpdateDialog from './views/room/components/RoomSettingUpdateDialog.vue'
 import ShowCreateDialog from './views/profile/components/ShowCreateDialog.vue'
 import ShowDetailDialog from './views/profile/components/ShowDetailDialog.vue'
+import ShowUpdateDialog from './views/profile/components/ShowUpdateDialog.vue'
 import ShowReservationDialogInProfile from './views/profile/components/ShowReservationDialogInProfile.vue'
 import ProfileUpdateDialog from './views/profile/components/ProfileUpdateDialog.vue'
 import TicketDialog from './views/profile/components/TicketDialog.vue'
 import ShowReservationDialog from './views/room/components/ShowReservationDialog.vue'
 import TicketDetailDialog from './views/profile/components/TicketDetailDialog.vue'
+import ShowInfoDialogNowPlaying from './views/room/components/ShowInfoDialogNowPlaying.vue'
 
 export default ({
   name: "App",
   components: {
     MainHeader,
     RoomSettingDialog,
+    RoomSettingUpdateDialog,
     ShowCreateDialog,
     ShowDetailDialog,
+    ShowUpdateDialog,
     ShowReservationDialogInProfile,
     ProfileUpdateDialog,
     TicketDialog,
     ShowReservationDialog,
     TicketDetailDialog,
+    ShowInfoDialogNowPlaying,
   },
   data: function () {
     return {
@@ -365,5 +374,8 @@ label:hover {
 .toast-body {
   color: white;
   text-align: left;
+}
+.offcanvas {
+  z-index: 1060;
 }
 </style>

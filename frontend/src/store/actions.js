@@ -113,6 +113,10 @@ export default {
         commit('SET_USER_ON_CREATE_VIDEO', payload)
     },
 
+    requestSetFileNameOfVideo({ commit }, payload) {
+        commit('SET_FILENAME_OF_VIDEO', payload)
+    },
+
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
@@ -346,9 +350,14 @@ export default {
     requestGetShowData({ commit }, payload) {
         commit('SET_GETSHOW_DATA', payload)
     },
-
     // TicketDetailDialog.vud
     requestDeleteGetShowData() {
         commit('DELETE_GETSHOW_DATA')
     },
+    // ShowDetailDialog.vue
+    requestDeleteShowInfo(context, payload) {
+        const URL = `/showinfo/${payload}`
+
+        return $axios.delete(URL)
+    }
 }
