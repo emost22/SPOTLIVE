@@ -76,14 +76,28 @@ export default {
         }
       } 
     },
+    makeFormDataForUpdateDialog() {
+      let formData = new FormData()
+      let videoUpdateByIdPatchReq = {
+        "videoTitle": this.videoData.videoTitle,
+        "videoDescription": this.videoData.videoDescription,
+        "categoryId": this.videoData.categoryId,
+      }
+      formData.append('thumbnailImage', this.videoData.thumbnailImage)
+      formData.append('videoUpdateByIdPatchReq', new Blob([JSON.stringify(videoUpdateByIdPatchReq)] , {type: "application/json"}))
+      return formData
+    },
     roomSettingUpdateDialogButton: function () {
       // 버튼 누르면 데이터 업데이트하는 로직 탐
       // 성공하면 vuex에 저장되어있는 created 데이터 갱신됨.
       // videoId는 현재 켜져있는 라이브의 videoId임 -> 라이브 끌 때 초기화 해줘.
       this.checkMode()
-      console.log(this.videoData)
-      this.$store.dispatch('requestUpdateSettingDialog', this.videoId, this.videoData)
+      var videoData = this.makeFormDataForUpdateDialog()
+      console.log("====================================")
+      console.log(videoData)
+      this.$store.dispatch('requestUpdateSettingDialog', this.videoId, videoData)
       .then(res => {
+        console.log(res)
         // 제대로 갱신돼 비디오데이터에 있을거 다있음 근데 FileName에 왜 아무것도없는지 모르겠음
         this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
         var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)

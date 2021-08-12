@@ -107,6 +107,7 @@ export default {
     showReservationData: function(val, oldval) {
       var modal= this.$refs.showInfoDialogNowPlaying
       var _this = this
+      console.log(val)
       modal.addEventListener('show.bs.modal', function (event) {
         _this.showInfoId = val.showInfoId
         _this.user = val.userRes
