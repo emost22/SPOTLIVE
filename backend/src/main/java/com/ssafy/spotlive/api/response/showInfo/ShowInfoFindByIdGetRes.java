@@ -1,6 +1,7 @@
 package com.ssafy.spotlive.api.response.showInfo;
 
 import com.ssafy.spotlive.api.response.timetable.TimetableRes;
+import com.ssafy.spotlive.api.response.user.UserRes;
 import com.ssafy.spotlive.db.entity.ShowInfo;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class ShowInfoFindByIdGetRes {
     Long price;
     int runningTime;
     List<TimetableRes> timetables = new ArrayList<>();
+    UserRes userRes;
 
     public static ShowInfoFindByIdGetRes of(ShowInfo showInfo){
         /**
@@ -45,6 +47,7 @@ public class ShowInfoFindByIdGetRes {
                 .price(showInfo.getPrice())
                 .runningTime(showInfo.getRunningTime())
                 .timetables(showInfo.getTimetableList().stream().map(timetable -> TimetableRes.of(timetable)).collect(Collectors.toList()))
+                .userRes(UserRes.ofWithoutFollowShowInfoReservationVideo(showInfo.getUser()))
                 .build();
     }
 

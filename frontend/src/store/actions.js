@@ -322,9 +322,35 @@ export default {
         const URL = `/auth/user`
         return $axios.patch(URL, payload)
     },
+    
+    // TicketCard.vue
+  requestDeleteTicket(context, payload) {
+    const URL = `/reservation/${payload.timetableId}`
+    $axios.delete(URL)
+      .then(({ status }) => {
+        if (status == 204) {
+          console.log('삭제 성공!')
+          context.commit("DELETE_TICKET_DATA", {timetableId : payload.timetableId})
+        } else {
+          console.log('삭제 실패!')
+        }
+      })
+    },
+    requestGetTimetables(context, payload) {
+        const URL = `/showinfo/${payload.showId}`
+        console.log(URL)
+        return $axios.get(URL)
+    },
 
     // MyShowCard.vue
     requestGetShowData({ commit }, payload) {
         commit('SET_GETSHOW_DATA', payload)
     },
+
+    // ShowDetailDialog.vue
+    requestDeleteShowInfo(context, payload) {
+        const URL = `/showinfo/${payload}`
+
+        return $axios.delete(URL)
+    }
 }
