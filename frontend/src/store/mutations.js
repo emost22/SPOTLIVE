@@ -214,6 +214,18 @@ export default {
     SET_CREATEVIDEO_DATA (state, payload) {
         state.createdVideoData = payload
     },
+
+    SET_USER_ON_CREATE_VIDEO (state, payload) {
+        state.onCreateVideoLive = payload
+    },
+
+    SET_VIDEO_ID (state, payload) {
+        state.videoId = payload
+    },
+
+    SET_SHOW_RESERVATION_INFO(state, payload) {
+        state.showReservationData = payload
+    },
     
     SET_GETSHOW_DATA (state, payload) {
         state.getShowData = payload
