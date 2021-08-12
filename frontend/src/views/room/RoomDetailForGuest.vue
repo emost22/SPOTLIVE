@@ -226,20 +226,23 @@ export default {
       this.sessionId = response.data.sessionId
       this.mainStreamAccountEmail = response.data.userRes.accountEmail
       this.hit = response.data.hit
-      var showInfoData = {
-        runningTime: response.data.showInfoRes.runningTime,
-        posterUrl: response.data.showInfoRes.posterUrl,
-        price: response.data.showInfoRes.price,
-        showInfoDescription: response.data.showInfoRes.showInfoDescription,
-        showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
-        showInfoTitle: response.data.showInfoRes.showInfoTitle,
-        userRes: {
-          accountEmail: response.data.userRes.accountEmail,
-          userName: response.data.userRes.userName,
-          profileImageUrl:response.data.userRes.profileImageUrl
+      if(this.mode != '소통') {
+        var showInfoData = {
+          runningTime: response.data.showInfoRes.runningTime,
+          posterUrl: response.data.showInfoRes.posterUrl,
+          price: response.data.showInfoRes.price,
+          showInfoDescription: response.data.showInfoRes.showInfoDescription,
+          showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+          showInfoTitle: response.data.showInfoRes.showInfoTitle,
+          userRes: {
+            accountEmail: response.data.userRes.accountEmail,
+            userName: response.data.userRes.userName,
+            profileImageUrl:response.data.userRes.profileImageUrl
+          }
         }
+        this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
       }
-      this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
+      
       this.initSession(new OpenVidu())
       this.doOpenviduCall()
       
