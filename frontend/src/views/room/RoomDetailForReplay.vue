@@ -67,20 +67,22 @@ export default {
       this.mainStreamAccountEmail = response.data.userRes.mainStreamAccountEmail
       this.videoUrl = response.data.videoUrl
       this.mode = response.data.mode
-      var showInfoData = {
-        runningTime: response.data.showInfoRes.runningTime,
-        posterUrl: response.data.showInfoRes.posterUrl,
-        price: response.data.showInfoRes.price,
-        showInfoDescription: response.data.showInfoRes.showInfoDescription,
-        showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
-        showInfoTitle: response.data.showInfoRes.showInfoTitle,
-        userRes: {
-          accountEmail: response.data.userRes.accountEmail,
-          userName: response.data.userRes.userName,
-          profileImageUrl:response.data.userRes.profileImageUrl
+      if(mode != '소통') {
+        var showInfoData = {
+          runningTime: response.data.showInfoRes.runningTime,
+          posterUrl: response.data.showInfoRes.posterUrl,
+          price: response.data.showInfoRes.price,
+          showInfoDescription: response.data.showInfoRes.showInfoDescription,
+          showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+          showInfoTitle: response.data.showInfoRes.showInfoTitle,
+          userRes: {
+            accountEmail: response.data.userRes.accountEmail,
+            userName: response.data.userRes.userName,
+            profileImageUrl:response.data.userRes.profileImageUrl
+          }
         }
+        this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
       }
-      this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
     })
   },
   computed: {
