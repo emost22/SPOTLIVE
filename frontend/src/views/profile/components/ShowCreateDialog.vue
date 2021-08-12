@@ -98,19 +98,72 @@ export default {
   data: function() {
     return {
       userId: '',
-      profileNickname: '',
-      profileImageUrl: '',
+      showInfoTitle: '',
+      showInfoDescription: '',
+      price: '',
+      runningTime: '',
+      posterImage: '',
+      preview: '',
+      datetime: '',
+      timetables:[],
+      selected: '',
+      timtetableReq: [],
     }
   },
   created: function () {
     this.getUser()
+    this.preview = ''
   },
   methods: {
+    handleChange(e) {
+      var file = e.target.files[0]
+      if (file && file.type.match(/^image\/(png|jpeg)$/)) {
+        this.preview = window.URL.createObjectURL(file)
+        this.posterImage = file
+      }
+    },
+    fileDeleteButton(e) {
+      this.preview = ''
+    },
+    openDatetime() {
+      this.$refs.datetimePicker.open(event);
+    },
+    doAdd(){
+      console.log(this.datetime)
+      this.timetables.push({dateTime: this.datetime})
+    },
+    doRemove(){
+      let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
+      this.timetables = filtered;
+    },
     getUser() {
       this.userId = this.loginUser.accountEmail
       this.profileNickname = this.loginUser.profileNickname
       this.profileImageUrl = this.loginUser.profileImageUrl
     },
+    formatter(date) {
+      var dateTime = new Date(date)
+      return `${dateTime.toLocaleString()}`
+    },
+    clickShowPostButton(){
+      let formData = new FormData()
+      let showInfoInsertPostReq = {
+        "showInfoTitle": this.showInfoTitle,
+        "showInfoDescription": this.showInfoDescription,
+        "price": this.price,
+        "runningTime": this.runningTime,
+        "timetableInsertPostReq": this.timetables
+      }
+      
+      formData.append('posterImage', this.posterImage)
+      formData.append('showInfoInsertPostReq', new Blob([JSON.stringify(showInfoInsertPostReq)], {type: "application/json"}))
+      this.$store.dispatch('requestPostShow', formData)
+      .then((response) => {
+        
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   },
   computed: {
     ...mapGetters(['loginUser',]),
