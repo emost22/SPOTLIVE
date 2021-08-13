@@ -66,8 +66,6 @@ export default {
       follow: false,
       userId: '',
       profileId: this.$route.params.profileId,
-      // 타인의 프로필에 진입하고 내 프로필을 메인헤더에서 누르면 이동하지 않음 초기화 문제
-      // 검색 뷰에서도 초기화 안 되서 2번째 검색 실패 (computed)
       following: '',
       follower: '',
       myProfile: [],
