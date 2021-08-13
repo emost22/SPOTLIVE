@@ -63,6 +63,7 @@
                   <div class="mb-3 d-flex">
                   <div class="flex-fill me-3 d-flex flex-row justify-content-start">
                       <select class="show-create-timetable" v-model="selected">
+                        <option value='' disabled>공연 시간 목록</option>
                         <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                           {{ formatter(d.dateTime) }}
                         </option>
@@ -132,10 +133,12 @@ export default {
     doAdd(){
       console.log(this.datetime)
       this.timetables.push({dateTime: this.datetime})
+      this.selected = ''
     },
     doRemove(){
       let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
       this.timetables = filtered;
+      this.selected = ''
     },
     getUser() {
       this.userId = this.loginUser.accountEmail
