@@ -18,7 +18,15 @@ export default {
     subscribers: [],
     RESOLUTION: '1024x576',
     MAX_CHAT_LIST_SIZE: 20,
-    createdVideoData: {},
+    createdVideoData: {
+      categoryId: '1',
+      thumbnailImage: [], // 파일이 들어감
+      videoDescription: '',
+      videoTitle: '',
+      showInfoId: '',
+      showTime:'',
+      mode: '공연',
+    },
     getShowData: {},
     onCreateVideoLive: false,
     videoId: '',

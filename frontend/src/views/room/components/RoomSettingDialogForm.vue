@@ -118,18 +118,20 @@ export default {
             thumbnailImage: [], // 파일이 들어감
             videoDescription: '',
             videoTitle: '',
-            showInfoId: '',
+            showInfoId: '1',
             showTime:'',
             mode: '공연',
           }
           this.fileName = ''
+          this.showInfoIds = []
       } else {
+        this.makeShowInfoIds()
         this.form.categoryId = this.$props.createdVideoData.categoryId
         this.fileName = this.fileNamevuex
         this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
         this.form.videoDescription = this.$props.createdVideoData.videoDescription
         this.form.videoTitle = this.$props.createdVideoData.videoTitle
-        this.form.showInfoId = this.$props.createdVideoData.showInfoId
+        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
         this.form.showTime = this.$props.createdVideoData.showTime
         this.form.mode = this.$props.createdVideoData.mode
       }
@@ -142,8 +144,8 @@ export default {
       this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {
-      this.showInfoList.filter((showInfo, index) => {
-        this.showInfoIds.push({ v: index, t: showInfo,})
+      this.$props.showInfoList.forEach((showInfo, index) => {
+        this.showInfoIds.push({ v: index, t: showInfo})
       })
     },
     getRecentlyTimeTable() {
@@ -161,15 +163,15 @@ export default {
       })
     }
   },
-  created() {
-    this.makeShowInfoIds()
-  },
+  // created() {
+  //   this.makeShowInfoIds()
+  // },
   mounted() {
     this.makeToolTipsObject()
   },
   beforeUpdate() {
     this.$emit('form-data', this.form)
-  }
+  },
 }
 </script>
 
