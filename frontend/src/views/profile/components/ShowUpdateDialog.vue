@@ -117,7 +117,6 @@ export default {
   },
   methods: {
     async init(showData){
-      console.log('니는 뭔데')
       this.showInfoTitle = showData.title
       this.showInfoDescription = showData.description
       this.price = showData.price
@@ -125,15 +124,6 @@ export default {
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
       this.selected = showData.timetables[0].dateTime
-
-      // console.log(this.preview)
-      // const response = await fetch(this.preview)
-      // const data = await response.blob()
-      // const ext = this.preview.split(".").pop()
-      // const filename = this.preview.split("/").pop()
-      // const metadata = {type: `image/${ext}`}
-      // this.posterImage = new File([data], filename, metadata)
-      // console.log(this.posterImage)
     },
     handleChange(e) {
       var file = e.target.files[0]
@@ -178,7 +168,7 @@ export default {
         formData.append('posterImage', this.posterImage)
       else
         formData.append('posterImage', null)
-        
+
       formData.append('showInfoUpdatePatchReq', new Blob([JSON.stringify(showInfoUpdatePatchReq)], {type: "application/json"}))
 
       let data = {
