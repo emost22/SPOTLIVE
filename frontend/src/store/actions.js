@@ -148,7 +148,7 @@ export default {
     },
 
     requestStartRecording(context, payload) {
-        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io:8443"
         const AUTH_REQ = {
             username: 'OPENVIDUAPP',
             password: 'MY_SECRET',
@@ -159,7 +159,7 @@ export default {
     },
 
     requestEndRecording(context, payload) {
-        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io:8443"
         const AUTH_REQ = {
             username: 'OPENVIDUAPP',
             password: 'MY_SECRET',
