@@ -23,6 +23,16 @@ export default {
         state.ovSession = state.OV.initSession()
     },
 
+    GET_LOGIN_USER(state, payload) {
+        console.log("MUTATION: GET_LOGIN_USER() RUN...")
+        console.log(payload)
+        state.loginUser = payload
+        localStorage.setItem('loginUser', JSON.stringify(state.loginUser))
+        localStorage.setItem('accessToken', state.loginUser.accessToken)
+        $axios.defaults.headers['Authorization'] = 'Bearer ' + state.loginUser.accessToken
+        console.log("MUTATION: GET_LOGIN_USER() DONE...")
+    },
+
     LOGOUT(state, payload) {
         console.log("MUTATION: LOGOUT() RUN...")
         state.isLogin = false
