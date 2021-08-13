@@ -30,18 +30,19 @@
       </div>
     </div>
 
-    <div>
-      <p class="txtcolor-white-npurple main-title">나의 공연 정보</p>
+    <div class="mx-5">
+      <div class="txtcolor-white-npurple main-title">나의 공연 정보</div>
       <MyShow
         :shows="myShows"
         :inMyProfile="inMyProfile"
       />
     </div>
 
-    <div>
-      <p class="txtcolor-white-ngreen main-title">나의 동영상</p>
+    <div class="mx-5">
+      <div class="txtcolor-white-ngreen main-title mb-5">나의 동영상</div>
       <MyVideo
         :videos="myVideos"
+        :inMyProfile="inMyProfile"
       />
     </div>
 
@@ -75,21 +76,36 @@ export default {
       myReservations: [],
     }
   },
-  created: function () {
+  created() {
     this.getUser()
+    console.log('크리에이트')
     console.log(this.profileId)
     if (this.inMyProfile) {
       this.getMyProfile()
+      console.log('내프로필')
     } else {
       this.getProfile()
+      console.log('타인프로필')
     }    
   },
-  mounted: function () {
-    this.profileId = this.$route.params.profileId
+  beforeRouteLeave (to, from, next) {
+    this.profileId = ''
+    next()
   },
-  unmounted: function () {
-    this.profileId=''
-  },
+  // watch: {
+  //   loginUser: function(val, oldVal) {
+  //     this.getUser()
+  //     console.log('프로필 수정 변화 워치')
+  //     console.log(this.profileId)
+  //     if (this.inMyProfile) {
+  //       this.getMyProfile()
+  //       console.log('내프로필 변화')
+  //     } else {
+  //       this.getProfile()
+  //       console.log('타인프로필 변화')
+  //     }    
+  //   },
+  // },
   methods: {
     getUser() {
       this.userId = this.loginUser.accountEmail
@@ -161,9 +177,6 @@ export default {
   computed: {
     ...mapGetters(['loginUser']),
   },
-  watch() {
-    this.profileId
-  },
 }
 </script>
 
@@ -193,6 +206,12 @@ export default {
   width: 150px;
   height: 150px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF,
+    0 0 35px #FFFFFF;
 }
 .profile-detail {
   width: 300px;

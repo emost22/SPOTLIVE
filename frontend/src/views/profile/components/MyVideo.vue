@@ -10,6 +10,7 @@
         :key="idx">
         <MyVideoCard
           :video="video"
+          :inMyProfile="inMyProfile"
         />
       </div>
       <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
@@ -28,6 +29,10 @@ export default {
   props: {
     videos: {
       type: Array,
+      required: true
+    },
+    inMyProfile: {
+      type: Boolean,
       required: true
     }
   },
