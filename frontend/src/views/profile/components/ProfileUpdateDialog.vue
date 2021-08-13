@@ -61,25 +61,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ProfileUdateDialog',
-  data: function() {
-    return {
-      userId: '',
-      profileNickname: '',
-      profileDescription: '',
-      profileImageUrl: '',
-    };
-  },
-  created: function() {
-    this.getUser();
-  },
   methods: {
-    getUser() {
-      this.userId = this.loginUser.accountEmail
-      this.profileNickname = this.loginUser.profileNickname
-      this.profileDescription = this.loginUser.profileDescription
-      this.profileImageUrl = this.loginUser.profileImageUrl
-    },
-
     clickProfileUpdateButton() {
       let userUpdatePatchReq = {
         accountEmail: this.loginUser.accountEmail,
@@ -126,6 +108,12 @@ export default {
   width: 180px;
   height: 180px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF,
+    0 0 35px #FFFFFF;
 }
 .profile-update-info {
   text-align: left;
