@@ -193,6 +193,32 @@ public class VideoController {
         }
     }
 
+    @DeleteMapping("/{videoId}")
+    @ApiOperation(value = "스트리밍 정보 삭제", notes = "Video 다시보기를 저장하지 않는경우 비디오에 대한 데이터를 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "수정 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<String> deleteVideoById(
+            @ApiIgnore @RequestHeader("Authorization") String accessToken, @PathVariable long videoId) {
+        /**
+         * @Method Name : deleteVideoById
+         * @작성자 : 김민권
+         * @Method 설명 : 비디오를 삭제한다.
+         */
+        int vaildTokenStatusValue = authService.isValidToken(accessToken);
+
+        if(vaildTokenStatusValue == 200) {
+            videoService.deleteVideoById(videoId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else if(vaildTokenStatusValue == 401) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PatchMapping("/close/{videoId}")
     @ApiOperation(value = "스트리밍 종료", notes = "videoId로 해당 스트리밍의 end_time을 DB에 기록한다.")
     @ApiResponses({
