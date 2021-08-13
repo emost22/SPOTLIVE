@@ -112,9 +112,14 @@ export default {
       timtetableReq: [],
     }
   },
-  created: function () {
+  created() {
     this.getUser()
     this.preview = ''
+    this.clearShowCreateData()
+  },
+
+  mounted(){
+    this.clearShowCreateData()
   },
   methods: {
     handleChange(e) {
