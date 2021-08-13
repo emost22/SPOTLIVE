@@ -13,17 +13,50 @@
           data-bs-toggle="modal" 
           data-bs-target="#ticketDetailModal"
         >
-          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
+          <button 
+            @click="clickShowReservationInProfileButton" 
+            class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen"
+          >
+            예약 상세
+          </button>
         </div>
         <div class="ticket-btn-box">
           <button 
             class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
             data-bs-toggle="offcanvas" 
-            data-bs-target="#deleteTicketInfo" 
+            data-bs-target="#deleteTicketInfo1" 
             aria-controls="deleteTicketInfo"
+            @click="clickCancleReservationbutton"
           >
             예약 취소
           </button>
+        </div>
+      </div>
+      <!-- 오프캔버스 -->
+      <div 
+        class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" 
+        tabindex="-1" 
+        id="deleteTicketInfo1" 
+        ref="showPopup" 
+        aria-labelledby="offcanvasTopLabel"
+      >
+        <div class="offcanvas-header">
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="mt-3">
+            <div>
+              <p class="ticket-popup-title">예약을 정말로 삭제하시겠습니까?</p> 
+            </div>
+          </div>
+          <div class="d-flex justify-content-end ticket-popup-button">
+            <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">
+              취소
+            </button></div>
+            <div><button type="button" @click="clickReservationDeleteButton" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">
+              확인
+            </button></div>
+          </div>
         </div>
       </div>
     </div>
@@ -40,7 +73,10 @@
           data-bs-toggle="modal" 
           data-bs-target="#ticketDetailModal"
         >
-          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">
+          <button 
+            @click="clickShowReservationInProfileButton" 
+            class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen"
+          >
             예약 상세
           </button>
         </div>
@@ -48,30 +84,43 @@
           <button 
             class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
             data-bs-toggle="offcanvas" 
-            data-bs-target="#deleteTicketInfo" 
+            data-bs-target="#deleteTicketInfo2" 
             aria-controls="deleteTicketInfo"
+            @click="clickCancleReservationbutton"
           >
             예약 취소
           </button>
         </div>
       </div>
+      <!-- 오프캔버스 -->
+      <div 
+        class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" 
+        tabindex="-1" 
+        id="deleteTicketInfo2" 
+        ref="showPopup" 
+        aria-labelledby="offcanvasTopLabel"
+      >
+        <div class="offcanvas-header">
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="mt-3">
+            <div>
+              <p class="ticket-popup-title">예약을 정말로 삭제하시겠습니까?</p> 
+            </div>
+          </div>
+          <div class="d-flex justify-content-end ticket-popup-button">
+            <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">
+              취소
+            </button></div>
+            <div><button type="button" @click="clickReservationDeleteButton" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">
+              확인
+            </button></div>
+          </div>
+        </div>
+      </div>
     </div>
-            <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteTicketInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
-                <div class="offcanvas-header">
-                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                  <div class="mt-3">
-                    <div>
-                      <p class="ticket-popup-title">예약을 정말로 삭제하시겠습니까?</p> 
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-end ticket-popup-button">
-                    <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
-                    <div><button type="button" @click="clickReservationDeleteButton" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">확인</button></div>
-                  </div>
-                </div>
-              </div>
+    
   </div>
 </template>
 
@@ -140,12 +189,19 @@ export default {
       var tmpDay = day.split("-")
       this.date =  tmpDay[1] + "/" + tmpDay[2]
       this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
+      console.log("업데이티드 호출!! getReservation this.timetableId = this.reservation.timetableFindByReservationRes.timetableId 테스트")
+      console.log(this.timetableId = this.reservation.timetableFindByReservationRes.timetableId)
+      console.log("this.timetableId : ",this.timetableId)
+      console.log("=====================================테스트끝======================================")
       this.timetableId = this.reservation.timetableFindByReservationRes.timetableId
       this.dateTime = this.reservation.timetableFindByReservationRes.dateTime
       this.timetables = []
       this.timetables.push({dateTime: this.dateTime, timetableId : this.timetableId})
     },
     clickReservationDeleteButton() {
+      console.log("***this.timetableId in clickReservationDeleteButton test***")
+      console.log(this.timetableId)
+      console.log("=======================================테스트끝====================================")
       this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})
     },
     clickShowReservationInProfileButton() {
@@ -183,6 +239,11 @@ export default {
       // .catch((error) => {
       //     console.log(error)
       // })
+    },
+    clickCancleReservationbutton(){
+      console.log("***this.timetableId in clickCancleReservationbutton test***")
+      console.log(this.timetableId)
+      console.log("=======================================테스트끝====================================")
     },
     closeTicketDialog() {
       this.$emit('closeTicketDialog')
