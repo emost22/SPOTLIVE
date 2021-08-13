@@ -1,5 +1,6 @@
 <template>
   <div>
+    <form class="row g-3 needs-validation" novalidate>
     <div class="mb-3">
       <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
       <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
@@ -60,13 +61,18 @@
       <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
+    </form>
   </div>
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate';
 import { mapGetters } from 'vuex'
 export default {
   name: 'RoomSettingDialogForm',
+  components: {
+    ValidationProvider,
+  },
   props: {
     categoryIds: {
       type: Array,
@@ -113,7 +119,6 @@ export default {
     },
     closing(value, oldvalue) {
       if (value == true) {
-        console.log("이거불리겠지?")
         this.initDataWhenClosing()
       } else {
         if (this.$props.showInUpdate) {
@@ -126,18 +131,8 @@ export default {
     form: {
       deep: true,
       handler(value) {
-        // RoomCreate에서 공연값이 변경될 때마다 Vuex에 저장하고, 
-        // 클로즈 됐을 때는 초기화된 값 뷰엑스에 저장안하고 => 빈 공백이니깐
-        // 열려있을때 뷰엑스에서 가져옴
-        // RoomCreate에서 RoomDetail로 갈 때 Vuex 저장해놔야함.
-        // RoomDetail에서 가져와서 써야하니깐.
-        // RoomDetail에서도 열려있을 때, 변경될 때 가져오게 됨. 근데 여기서 룸 디테일에 열릴 때 
-        // 뷰엑스에 저장되어있는 애가 먼저 업데이트폼에 들어가고나서 watch가 불릴지, 모르겠음
-        // 아무튼 만약에 열려있을 때 계속 뷰엑스에 값을 저장하는거면 RoomDetail에서 나갈 때 뷰엑스를 깔끔하게 정리해줌
-        // 그래서 다시 룸크리에이트에서 열었을 때 뷰엑스에서 깔끔한 값가져올 수 있도록 함. 
-        // 만약에 이게 되면 확인버튼은 그냥 모달을 끄는 용도로.
         if(this.$props.closing != true) { 
-          console.log("이거불렸을리없잖아?")
+          console.log(value)
           this.$store.dispatch('requestSetCreatedVideoData', value)
         }
       }
@@ -146,8 +141,8 @@ export default {
   methods: {
     handleFileChange(e) {
       this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
+      this.$store.dispatch('requestSetCreatedVideoData', this.form)
       this.fileName = e.target.files[0].name // 파일이름을 넣음
-      console.log(this.fileName)
       this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {

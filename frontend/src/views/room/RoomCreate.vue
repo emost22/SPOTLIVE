@@ -5,7 +5,7 @@
     </div>
     <div class="btn-wrapper">
       <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog"> 설정 </button>
-      <button class="bdcolor-bold-npink extra-big-button" @click="startStreaming()"> 스트리밍 시작 </button>
+      <button class="bdcolor-bold-npink extra-big-button start-streaming" @click="startStreaming()" :disabled="isDisabled"> 스트리밍 시작 </button>
     </div>
   </div>
 </template>
@@ -18,13 +18,12 @@ export default {
   name:'RoomCreate',
   data() {
     return  {
-      
+      isDisabled: false
     }
   },
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
-  
   beforeRouteLeave (to, from, next) {
     if (to.name != "RoomDetail") {
       this.$store.dispatch("requestSetUserOnCreateVideo", false)
@@ -140,5 +139,8 @@ export default {
   width: 100%;
   height: 100%;
 }
-
+.start-streaming:disabled {
+  border-color: black;
+  color: gray;
+}
 </style>
