@@ -71,5 +71,8 @@ export default {
     },
     fileNamevuex(state) {
         return state.fileNamevuex
-    }
+    },
+    createdProfileData(state) {
+        return state.createdProfileData
+    },
 }

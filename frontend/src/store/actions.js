@@ -110,6 +110,7 @@ export default {
     },
 
     requestSetCreatedVideoData({ commit }, payload) {
+        console.log(payload)
         commit('SET_CREATEVIDEO_DATA', payload)
     },
 
@@ -325,6 +326,9 @@ export default {
         const URL = `/unfollow/${payload.profileId}`
 
         return $axios.delete(URL)
+    },
+    requestSetCreatedProfileData({ commit }, payload) {
+        commit('SET_CREATEPROFILE_DATA', payload)
     },
 
     // Search.vue

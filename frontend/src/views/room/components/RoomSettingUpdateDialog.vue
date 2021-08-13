@@ -13,7 +13,7 @@
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
                 @form-data="form => videoData = form"
-                :showInfoList="[]"
+                :showInfoList="showInfoList"
                 :showInUpdate="showInUpdate"
                 :createdVideoData="createdVideoData"
                 :closing="closing"
@@ -110,7 +110,7 @@ export default {
     routeToProfile: function () {
       var roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
       roomSettingModal.hide()
-      this.$router.push({name: 'Profile', params: { profileId : this.loginUser.accountEmail }})
+      this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
     }
   },
   computed: {
@@ -137,6 +137,11 @@ export default {
     this.$store.dispatch('requestGetCategoryIds')
     .then((response) => {
       this.categoryIds = response.data
+    })
+    this.$store.dispatch('requestGetShowInfoIds')
+    .then(response => {
+      console.log(response)
+      this.showInfoList = response.data
     })
   },
 }

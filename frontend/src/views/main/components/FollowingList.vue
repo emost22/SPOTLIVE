@@ -1,7 +1,7 @@
 <template>
   <div>    
     <li class="nav-item">
-      <router-link class="nav-link" :to="{ name: 'Profile', params: { profileId : following.accountEmail } }">
+      <router-link class="nav-link" :to="{ name: 'Profile', query: { profileId : following.accountEmail } }">
         <div class="sidebar-following-info">
           <div 
             class="sidebar-img-box" 

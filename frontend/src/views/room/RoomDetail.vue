@@ -224,6 +224,7 @@ export default {
     this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
+      console.log(response)
       this.videoDescription = response.data.videoDescription
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
@@ -235,10 +236,11 @@ export default {
         thumbnailImage: response.data.thumbnailUrl,
         videoDescription: this.videoDescription,
         videoTitle: this.videoTitle,
-        showInfoId: this.showInfoRes != null ? this.showInfoRes.showInfoId : '',
-        showTime: this.showInfoRes != null ? this.showInfoRes.showTime : '',
+        showInfoId: response.data.showInfoRes.showInfoId != null ? response.data.showInfoRes.showInfoId : '',
+        showTime: response.data.showInfoRes.showTime != null ? response.data.showInfoRes.showTime : '',
         mode: response.data.mode,
       }
+      console.log(videoData)
       this.$store.dispatch('requestSetCreatedVideoData', videoData)
     })
     if(this.mainStreamManager != undefined) {
