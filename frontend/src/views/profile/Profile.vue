@@ -64,13 +64,13 @@ export default {
     return {
       inMyProfile: true,
       follow: false,
-      userId: this.loginUser.accountEmail,
-      profileId: this.$route.params.profileId,
+      userId: '',
+      profileId: this.$route.query.profileId,
     }
   },
   mounted() {
     this.$store.dispatch("requestSetCreatedProfileData", {})
-    this.profileId = this.$route.params.profileId
+    this.profileId = this.$route.query.profileId
     this.getUser()
     if (this.inMyProfile) {
       this.getMyProfile()
@@ -80,21 +80,12 @@ export default {
       console.log('타인프로필')
     }    
   },
-  created() {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-    console.log('created')
-  },
-  beforeMount() {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-    console.log('beforeMount')
-  },
-  beforeDestroy() {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-    console.log('beforeDestroy')
-  },
   beforeRouteLeave (to, from, next) {
     this.$store.dispatch("requestSetCreatedProfileData", {})
-    console.log('beforeRouteLeave')
+
+    if(to.name == from.name && to.query == from.query){
+      this.$router.go(this.$router.currentroute)
+    }
     next()
   },
   methods: {
@@ -155,6 +146,7 @@ export default {
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
         this.follow = true
+        this.getProfile()
       })
       .catch((error) => {
         console.log(error)
@@ -174,19 +166,6 @@ export default {
   },
   computed: {
     ...mapGetters(['loginUser', 'createdProfileData', ]),
-  },
-  watch: {
-    loginUser: function(val, oldVal) {
-      this.getUser()
-    },
-    createdProfileData(val, oldVal) {
-      this.getUser()
-      if (this.inMyProfile) {
-        this.getMyProfile()
-      } else {
-        this.getProfile()
-      }    
-    },
   },
 }
 </script>

@@ -126,6 +126,25 @@ export default {
       this.timetables = showData.timetables
       // this.selected = showData.timetables[0].dateTime
     },
+    getMyProfile() {
+      this.$store.dispatch('requestGetMyProfile')
+      .then((response) => {
+        console.log("getMyProfile() SUCCESS!!")
+        console.log(response.data)
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     handleChange(e) {
       var file = e.target.files[0]
       if (file && file.type.match(/^image\/(png|jpeg)$/)) {
@@ -182,7 +201,13 @@ export default {
       }
       console.log(this.posterImage)
       this.$store.dispatch('requestPutShow', data)
-    }
+      .then((res) => {
+        this.getMyProfile()
+      })
+      .catch((err) => {
+        console.log('fail')
+      })
+    },
   },
   computed: {
     ...mapGetters(['loginUser','getShowData']),

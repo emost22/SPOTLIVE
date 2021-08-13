@@ -40,7 +40,7 @@ export default {
     return {
       pageValue: 0,
       sizeValue: 20,
-      subVideo: this.$props.videos
+      subVideo: []
     }
   },
   created(){

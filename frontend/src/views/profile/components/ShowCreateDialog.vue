@@ -122,6 +122,25 @@ export default {
     this.clearShowCreateData()
   },
   methods: {
+    getMyProfile() {
+      this.$store.dispatch('requestGetMyProfile')
+      .then((response) => {
+        console.log("getMyProfile() SUCCESS!!")
+        console.log(response.data)
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     handleChange(e) {
       var file = e.target.files[0]
       if (file && file.type.match(/^image\/(png|jpeg)$/)) {
@@ -188,11 +207,14 @@ export default {
       this.$store.dispatch('requestPostShow', formData)
       .then((response) => {
         this.clearShowCreateData()
+        this.getMyProfile()
+        this.$router.go(this.$router.currentroute)
+        // this.$router.push({ name: 'Profile', query: { profileId : this.loginUser.accountEmail } })
       }).catch(error => {
         console.log(error)
         this.clearShowCreateData()
       })
-    }
+    },
   },
   computed: {
     ...mapGetters(['loginUser',]),

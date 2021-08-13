@@ -93,6 +93,25 @@ export default {
   mounted() {
   },
   methods: {
+    getMyProfile() {
+      this.$store.dispatch('requestGetMyProfile')
+      .then((response) => {
+        console.log("getMyProfile() SUCCESS!!")
+        console.log(response.data)
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     updateShow(){
       var showDetailModal = bootstrap.Modal.getInstance(this.$refs.showDetailModal)
       showDetailModal.hide()
@@ -102,6 +121,14 @@ export default {
       showDetailModal.hide()
       console.log(this.$store.getters.getShowData.showId)
       this.$store.dispatch('requestDeleteShowInfo', this.$store.getters.getShowData.showId)
+      .then((res) => {
+        this.getMyProfile()
+        this.$router.go(this.$router.currentroute)
+        
+      })
+      .catch((err) => {
+        console.log('fail')
+      })
     },
     formatter(date) {
       var dateTime = new Date(date)
