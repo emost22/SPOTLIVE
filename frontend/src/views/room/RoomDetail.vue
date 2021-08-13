@@ -98,7 +98,7 @@ export default {
       chatList: [],
       recordName: "",
       recordURL: "",
-      isRecord: true,
+      isRecord: false,
     }
   },
   methods: {
