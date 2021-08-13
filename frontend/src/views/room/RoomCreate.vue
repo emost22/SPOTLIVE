@@ -24,6 +24,7 @@ export default {
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
+  
   beforeRouteLeave (to, from, next) {
     if (to.name != "RoomDetail") {
       this.$store.dispatch("requestSetUserOnCreateVideo", false)

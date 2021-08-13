@@ -17,7 +17,7 @@
         </div>
         <div class="d-flex mt-1">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" checked v-model="form.mode">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
             <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
               공연용
             </label>
@@ -113,6 +113,7 @@ export default {
     },
     closing(value, oldvalue) {
       if (value == true) {
+        console.log("이거불리겠지?")
         this.initDataWhenClosing()
       } else {
         if (this.$props.showInUpdate) {
@@ -122,11 +123,31 @@ export default {
           }
         }
     },
+    form: {
+      deep: true,
+      handler(value) {
+        // RoomCreate에서 공연값이 변경될 때마다 Vuex에 저장하고, 
+        // 클로즈 됐을 때는 초기화된 값 뷰엑스에 저장안하고 => 빈 공백이니깐
+        // 열려있을때 뷰엑스에서 가져옴
+        // RoomCreate에서 RoomDetail로 갈 때 Vuex 저장해놔야함.
+        // RoomDetail에서 가져와서 써야하니깐.
+        // RoomDetail에서도 열려있을 때, 변경될 때 가져오게 됨. 근데 여기서 룸 디테일에 열릴 때 
+        // 뷰엑스에 저장되어있는 애가 먼저 업데이트폼에 들어가고나서 watch가 불릴지, 모르겠음
+        // 아무튼 만약에 열려있을 때 계속 뷰엑스에 값을 저장하는거면 RoomDetail에서 나갈 때 뷰엑스를 깔끔하게 정리해줌
+        // 그래서 다시 룸크리에이트에서 열었을 때 뷰엑스에서 깔끔한 값가져올 수 있도록 함. 
+        // 만약에 이게 되면 확인버튼은 그냥 모달을 끄는 용도로.
+        if(this.$props.closing != true) { 
+          console.log("이거불렸을리없잖아?")
+          this.$store.dispatch('requestSetCreatedVideoData', value)
+        }
+      }
+    },
   },
   methods: {
     handleFileChange(e) {
       this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
       this.fileName = e.target.files[0].name // 파일이름을 넣음
+      console.log(this.fileName)
       this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {
@@ -165,9 +186,19 @@ export default {
       this.showInfoIds = []
     },
     initDataWhenOpenSettingDialog() {
-      this.form.mode = '공연'
-      this.makeShowInfoIds()
-      this.form.showInfoId = this.showInfoIds[0].t.showInfoId
+      this.form.categoryId = this.$props.createdVideoData.categoryId
+      this.fileName = this.fileNamevuex
+      this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
+      this.form.mode = this.$props.createdVideoData.mode
+      this.form.videoDescription = this.$props.createdVideoData.videoDescription
+      this.form.videoTitle = this.$props.createdVideoData.videoTitle
+      if (this.$props.createdVideoData.showInfoId != '') {
+        this.makeShowInfoIds()
+        this.form.showInfoId = this.$props.createdVideoData.showInfoId
+      } else {
+        this.makeShowInfoIds()
+        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
+      }
       this.getRecentlyTimeTable()
     },
     initDataWhenOpenSettingUpdateDialog() {
@@ -176,8 +207,16 @@ export default {
       this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
       this.form.videoDescription = this.$props.createdVideoData.videoDescription
       this.form.videoTitle = this.$props.createdVideoData.videoTitle
-      this.form.showInfoId = this.$props.createdVideoData.showInfoId
-      this.form.showTime = this.$props.createdVideoData.showTime
+      if (this.$props.createdVideoData.showInfoId != '') {
+        this.makeShowInfoIds()
+        this.form.showInfoId = this.$props.createdVideoData.showInfoId
+      } else {
+        this.makeShowInfoIds()
+        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
+      }
+      this.getRecentlyTimeTable()
+      // this.form.showInfoId = this.$props.createdVideoData.showInfoId
+      // this.form.showTime = this.$props.createdVideoData.showTime
       this.form.mode = this.$props.createdVideoData.mode
     }
   },
