@@ -70,26 +70,18 @@ export default {
   },
   created() {
     this.profileId = this.$route.params.profileId
-    this.getUser()
-    if (this.inMyProfile) {
-      this.getMyProfile()
-    } else {
-      this.getProfile()
-      this.getFollow()
-    }  
-  },
-  mounted() {
-    this.profileId = this.$route.params.profileId
+    console.log('누구 프로필 아이디')
     console.log(this.profileId)
     this.getUser()
-    console.log(this.inMyProfile)
     if (this.inMyProfile) {
       this.getMyProfile()
       console.log('내프로필')
     } else {
       this.getProfile()
       this.getFollow()
+      console.log(this.follow)
       console.log('타인프로필')
+      console.log('팔로우 중이냐')
     }    
   },
   beforeRouteLeave (to, from, next) {
@@ -152,10 +144,11 @@ export default {
         if (this.loginUser.accountEmail == followers.accountEmail) {
           this.follow = true
           console.log('팔로우중임')
-        } else {
-          this.follow = false
-          console.log('언팔로우중임')
-        }
+          console.log("내 팔로잉")
+          console.log(this.loginUser.followMyArtistResList)
+          console.log("남 팔로워")
+          console.log(this.createdProfileData.follower)
+        } 
       })
     },
     clickFollowButton() {
@@ -192,15 +185,15 @@ export default {
     loginUser: function(val, oldVal) {
       this.getUser()
     },
-    // createdProfileData(val, oldVal) {
-    //   // this.getUser()
-    //   if (this.inMyProfile) {
-    //     this.getMyProfile()
-    //   } else {
-    //     this.getProfile()
-    //     this.getFollow()
-    //   }    
-    // },
+    createdProfileData(val, oldVal) {
+      // this.getUser()
+      if (this.inMyProfile) {
+        this.getMyProfile()
+      } else {
+        this.getProfile()
+        this.getFollow()
+      }    
+    },
   },
 }
 </script>
