@@ -13,7 +13,7 @@
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
                 @form-data="form => videoData = form"
-                :showInfoList="[]"
+                :showInfoList="showInfoList"
                 :showInUpdate="false"
                 :createdVideoData="createdVideoData"
                 :closing="closing"
@@ -63,6 +63,7 @@ export default {
   data: function () {
     return {
       categoryIds: [],
+      showInfoList: [],
       videoData: {},
       closing: true,
     }
@@ -110,8 +111,13 @@ export default {
       console.log('RoomsettingDialog hidden')
     })
     this.$store.dispatch('requestGetCategoryIds')
-    .then((response) => {
+    .then(response => {
       this.categoryIds = response.data
+    })
+    this.$store.dispatch('requestGetShowInfoIds')
+    .then(response => {
+      console.log(response)
+      this.showInfoList = response.data
     })
   },
 }

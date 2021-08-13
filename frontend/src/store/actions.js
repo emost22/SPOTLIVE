@@ -127,6 +127,12 @@ export default {
         commit('SET_FILENAME_OF_VIDEO', payload)
     },
 
+    requestGetShowInfoIds( context, payload ) {
+        const URL = '/showinfo'
+
+        return $axios.get(URL)
+    },
+
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
@@ -148,7 +154,7 @@ export default {
     },
 
     requestStartRecording(context, payload) {
-        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io:8443"
         const AUTH_REQ = {
             username: 'OPENVIDUAPP',
             password: 'MY_SECRET',
@@ -159,7 +165,7 @@ export default {
     },
 
     requestEndRecording(context, payload) {
-        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io:8443"
         const AUTH_REQ = {
             username: 'OPENVIDUAPP',
             password: 'MY_SECRET',
