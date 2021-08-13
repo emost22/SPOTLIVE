@@ -151,8 +151,10 @@ export default {
       this.profileImageUrl = this.loginUser.profileImageUrl
     },
     formatter(date) {
-      var dateTime = new Date(date)
-      return `${dateTime.toLocaleString()}`
+      let dateTime = new Date(date)
+      let month = parseInt(dateTime.getMonth()) + 1
+      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
+        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     clickShowUpdateButton(){
       let formData = new FormData()
