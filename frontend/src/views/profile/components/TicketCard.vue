@@ -1,11 +1,30 @@
+<!--
+  작성자 : 권영린
+  컴포넌트 설명 : TicketDialog에서 받아온 예약정보를 하나의 티켓으로 출력
+-->
 <template>
   <div>
+    <!---------------------------짝수번째 티켓일 때 ----------------------------->
     <div class="ticket-img-num" v-if="open">
-      <div class="ticket-title">{{this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle}}</div>
+      <div class="ticket-title">
+        {{this.timetable.showInfoRes.showInfoTitle}}
+      </div>
       <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{date}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{time}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
+        <div class="ticket-small-btn-box">
+          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+            {{date}}
+          </button>
+        </div>
+        <div class="ticket-small-btn-box">
+          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+            {{time}}
+          </button>
+        </div>
+        <div class="ticket-small-btn-box">
+          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+            {{runningTime}}분
+          </button>
+        </div>
       </div>
       <div class="ticket-btn-line">
         <div
@@ -24,7 +43,7 @@
           <button 
             class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
             data-bs-toggle="offcanvas" 
-            data-bs-target="#deleteTicketInfo1" 
+            data-bs-target="#deleteTicketInfo" 
             aria-controls="deleteTicketInfo"
             @click="clickCancleReservationbutton"
           >
@@ -32,40 +51,28 @@
           </button>
         </div>
       </div>
-      <!-- 오프캔버스 -->
-      <div 
-        class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" 
-        tabindex="-1" 
-        id="deleteTicketInfo1" 
-        ref="showPopup" 
-        aria-labelledby="offcanvasTopLabel"
-      >
-        <div class="offcanvas-header">
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <div class="mt-3">
-            <div>
-              <p class="ticket-popup-title">예약을 정말로 삭제하시겠습니까?</p> 
-            </div>
-          </div>
-          <div class="d-flex justify-content-end ticket-popup-button">
-            <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">
-              취소
-            </button></div>
-            <div><button type="button" @click="clickReservationDeleteButton" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">
-              확인
-            </button></div>
-          </div>
-        </div>
-      </div>
     </div>
+    <!---------------------------홀수번째 티켓일 때 ----------------------------->
     <div class="ticket-img-str" v-if="!open">
-      <div class="ticket-title">{{this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle}}</div>
+      <div class="ticket-title">
+        {{this.timetable.showInfoRes.showInfoTitle}}
+      </div>
       <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{date}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{time}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
+        <div class="ticket-small-btn-box">
+          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+            {{date}}
+          </button>
+        </div>
+        <div class="ticket-small-btn-box">
+          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+            {{time}}
+          </button>
+        </div>
+        <div class="ticket-small-btn-box">
+          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+            {{runningTime}}분
+          </button>
+        </div>
       </div>
       <div class="ticket-btn-line">
         <div 
@@ -84,7 +91,7 @@
           <button 
             class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
             data-bs-toggle="offcanvas" 
-            data-bs-target="#deleteTicketInfo2" 
+            data-bs-target="#deleteTicketInfo" 
             aria-controls="deleteTicketInfo"
             @click="clickCancleReservationbutton"
           >
@@ -92,35 +99,7 @@
           </button>
         </div>
       </div>
-      <!-- 오프캔버스 -->
-      <div 
-        class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" 
-        tabindex="-1" 
-        id="deleteTicketInfo2" 
-        ref="showPopup" 
-        aria-labelledby="offcanvasTopLabel"
-      >
-        <div class="offcanvas-header">
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <div class="mt-3">
-            <div>
-              <p class="ticket-popup-title">예약을 정말로 삭제하시겠습니까?</p> 
-            </div>
-          </div>
-          <div class="d-flex justify-content-end ticket-popup-button">
-            <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">
-              취소
-            </button></div>
-            <div><button type="button" @click="clickReservationDeleteButton" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">
-              확인
-            </button></div>
-          </div>
-        </div>
-      </div>
     </div>
-    
   </div>
 </template>
 
@@ -130,7 +109,7 @@ export default {
   
   name: 'TicketCard',
   props: {
-    reservation: {
+    timetable: {
       type: Object,
       required: true
     },
@@ -143,6 +122,8 @@ export default {
     return {
       open: false,
       userId: '',
+      profileNickname: '',
+      profileImageUrl: '',
       showId : '',
       title: '',
       description: '',
@@ -161,7 +142,7 @@ export default {
     this.getReservation()
   },
   watch: {
-    reservation(val, oldVal) {
+    timetable : function(val, oldval){
       this.getUser()
       this.getTicketImg()
       this.getReservation()
@@ -169,7 +150,9 @@ export default {
   },
   methods: {
     getUser() {
-      this.userId = this.loginUser.accountEmail
+      this.userId = this.timetable.showInfoRes.userRes.accountEmail
+      this.profileNickname = this.timetable.showInfoRes.userRes.profileNickname
+      this.profileImageUrl = this.timetable.showInfoRes.userRes.profileImageUrl
     },
     getTicketImg() {
       if (this.idx%2) {
@@ -179,36 +162,26 @@ export default {
       }
     },
     getReservation() {
-      this.showId = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoId
-      this.title = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle
-      this.description  = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoDescription
-      this.posterUrl  = this.reservation.timetableFindByReservationRes.showInfoRes.posterUrl
-      this.price  = this.reservation.timetableFindByReservationRes.showInfoRes.price
-      this.runningTime = this.reservation.timetableFindByReservationRes.showInfoRes.runningTime
-      var day = this.reservation.timetableFindByReservationRes.dateTime.substr(0,10).split(" ")[0]
+      this.showId = this.timetable.showInfoRes.showInfoId
+      this.title = this.timetable.showInfoRes.showInfoTitle
+      this.description  = this.timetable.showInfoRes.showInfoDescription
+      this.posterUrl  = this.timetable.showInfoRes.posterUrl
+      this.price  = this.timetable.showInfoRes.price
+      this.runningTime = this.timetable.showInfoRes.runningTime
+      var day = this.timetable.dateTime.substr(0,10).split(" ")[0]
       var tmpDay = day.split("-")
       this.date =  tmpDay[1] + "/" + tmpDay[2]
-      this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
-      console.log("업데이티드 호출!! getReservation this.timetableId = this.reservation.timetableFindByReservationRes.timetableId 테스트")
-      console.log(this.timetableId = this.reservation.timetableFindByReservationRes.timetableId)
-      console.log("this.timetableId : ",this.timetableId)
-      console.log("=====================================테스트끝======================================")
-      this.timetableId = this.reservation.timetableFindByReservationRes.timetableId
-      this.dateTime = this.reservation.timetableFindByReservationRes.dateTime
+      this.time = this.timetable.dateTime.substring(11,16)
+      this.timetableId = this.timetable.timetableId
+      this.dateTime = this.timetable.dateTime
       this.timetables = []
       this.timetables.push({dateTime: this.dateTime, timetableId : this.timetableId})
     },
-    clickReservationDeleteButton() {
-      console.log("***this.timetableId in clickReservationDeleteButton test***")
-      console.log(this.timetableId)
-      console.log("=======================================테스트끝====================================")
-      this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})
-    },
     clickShowReservationInProfileButton() {
       var showData = {
-        userId: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.accountEmail,
-        profileNickname: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileNickname,
-        profileImageUrl: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileImageUrl,
+        userId: this.userId,
+        profileNickname: this.profileNickname,
+        profileImageUrl: this.profileImageUrl,
         showId: this.showId,
         title: this.title,
         description: this.description,
@@ -218,41 +191,13 @@ export default {
         timetables: this.timetables,
       }
       this.$store.dispatch('requestGetShowData', showData)
-      // this.$store.dispatch('requestGetTimetables', {showId : this.showId})
-      // .then((response) => {
-      //   this.closeTicketDialog()
-      //   this.timetables = response.data.timetables
-      //   var showData = {
-      //     userId: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.accountEmail,
-      //     profileNickname: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileNickname,
-      //     profileImageUrl: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileImageUrl,
-      //     showId: this.showId,
-      //     title: this.title,
-      //     description: this.description,
-      //     posterUrl: this.posterUrl,
-      //     price: this.price,
-      //     runningTime: this.runningTime,
-      //     timetables: this.timetables,
-      //   }
-      //   this.$store.dispatch('requestGetShowData', showData)
-      // })
-      // .catch((error) => {
-      //     console.log(error)
-      // })
     },
     clickCancleReservationbutton(){
-      console.log("***this.timetableId in clickCancleReservationbutton test***")
+      console.log("티켓카드뷰에서 타임테이블 찍음")
       console.log(this.timetableId)
-      console.log("=======================================테스트끝====================================")
-    },
-    closeTicketDialog() {
-      this.$emit('closeTicketDialog')
+      this.$emit('clickCancleReservationbutton', this.timetableId)
     },
   },
-  computed: {
-    ...mapGetters(['loginUser',]),
-  },
-
 }
 </script>
 
