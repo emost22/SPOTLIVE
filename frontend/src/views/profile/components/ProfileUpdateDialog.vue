@@ -74,14 +74,34 @@ export default {
         .then((response) => {
           console.log(response.data);
           localStorage.setItem('loginUser', JSON.stringify(response.data));
+          this.getMyProfile()
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    getMyProfile() {
+      this.$store.dispatch('requestGetMyProfile')
+      .then((response) => {
+        console.log("getMyProfile() SUCCESS!!")
+        console.log(response.data)
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
   },
   computed: {
-    ...mapGetters(['loginUser']),
+    ...mapGetters(['loginUser', 'createdProfileData']),
   },
 };
 </script>
