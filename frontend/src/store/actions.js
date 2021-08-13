@@ -145,6 +145,11 @@ export default {
         return $axios.patch(URL)
     },
 
+    requestDeleteVideo(context, payload) {
+        const URL = `/video/${payload}`
+        return $axios.delete(URL)
+    },
+
     requestLeaveSession(context, payload) {
         context.commit("LEAVE_SESSION")
     },
