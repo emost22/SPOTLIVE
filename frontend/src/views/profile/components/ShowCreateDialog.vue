@@ -37,16 +37,16 @@
                 <div class="show-info">
                   <div class="mb-3">
                     <div class="label-alignment"><label for="showCreateFormControlInput1" class="form-label">공연명</label></div>
-                    <input type="text" class="custom-form-control" id="showCreateFormControlInput1" v-model="showInfoTitle">
+                    <input type="text" class="custom-form-control" id="showCreateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
                       <div class="label-alignment"><label for="showCreateFormControlInput2" class="form-label">티켓가격</label></div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput2" v-model="price">
+                      <input type="text" class="custom-form-control" id="showCreateFormControlInput2" v-model="price" autocomplete="off">
                     </div>
                     <div class="flex-fill">
                       <div class="label-alignment"><label for="showCreateFormControlInput3" class="form-label">러닝타임</label></div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput4" v-model="runningTime">
+                      <input type="text" class="custom-form-control" id="showCreateFormControlInput4" v-model="runningTime" autocomplete="off">
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
