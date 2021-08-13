@@ -189,19 +189,13 @@ export default {
       var tmpDay = day.split("-")
       this.date =  tmpDay[1] + "/" + tmpDay[2]
       this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
-      console.log("업데이티드 호출!! getReservation this.timetableId = this.reservation.timetableFindByReservationRes.timetableId 테스트")
-      console.log(this.timetableId = this.reservation.timetableFindByReservationRes.timetableId)
-      console.log("this.timetableId : ",this.timetableId)
-      console.log("=====================================테스트끝======================================")
       this.timetableId = this.reservation.timetableFindByReservationRes.timetableId
       this.dateTime = this.reservation.timetableFindByReservationRes.dateTime
       this.timetables = []
       this.timetables.push({dateTime: this.dateTime, timetableId : this.timetableId})
     },
     clickReservationDeleteButton() {
-      console.log("***this.timetableId in clickReservationDeleteButton test***")
       console.log(this.timetableId)
-      console.log("=======================================테스트끝====================================")
       this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})
     },
     clickShowReservationInProfileButton() {

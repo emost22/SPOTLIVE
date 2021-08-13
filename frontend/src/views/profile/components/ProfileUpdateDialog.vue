@@ -23,9 +23,9 @@
           <div class="profile-update-img-box"><img :src="loginUser.profileImageUrl" class="profile-update-img" /></div>
           <div>
             <div class="label-alignment profile-update-info mb-2">닉네임</div>
-            <div class="profile-update-info profile-update-info mb-2"><input class="custom-form-control" v-model="profileNickname" /></div>
+            <div class="profile-update-info profile-update-info mb-2"><input class="custom-form-control" v-model="loginUser.profileNickname" /></div>
             <div class="label-alignment profile-update-info mb-2">소개</div>
-            <div class="profile-update-info"><textarea class="custom-form-control" v-model="profileDescription" rows="3"/></div> 
+            <div class="profile-update-info"><textarea class="custom-form-control" v-model="loginUser.profileDescription" rows="3"/></div> 
           </div>
         </div>
 
@@ -61,30 +61,12 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ProfileUdateDialog',
-  data: function() {
-    return {
-      userId: '',
-      profileNickname: '',
-      profileDescription: '',
-      profileImageUrl: '',
-    };
-  },
-  created: function() {
-    this.getUser();
-  },
   methods: {
-    getUser() {
-      this.userId = this.loginUser.accountEmail;
-      this.profileNickname = this.loginUser.profileNickname;
-      this.profileDescription = this.loginUser.profileDescription;
-      this.profileImageUrl = this.loginUser.profileImageUrl;
-    },
-
     clickProfileUpdateButton() {
       let userUpdatePatchReq = {
-        accountEmail: this.userId,
-        profileNickname: this.profileNickname,
-        profileDescription: this.profileDescription,
+        accountEmail: this.loginUser.accountEmail,
+        profileNickname: this.loginUser.profileNickname,
+        profileDescription: this.loginUser.profileDescription,
       };
 
       this.$store
@@ -126,6 +108,12 @@ export default {
   width: 180px;
   height: 180px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF,
+    0 0 35px #FFFFFF;
 }
 .profile-update-info {
   text-align: left;

@@ -27,7 +27,7 @@
             <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
-            <div><router-link class="nav-link fw-bold" :to="{ name: 'Profile', params: { profileId : this.loginUser.accountEmail } }"><img src="~@/assets/icon-profile.png" class="header-icon-img"></router-link></div>
+            <div @click="clickProfileBtn"><router-link class="nav-link fw-bold" :to="{ name: 'Profile', params: { profileId : this.loginUser.accountEmail } }"><img src="~@/assets/icon-profile.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
             <div><img src="~@/assets/icon-alarm.png" class="header-icon-img"></div>
@@ -59,7 +59,7 @@ export default ({
       this.$store.dispatch('requestLogout')
       this.$router.push({ name: 'Login' })
     },
-    clickSearchBtn: function () {
+    clickSearchBtn() {
       if (this.input) {
         this.$router.push({ name: 'Search', params: { input: this.input } })
         this.input = ''
@@ -67,11 +67,14 @@ export default ({
       else {
         console.log('검색할 내용을 입력하세요')
       }
-    }
+    },
+    clickProfileBtn() {
+      this.$store.dispatch("requestSetCreatedProfileData", {})
+      this.$router.push({ name: 'Profile', params: { profileId : this.loginUser.accountEmail } })
+    },
   },
   computed: {
     ...mapGetters(['loginUser', 'isLogin', 'onCreateVideoLive']),
-    // FilterButton.vue에서 클릭 이벤트가 일어나면 카테고리 아이디를 받아서 인자를 넣어보자
   },
 })
 </script>
