@@ -361,5 +361,12 @@ export default {
         const URL = `/showinfo/${payload}`
 
         return $axios.delete(URL)
+    },
+
+    // ShowUpdateDialog.vue
+    requestPutShow(context, payload) {
+        const URL = `/showinfo/${payload.showInfoId}`
+
+        return $axios.put(URL, payload.formData)
     }
 }
