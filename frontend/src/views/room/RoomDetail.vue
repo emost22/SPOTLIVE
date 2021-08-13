@@ -265,7 +265,7 @@ export default {
       console.log("저장된 URL: " + this.recordURL)
       if(this.isRecord) this.insertVideoUrlAndCloseStreaming()
       else {
-        this.$store.dispatch('requestCloseVideo', this.videoId)
+        this.$store.dispatch('requestDeleteVideo', this.videoId)
         .then(res => {
           console.log(res)
           this.$store.dispatch('requestLeaveSession')
