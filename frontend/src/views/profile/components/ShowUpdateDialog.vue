@@ -62,7 +62,8 @@
                   </div>
                   <div class="mb-3 d-flex">
                   <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <select class="show-create-timetable" v-model="selected">
+                      <select class="show-update-timetable" v-model="selected">
+                        <option value='' disabled>공연 시간 목록</option>
                         <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                           {{ formatter(d.dateTime) }}
                         </option>
@@ -123,7 +124,7 @@ export default {
       this.runningTime = showData.runningTime
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
-      this.selected = showData.timetables[0].dateTime
+      // this.selected = showData.timetables[0].dateTime
     },
     handleChange(e) {
       var file = e.target.files[0]
@@ -140,10 +141,12 @@ export default {
     },
     doAdd(){
       if(this.datetime != "") this.timetables.push({dateTime: this.datetime})
+      this.selected = ''
     },
     doRemove(){
       let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
       this.timetables = filtered;
+      this.selected = ''
     },
     getUser() {
       this.userId = this.loginUser.accountEmail
