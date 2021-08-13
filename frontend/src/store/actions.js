@@ -326,6 +326,9 @@ export default {
 
         return $axios.delete(URL)
     },
+    requestSetCreatedProfileData({ commit }, payload) {
+        commit('SET_CREATEPROFILE_DATA', payload)
+    },
 
     // Search.vue
     requestGetSearchVideos(context, payload) {

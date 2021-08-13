@@ -76,8 +76,8 @@ public class UserRes {
                 .showInfoResList(user.getShowInfoList().stream().map(showInfo -> ShowInfoFindByIdGetRes.of(showInfo)).collect(Collectors.toList()))
                 .reservationResList(user.getReservationList().stream().map(reservation -> ReservationRes.of(reservation)).collect(Collectors.toList()))
                 .videoResList(videoList.stream().map(video -> VideoRes.of(video)).collect(Collectors.toList()))
-                .followMyArtistResList(user.getArtistList().stream().map(follow -> FollowMyArtistRes.of(follow)).collect(Collectors.toList()))
-                .followMyFanResList(user.getFanList().stream().map(follow -> FollowMyFanRes.of(follow)).collect(Collectors.toList()))
+                .followMyArtistResList(user.getFanList().stream().map(follow -> FollowMyArtistRes.of(follow)).collect(Collectors.toList()))
+                .followMyFanResList(user.getArtistList().stream().map(follow -> FollowMyFanRes.of(follow)).collect(Collectors.toList()))
                 .build();
     }
 

@@ -25,9 +25,9 @@ public class FollowMyFanRes {
          * @Method 설명 : Category Entity를 CategoryGetResponseDto로 변환하는 메소드
          */
         return FollowMyFanRes.builder()
-                .accountEmail(follow.getArtist().getAccountEmail())
-                .profileNickname(follow.getArtist().getProfileNickname())
-                .profileImageUrl(follow.getArtist().getProfileImageUrl())
+                .accountEmail(follow.getFan().getAccountEmail())
+                .profileNickname(follow.getFan().getProfileNickname())
+                .profileImageUrl(follow.getFan().getProfileImageUrl())
                 .build();
     }
 }
