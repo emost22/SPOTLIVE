@@ -66,25 +66,17 @@ export default {
       follow: false,
       userId: '',
       profileId: '',
-      following: '',
-      follower: '',
-      myProfile: [],
-      myShows: [],
-      myVideos: [],
-      myReservations: [],
     }
   },
   created() {
+    this.profileId = this.$route.params.profileId
     this.getUser()
-    console.log('크리에이트')
-    console.log(this.profileId)
     if (this.inMyProfile) {
       this.getMyProfile()
-      console.log('내프로필')
     } else {
       this.getProfile()
-      console.log('타인프로필')
-    }    
+      this.getFollow()
+    }  
   },
   mounted() {
     this.profileId = this.$route.params.profileId
@@ -96,6 +88,7 @@ export default {
       console.log('내프로필')
     } else {
       this.getProfile()
+      this.getFollow()
       console.log('타인프로필')
     }    
   },
@@ -153,27 +146,39 @@ export default {
         console.log(error)
       })
     },
+    getFollow() {
+      console.log(this.createdProfileData.follower.length)
+      this.createdProfileData.follower.forEach((followers) => { 
+        if (this.loginUser.accountEmail == followers.accountEmail) {
+          this.follow = true
+          console.log('팔로우중임')
+        } else {
+          this.follow = false
+          console.log('언팔로우중임')
+        }
+      })
+    },
     clickFollowButton() {
-      // 팔로잉 리스트 중에 있는지 여부부터 확인
       this.$store.dispatch('requestClickFollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
-        console.log(response.data)
+        console.log("팔로우성공")
+        console.log("내 팔로잉")
+        console.log(this.loginUser.followMyArtistResList)
+        console.log("남 팔로워")
+        console.log(this.createdProfileData.follower)
         this.follow = true
-        this.getProfile()
       })
       .catch((error) => {
         console.log(error)
       })
     },
     clickUnfollowButton() {
-      // 팔로잉 리스트 중에 있는지 여부부터 확인
       this.$store.dispatch('requestClickUnfollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickUnfollowButton() SUCCESS!!")
         console.log(response.data)
         this.follow = false
-        this.getProfile()
       })
       .catch((error) => {
         console.log(error)
@@ -187,18 +192,15 @@ export default {
     loginUser: function(val, oldVal) {
       this.getUser()
     },
-    createdProfileData(val, oldVal) {
-      console.log("수정하자 watch 프로필")
-      this.getUser()
-      console.log(this.profileId)
-      if (this.inMyProfile) {
-        this.getMyProfile()
-        console.log('내프로필 변화')
-      } else {
-        this.getProfile()
-        console.log('타인프로필 변화')
-      }    
-    },
+    // createdProfileData(val, oldVal) {
+    //   // this.getUser()
+    //   if (this.inMyProfile) {
+    //     this.getMyProfile()
+    //   } else {
+    //     this.getProfile()
+    //     this.getFollow()
+    //   }    
+    // },
   },
 }
 </script>
