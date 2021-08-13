@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-update-modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
-          <div class="information-header mt-3 ms-3">공연 정보 생성</div>
+          <div class="information-header mt-3 ms-3">공연 정보 수정</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body mx-3">
@@ -78,8 +78,8 @@
               </div>
 
               <div class="mb-3 mx-3">
-                <div class="label-alignment"><label for="showCreateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
-                <textarea class="custom-form-control" id="showCreateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
+                <div class="label-alignment"><label for="showUpdateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
+                <textarea class="custom-form-control" id="showUpdateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
               </div>
             </form>
         </div>
@@ -336,10 +336,10 @@ export default {
   color: white
 }
 
-.show-create-timetable {
+.show-update-timetable {
   width: 220px;
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.8rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;
