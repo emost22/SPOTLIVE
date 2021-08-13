@@ -37,6 +37,7 @@
                     <div class="flex-fill me-3">
                       <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
                       <select class="custom-select-control-m show-timetablelist" aria-label="Default select showDetail" v-model="timetableId">
+                        <!-- <option value='' disabled>공연 시간 목록</option> -->
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
@@ -215,7 +216,7 @@ export default {
 }
 .custom-select-control-m {
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.8rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;
