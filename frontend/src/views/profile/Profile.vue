@@ -69,6 +69,7 @@ export default {
     }
   },
   mounted() {
+    this.$store.dispatch("requestSetCreatedProfileData", {})
     this.profileId = this.$route.params.profileId
     this.getUser()
     if (this.inMyProfile) {
@@ -79,8 +80,21 @@ export default {
       console.log('타인프로필')
     }    
   },
+  created() {
+    this.$store.dispatch("requestSetCreatedProfileData", {})
+    console.log('created')
+  },
+  beforeMount() {
+    this.$store.dispatch("requestSetCreatedProfileData", {})
+    console.log('beforeMount')
+  },
+  beforeDestroy() {
+    this.$store.dispatch("requestSetCreatedProfileData", {})
+    console.log('beforeDestroy')
+  },
   beforeRouteLeave (to, from, next) {
     this.$store.dispatch("requestSetCreatedProfileData", {})
+    console.log('beforeRouteLeave')
     next()
   },
   methods: {
@@ -141,8 +155,6 @@ export default {
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
         this.follow = true
-        this.createdProfileData.follow = true
-        this.getProfile()
       })
       .catch((error) => {
         console.log(error)
@@ -153,7 +165,6 @@ export default {
       .then((response) => {
         console.log("getClickUnfollowButton() SUCCESS!!")
         this.follow = false
-        this.createdProfileData.follow = false
         this.getProfile()
       })
       .catch((error) => {
