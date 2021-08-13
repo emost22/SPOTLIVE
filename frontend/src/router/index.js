@@ -38,7 +38,7 @@ const routes = [
     component: Main
   },
   {
-    path: '/profile/:profileId',
+    path: '/profile',
     name: 'Profile',
     beforeEnter: requireAuth,
     component: Profile

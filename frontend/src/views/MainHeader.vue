@@ -27,7 +27,7 @@
             <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
-            <div @click="clickProfileBtn"><router-link class="nav-link fw-bold" :to="{ name: 'Profile', params: { profileId : this.loginUser.accountEmail } }"><img src="~@/assets/icon-profile.png" class="header-icon-img"></router-link></div>
+            <div @click="clickProfileBtn"><router-link class="nav-link fw-bold" :to="{ name: 'Profile', query: { profileId : this.loginUser.accountEmail } }"><img src="~@/assets/icon-profile.png" class="header-icon-img"></router-link></div>
           </li>
           <li class="nav-item header-item">
             <div><img src="~@/assets/icon-alarm.png" class="header-icon-img"></div>
@@ -70,7 +70,7 @@ export default ({
     },
     clickProfileBtn() {
       this.$store.dispatch("requestSetCreatedProfileData", {})
-      this.$router.push({ name: 'Profile', params: { profileId : this.loginUser.accountEmail } })
+      this.$router.push({ name: 'Profile', query: { profileId : this.loginUser.accountEmail } })
     },
   },
   computed: {
