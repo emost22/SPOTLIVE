@@ -10,7 +10,7 @@ cloud:
 
 openvidu:
   server:
-    url: https://i5a405.p.ssafy.io
+    url: https://i5a405.p.ssafy.io:8443
     id: OPENVIDUAPP
     secret: MY_SECRET
 

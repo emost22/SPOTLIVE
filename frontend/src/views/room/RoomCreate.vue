@@ -24,18 +24,19 @@ export default {
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
-  beforeRouteEnter (to, from, next) {
-    next()
-  },
   beforeRouteLeave (to, from, next) {
     if (to.name != "RoomDetail") {
       this.$store.dispatch("requestSetUserOnCreateVideo", false)
-    } 
+      this.$store.dispatch("requestSetCreatedVideoData", {})
+      this.$store.dispatch("requestSetFileNameOfVideo", "")
+      this.$store.dispatch('requestLeaveSession')
+    }
     next()
   },
   created() {
     this.initSession(new OpenVidu())
     this.doOpenviduCall()
+    this.$store.dispatch("requestGetLoginUser")
   },
   methods: {
     async initSession(openvidu) {

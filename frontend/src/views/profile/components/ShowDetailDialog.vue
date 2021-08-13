@@ -2,9 +2,7 @@
   <div>
   <div class="modal fade" id="showDetailModal" ref="showDetailModal" tabindex="-1" aria-labelledby="showDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
-      
       <div class="modal-content-m">
-
         <div class="modal-header no-border">
           <div class="information-header mt-3 ms-3">공연 상세 정보</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -18,7 +16,6 @@
                   <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
-
               <div class="d-flex flex-row">    
                 <div><img :src="getShowData.posterUrl" class="show-img"></div>
                 <div class="show-info">
@@ -61,23 +58,23 @@
 
       </div>
     </div>
-            <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteShowInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
-                <div class="offcanvas-header">
-                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                  <div class="mt-3">
-                    <div>
-                      <p class="popUpTitle">삭제 시 해당 데이터는 복구할 수 없습니다.</p> 
-                      <p class="popUpTitle">정말로 삭제하시겠습니까?</p> 
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-end show-popup">
-                    <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
-                    <div><button type="button" @click="deleteShow()" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">확인</button></div>
-                  </div>
-                </div>
-              </div>
+    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteShowInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="mt-3">
+          <div>
+            <p class="popUpTitle">삭제 시 해당 데이터는 복구할 수 없습니다.</p> 
+            <p class="popUpTitle">정말로 삭제하시겠습니까?</p> 
+          </div>
+        </div>
+        <div class="d-flex justify-content-end show-popup">
+          <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
+          <div><button type="button" @click="deleteShow()" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">확인</button></div>
+        </div>
+      </div>
+    </div>
   </div>
   </div>
 </template>
@@ -94,7 +91,6 @@ export default {
     }
   },
   mounted() {
-    this.getShowInfoTimeTable()
   },
   methods: {
     updateShow(){
