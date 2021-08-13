@@ -8,8 +8,8 @@
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">프로필 수정</button></div>
       </div>
       <div class="profile-btn-line" v-if="!inMyProfile">
-        <button type="button" @click="clickFollowButton" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
-        <button type="button" @click="clickUnfollowButton" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
+        <button type="button" @click="clickFollowButton" v-if="!createdProfileData.follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
+        <button type="button" @click="clickUnfollowButton" v-if="createdProfileData.follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
       </div>
     </div>
 
@@ -64,29 +64,23 @@ export default {
     return {
       inMyProfile: true,
       follow: false,
-      userId: '',
-      profileId: '',
+      userId: this.loginUser.accountEmail,
+      profileId: this.$route.params.profileId,
     }
   },
   created() {
     this.profileId = this.$route.params.profileId
-    console.log('누구 프로필 아이디')
-    console.log(this.profileId)
     this.getUser()
     if (this.inMyProfile) {
       this.getMyProfile()
       console.log('내프로필')
     } else {
       this.getProfile()
-      this.getFollow()
-      console.log(this.follow)
       console.log('타인프로필')
-      console.log('팔로우 중이냐')
     }    
   },
   beforeRouteLeave (to, from, next) {
     this.$store.dispatch("requestSetCreatedProfileData", {})
-    this.profileId = ''
     next()
   },
   methods: {
@@ -123,6 +117,16 @@ export default {
       .then((response) => {
         console.log("getProfile() SUCCESS!!")
         console.log(response.data)
+        response.data.followMyFanResList.forEach((follower) => { 
+          if (this.loginUser.accountEmail == follower.accountEmail) {
+            this.follow = true
+            console.log('팔로우중임')
+            console.log("내 팔로잉")
+            console.log(this.loginUser.followMyArtistResList)
+            console.log("남 팔로워")
+            console.log(response.data.followMyFanResList)
+          } 
+        })
         var ProfileData = {
           myProfile : response.data,
           following : response.data.followMyArtistResList,
@@ -130,6 +134,7 @@ export default {
           myShows : response.data.showInfoResList,
           myVideos : response.data.videoResList,
           myReservations : response.data.reservationResList,
+          follow: this.follow,
         }
         this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
         console.log('뷰엑스에 타인 프로필 데이터 보내기')
@@ -138,29 +143,11 @@ export default {
         console.log(error)
       })
     },
-    getFollow() {
-      console.log(this.createdProfileData.follower.length)
-      this.createdProfileData.follower.forEach((followers) => { 
-        if (this.loginUser.accountEmail == followers.accountEmail) {
-          this.follow = true
-          console.log('팔로우중임')
-          console.log("내 팔로잉")
-          console.log(this.loginUser.followMyArtistResList)
-          console.log("남 팔로워")
-          console.log(this.createdProfileData.follower)
-        } 
-      })
-    },
     clickFollowButton() {
       this.$store.dispatch('requestClickFollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
-        console.log("팔로우성공")
-        console.log("내 팔로잉")
-        console.log(this.loginUser.followMyArtistResList)
-        console.log("남 팔로워")
-        console.log(this.createdProfileData.follower)
-        this.follow = true
+        this.getProfile()
       })
       .catch((error) => {
         console.log(error)
@@ -170,8 +157,8 @@ export default {
       this.$store.dispatch('requestClickUnfollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickUnfollowButton() SUCCESS!!")
-        console.log(response.data)
-        this.follow = false
+        this.createdProfileData.follow = false
+        this.getProfile()
       })
       .catch((error) => {
         console.log(error)
@@ -186,12 +173,11 @@ export default {
       this.getUser()
     },
     createdProfileData(val, oldVal) {
-      // this.getUser()
+      this.getUser()
       if (this.inMyProfile) {
         this.getMyProfile()
       } else {
         this.getProfile()
-        this.getFollow()
       }    
     },
   },
