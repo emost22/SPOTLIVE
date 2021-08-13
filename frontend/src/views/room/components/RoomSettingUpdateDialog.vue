@@ -69,7 +69,7 @@ export default {
   }, 
   methods: {
     checkMode: function() {
-       if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
+      if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
         delete this.videoData.showTime
         if (this.videoData.mode == '소통') {
           delete this.videoData.showInfoId
@@ -77,6 +77,10 @@ export default {
       } 
     },
     makeFormDataForUpdateDialog() {
+      
+      console.log("=================makeFormDataForUpdateDialog RUN...===========================")
+      console.log(this.videoData.thumbnailImage)
+
       let formData = new FormData()
       let videoUpdateByIdPatchReq = {
         "videoTitle": this.videoData.videoTitle,

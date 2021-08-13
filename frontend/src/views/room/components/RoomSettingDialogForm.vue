@@ -60,6 +60,7 @@
       <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
+    <button @click="check">gdgdgd</button>
   </div>
 </template>
 
@@ -124,9 +125,16 @@ export default {
     },
   },
   methods: {
+    check() {
+      console.log("====================== CHECK! =======================")
+      console.log(this.form)
+    },
     handleFileChange(e) {
+      console.log("=================handleFileChange RUN...===========================")
       this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
       this.fileName = e.target.files[0].name // 파일이름을 넣음
+      console.log(this.form.thumbnailImage)
+      console.log("=================handleFileChange DONE...===========================")
       this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {
@@ -152,6 +160,7 @@ export default {
       })
     },
     initDataWhenClosing() {
+      console.log("=================initDataWhenClosing RUN...===========================")
       this.form = {
             categoryId: '1',
             thumbnailImage: [], // 파일이 들어감
@@ -171,6 +180,7 @@ export default {
       this.getRecentlyTimeTable()
     },
     initDataWhenOpenSettingUpdateDialog() {
+      console.log("=================initDataWhenOpenSettingUpdateDialog RUN...===========================")
       this.form.categoryId = this.$props.createdVideoData.categoryId
       this.fileName = this.fileNamevuex
       this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
@@ -184,8 +194,12 @@ export default {
   mounted() {
     this.makeToolTipsObject()
   },
-  beforeUpdate() {
+  updated() {
+    console.log("DATA 변경 발생=================")
+    console.log(this.form)
     this.$emit('form-data', this.form)
+    console.log("EMIT 이후=================")
+    console.log(this.form)
   },
 }
 </script>
