@@ -24,9 +24,6 @@ export default {
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
-  beforeRouteEnter (to, from, next) {
-    next()
-  },
   beforeRouteLeave (to, from, next) {
     if (to.name != "RoomDetail") {
       this.$store.dispatch("requestSetUserOnCreateVideo", false)
@@ -36,6 +33,7 @@ export default {
   created() {
     this.initSession(new OpenVidu())
     this.doOpenviduCall()
+    this.$store.dispatch("requestGetLoginUser")
   },
   methods: {
     async initSession(openvidu) {
