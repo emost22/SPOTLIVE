@@ -127,6 +127,12 @@ export default {
         commit('SET_FILENAME_OF_VIDEO', payload)
     },
 
+    requestGetShowInfoIds( context, payload ) {
+        const URL = '/showinfo'
+
+        return $axios.get(URL)
+    },
+
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`

@@ -202,6 +202,20 @@ export default {
         this.hit = response.data.hit
       })
     },
+    initCreateVideoDataInVuex() {
+    let initData = {
+          categoryId: '1',
+          thumbnailImage: [], // 파일이 들어감
+          videoDescription: '',
+          videoTitle: '',
+          showInfoId: '',
+          showTime:'',
+          mode: '공연',
+        }
+    this.$store.dispatch("requestSetCreatedVideoData", initData)
+    this.$store.dispatch("requestSetFileNameOfVideo", "")
+    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    }
   },
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
@@ -242,9 +256,7 @@ export default {
     this.chatList.push(welcomeChat)
   },
   beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("requestSetCreatedVideoData", {})
-    this.$store.dispatch("requestSetFileNameOfVideo", "")
-    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    this.initCreateVideoDataInVuex()
     this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
     .then(response => {
       console.log("the then in endRecoding()...")
@@ -275,7 +287,6 @@ export default {
       }
     },
     createdVideoData(value, oldvalue) {
-      console.log("바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야")
       this.updateVideoInfo()
     },
   },
