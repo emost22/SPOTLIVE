@@ -56,7 +56,6 @@ Thumbs.db
 *.mov
 *.wmv
 
-application.yaml
 .gradle
 .settings
 bin
