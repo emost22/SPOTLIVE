@@ -13,7 +13,7 @@
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
                 @form-data="form => videoData = form"
-                :showInfoList="[]"
+                :showInfoList="showInfoList"
                 :showInUpdate="showInUpdate"
                 :createdVideoData="createdVideoData"
                 :closing="closing"
@@ -137,6 +137,11 @@ export default {
     this.$store.dispatch('requestGetCategoryIds')
     .then((response) => {
       this.categoryIds = response.data
+    })
+    this.$store.dispatch('requestGetShowInfoIds')
+    .then(response => {
+      console.log(response)
+      this.showInfoList = response.data
     })
   },
 }

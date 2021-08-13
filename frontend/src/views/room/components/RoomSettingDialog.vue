@@ -68,6 +68,11 @@ export default {
       closing: true,
     }
   }, 
+  beforeRouteEnter(to, from, next) {
+    if (to.name != "RoomCreate") {
+      // 여기서 체크
+    }
+  },
   methods: {
     checkMode: function() {
        if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
@@ -83,6 +88,7 @@ export default {
       this.setCreatedVideoDataInVuex()
     },
     setCreatedVideoDataInVuex: function () {
+      console.log(this.videoData)
       this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
     }, 
     routeToProfile: function () {
