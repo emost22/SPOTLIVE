@@ -28,32 +28,32 @@
                       </div>
                     </div>
                     <div class="camera-input-bgcolor-light-grey show-img" v-else>
-                      <label class="camera-input-button" for="input-file"/>
-                      <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
+                      <label class="camera-input-button" for="input-file-update"/>
+                      <input type="file" id="input-file-update" class="show-poster-input" v-on:change="handleChange">
                     </div>
                   </div>
                 </div>
 
                 <div class="show-info">
                   <div class="mb-3">
-                    <div class="label-alignment"><label for="showCreateFormControlInput1" class="form-label">공연명</label></div>
-                    <input type="text" class="custom-form-control" id="showCreateFormControlInput1" v-model="showInfoTitle">
+                    <div class="label-alignment"><label for="showUpdateFormControlInput1" class="form-label">공연명</label></div>
+                    <input type="text" class="custom-form-control" id="showUpdateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
-                      <div class="label-alignment"><label for="showCreateFormControlInput2" class="form-label">티켓가격</label></div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput2" v-model="price">
+                      <div class="label-alignment"><label for="showUpdateFormControlInput2" class="form-label">티켓가격</label></div>
+                      <input type="text" class="custom-form-control" id="showUpdateFormControlInput2" v-model="price" autocomplete="off">
                     </div>
                     <div class="flex-fill">
-                      <div class="label-alignment"><label for="showCreateFormControlInput3" class="form-label">러닝타임</label></div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput4" v-model="runningTime">
+                      <div class="label-alignment"><label for="showUpdateFormControlInput3" class="form-label">러닝타임</label></div>
+                      <input type="text" class="custom-form-control" id="showUpdateFormControlInput4" v-model="runningTime" autocomplete="off">
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
                       <div>
-                        <div class="label-alignment"><label for="showCreateFormControlInput4" class="form-label">공연 시간</label></div>
-                        <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime"></datetime>
+                        <div class="label-alignment"><label for="showUpdateFormControlInput4" class="form-label">공연 시간</label></div>
+                        <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
                       <div>
                         <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">추가</button>
