@@ -68,7 +68,7 @@ export default {
       profileId: this.$route.params.profileId,
     }
   },
-  created() {
+  mounted() {
     this.profileId = this.$route.params.profileId
     this.getUser()
     if (this.inMyProfile) {
@@ -106,7 +106,6 @@ export default {
           myReservations : response.data.reservationResList,
         }
         this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
-        console.log('뷰엑스에 내 프로필 데이터 보내기')
       })
       .catch((error) => {
         console.log(error)
@@ -116,15 +115,10 @@ export default {
       this.$store.dispatch('requestGetProfile', { profileId : this.profileId})
       .then((response) => {
         console.log("getProfile() SUCCESS!!")
-        console.log(response.data)
+        this.follow = false
         response.data.followMyFanResList.forEach((follower) => { 
           if (this.loginUser.accountEmail == follower.accountEmail) {
             this.follow = true
-            console.log('팔로우중임')
-            console.log("내 팔로잉")
-            console.log(this.loginUser.followMyArtistResList)
-            console.log("남 팔로워")
-            console.log(response.data.followMyFanResList)
           } 
         })
         var ProfileData = {
@@ -137,7 +131,6 @@ export default {
           follow: this.follow,
         }
         this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
-        console.log('뷰엑스에 타인 프로필 데이터 보내기')
       })
       .catch((error) => {
         console.log(error)
@@ -147,6 +140,8 @@ export default {
       this.$store.dispatch('requestClickFollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
+        this.follow = true
+        this.createdProfileData.follow = true
         this.getProfile()
       })
       .catch((error) => {
@@ -157,6 +152,7 @@ export default {
       this.$store.dispatch('requestClickUnfollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickUnfollowButton() SUCCESS!!")
+        this.follow = false
         this.createdProfileData.follow = false
         this.getProfile()
       })
