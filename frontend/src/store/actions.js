@@ -25,6 +25,16 @@ export default {
         return $axios.get(URL)
     },
 
+    requestGetLoginUser(context, payload) {
+        const URL = '/auth/user/'
+        $axios.get(URL)
+        .then((response) => {
+            context.commit("GET_LOGIN_USER", response.data)
+        }).catch((error) => {
+            console.log(error)
+        })
+    },
+
     requestLogout(context, payload) {
         context.commit("LOGOUT")
     },
