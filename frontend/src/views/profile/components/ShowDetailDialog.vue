@@ -94,7 +94,6 @@ export default {
     }
   },
   mounted() {
-    this.getShowInfoTimeTable()
   },
   methods: {
     updateShow(){
