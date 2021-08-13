@@ -3,6 +3,9 @@ export default {
     loginUser(state) {
         return state.loginUser
     },
+    reservations(state) {
+        return state.loginUser.reservationResList
+    },
     isLogin(state) {
         return state.isLogin
     },

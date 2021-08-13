@@ -3,7 +3,7 @@
 
     <div> 
       <div class="profile-btn-line" v-if="inMyProfile">
-        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow" data-bs-toggle="modal" data-bs-target="#ticketModal">예매 내역</button></div>
+        <div><button type="button" @click="getUserRes" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow" data-bs-toggle="modal" data-bs-target="#ticketModal">예매 내역</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen" data-bs-toggle="modal" data-bs-target="#showCreateModal">공연 생성</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">프로필 수정</button></div>
       </div>
@@ -163,7 +163,11 @@ export default {
         console.log(error)
       })
     },
+    getUserRes() {
+      this.$store.dispatch('requestGetLoginUser')
+    }
   },
+  
   computed: {
     ...mapGetters(['loginUser', 'createdProfileData', ]),
   },
