@@ -53,7 +53,7 @@
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
                       <div>
                         <div class="label-alignment"><label for="showCreateFormControlInput4" class="form-label">공연 시간</label></div>
-                        <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime"></datetime>
+                        <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
                       <div>
                         <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">추가</button>
@@ -147,7 +147,9 @@ export default {
     },
     formatter(date) {
       var dateTime = new Date(date)
-      return `${dateTime.toLocaleString()}`
+      var month = parseInt(dateTime.getMonth()) + 1
+      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
+        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     clearShowCreateData() {
       var modal= this.$refs.showCreateModal
