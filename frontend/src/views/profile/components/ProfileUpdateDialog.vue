@@ -23,9 +23,9 @@
           <div class="profile-update-img-box"><img :src="loginUser.profileImageUrl" class="profile-update-img" /></div>
           <div>
             <div class="label-alignment profile-update-info mb-2">닉네임</div>
-            <div class="profile-update-info profile-update-info mb-2"><input class="custom-form-control" v-model="profileNickname" /></div>
+            <div class="profile-update-info profile-update-info mb-2"><input class="custom-form-control" v-model="loginUser.profileNickname" /></div>
             <div class="label-alignment profile-update-info mb-2">소개</div>
-            <div class="profile-update-info"><textarea class="custom-form-control" v-model="profileDescription" rows="3"/></div> 
+            <div class="profile-update-info"><textarea class="custom-form-control" v-model="loginUser.profileDescription" rows="3"/></div> 
           </div>
         </div>
 
@@ -74,17 +74,17 @@ export default {
   },
   methods: {
     getUser() {
-      this.userId = this.loginUser.accountEmail;
-      this.profileNickname = this.loginUser.profileNickname;
-      this.profileDescription = this.loginUser.profileDescription;
-      this.profileImageUrl = this.loginUser.profileImageUrl;
+      this.userId = this.loginUser.accountEmail
+      this.profileNickname = this.loginUser.profileNickname
+      this.profileDescription = this.loginUser.profileDescription
+      this.profileImageUrl = this.loginUser.profileImageUrl
     },
 
     clickProfileUpdateButton() {
       let userUpdatePatchReq = {
-        accountEmail: this.userId,
-        profileNickname: this.profileNickname,
-        profileDescription: this.profileDescription,
+        accountEmail: this.loginUser.accountEmail,
+        profileNickname: this.loginUser.profileNickname,
+        profileDescription: this.loginUser.profileDescription,
       };
 
       this.$store

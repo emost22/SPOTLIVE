@@ -27,6 +27,7 @@ export default {
       showTime:'',
       mode: '공연',
     },
+    createdProfileData: {},
     getShowData: {},
     onCreateVideoLive: false,
     videoId: '',

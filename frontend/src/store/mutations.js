@@ -250,10 +250,16 @@ export default {
             i++
         });
     },
+
     DELETE_GETSHOW_DATA(state) {
         state.getShowData = {}
     },
+
     SET_FILENAME_OF_VIDEO (state, payload) {
         state.fileNamevuex = payload
-    }
+    },
+
+    SET_CREATEPROFILE_DATA (state, payload) {
+        state.createdProfileData = payload
+    },
 }

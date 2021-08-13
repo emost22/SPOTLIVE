@@ -14,26 +14,26 @@
     </div>
 
     <div class="profile-info">
-      <div><img :src="myProfile.profileImageUrl" class="profile-img"></div>
+      <div><img :src="createdProfileData.myProfile.profileImageUrl" class="profile-big-img"></div>
       <div class="profile-detail d-flex flex-column justify-content-evenly">
-        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ myProfile.profileNickname }}</span> 님</div>
-        <div class="profile-txt"> {{ myProfile.profileDescription }} </div>
-        <div divclass="profile-txt"> {{ myProfile.accountEmail }} </div>
+        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
+        <div class="profile-txt"> {{ createdProfileData.myProfile.profileDescription }} </div>
+        <div divclass="profile-txt"> {{ createdProfileData.myProfile.accountEmail }} </div>
       </div>
       <div class="follow-number">
         <p>FOLLOWING </p>
-        <p>{{ following.length }}</p>
+        <p>{{ createdProfileData.following.length }}</p>
       </div>
       <div class="follow-number">
         <p>FOLLOWER</p>
-        <p>{{ follower.length }} </p>
+        <p>{{ createdProfileData.follower.length }} </p>
       </div>
     </div>
 
     <div class="mx-5">
       <div class="txtcolor-white-npurple main-title">나의 공연 정보</div>
       <MyShow
-        :shows="myShows"
+        :shows="createdProfileData.myShows"
         :inMyProfile="inMyProfile"
       />
     </div>
@@ -41,7 +41,7 @@
     <div class="mx-5">
       <div class="txtcolor-white-ngreen main-title mb-5">나의 동영상</div>
       <MyVideo
-        :videos="myVideos"
+        :videos="createdProfileData.myVideos"
         :inMyProfile="inMyProfile"
       />
     </div>
@@ -65,7 +65,7 @@ export default {
       inMyProfile: true,
       follow: false,
       userId: '',
-      profileId: this.$route.params.profileId,
+      profileId: '',
       following: '',
       follower: '',
       myProfile: [],
@@ -86,24 +86,24 @@ export default {
       console.log('타인프로필')
     }    
   },
+  mounted() {
+    this.profileId = this.$route.params.profileId
+    console.log(this.profileId)
+    this.getUser()
+    console.log(this.inMyProfile)
+    if (this.inMyProfile) {
+      this.getMyProfile()
+      console.log('내프로필')
+    } else {
+      this.getProfile()
+      console.log('타인프로필')
+    }    
+  },
   beforeRouteLeave (to, from, next) {
+    this.$store.dispatch("requestSetCreatedProfileData", {})
     this.profileId = ''
     next()
   },
-  // watch: {
-  //   loginUser: function(val, oldVal) {
-  //     this.getUser()
-  //     console.log('프로필 수정 변화 워치')
-  //     console.log(this.profileId)
-  //     if (this.inMyProfile) {
-  //       this.getMyProfile()
-  //       console.log('내프로필 변화')
-  //     } else {
-  //       this.getProfile()
-  //       console.log('타인프로필 변화')
-  //     }    
-  //   },
-  // },
   methods: {
     getUser() {
       this.userId = this.loginUser.accountEmail
@@ -118,12 +118,16 @@ export default {
       .then((response) => {
         console.log("getMyProfile() SUCCESS!!")
         console.log(response.data)
-        this.myProfile = response.data
-        this.following = response.data.followMyArtistResList
-        this.follower = response.data.followMyFanResList
-        this.myShows = response.data.showInfoResList
-        this.myVideos = response.data.videoResList
-        this.myReservations = response.data.reservationResList
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+        console.log('뷰엑스에 내 프로필 데이터 보내기')
       })
       .catch((error) => {
         console.log(error)
@@ -134,38 +138,42 @@ export default {
       .then((response) => {
         console.log("getProfile() SUCCESS!!")
         console.log(response.data)
-        this.myProfile = response.data
-        this.following = response.data.followMyArtistResList
-        this.follower = response.data.followMyFanResList
-        this.myShows = response.data.showInfoResList
-        this.myVideos = response.data.videoResList
-        this.myReservations = response.data.reservationResList
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+        console.log('뷰엑스에 타인 프로필 데이터 보내기')
       })
       .catch((error) => {
         console.log(error)
       })
     },
     clickFollowButton() {
+      // 팔로잉 리스트 중에 있는지 여부부터 확인
       this.$store.dispatch('requestClickFollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
         console.log(response.data)
         this.follow = true
         this.getProfile()
-        // 실시간 팔로워수 변경 비동기화 문제
       })
       .catch((error) => {
         console.log(error)
       })
     },
     clickUnfollowButton() {
+      // 팔로잉 리스트 중에 있는지 여부부터 확인
       this.$store.dispatch('requestClickUnfollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickUnfollowButton() SUCCESS!!")
         console.log(response.data)
         this.follow = false
         this.getProfile()
-        // 실시간 팔로워수 변경 비동기화 문제
       })
       .catch((error) => {
         console.log(error)
@@ -173,7 +181,24 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['loginUser']),
+    ...mapGetters(['loginUser', 'createdProfileData', ]),
+  },
+  watch: {
+    loginUser: function(val, oldVal) {
+      this.getUser()
+    },
+    createdProfileData(val, oldVal) {
+      console.log("수정하자 watch 프로필")
+      this.getUser()
+      console.log(this.profileId)
+      if (this.inMyProfile) {
+        this.getMyProfile()
+        console.log('내프로필 변화')
+      } else {
+        this.getProfile()
+        console.log('타인프로필 변화')
+      }    
+    },
   },
 }
 </script>
@@ -200,7 +225,7 @@ export default {
   justify-content: center;
   margin: 20px;
 }
-.profile-img {
+.profile-big-img {
   width: 150px;
   height: 150px;
   border-radius: 100%;
