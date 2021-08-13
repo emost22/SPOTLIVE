@@ -6,6 +6,7 @@
       @click="goRoomDetail"  
     >
       <!-- <div class="time-badge" v-if="!video.isLive">{{ Number(video.videoLength)/60 }}m</div> -->
+      <div v-if="inMyProfile" @click="deleteReplayVideo" type="button" class="btn-close"></div>
     </div>
     <div class="my-video-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
       <div>
@@ -26,13 +27,21 @@ export default {
       type: Object,
       required: true
     },
+    inMyProfile: {
+      type: Boolean,
+      required: true
+    }
   },
   methods: {
     goRoomDetail() {
-      this.$router.push({ name: 'RoomDetail', params: { videoId : this.video.videoId } })
+      if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
+      else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
     },
     goProfile() {
       this.$router.push({ name: 'Profile', params: { profileId : this.video.user.accountEmail } })
+    },
+    deleteReplayVideo() {
+      // videoResList 내 동영상 삭제 axios
     },
   },
   computed: {

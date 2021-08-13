@@ -15,7 +15,8 @@ export default {
   },
   methods: {
     goRoomDetail: function () {
-      this.$router.push({ name: 'RoomDetail', params: { videoId : this.video.videoId } })
+      if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
+      else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
     },
   },
   computed: {

@@ -2,15 +2,15 @@ cloud:
   aws:
     s3:
       bucket:
-        name: spotlive-img-bucket
-        url: https://spotlive-img-bucket.s3.ap-northeast-2.amazonaws.com/
+        name: spotlive
+        url: https://spotlive.s3.ap-northeast-2.amazonaws.com/
     credentials:
-      accessKey: AKIA22JZLMZTL5DHW5N3
-      secretKey: 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
+      accessKey: AKIAWEWWG6ADJ4UIA7HW
+      secretKey: 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
 
 openvidu:
   server:
-    url: https://i5a405.p.ssafy.io
+    url: https://i5a405.p.ssafy.io:8443
     id: OPENVIDUAPP
     secret: MY_SECRET
 

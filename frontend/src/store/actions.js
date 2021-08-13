@@ -25,6 +25,16 @@ export default {
         return $axios.get(URL)
     },
 
+    requestGetLoginUser(context, payload) {
+        const URL = '/auth/user/'
+        $axios.get(URL)
+        .then((response) => {
+            context.commit("GET_LOGIN_USER", response.data)
+        }).catch((error) => {
+            console.log(error)
+        })
+    },
+
     requestLogout(context, payload) {
         context.commit("LOGOUT")
     },
@@ -117,6 +127,12 @@ export default {
         commit('SET_FILENAME_OF_VIDEO', payload)
     },
 
+    requestGetShowInfoIds( context, payload ) {
+        const URL = '/showinfo'
+
+        return $axios.get(URL)
+    },
+
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
@@ -138,7 +154,7 @@ export default {
     },
 
     requestStartRecording(context, payload) {
-        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io:8443"
         const AUTH_REQ = {
             username: 'OPENVIDUAPP',
             password: 'MY_SECRET',
@@ -149,7 +165,7 @@ export default {
     },
 
     requestEndRecording(context, payload) {
-        const OPENVIDU_URL = "https://i5a405.p.ssafy.io"
+        const OPENVIDU_URL = "https://i5a405.p.ssafy.io:8443"
         const AUTH_REQ = {
             username: 'OPENVIDUAPP',
             password: 'MY_SECRET',
@@ -350,11 +366,26 @@ export default {
     requestGetShowData({ commit }, payload) {
         commit('SET_GETSHOW_DATA', payload)
     },
-
+    // TicketDetailDialog.vud
+    requestDeleteGetShowData({ commit }) {
+        commit('DELETE_GETSHOW_DATA')
+    },
+    //ShowCreateDialog.vue
+    requestPostShow(context, payload){
+      const URL = `/showinfo/`
+      return $axios.post(URL, payload)
+    },
     // ShowDetailDialog.vue
     requestDeleteShowInfo(context, payload) {
         const URL = `/showinfo/${payload}`
 
         return $axios.delete(URL)
+    },
+
+    // ShowUpdateDialog.vue
+    requestPutShow(context, payload) {
+        const URL = `/showinfo/${payload.showInfoId}`
+
+        return $axios.put(URL, payload.formData)
     }
 }
