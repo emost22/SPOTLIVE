@@ -174,8 +174,15 @@ public class VideoController {
          * @작성자 : 권영린
          * @Method 설명 : 비디오를 수정한다.
          */
-        System.out.println("===============================================");
+        System.out.println("===================================================================");
+        System.out.println("* videoUpdateByIdPatchReq");
         System.out.println(videoUpdateByIdPatchReq);
+        System.out.println("* accessToken");
+        System.out.println(accessToken);
+        System.out.println("* thumbnailImage");
+        System.out.println(thumbnailImage);
+        System.out.println("===================================================================");
+
         int vaildTokenStatusValue = authService.isValidToken(accessToken);
 
         if(vaildTokenStatusValue == 200) {
