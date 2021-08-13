@@ -211,10 +211,10 @@ export default {
         return $axios.get(URL)
     },
 
-    requestUpdateSettingDialog(context, payload, data) {
-        const URL = `/video/${payload}`
+    requestUpdateSettingDialog(context, payload) {
+        const URL = `/video/${payload.videoId}`
 
-        return $axios.patch(URL, data)
+        return $axios.patch(URL, payload.videoData)
     },
 
     requestSetVideoId({ commit }, payload) {
