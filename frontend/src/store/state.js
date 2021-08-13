@@ -20,7 +20,7 @@ export default {
     MAX_CHAT_LIST_SIZE: 20,
     createdVideoData: {
       categoryId: '1',
-      thumbnailImage: [], // 파일이 들어감
+      thumbnailImage: [], 
       videoDescription: '',
       videoTitle: '',
       showInfoId: '',

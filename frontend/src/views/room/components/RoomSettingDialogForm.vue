@@ -125,16 +125,22 @@ export default {
           this.fileName = ''
           this.showInfoIds = []
       } else {
-        this.makeShowInfoIds()
-        this.form.categoryId = this.$props.createdVideoData.categoryId
-        this.fileName = this.fileNamevuex
-        this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
-        this.form.videoDescription = this.$props.createdVideoData.videoDescription
-        this.form.videoTitle = this.$props.createdVideoData.videoTitle
-        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
-        this.form.showTime = this.$props.createdVideoData.showTime
-        this.form.mode = this.$props.createdVideoData.mode
-      }
+        if (!this.$props.showInUpdate) {
+            this.form.mode = '공연'
+            this.makeShowInfoIds()
+            this.form.showInfoId = this.showInfoIds[0].t.showInfoId
+            this.getRecentlyTimeTable()
+          } else {
+            this.form.categoryId = this.$props.createdVideoData.categoryId
+            this.fileName = this.fileNamevuex
+            this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
+            this.form.videoDescription = this.$props.createdVideoData.videoDescription
+            this.form.videoTitle = this.$props.createdVideoData.videoTitle
+            this.form.showInfoId = this.$props.createdVideoData.showInfoId
+            this.form.showTime = this.$props.createdVideoData.showTime
+            this.form.mode = this.$props.createdVideoData.mode
+          }
+        }
     },
   },
   methods: {
@@ -151,8 +157,11 @@ export default {
     getRecentlyTimeTable() {
       this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
       .then((response) => {
-        console.log(response.data)
-        this.form.showTime = response.data.dateTime
+        if (response.data.length == 0) {
+          this.form.showTime = '현재 30분 내 공연이 존재하지 않습니다. '
+        } else {
+          this.form.showTime = response.data.dateTime
+        }
       }).catch((error) => {
       })
     },
@@ -163,9 +172,6 @@ export default {
       })
     }
   },
-  // created() {
-  //   this.makeShowInfoIds()
-  // },
   mounted() {
     this.makeToolTipsObject()
   },
