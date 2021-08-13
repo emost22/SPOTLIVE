@@ -76,9 +76,8 @@ public class FollowController {
         int vaildTokenStatusValue = authService.isValidToken(accessToken);
 
         if(vaildTokenStatusValue == 200) {
-            String[] spitToken = accessToken.split(" ");
-            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
-            followService.deleteFollowByAccountEmail(artistEmail, userRes.getAccountEmail());
+            String spitToken = accessToken.split(" ")[1];
+            followService.deleteFollowByAccountEmail(spitToken, artistEmail);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else if(vaildTokenStatusValue == 401) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

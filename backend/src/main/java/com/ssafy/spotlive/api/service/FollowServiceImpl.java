@@ -6,6 +6,7 @@ import com.ssafy.spotlive.db.entity.Follow;
 import com.ssafy.spotlive.db.entity.FollowId;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.FollowRepository;
+import com.ssafy.spotlive.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class FollowServiceImpl implements FollowService{
     @Autowired
     FollowRepository followRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public void insertFollowByAccountEmail(String artistEmail, String fanEmail){
@@ -41,12 +44,15 @@ public class FollowServiceImpl implements FollowService{
     }
 
     @Override
-    public void deleteFollowByAccountEmail(String artistEmail, String fanEmail){
+    public void deleteFollowByAccountEmail(String accessToken, String artistEmail){
         /**
          * @Method Name : deleteFollowByAccountEmail
          * @작성자 : 권영린
          * @Method 설명 : 언팔로우 버튼 클릭시 언팔로잉
          */
+        String fanEmail = userRepository.findUserByAccessToken(accessToken).get().getAccountEmail();
+        System.out.println("artistEmail : "+artistEmail);
+        System.out.println("fanEmail : "+fanEmail);
         FollowId followId = new FollowId();
         followId.setArtist(artistEmail);
         followId.setFan(fanEmail);
