@@ -112,13 +112,12 @@ export default {
   },
   created: function () {
     this.getUser()
-    this.preview = ''
   },
   mounted(){
-    this.init()
   },
   methods: {
     async init(showData){
+      console.log('니는 뭔데')
       this.showInfoTitle = showData.title
       this.showInfoDescription = showData.description
       this.price = showData.price
@@ -127,12 +126,14 @@ export default {
       this.timetables = showData.timetables
       this.selected = showData.timetables[0].dateTime
 
-      const response = await fetch(this.preview)
-      const data = await response.blob()
-      const ext = this.preview.split(".").pop()
-      const filename = this.preview.split("/").pop()
-      const metadata = {type: `image/${ext}`}
-      this.posterImage = new File([data], filename, metadata)
+      // console.log(this.preview)
+      // const response = await fetch(this.preview)
+      // const data = await response.blob()
+      // const ext = this.preview.split(".").pop()
+      // const filename = this.preview.split("/").pop()
+      // const metadata = {type: `image/${ext}`}
+      // this.posterImage = new File([data], filename, metadata)
+      // console.log(this.posterImage)
     },
     handleChange(e) {
       var file = e.target.files[0]
@@ -148,7 +149,7 @@ export default {
       this.$refs.datetimePicker.open(event);
     },
     doAdd(){
-      this.timetables.push({dateTime: this.datetime})
+      if(this.datetime != "") this.timetables.push({dateTime: this.datetime})
     },
     doRemove(){
       let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
@@ -173,13 +174,18 @@ export default {
         "timetableInsertPostReq": this.timetables
       }
       
-      formData.append('posterImage', this.posterImage)
+      if(this.posterImage != null)
+        formData.append('posterImage', this.posterImage)
+      else
+        formData.append('posterImage', null)
+        
       formData.append('showInfoUpdatePatchReq', new Blob([JSON.stringify(showInfoUpdatePatchReq)], {type: "application/json"}))
 
       let data = {
         formData: formData,
         showInfoId: this.$store.getters.getShowData.showId
       }
+      console.log(this.posterImage)
       this.$store.dispatch('requestPutShow', data)
     }
   },
