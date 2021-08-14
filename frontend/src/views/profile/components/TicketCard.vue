@@ -9,9 +9,6 @@
         <div class="ticket-header ticket-title">
           {{ title }}
         </div>
-        <!-- <div class="ticket-header ticket-host">
-          {{ profileNickname }}
-        </div> -->
       </div>
       <div class="ticket-btns-box">
         <div class="ticket-small-btn-line">
@@ -152,7 +149,7 @@ export default {
       this.$store.dispatch('requestGetShowData', showData)
     },
     clickCancleTicketbutton(){
-      this.$emit('clickCancleTicketbutton', this.timetableId)
+      this.$emit('clickCancleTicketbutton', this.timetableId, this.title, this.date, this.time)
     },
   },
 }
@@ -229,12 +226,6 @@ export default {
   justify-content: flex-end;
 }
 .ticket-btn-box {
-  /* width: 70px;
-    height: 30px;
-    border-radius: 15px;
-    margin-left: 20px;
-    font-size: 12px;
-    text-align: center; */
 }
 .ticket-btn{
   width: 70px;
@@ -244,14 +235,5 @@ export default {
   /* margin-bottom: 10px; */
   font-size: 12px;
   text-align: center;
-}
-.ticket-popup-button {
-  margin-top: 50px;
-}
-.ticket-popup-title {
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 0 10%;
 }
 </style>

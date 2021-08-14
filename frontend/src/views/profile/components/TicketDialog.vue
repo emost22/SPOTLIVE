@@ -53,11 +53,17 @@
       </div>
       <div class="offcanvas-body">
         <div class="mt-3">
-          <div>
-            <p class="ticket-popup-title">
-              예약을 정말로 삭제하시겠습니까?
-            </p> 
-          </div>
+          <div class="offcanvas-text-box">
+            <div class="ticket-popup-title">
+              {{ title }} 
+            </div>
+            <div class="ticket-popup-title">
+              {{ date }} {{ time }}
+            </div>
+          </div> 
+          <p class="ticket-popup-title">
+            예약을 정말로 삭제하시겠습니까?
+          </p>
         </div>
         <div class="d-flex justify-content-end ticket-popup-button">
           <div>
@@ -95,13 +101,19 @@ export default {
   data: function() {
     return {
       timetableIdToBeDeleted : '',
+      title : '',
+      date : '',
+      time : '',
     }
   },
   components: {
     TicketCard,
   },
   methods: {
-    clickCancleTicketbutton(timetableId) {
+    clickCancleTicketbutton(timetableId, title, date, time) {
+      this.title = title
+      this.date = date
+      this.time = time
       console.log("티켓다이알로그에서 타임테이블 찍음")
       console.log(timetableId)
       this.timetableIdToBeDeleted = timetableId
@@ -142,6 +154,18 @@ export default {
 .ticket-box {
   margin: 0;
 }
-
+.ticket-popup-button {
+  margin-top: 50px;
+}
+.ticket-popup-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 0 10%;
+  margin: 10px 0;
+}
+.offcanvas-text-box {
+    display: flex;
+}
 
 </style>
