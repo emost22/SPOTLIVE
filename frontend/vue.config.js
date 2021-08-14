@@ -1,6 +1,6 @@
 module.exports = {
   devServer: {
-    https: true,
+    https: false,
     port: 8083,
     open: true,
     // proxy: {
