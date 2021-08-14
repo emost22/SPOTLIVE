@@ -10,9 +10,9 @@
         <div class="modal-body mx-3">
             <form>
               <div class="d-flex flex-row mb-3">
-                <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
+                <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
                 <div class="profile-small-detail">
-                  <div>{{ loginUser.profileNickname }}님</div>
+                  <div><span class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</span> 님</div>
                   <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
@@ -20,22 +20,22 @@
                 <div><img :src="getShowData.posterUrl" class="show-img"></div>
                 <div class="show-info">
                   <div class="mb-3">
-                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label label-in-dialog">공연명</label></div>
-                    <div>{{ getShowData.title }}</div>
+                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label">공연명</label></div>
+                    <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
-                      <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
-                      <div class="d-flex">{{ getShowData.price }}원</div>
+                      <div class="label-alignment"><label class="form-label">티켓가격</label></div>
+                      <div class="d-flex txtcolor-white-npurple">{{ getShowData.price }}원</div>
                     </div>
                     <div class="flex-fill me-3">
-                      <div class="label-alignment"><label class="form-label label-in-dialog">러닝타임</label></div>
-                      <div class="d-flex">{{ getShowData.runningTime }}min</div>                      
+                      <div class="label-alignment"><label class="form-label">러닝타임</label></div>
+                      <div class="d-flex txtcolor-white-ngreen">{{ getShowData.runningTime }}min</div>                      
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
-                      <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
+                      <div class="label-alignment"><label class="form-label">공연 시간</label></div>
                       <select class="custom-select-control-m show-timetablelist" aria-label="Default select showDetail" v-model="timetableId">
                         <!-- <option value='' disabled>공연 시간 목록</option> -->
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
@@ -47,7 +47,7 @@
               </div>
 
               <div class="show-description mb-3">
-                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label label-in-dialog"> 공연 설명</label></div>
+                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
                 <div>{{ getShowData.description }}</div>
               </div>
             </form>
@@ -172,16 +172,21 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF;
 }
 .profile-small-detail{
-  width: 100px;
+  width: 300px;
   height: 50px;
   margin-left: 30px;
   text-align: left;
 }
 .show-modal-design {
   max-height: 700px;
-  min-width: 500px;
+  min-width: 530px;
   width: 70%;
   background-color: #242424;
   color: white;

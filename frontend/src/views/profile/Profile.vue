@@ -16,7 +16,7 @@
     <div class="profile-info">
       <div><img :src="createdProfileData.myProfile.profileImageUrl" class="profile-big-img"></div>
       <div class="profile-detail d-flex flex-column justify-content-evenly">
-        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
+        <div class="profile-txt"> <span class="txtcolor-white-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
         <div class="profile-txt"> {{ createdProfileData.myProfile.profileDescription }} </div>
         <div divclass="profile-txt"> {{ createdProfileData.myProfile.accountEmail }} </div>
       </div>
