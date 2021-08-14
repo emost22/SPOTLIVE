@@ -20,7 +20,7 @@
                 <div><img :src="getShowData.posterUrl" class="show-img"></div>
                 <div class="show-info">
                   <div class="mb-3">
-                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label">공연명</label></div>
+                    <div class="label-alignment"><label class="form-label">공연명</label></div>
                     <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
                   </div>
                   <div class="mb-3 d-flex">
@@ -36,8 +36,7 @@
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
                       <div class="label-alignment"><label class="form-label">공연 시간</label></div>
-                      <select class="custom-select-control-m show-timetablelist" aria-label="Default select showDetail" v-model="timetableId">
-                        <!-- <option value='' disabled>공연 시간 목록</option> -->
+                      <select class="custom-select-control-m show-timetable" aria-label="Default select showDetail" v-model="timetableId">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
@@ -164,6 +163,13 @@ export default {
 </script>
 
 <style scoped>
+.show-modal-design {
+  max-height: 700px;
+  min-width: 550px;
+  width: 70%;
+  background-color: #242424;
+  color: white;
+}
 .information-header {
   font-size: 20px;
   font-weight: bold;
@@ -183,13 +189,6 @@ export default {
   height: 50px;
   margin-left: 30px;
   text-align: left;
-}
-.show-modal-design {
-  max-height: 700px;
-  min-width: 530px;
-  width: 70%;
-  background-color: #242424;
-  color: white;
 }
 .show-img {
   margin: 20px;
@@ -217,7 +216,7 @@ export default {
   padding: 0 10%;
 }
 .show-timetable {
-  width: 160px;
+  width: 230px;
 }
 .custom-select-control-m {
   background-color: #595959;

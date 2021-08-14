@@ -14,6 +14,7 @@
         :key="idx">
         <FilterButton
           :filter="filter"
+          :idx="idx"
           @categoryId="emitCategoryId"
         />
       </vue-glide-slide>

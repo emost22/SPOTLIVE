@@ -14,11 +14,15 @@ export default {
       type: Object,
       required: true
     },
+    idx: {
+      type: Number,
+      required: true
+    }
   },
   methods: {
     clickFilter: function () {
       this.$emit("categoryId", this.filter.categoryId)
-    // Main.vue의 axios요청 다시 받아오도록 computed
+      // 해당 버튼 색 변화
     },
   },
   computed: {

@@ -9,10 +9,10 @@
         <div class="modal-body mx-3">
             <form>
               <div class="d-flex flex-row mb-3 ms-3">
-                <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
+                <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
                 <div class="profile-small-detail">
-                  <div> {{ loginUser.profileNickname }} </div>
-                  <div> {{ loginUser.accountEmail }} </div>
+                  <div><span class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</span> 님</div>
+                  <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
 
@@ -270,6 +270,11 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF;
 }
 .profile-small-detail{
   width: 100px;
