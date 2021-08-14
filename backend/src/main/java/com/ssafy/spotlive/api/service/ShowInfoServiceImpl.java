@@ -89,7 +89,8 @@ public class ShowInfoServiceImpl implements ShowInfoService {
         if (posterImage != null && !posterImage.isEmpty()) {
             String nextPosterImageUrl = null;
             String currentPosterUrl = showInfo.getPosterUrl();
-            fileUploadService.delete(currentPosterUrl);
+            if (currentPosterUrl != null)
+                fileUploadService.delete(currentPosterUrl);
             try {
                 nextPosterImageUrl = fileUploadService.upload(posterImage);
                 showInfo.setPosterUrl(nextPosterImageUrl);
