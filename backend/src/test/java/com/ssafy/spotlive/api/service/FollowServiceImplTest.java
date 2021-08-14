@@ -30,7 +30,6 @@ class FollowServiceImplTest {
     @InjectMocks
     private FollowServiceImpl followService;
 
-
     @Test
     void insertFollowByAccountEmail() {
         //given
