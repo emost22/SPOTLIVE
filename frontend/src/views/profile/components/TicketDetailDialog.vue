@@ -1,22 +1,39 @@
 <template>
   <div>
-    <div class="modal fade" id="ticketDetailModal" ref="ticketDetailModal" tabindex="-1" aria-labelledby="ticketDetailModalLabel" aria-hidden="true">
+    <div 
+      class="modal fade" 
+      id="ticketDetailModal" 
+      ref="ticketDetailModal" 
+      tabindex="-1" 
+      aria-labelledby="ticketDetailModalLabel" 
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
-        
         <div class="modal-content-m">
-          
           <div class="modal-header no-border">
-            <div class="information-header mt-3 ms-3">예약 상세 정보</div>
-            <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="information-header mt-3 ms-3">
+              예약 상세 정보
+            </div>
+            <button 
+              type="button" 
+              class="btn-close me-2 mt-1"
+              data-bs-dismiss="modal" 
+              aria-label="Close"
+            />
           </div>
-
           <div class="modal-body mx-3">
             <form>
               <div class="d-flex flex-row mb-3">
-                <div><img :src="getShowData.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
+                <div>
+                  <img :src="getShowData.profileImageUrl" class="profile-small-img bdcolor-bold-npink">
+                </div>
                 <div class="profile-small-detail">
-                  <div>{{ getShowData.profileNickname }}님</div>
-                  <p>{{ getShowData.userId }}</p>
+                  <div>
+                    {{ getShowData.profileNickname }}님
+                  </div>
+                  <p>
+                    {{ getShowData.userId }}
+                  </p>
                 </div>
               </div>
 
