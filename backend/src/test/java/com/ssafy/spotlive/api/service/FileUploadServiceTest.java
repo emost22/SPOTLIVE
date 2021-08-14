@@ -10,8 +10,11 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import static org.mockito.Mockito.*;
+import java.lang.reflect.Method;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
 
 @Transactional
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +38,16 @@ class FileUploadServiceTest {
         assertThat(url).contains("jpg");
     }
 
+    @Test
+    void getUuidTest() throws Exception{
+        //given
+        Method getUuid = fileUploadService.getClass().getDeclaredMethod("getUuid");
+        getUuid.setAccessible(true);
+        //when
+        String uuid = (String) getUuid.invoke(fileUploadService);
+        //then
+        assertTrue(uuid.matches("([a-f0-9]{32})"));
+    }
 
     @Test
     void deleteTest() throws Exception{
