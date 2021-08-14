@@ -28,7 +28,7 @@ export default {
     requestGetLoginUser(context, payload) {
         const URL = '/auth/user/'
         $axios.get(URL)
-        .then((response) => {
+            .then((response) => {
             context.commit("GET_LOGIN_USER", response.data)
         }).catch((error) => {
             console.log(error)
@@ -110,6 +110,7 @@ export default {
     },
 
     requestSetCreatedVideoData({ commit }, payload) {
+        console.log(payload)
         commit('SET_CREATEVIDEO_DATA', payload)
     },
 
@@ -125,6 +126,12 @@ export default {
 
     requestSetFileNameOfVideo({ commit }, payload) {
         commit('SET_FILENAME_OF_VIDEO', payload)
+    },
+
+    requestGetShowInfoIds( context, payload ) {
+        const URL = '/showinfo'
+
+        return $axios.get(URL)
     },
 
     // RoomDetail.vue
@@ -320,6 +327,9 @@ export default {
 
         return $axios.delete(URL)
     },
+    requestSetCreatedProfileData({ commit }, payload) {
+        commit('SET_CREATEPROFILE_DATA', payload)
+    },
 
     // Search.vue
     requestGetSearchVideos(context, payload) {
@@ -338,17 +348,9 @@ export default {
     },
     
     // TicketCard.vue
-  requestDeleteTicket(context, payload) {
-    const URL = `/reservation/${payload.timetableId}`
-    $axios.delete(URL)
-      .then(({ status }) => {
-        if (status == 204) {
-          console.log('삭제 성공!')
-          context.commit("DELETE_TICKET_DATA", {timetableId : payload.timetableId})
-        } else {
-          console.log('삭제 실패!')
-        }
-      })
+    requestDeleteTicket(context, payload) {
+        const URL = `/reservation/${payload.timetableId}`
+        return $axios.delete(URL)
     },
     requestGetTimetables(context, payload) {
         const URL = `/showinfo/${payload.showId}`

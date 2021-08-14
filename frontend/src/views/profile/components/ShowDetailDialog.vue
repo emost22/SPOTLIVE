@@ -2,9 +2,7 @@
   <div>
   <div class="modal fade" id="showDetailModal" ref="showDetailModal" tabindex="-1" aria-labelledby="showDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
-      
       <div class="modal-content-m">
-
         <div class="modal-header no-border">
           <div class="information-header mt-3 ms-3">공연 상세 정보</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -18,7 +16,6 @@
                   <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
-
               <div class="d-flex flex-row">    
                 <div><img :src="getShowData.posterUrl" class="show-img"></div>
                 <div class="show-info">
@@ -40,6 +37,7 @@
                     <div class="flex-fill me-3">
                       <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
                       <select class="custom-select-control-m show-timetablelist" aria-label="Default select showDetail" v-model="timetableId">
+                        <!-- <option value='' disabled>공연 시간 목록</option> -->
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
@@ -61,23 +59,23 @@
 
       </div>
     </div>
-            <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteShowInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
-                <div class="offcanvas-header">
-                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                  <div class="mt-3">
-                    <div>
-                      <p class="popUpTitle">삭제 시 해당 데이터는 복구할 수 없습니다.</p> 
-                      <p class="popUpTitle">정말로 삭제하시겠습니까?</p> 
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-end show-popup">
-                    <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
-                    <div><button type="button" @click="deleteShow()" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">확인</button></div>
-                  </div>
-                </div>
-              </div>
+    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteShowInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="mt-3">
+          <div>
+            <p class="popUpTitle">삭제 시 해당 데이터는 복구할 수 없습니다.</p> 
+            <p class="popUpTitle">정말로 삭제하시겠습니까?</p> 
+          </div>
+        </div>
+        <div class="d-flex justify-content-end show-popup">
+          <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
+          <div><button type="button" @click="deleteShow()" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">확인</button></div>
+        </div>
+      </div>
+    </div>
   </div>
   </div>
 </template>
@@ -96,6 +94,25 @@ export default {
   mounted() {
   },
   methods: {
+    getMyProfile() {
+      this.$store.dispatch('requestGetMyProfile')
+      .then((response) => {
+        console.log("getMyProfile() SUCCESS!!")
+        console.log(response.data)
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     updateShow(){
       var showDetailModal = bootstrap.Modal.getInstance(this.$refs.showDetailModal)
       showDetailModal.hide()
@@ -105,11 +122,19 @@ export default {
       showDetailModal.hide()
       console.log(this.$store.getters.getShowData.showId)
       this.$store.dispatch('requestDeleteShowInfo', this.$store.getters.getShowData.showId)
+      .then((res) => {
+        this.getMyProfile()
+        this.$router.go(this.$router.currentroute)
+        
+      })
+      .catch((err) => {
+        console.log('fail')
+      })
     },
     formatter(date) {
       var dateTime = new Date(date)
-      
-      return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()} 
+      var month = parseInt(dateTime.getMonth()) + 1
+      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable(timetables) {
@@ -191,7 +216,7 @@ export default {
 }
 .custom-select-control-m {
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.8rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;

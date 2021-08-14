@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-update-modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
-          <div class="information-header mt-3 ms-3">공연 정보 생성</div>
+          <div class="information-header mt-3 ms-3">공연 정보 수정</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body mx-3">
@@ -28,32 +28,32 @@
                       </div>
                     </div>
                     <div class="camera-input-bgcolor-light-grey show-img" v-else>
-                      <label class="camera-input-button" for="input-file"/>
-                      <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
+                      <label class="camera-input-button" for="input-file-update"/>
+                      <input type="file" id="input-file-update" class="show-poster-input" v-on:change="handleChange">
                     </div>
                   </div>
                 </div>
 
                 <div class="show-info">
                   <div class="mb-3">
-                    <div class="label-alignment"><label for="showCreateFormControlInput1" class="form-label">공연명</label></div>
-                    <input type="text" class="custom-form-control" id="showCreateFormControlInput1" v-model="showInfoTitle">
+                    <div class="label-alignment"><label for="showUpdateFormControlInput1" class="form-label">공연명</label></div>
+                    <input type="text" class="custom-form-control" id="showUpdateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3">
-                      <div class="label-alignment"><label for="showCreateFormControlInput2" class="form-label">티켓가격</label></div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput2" v-model="price">
+                      <div class="label-alignment"><label for="showUpdateFormControlInput2" class="form-label">티켓가격</label></div>
+                      <input type="text" class="custom-form-control" id="showUpdateFormControlInput2" v-model="price" autocomplete="off">
                     </div>
                     <div class="flex-fill">
-                      <div class="label-alignment"><label for="showCreateFormControlInput3" class="form-label">러닝타임</label></div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput4" v-model="runningTime">
+                      <div class="label-alignment"><label for="showUpdateFormControlInput3" class="form-label">러닝타임</label></div>
+                      <input type="text" class="custom-form-control" id="showUpdateFormControlInput4" v-model="runningTime" autocomplete="off">
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
                       <div>
-                        <div class="label-alignment"><label for="showCreateFormControlInput4" class="form-label">공연 시간</label></div>
-                        <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime"></datetime>
+                        <div class="label-alignment"><label for="showUpdateFormControlInput4" class="form-label">공연 시간</label></div>
+                        <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
                       <div>
                         <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">추가</button>
@@ -62,7 +62,8 @@
                   </div>
                   <div class="mb-3 d-flex">
                   <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <select class="show-create-timetable" v-model="selected">
+                      <select class="show-update-timetable" v-model="selected">
+                        <option value='' disabled>공연 시간 목록</option>
                         <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                           {{ formatter(d.dateTime) }}
                         </option>
@@ -77,8 +78,8 @@
               </div>
 
               <div class="mb-3 mx-3">
-                <div class="label-alignment"><label for="showCreateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
-                <textarea class="custom-form-control" id="showCreateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
+                <div class="label-alignment"><label for="showUpdateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
+                <textarea class="custom-form-control" id="showUpdateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
               </div>
             </form>
         </div>
@@ -112,10 +113,8 @@ export default {
   },
   created: function () {
     this.getUser()
-    this.preview = ''
   },
   mounted(){
-    this.init()
   },
   methods: {
     async init(showData){
@@ -125,14 +124,26 @@ export default {
       this.runningTime = showData.runningTime
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
-      this.selected = showData.timetables[0].dateTime
-
-      const response = await fetch(this.preview)
-      const data = await response.blob()
-      const ext = this.preview.split(".").pop()
-      const filename = this.preview.split("/").pop()
-      const metadata = {type: `image/${ext}`}
-      this.posterImage = new File([data], filename, metadata)
+      // this.selected = showData.timetables[0].dateTime
+    },
+    getMyProfile() {
+      this.$store.dispatch('requestGetMyProfile')
+      .then((response) => {
+        console.log("getMyProfile() SUCCESS!!")
+        console.log(response.data)
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     },
     handleChange(e) {
       var file = e.target.files[0]
@@ -148,11 +159,13 @@ export default {
       this.$refs.datetimePicker.open(event);
     },
     doAdd(){
-      this.timetables.push({dateTime: this.datetime})
+      if(this.datetime != "") this.timetables.push({dateTime: this.datetime})
+      this.selected = ''
     },
     doRemove(){
       let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
       this.timetables = filtered;
+      this.selected = ''
     },
     getUser() {
       this.userId = this.loginUser.accountEmail
@@ -160,8 +173,10 @@ export default {
       this.profileImageUrl = this.loginUser.profileImageUrl
     },
     formatter(date) {
-      var dateTime = new Date(date)
-      return `${dateTime.toLocaleString()}`
+      let dateTime = new Date(date)
+      let month = parseInt(dateTime.getMonth()) + 1
+      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
+        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     clickShowUpdateButton(){
       let formData = new FormData()
@@ -173,15 +188,26 @@ export default {
         "timetableInsertPostReq": this.timetables
       }
       
-      formData.append('posterImage', this.posterImage)
+      if(this.posterImage != null)
+        formData.append('posterImage', this.posterImage)
+      else
+        formData.append('posterImage', null)
+
       formData.append('showInfoUpdatePatchReq', new Blob([JSON.stringify(showInfoUpdatePatchReq)], {type: "application/json"}))
 
       let data = {
         formData: formData,
         showInfoId: this.$store.getters.getShowData.showId
       }
+      console.log(this.posterImage)
       this.$store.dispatch('requestPutShow', data)
-    }
+      .then((res) => {
+        this.getMyProfile()
+      })
+      .catch((err) => {
+        console.log('fail')
+      })
+    },
   },
   computed: {
     ...mapGetters(['loginUser','getShowData']),
@@ -335,10 +361,10 @@ export default {
   color: white
 }
 
-.show-create-timetable {
+.show-update-timetable {
   width: 220px;
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.8rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;

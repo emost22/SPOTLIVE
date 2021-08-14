@@ -1,87 +1,80 @@
+<!--
+  작성자 : 권영린
+  컴포넌트 설명 : TicketDialog에서 받아온 예약정보를 하나의 티켓으로 출력
+-->
 <template>
-  <div>
-    <div class="ticket-img-num" v-if="open">
-      <div class="ticket-title">{{this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle}}</div>
-      <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{date}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{time}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
-      </div>
-      <div class="ticket-btn-line">
-        <div
-          class="ticket-btn-box" 
-          data-bs-toggle="modal" 
-          data-bs-target="#ticketDetailModal"
-        >
-          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">예약 상세</button>
+  <div class="ticket">
+    <div :class="className+' ticket-img'">
+      <div class="ticket-small-header-line">
+        <div class="ticket-header ticket-title">
+          {{ title }}
         </div>
-        <div class="ticket-btn-box">
-          <button 
-            class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
-            data-bs-toggle="offcanvas" 
-            data-bs-target="#deleteTicketInfo" 
-            aria-controls="deleteTicketInfo"
+        <!-- <div class="ticket-header ticket-host">
+          {{ profileNickname }}
+        </div> -->
+      </div>
+      <div class="ticket-btns-box">
+        <div class="ticket-small-btn-line">
+          <div class="ticket-small-btn-box">
+            <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+              {{ date }}
+            </button>
+          </div>
+          <div class="ticket-small-btn-box">
+            <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+              {{ time }}
+            </button>
+          </div>
+          <div class="ticket-small-btn-box">
+            <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+              {{ runningTime }}분
+            </button>
+          </div>
+        </div>
+        <div class="ticket-btn-line">
+          <div class="ticket-btn-box">
+            <button 
+              class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
+              data-bs-toggle="offcanvas" 
+              data-bs-target="#deleteTicketInfo" 
+              aria-controls="deleteTicketInfo"
+              @click="clickCancleTicketbutton"
+            >
+              예약 취소
+            </button>
+          </div>
+          <div
+            class="ticket-btn-box" 
+            data-bs-toggle="modal" 
+            data-bs-target="#ticketDetailModal"
           >
-            예약 취소
-          </button>
+            <button 
+              @click="clickTicketDetailButton" 
+              class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen"
+            >
+              예약 상세
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="ticket-img-str" v-if="!open">
-      <div class="ticket-title">{{this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle}}</div>
-      <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{date}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{time}}</button></div>
-        <div class="ticket-small-btn-box"><button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">{{runningTime}}분</button></div>
-      </div>
-      <div class="ticket-btn-line">
-        <div 
-          class="ticket-btn-box" 
-          data-bs-toggle="modal" 
-          data-bs-target="#ticketDetailModal"
-        >
-          <button @click="clickShowReservationInProfileButton" class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen">
-            예약 상세
-          </button>
-        </div>
-        <div class="ticket-btn-box">
-          <button 
-            class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
-            data-bs-toggle="offcanvas" 
-            data-bs-target="#deleteTicketInfo" 
-            aria-controls="deleteTicketInfo"
-          >
-            예약 취소
-          </button>
-        </div>
-      </div>
-    </div>
-            <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="deleteTicketInfo" ref="showPopup" aria-labelledby="offcanvasTopLabel">
-                <div class="offcanvas-header">
-                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                  <div class="mt-3">
-                    <div>
-                      <p class="ticket-popup-title">예약을 정말로 삭제하시겠습니까?</p> 
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-end ticket-popup-button">
-                    <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
-                    <div><button type="button" @click="clickReservationDeleteButton" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">확인</button></div>
-                  </div>
-                </div>
-              </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex"
 export default {
   
   name: 'TicketCard',
   props: {
-    reservation: {
+    timetable: {
+      type: Object,
+      required: true
+    },
+    showInfo: {
+      type: Object,
+      required: true
+    },
+    showHost: {
       type: Object,
       required: true
     },
@@ -92,8 +85,10 @@ export default {
   },
   data: function() {
     return {
-      open: false,
+      className: 'ticket-img-num',
       userId: '',
+      profileNickname: '',
+      profileImageUrl: '',
       showId : '',
       title: '',
       description: '',
@@ -106,53 +101,46 @@ export default {
       timetables: [],
     }
   },
-  created() {
-    this.getUser()
-    this.getTicketImg()
-    this.getReservation()
-  },
   watch: {
-    reservation(val, oldVal) {
-      this.getUser()
+    timetable : function(){
+      this.getHostInfo()
       this.getTicketImg()
-      this.getReservation()
+      this.getReservationInfo()
     }
   },
   methods: {
-    getUser() {
-      this.userId = this.loginUser.accountEmail
+    getHostInfo() {
+      this.userId = this.showHost.accountEmail
+      this.profileNickname = this.showHost.profileNickname
+      this.profileImageUrl = this.showHost.profileImageUrl
     },
     getTicketImg() {
       if (this.idx%2) {
-        this.open = true
+        this.className = "ticket-img-num"
       } else {
-        this.open = false
+        this.className = "ticket-img-str"
       }
     },
-    getReservation() {
-      this.showId = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoId
-      this.title = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoTitle
-      this.description  = this.reservation.timetableFindByReservationRes.showInfoRes.showInfoDescription
-      this.posterUrl  = this.reservation.timetableFindByReservationRes.showInfoRes.posterUrl
-      this.price  = this.reservation.timetableFindByReservationRes.showInfoRes.price
-      this.runningTime = this.reservation.timetableFindByReservationRes.showInfoRes.runningTime
-      var day = this.reservation.timetableFindByReservationRes.dateTime.substr(0,10).split(" ")[0]
-      var tmpDay = day.split("-")
-      this.date =  tmpDay[1] + "/" + tmpDay[2]
-      this.time = this.reservation.timetableFindByReservationRes.dateTime.substring(11,16)
-      this.timetableId = this.reservation.timetableFindByReservationRes.timetableId
-      this.dateTime = this.reservation.timetableFindByReservationRes.dateTime
+    getReservationInfo() {
+      this.showId = this.showInfo.showInfoId
+      this.title = this.showInfo.showInfoTitle
+      this.description  = this.showInfo.showInfoDescription
+      this.posterUrl  = this.showInfo.posterUrl
+      this.price  = this.showInfo.price
+      this.runningTime = this.showInfo.runningTime
+      let dateTime = this.timetable.dateTime.substr(5,11).split("T")
+      this.date = dateTime[0].replace("-", "/")
+      this.time = dateTime[1]
+      this.timetableId = this.timetable.timetableId
+      this.fullDateTime = this.timetable.dateTime
       this.timetables = []
-      this.timetables.push({dateTime: this.dateTime, timetableId : this.timetableId})
+      this.timetables.push({dateTime: this.fullDateTime, timetableId : this.timetableId})
     },
-    clickReservationDeleteButton() {
-      this.$store.dispatch('requestDeleteTicket', {timetableId : this.timetableId})
-    },
-    clickShowReservationInProfileButton() {
-      var showData = {
-        userId: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.accountEmail,
-        profileNickname: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileNickname,
-        profileImageUrl: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileImageUrl,
+    clickTicketDetailButton() {
+      let showData = {
+        userId: this.userId,
+        profileNickname: this.profileNickname,
+        profileImageUrl: this.profileImageUrl,
         showId: this.showId,
         title: this.title,
         description: this.description,
@@ -162,88 +150,69 @@ export default {
         timetables: this.timetables,
       }
       this.$store.dispatch('requestGetShowData', showData)
-      // this.$store.dispatch('requestGetTimetables', {showId : this.showId})
-      // .then((response) => {
-      //   this.closeTicketDialog()
-      //   this.timetables = response.data.timetables
-      //   var showData = {
-      //     userId: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.accountEmail,
-      //     profileNickname: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileNickname,
-      //     profileImageUrl: this.reservation.timetableFindByReservationRes.showInfoRes.userRes.profileImageUrl,
-      //     showId: this.showId,
-      //     title: this.title,
-      //     description: this.description,
-      //     posterUrl: this.posterUrl,
-      //     price: this.price,
-      //     runningTime: this.runningTime,
-      //     timetables: this.timetables,
-      //   }
-      //   this.$store.dispatch('requestGetShowData', showData)
-      // })
-      // .catch((error) => {
-      //     console.log(error)
-      // })
     },
-    closeTicketDialog() {
-      this.$emit('closeTicketDialog')
+    clickCancleTicketbutton(){
+      this.$emit('clickCancleTicketbutton', this.timetableId)
     },
   },
-  computed: {
-    ...mapGetters(['loginUser',]),
-  },
-
 }
 </script>
 
 <style>
-.ticket-box {
-  margin: 0;
+.ticket {
+  padding: 20px 10px;
+}
+.ticket-img {
+  min-width: 350px;
+  max-width: 350px;
+  min-height: 156px;
+  max-height: 156px;
+  background-color: #242424;
+  border: none;
+  border-radius: .25rem;
+  background-size: cover;
+  padding: 10px;
+  position: relative;
 }
 .ticket-img-str {
-  min-width: 350px;
-  max-width: 350px;
-  min-height: 160px;
-  max-height: 160px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  background-color: #242424;
-  border: none;
-  border-radius: .25rem;
-  background-image: url('~@/assets/ticket_without_content1.png');
-  background-size: cover;
+  background-image: url(~@/assets/ticket_without_content1.png);
 }
-.ticket-img-num {  
-  min-width: 350px;
-  max-width: 350px;
-  min-height: 160px;
-  max-height: 160px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  background-color: #242424;
-  border: none;
-  border-radius: .25rem;
-  background-image: url('~@/assets/ticket_without_content2.png');
-  background-size: cover;
+.ticket-img-num {
+  background-image: url(~@/assets/ticket_without_content2.png);
 }
-.ticket-btn {
-  width: 100px;
-  height: 30px;
-  border-radius: 15px;
-  margin-left: 20px;
-  margin-bottom: 10px;
-  font-size: 15px;
-  text-align: center;
-}
-.ticket-btn-box {
-  width: 110px;
-  height: 30px;
-}
-.ticket-btn-line {
+.ticket-small-header-line {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: end;
-  margin-right: 20px;
-  margin-top: 35px;
+  place-content: space-between;
+}
+.ticket-header.ticket-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 90px;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: start;
+}
+.ticket-header.ticket-host {
+  font-size: 15px;
+  font-weight: bold;
+  padding: 0px 20px 0px 0px;
+  align-self: flex-end;
+}
+.ticket-btns-box {
+  padding: 0 0;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.ticket-small-btn-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 55px;
+  margin-bottom: 37px;
+  margin-right: 30px;
 }
 .ticket-small-btn {
   width: 60px;
@@ -255,19 +224,26 @@ export default {
   width: 70px;
   height: 30px;
 }
-.ticket-small-btn-line {
+.ticket-btn-line {
   display: flex;
-  flex-direction: row;
-  justify-content: start;
-  margin-left: 90px;
-  margin-top: 10px;
+  justify-content: flex-end;
 }
-.ticket-title {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: start;
-  margin-left: 100px;
-  padding-top: 10px;
+.ticket-btn-box {
+  /* width: 70px;
+    height: 30px;
+    border-radius: 15px;
+    margin-left: 20px;
+    font-size: 12px;
+    text-align: center; */
+}
+.ticket-btn{
+  width: 70px;
+  height: 30px;
+  border-radius: 15px;
+  margin-left: 20px;
+  /* margin-bottom: 10px; */
+  font-size: 12px;
+  text-align: center;
 }
 .ticket-popup-button {
   margin-top: 50px;

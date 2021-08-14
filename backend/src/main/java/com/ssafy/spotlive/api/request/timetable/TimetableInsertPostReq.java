@@ -32,7 +32,7 @@ public class TimetableInsertPostReq {
 
     public Timetable toTimetable(ShowInfo showInfo){
         Timetable timetable = new Timetable();
-        timetable.setDateTime(this.dateTime);
+        timetable.setDateTime(this.dateTime.plusHours(9));
         timetable.setShowInfo(showInfo);
         return timetable;
     }

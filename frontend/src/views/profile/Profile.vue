@@ -3,37 +3,37 @@
 
     <div> 
       <div class="profile-btn-line" v-if="inMyProfile">
-        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow" data-bs-toggle="modal" data-bs-target="#ticketModal">예매 내역</button></div>
+        <div><button type="button" @click="getUserRes" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow" data-bs-toggle="modal" data-bs-target="#ticketModal">예매 내역</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen" data-bs-toggle="modal" data-bs-target="#showCreateModal">공연 생성</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">프로필 수정</button></div>
       </div>
       <div class="profile-btn-line" v-if="!inMyProfile">
-        <button type="button" @click="clickFollowButton" v-if="!follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
-        <button type="button" @click="clickUnfollowButton" v-if="follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
+        <button type="button" @click="clickFollowButton" v-if="!createdProfileData.follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">follow</button>
+        <button type="button" @click="clickUnfollowButton" v-if="createdProfileData.follow" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npurple">unfollow</button>
       </div>
     </div>
 
     <div class="profile-info">
-      <div><img :src="myProfile.profileImageUrl" class="profile-img"></div>
+      <div><img :src="createdProfileData.myProfile.profileImageUrl" class="profile-big-img"></div>
       <div class="profile-detail d-flex flex-column justify-content-evenly">
-        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ myProfile.profileNickname }}</span> 님</div>
-        <div class="profile-txt"> {{ myProfile.profileDescription }} </div>
-        <div divclass="profile-txt"> {{ myProfile.accountEmail }} </div>
+        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
+        <div class="profile-txt"> {{ createdProfileData.myProfile.profileDescription }} </div>
+        <div divclass="profile-txt"> {{ createdProfileData.myProfile.accountEmail }} </div>
       </div>
       <div class="follow-number">
         <p>FOLLOWING </p>
-        <p>{{ following.length }}</p>
+        <p>{{ createdProfileData.following.length }}</p>
       </div>
       <div class="follow-number">
         <p>FOLLOWER</p>
-        <p>{{ follower.length }} </p>
+        <p>{{ createdProfileData.follower.length }} </p>
       </div>
     </div>
 
     <div class="mx-5">
       <div class="txtcolor-white-npurple main-title">나의 공연 정보</div>
       <MyShow
-        :shows="myShows"
+        :shows="createdProfileData.myShows"
         :inMyProfile="inMyProfile"
       />
     </div>
@@ -41,7 +41,7 @@
     <div class="mx-5">
       <div class="txtcolor-white-ngreen main-title mb-5">나의 동영상</div>
       <MyVideo
-        :videos="myVideos"
+        :videos="createdProfileData.myVideos"
         :inMyProfile="inMyProfile"
       />
     </div>
@@ -65,21 +65,13 @@ export default {
       inMyProfile: true,
       follow: false,
       userId: '',
-      profileId: this.$route.params.profileId,
-      // 타인의 프로필에 진입하고 내 프로필을 메인헤더에서 누르면 이동하지 않음 초기화 문제
-      // 검색 뷰에서도 초기화 안 되서 2번째 검색 실패 (computed)
-      following: '',
-      follower: '',
-      myProfile: [],
-      myShows: [],
-      myVideos: [],
-      myReservations: [],
+      profileId: this.$route.query.profileId,
     }
   },
-  created() {
+  mounted() {
+    this.$store.dispatch("requestSetCreatedProfileData", {})
+    this.profileId = this.$route.query.profileId
     this.getUser()
-    console.log('크리에이트')
-    console.log(this.profileId)
     if (this.inMyProfile) {
       this.getMyProfile()
       console.log('내프로필')
@@ -89,23 +81,13 @@ export default {
     }    
   },
   beforeRouteLeave (to, from, next) {
-    this.profileId = ''
+    this.$store.dispatch("requestSetCreatedProfileData", {})
+
+    if(to.name == from.name && to.query == from.query){
+      this.$router.go(this.$router.currentroute)
+    }
     next()
   },
-  // watch: {
-  //   loginUser: function(val, oldVal) {
-  //     this.getUser()
-  //     console.log('프로필 수정 변화 워치')
-  //     console.log(this.profileId)
-  //     if (this.inMyProfile) {
-  //       this.getMyProfile()
-  //       console.log('내프로필 변화')
-  //     } else {
-  //       this.getProfile()
-  //       console.log('타인프로필 변화')
-  //     }    
-  //   },
-  // },
   methods: {
     getUser() {
       this.userId = this.loginUser.accountEmail
@@ -120,12 +102,15 @@ export default {
       .then((response) => {
         console.log("getMyProfile() SUCCESS!!")
         console.log(response.data)
-        this.myProfile = response.data
-        this.following = response.data.followMyArtistResList
-        this.follower = response.data.followMyFanResList
-        this.myShows = response.data.showInfoResList
-        this.myVideos = response.data.videoResList
-        this.myReservations = response.data.reservationResList
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
       })
       .catch((error) => {
         console.log(error)
@@ -135,13 +120,22 @@ export default {
       this.$store.dispatch('requestGetProfile', { profileId : this.profileId})
       .then((response) => {
         console.log("getProfile() SUCCESS!!")
-        console.log(response.data)
-        this.myProfile = response.data
-        this.following = response.data.followMyArtistResList
-        this.follower = response.data.followMyFanResList
-        this.myShows = response.data.showInfoResList
-        this.myVideos = response.data.videoResList
-        this.myReservations = response.data.reservationResList
+        this.follow = false
+        response.data.followMyFanResList.forEach((follower) => { 
+          if (this.loginUser.accountEmail == follower.accountEmail) {
+            this.follow = true
+          } 
+        })
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+          follow: this.follow,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
       })
       .catch((error) => {
         console.log(error)
@@ -151,10 +145,8 @@ export default {
       this.$store.dispatch('requestClickFollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
-        console.log(response.data)
         this.follow = true
         this.getProfile()
-        // 실시간 팔로워수 변경 비동기화 문제
       })
       .catch((error) => {
         console.log(error)
@@ -164,18 +156,20 @@ export default {
       this.$store.dispatch('requestClickUnfollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickUnfollowButton() SUCCESS!!")
-        console.log(response.data)
         this.follow = false
         this.getProfile()
-        // 실시간 팔로워수 변경 비동기화 문제
       })
       .catch((error) => {
         console.log(error)
       })
     },
+    getUserRes() {
+      this.$store.dispatch('requestGetLoginUser')
+    }
   },
+  
   computed: {
-    ...mapGetters(['loginUser']),
+    ...mapGetters(['loginUser', 'createdProfileData', ]),
   },
 }
 </script>
@@ -202,7 +196,7 @@ export default {
   justify-content: center;
   margin: 20px;
 }
-.profile-img {
+.profile-big-img {
   width: 150px;
   height: 150px;
   border-radius: 100%;

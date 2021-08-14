@@ -202,6 +202,20 @@ export default {
         this.hit = response.data.hit
       })
     },
+    initCreateVideoDataInVuex() {
+    let initData = {
+          categoryId: '1',
+          thumbnailImage: [], // 파일이 들어감
+          videoDescription: '',
+          videoTitle: '',
+          showInfoId: '',
+          showTime:'',
+          mode: '공연',
+        }
+    this.$store.dispatch("requestSetCreatedVideoData", initData)
+    this.$store.dispatch("requestSetFileNameOfVideo", "")
+    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    }
   },
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
@@ -210,6 +224,7 @@ export default {
     this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
+      console.log(response)
       this.videoDescription = response.data.videoDescription
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
@@ -221,10 +236,11 @@ export default {
         thumbnailImage: response.data.thumbnailUrl,
         videoDescription: this.videoDescription,
         videoTitle: this.videoTitle,
-        showInfoId: this.showInfoRes != null ? this.showInfoRes.showInfoId : '',
-        showTime: this.showInfoRes != null ? this.showInfoRes.showTime : '',
+        showInfoId: response.data.showInfoRes.showInfoId != null ? response.data.showInfoRes.showInfoId : '',
+        showTime: response.data.showInfoRes.showTime != null ? response.data.showInfoRes.showTime : '',
         mode: response.data.mode,
       }
+      console.log(videoData)
       this.$store.dispatch('requestSetCreatedVideoData', videoData)
     })
     if(this.mainStreamManager != undefined) {
@@ -242,9 +258,7 @@ export default {
     this.chatList.push(welcomeChat)
   },
   beforeRouteLeave(to, from, next) {
-    this.$store.dispatch("requestSetCreatedVideoData", {})
-    this.$store.dispatch("requestSetFileNameOfVideo", "")
-    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+    this.initCreateVideoDataInVuex()
     this.$store.dispatch("requestEndRecording", { ovSessionId: this.ovSessionId })
     .then(response => {
       console.log("the then in endRecoding()...")
@@ -275,7 +289,6 @@ export default {
       }
     },
     createdVideoData(value, oldvalue) {
-      console.log("바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야바뀌고있단말이야")
       this.updateVideoInfo()
     },
   },
