@@ -156,7 +156,7 @@ export default {
     },
     doAdd(){
       console.log(this.datetime)
-      this.timetables.push({dateTime: this.datetime})
+      if (this.datetime != "") this.timetables.push({dateTime: this.datetime})
       this.selected = ''
     },
     doRemove(){
