@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="mx-5">
+    <div class="mx-5 mt-5">
       <div class="txtcolor-white-npurple main-title">나의 공연 정보</div>
       <MyShow
         :shows="createdProfileData.myShows"

@@ -56,7 +56,7 @@
                         <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
                       <div>
-                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">추가</button>
+                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">등록</button>
                       </div>
                     </div>
                   </div>
