@@ -142,26 +142,6 @@ export default {
 .ticket-box {
   margin: 0;
 }
-.ticket-img-str {
-  min-width: 350px;
-  min-height: 160px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  background-color: #242424;
-  border: none;
-  border-radius: .25rem;
-  background-image: url('~@/assets/ticket_without_content1.png');
-  background-size: cover;
-}
-.ticket-img-num {  
-  min-width: 350px;
-  min-height: 160px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  background-color: #242424;
-  border: none;
-  border-radius: .25rem;
-  background-image: url('~@/assets/ticket_without_content2.png');
-  background-size: cover;
-}
+
+
 </style>

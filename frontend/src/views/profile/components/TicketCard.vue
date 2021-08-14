@@ -3,51 +3,58 @@
   컴포넌트 설명 : TicketDialog에서 받아온 예약정보를 하나의 티켓으로 출력
 -->
 <template>
-  <div>
-    <div :class="className">
-      <div class="ticket-title">
-        {{title}}
+  <div class="ticket">
+    <div :class="className+' ticket-img'">
+      <div class="ticket-small-header-line">
+        <div class="ticket-header ticket-title">
+          {{ title }}
+        </div>
+        <!-- <div class="ticket-header ticket-host">
+          {{ profileNickname }}
+        </div> -->
       </div>
-      <div class="ticket-small-btn-line">
-        <div class="ticket-small-btn-box">
-          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
-            {{date}}
-          </button>
+      <div class="ticket-btns-box">
+        <div class="ticket-small-btn-line">
+          <div class="ticket-small-btn-box">
+            <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+              {{ date }}
+            </button>
+          </div>
+          <div class="ticket-small-btn-box">
+            <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+              {{ time }}
+            </button>
+          </div>
+          <div class="ticket-small-btn-box">
+            <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
+              {{ runningTime }}분
+            </button>
+          </div>
         </div>
-        <div class="ticket-small-btn-box">
-          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
-            {{time}}
-          </button>
-        </div>
-        <div class="ticket-small-btn-box">
-          <button class="ticket-small-btn main-bgcolor-black txtcolor-white bdcolor-npink">
-            {{runningTime}}분
-          </button>
-        </div>
-      </div>
-      <div class="ticket-btn-line">
-        <div
-          class="ticket-btn-box" 
-          data-bs-toggle="modal" 
-          data-bs-target="#ticketDetailModal"
-        >
-          <button 
-            @click="clickTicketDetailButton" 
-            class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen"
+        <div class="ticket-btn-line">
+          <div class="ticket-btn-box">
+            <button 
+              class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
+              data-bs-toggle="offcanvas" 
+              data-bs-target="#deleteTicketInfo" 
+              aria-controls="deleteTicketInfo"
+              @click="clickCancleTicketbutton"
+            >
+              예약 취소
+            </button>
+          </div>
+          <div
+            class="ticket-btn-box" 
+            data-bs-toggle="modal" 
+            data-bs-target="#ticketDetailModal"
           >
-            예약 상세
-          </button>
-        </div>
-        <div class="ticket-btn-box">
-          <button 
-            class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-npurple"
-            data-bs-toggle="offcanvas" 
-            data-bs-target="#deleteTicketInfo" 
-            aria-controls="deleteTicketInfo"
-            @click="clickCancleTicketbutton"
-          >
-            예약 취소
-          </button>
+            <button 
+              @click="clickTicketDetailButton" 
+              class="ticket-btn main-bgcolor-black txtcolor-white bdcolor-ngreen"
+            >
+              예약 상세
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -152,54 +159,60 @@ export default {
 </script>
 
 <style>
-.ticket-box {
-  margin: 0;
+.ticket {
+  padding: 20px 10px;
+}
+.ticket-img {
+  min-width: 350px;
+  max-width: 350px;
+  min-height: 156px;
+  max-height: 156px;
+  background-color: #242424;
+  border: none;
+  border-radius: .25rem;
+  background-size: cover;
+  padding: 10px;
+  position: relative;
 }
 .ticket-img-str {
-  min-width: 350px;
-  max-width: 350px;
-  min-height: 160px;
-  max-height: 160px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  background-color: #242424;
-  border: none;
-  border-radius: .25rem;
-  background-image: url('~@/assets/ticket_without_content1.png');
-  background-size: cover;
+  background-image: url(~@/assets/ticket_without_content1.png);
 }
-.ticket-img-num {  
-  min-width: 350px;
-  max-width: 350px;
-  min-height: 160px;
-  max-height: 160px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  background-color: #242424;
-  border: none;
-  border-radius: .25rem;
-  background-image: url('~@/assets/ticket_without_content2.png');
-  background-size: cover;
+.ticket-img-num {
+  background-image: url(~@/assets/ticket_without_content2.png);
 }
-.ticket-btn {
-  width: 100px;
-  height: 30px;
-  border-radius: 15px;
-  margin-left: 20px;
-  margin-bottom: 10px;
-  font-size: 15px;
-  text-align: center;
-}
-.ticket-btn-box {
-  width: 110px;
-  height: 30px;
-}
-.ticket-btn-line {
+.ticket-small-header-line {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: end;
-  margin-right: 20px;
-  margin-top: 35px;
+  place-content: space-between;
+}
+.ticket-header.ticket-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 90px;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: start;
+}
+.ticket-header.ticket-host {
+  font-size: 15px;
+  font-weight: bold;
+  padding: 0px 20px 0px 0px;
+  align-self: flex-end;
+}
+.ticket-btns-box {
+  padding: 0 0;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.ticket-small-btn-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 55px;
+  margin-bottom: 10px;
+  margin-right: 30px;
 }
 .ticket-small-btn {
   width: 60px;
@@ -211,19 +224,26 @@ export default {
   width: 70px;
   height: 30px;
 }
-.ticket-small-btn-line {
+.ticket-btn-line {
   display: flex;
-  flex-direction: row;
-  justify-content: start;
-  margin-left: 90px;
-  margin-top: 10px;
+  justify-content: flex-end;
 }
-.ticket-title {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: start;
-  margin-left: 100px;
-  padding-top: 10px;
+.ticket-btn-box {
+  /* width: 70px;
+    height: 30px;
+    border-radius: 15px;
+    margin-left: 20px;
+    font-size: 12px;
+    text-align: center; */
+}
+.ticket-btn{
+  width: 70px;
+  height: 30px;
+  border-radius: 15px;
+  margin-left: 20px;
+  /* margin-bottom: 10px; */
+  font-size: 12px;
+  text-align: center;
 }
 .ticket-popup-button {
   margin-top: 50px;
