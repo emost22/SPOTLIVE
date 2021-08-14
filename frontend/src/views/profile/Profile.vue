@@ -80,13 +80,6 @@ export default {
       console.log('타인프로필')
     }    
   },
-  beforeRouteLeave (to, from, next) {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-    if (to.name == from.name && to.query != from.query){
-      this.$router.go(this.$router.currentroute)
-    }
-    next()
-  },
   methods: {
     getUser() {
       this.userId = this.loginUser.accountEmail
