@@ -211,7 +211,7 @@ export default {
   flex-direction: row;
   justify-content: center;
   margin-left: 55px;
-  margin-bottom: 10px;
+  margin-bottom: 37px;
   margin-right: 30px;
 }
 .ticket-small-btn {
