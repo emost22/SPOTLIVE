@@ -4,17 +4,19 @@
       <MainHeader v-if="isLogin"/>
       <router-view :key="$route.fullPath"></router-view>
     </div>
-    <RoomSettingDialog/>
-    <RoomSettingUpdateDialog/>
-    <ProfileUpdateDialog/>
-    <ShowCreateDialog/>
-    <ShowDetailDialog/>
-    <ShowUpdateDialog/>
-    <ShowReservationDialogInProfile/>
-    <ShowReservationDialog/>
-    <TicketDialog/>
-    <TicketDetailDialog/>
-    <ShowInfoDialogNowPlaying/>
+    <div v-if="isLogin">
+      <RoomSettingDialog/>
+      <RoomSettingUpdateDialog/>
+      <ProfileUpdateDialog/>
+      <ShowCreateDialog/>
+      <ShowDetailDialog/>
+      <ShowUpdateDialog/>
+      <ShowReservationDialogInProfile/>
+      <ShowReservationDialog/>
+      <TicketDialog/>
+      <TicketDetailDialog/>
+      <ShowInfoDialogNowPlaying/>
+    </div>
   </div>
 </template>
 
@@ -377,5 +379,10 @@ label:hover {
 }
 .offcanvas {
   z-index: 1060;
+}
+div#deleteTicketInfo {
+    margin: auto auto;
+    width: 500px;
+    height: 212px;
 }
 </style>
