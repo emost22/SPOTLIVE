@@ -243,17 +243,31 @@ public class VideoRepositoryTest {
         String insertVideoDescription = "kmk님이 알려주실겁니다";
         String insertMode = "소통";
         Long insertCategoryId = 2L;
-        Long insertShowInfoId = 6L;
         String insertAccountEmail = "emoney96@naver.com";
         String insertSessionId = "123123";
         String insertThumbnailUrl = "solvedac.png";
+
+        String posterUrl = "posterUrl.png";
+        Long price = 10000L;
+        int runningTime = 180;
+        String showInfoDescription = "description";
+        String showInfoTitle = "title";
+
+        ShowInfoInsertPostReq showInfoInsertPostReq = new ShowInfoInsertPostReq();
+        showInfoInsertPostReq.setAccountEmail(insertAccountEmail);
+        showInfoInsertPostReq.setShowInfoTitle(showInfoTitle);
+        showInfoInsertPostReq.setShowInfoDescription(showInfoDescription);
+        showInfoInsertPostReq.setPrice(price);
+        showInfoInsertPostReq.setRunningTime(runningTime);
+        showInfoInsertPostReq.setPosterUrl(posterUrl);
+        ShowInfo showInfo = showInfoRepository.save(showInfoInsertPostReq.toShowInfo());
 
         VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
         videoInsertPostReq.setVideoTitle(insertVideoTitle);
         videoInsertPostReq.setVideoDescription(insertVideoDescription);
         videoInsertPostReq.setMode(insertMode);
         videoInsertPostReq.setCategoryId(insertCategoryId);
-        videoInsertPostReq.setShowInfoId(insertShowInfoId);
+        videoInsertPostReq.setShowInfoId(showInfo.getShowInfoId());
         videoInsertPostReq.setAccountEmail(insertAccountEmail);
         videoInsertPostReq.setSessionId(insertSessionId);
 
