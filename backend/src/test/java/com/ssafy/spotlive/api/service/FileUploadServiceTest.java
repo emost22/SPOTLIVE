@@ -10,9 +10,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-
+import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 
 @Transactional
 @ExtendWith(MockitoExtension.class)
@@ -36,4 +35,14 @@ class FileUploadServiceTest {
         assertThat(url).contains("jpg");
     }
 
+
+    @Test
+    void deleteTest() throws Exception{
+        //given
+        String imageUrl = "imageUrl";
+        //when
+        fileUploadService.delete(imageUrl);
+        //then
+        verify(amazonS3Client).deleteObject(fileUploadService.bucket, "imageUrl");
+    }
 }
