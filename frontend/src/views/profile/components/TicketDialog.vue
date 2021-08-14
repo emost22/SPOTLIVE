@@ -24,8 +24,10 @@
           >
             <TicketCard
              :timetable="reservation.timetableFindByReservationRes"
+             :showInfo="reservation.timetableFindByReservationRes.showInfoRes"
+             :showHost="reservation.timetableFindByReservationRes.showInfoRes.userRes"
              :idx="idx"
-             @clickCancleReservationbutton="clickCancleReservationbutton"
+             @clickCancleTicketbutton="clickCancleTicketbutton"
             />
           </div> 
         </div>
@@ -99,7 +101,7 @@ export default {
     TicketCard,
   },
   methods: {
-    clickCancleReservationbutton(timetableId) {
+    clickCancleTicketbutton(timetableId) {
       console.log("티켓다이알로그에서 타임테이블 찍음")
       console.log(timetableId)
       this.timetableIdToBeDeleted = timetableId
