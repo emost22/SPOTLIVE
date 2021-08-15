@@ -205,7 +205,7 @@ export default {
     },
     initCreateVideoDataInVuex() {
     let initData = {
-          categoryId: '1',
+          categoryId: '0',
           thumbnailImage: [], // 파일이 들어감
           videoDescription: '',
           videoTitle: '',
@@ -306,8 +306,6 @@ export default {
       'mainStreamManager', 
       'subscribers', 
       'onCreateVideoLive', 
-      'isSettingDialogOpen', 
-      'settingDialogViewId',
       'MAX_CHAT_LIST_SIZE']),
   },
 }

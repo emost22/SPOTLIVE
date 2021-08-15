@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button" :disabled="isInvalid" data-bs-dismiss="modal">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button setting-button" :disabled="isInvalid" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>
@@ -62,7 +62,6 @@ export default {
       categoryIds: [],
       showInfoList: [],
       closing: true,
-      isInvalid: false,
     }
   }, 
   methods: {
@@ -79,8 +78,6 @@ export default {
     ]),
   },
   mounted() {
-    // 오픈되었을 때 아무것도 안함, 
-    // 클로즈 되었을 때 closing되었다고 form에 알려줌 -> form이 자기자신 초기화함
     var modal= this.$refs.roomSettingDialog
     var _this = this
     modal.addEventListener('show.bs.modal', function (event) {
@@ -176,5 +173,9 @@ label:hover {
 }
 .btn-close:hover {
   background-image: url('~@/assets/icon-x.png');
+}
+.setting-button:disabled {
+  border-color: black;
+  color: gray;
 }
 </style>

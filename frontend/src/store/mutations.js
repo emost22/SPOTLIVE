@@ -214,12 +214,6 @@ export default {
             console.error(error);
         })
     },
-    
-    SET_IS_OPEN_SETTING_DIALOG(state, payload) {
-        state.isSettingDialogOpen = !state.isSettingDialogOpen
-        console.log(!state.isSettingDialogOpen)
-        state.settingDialogViewId = payload
-    },
 
     SET_CREATEVIDEO_DATA (state, payload) {
         state.createdVideoData = payload

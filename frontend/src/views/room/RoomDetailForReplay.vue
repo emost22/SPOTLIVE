@@ -49,9 +49,6 @@ export default {
     }
   },
   methods: {
-    openRoomSettingDialog() {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 2)
-    },
     exitReplay() {
       this.$router.push({ name: 'Main' })
     },

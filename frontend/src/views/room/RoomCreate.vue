@@ -4,7 +4,7 @@
       <video class="user-video" ref="myVideo" autoplay/>
     </div>
     <div class="btn-wrapper">
-      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog"> 설정 </button>
+      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog"> 설정 </button>
       <button class="bdcolor-bold-npink extra-big-button start-streaming" @click="startStreaming()" :disabled="isDisabled"> 스트리밍 시작 </button>
     </div>
   </div>
@@ -30,7 +30,7 @@ export default {
       this.$store.dispatch("requestSetFileNameOfVideo", "")
       this.$store.dispatch('requestLeaveSession')
       this.$store.dispatch("requestSetCreatedVideoData", {
-        categoryId: '1',
+        categoryId: '0',
         thumbnailImage: [],
         videoDescription: '',
         videoTitle: '',
@@ -82,9 +82,6 @@ export default {
     addEventInSession() {
       this.$store.dispatch("requestAddEventInSession")
     },
-    openRoomSettingDialog() {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 1)
-    },
     startStreaming () {
       let formData = this.makeFormDataForStartStreaming()
       this.$store.dispatch('requestStartStreaming', formData)
@@ -106,7 +103,6 @@ export default {
       }
       formData.append('posterImage', this.createdVideoData.thumbnailImage)
       formData.append('videoInsertPostReq', new Blob([JSON.stringify(videoInsertPostReq)] , {type: "application/json"}))
-      console.log(formData)
       return formData
     },
     clickToast: function () {

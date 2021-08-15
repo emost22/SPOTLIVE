@@ -2,8 +2,6 @@ export default {
     
     loginUser: undefined,
     isLogin: false,
-    isSettingDialogOpen: false,
-    settingDialogViewId: 0,
     // in openvidu variable
     ovSessionId: '',
     ovToken: '',
@@ -19,7 +17,7 @@ export default {
     RESOLUTION: '1024x576',
     MAX_CHAT_LIST_SIZE: 20,
     createdVideoData: {
-      categoryId: '1',
+      categoryId: '0',
       thumbnailImage: [], 
       videoDescription: '',
       videoTitle: '',

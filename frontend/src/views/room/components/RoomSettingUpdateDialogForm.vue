@@ -89,7 +89,7 @@ export default {
   data: function () {
     return {
       form: {
-        categoryId: '1',
+        categoryId: '0',
         thumbnailImage: [],
         videoDescription: '',
         videoTitle: '',
@@ -104,7 +104,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex', 'createdVideoData']),
+    ...mapGetters(['fileNamevuex', 'createdVideoData']),
   },
   watch: {
     fileNamevuex(value, oldvalue) {
@@ -155,7 +155,7 @@ export default {
     },
     initDataWhenClosing() {
       this.form = {
-            categoryId: '1',
+            categoryId: '0',
             thumbnailImage: [], // 파일이 들어감
             videoDescription: '',
             videoTitle: '',
