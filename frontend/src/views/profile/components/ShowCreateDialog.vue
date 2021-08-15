@@ -53,8 +53,12 @@
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
                       <div>
                         <div class="label-alignment"><label for="showCreateFormControlInput4" class="form-label">공연 시간</label></div>
+                        <div id="toast" class="toast-wrap" style="display:none;">
+                        <div class="toast"  v-bind="toast">dd</div>
+                      </div>
                         <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
+                      
                       <div>
                         <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-white-npurple">입력</button>
                       </div>
@@ -89,6 +93,27 @@
         </div>
       </div>
     </div>
+
+    <!-- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div class="toast align-items-center" ref="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+          추가되었습니다.
+        </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div> -->
+    <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+    <div class="toast-container position-absolute p-3" id="toastPlacement">
+  <!-- Then put toasts within -->
+      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
+        <div class="toast-body">
+          공연 시간이 등록되었습니다.
+        </div>
+      </div>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -122,6 +147,11 @@ export default {
     this.clearShowCreateData()
   },
   methods: {
+    clickEvent(){
+        var toast = new bootstrap.Toast(this.$refs.toast)
+
+    toast.show()
+    },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
       .then((response) => {
@@ -156,7 +186,10 @@ export default {
     },
     doAdd(){
       console.log(this.datetime)
-      if (this.datetime != "") this.timetables.push({dateTime: this.datetime})
+      if (this.datetime != ""){
+        this.timetables.push({dateTime: this.datetime})
+        this.clickEvent()
+      } 
       this.selected = ''
       this.datetime = ''
     },
