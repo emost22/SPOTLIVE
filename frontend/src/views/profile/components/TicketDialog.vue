@@ -10,9 +10,12 @@
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple ticket-modal-design">
       <div class="modal-content-m">
         <div class="modal-header no-border">
+          <div class="information-header mt-3 ms-3">
+            내 예약 정보
+          </div>
           <button 
             type="button" 
-            class="btn-close" 
+            class="btn-close me-2 mt-1"
             data-bs-dismiss="modal" 
             aria-label="Close"
           />
@@ -144,8 +147,12 @@ export default {
 </script>
 
 <style>
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
+}
 .ticket-modal-design {
-  max-height: 700px;
+  max-height: 650px;
   min-width: 500px;
   width: 70%;
   background-color: #242424;
