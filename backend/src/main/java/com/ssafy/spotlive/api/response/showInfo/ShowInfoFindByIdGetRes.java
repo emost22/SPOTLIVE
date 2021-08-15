@@ -43,20 +43,20 @@ public class ShowInfoFindByIdGetRes {
          * @작성자 : 금아현
          * @Method 설명 : ShowInfo Entity를 ResponseDto로 변환하는 메소드
          */
-//        List<Timetable> timetableList = showInfo.getTimetableList();
-//        if (timetableList != null && !timetableList.isEmpty()){
-//            Collections.sort(timetableList, new Comparator<Timetable>() {
-//                @Override
-//                public int compare(Timetable t1, Timetable t2) {
-//                    LocalDateTime time1 = t1.getDateTime();
-//                    LocalDateTime time2 = t2.getDateTime();
-//
-//                    System.out.println(time1);
-//                    System.out.println(time2);
-//                    return time1.compareTo(time2);
-//                }
-//            });
-//        }
+        List<Timetable> timetableList = showInfo.getTimetableList();
+        if (timetableList != null && !timetableList.isEmpty()){
+            Collections.sort(timetableList, new Comparator<Timetable>() {
+                @Override
+                public int compare(Timetable t1, Timetable t2) {
+                    LocalDateTime time1 = t1.getDateTime();
+                    LocalDateTime time2 = t2.getDateTime();
+
+                    System.out.println(time1);
+                    System.out.println(time2);
+                    return time1.compareTo(time2);
+                }
+            });
+        }
 
         return ShowInfoFindByIdGetRes.builder()
                 .showInfoId(showInfo.getShowInfoId())
