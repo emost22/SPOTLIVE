@@ -93,10 +93,6 @@ export default {
       type: Array,
       default: [],
     },
-    showInUpdate: {
-      type: Boolean,
-      default: false
-    },
     createdVideoData: {
       type: Object,
     },
@@ -132,12 +128,8 @@ export default {
       if (value == true) {
         this.initDataWhenClosing()
       } else {
-        if (this.$props.showInUpdate) {
-            this.initDataWhenOpenSettingUpdateDialog()
-          } else {
-            this.initDataWhenOpenSettingDialog()
-          }
-        }
+          this.initDataWhenOpenSettingDialog()
+      }
     },
     form: {
       deep: true,
@@ -164,7 +156,7 @@ export default {
       this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
       .then((response) => {
         if (response.data.length == 0) {
-          this.form.showTime = '현재 30분 내 공연이 존재하지 않습니다. '
+          this.form.showTime = '현재 30분 내 공연이 존재하지 않습니다. 공연을 등록해주세요.'
         } else {
           this.form.showTime = response.data.dateTime
         }
@@ -178,7 +170,6 @@ export default {
       })
     },
     initDataWhenClosing() {
-      console.log("=================initDataWhenClosing RUN...===========================")
       this.form = {
             categoryId: '1',
             thumbnailImage: [], // 파일이 들어감
@@ -192,48 +183,26 @@ export default {
       this.showInfoIds = []
     },
     initDataWhenOpenSettingDialog() {
-      console.log("=================initDataWhenOpenSettingDialog RUN...===========================")
       this.form.categoryId = this.$props.createdVideoData.categoryId
       this.fileName = this.fileNamevuex
       this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
       this.form.mode = this.$props.createdVideoData.mode
       this.form.videoDescription = this.$props.createdVideoData.videoDescription
       this.form.videoTitle = this.$props.createdVideoData.videoTitle
+      this.makeShowInfoIds()
       if (this.$props.createdVideoData.showInfoId != '') {
-        this.makeShowInfoIds()
         this.form.showInfoId = this.$props.createdVideoData.showInfoId
       } else {
-        this.makeShowInfoIds()
         this.form.showInfoId = this.showInfoIds[0].t.showInfoId
       }
       this.getRecentlyTimeTable()
     },
-    initDataWhenOpenSettingUpdateDialog() {
-      console.log("=================initDataWhenOpenSettingUpdateDialog RUN...===========================")
-      this.form.categoryId = this.$props.createdVideoData.categoryId
-      this.fileName = this.fileNamevuex
-      this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
-      this.form.videoDescription = this.$props.createdVideoData.videoDescription
-      this.form.videoTitle = this.$props.createdVideoData.videoTitle
-      if (this.$props.createdVideoData.showInfoId != '') {
-        this.makeShowInfoIds()
-        this.form.showInfoId = this.$props.createdVideoData.showInfoId
-      } else {
-        this.makeShowInfoIds()
-        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
-      }
-      this.getRecentlyTimeTable()
-      // this.form.showInfoId = this.$props.createdVideoData.showInfoId
-      // this.form.showTime = this.$props.createdVideoData.showTime
-      this.form.mode = this.$props.createdVideoData.mode
-    }
   },
   mounted() {
     this.makeToolTipsObject()
   },
   updated() {
-    this.$emit('form-data', this.form)
-    this.$emit('invalid', this.$refs.observer.invalid)
+    // this.$emit('invalid', this.$refs.observer.invalid)
   },
 }
 </script>

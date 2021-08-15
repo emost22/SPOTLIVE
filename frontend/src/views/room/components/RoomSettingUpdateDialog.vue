@@ -14,7 +14,6 @@
                 :categoryIds="categoryIds"
                 @form-data="form => videoData = form"
                 :showInfoList="showInfoList"
-                :showInUpdate="showInUpdate"
                 :createdVideoData="createdVideoData"
                 :closing="closing"
               />
@@ -63,19 +62,10 @@ export default {
     return {
       categoryIds: [],
       videoData: {},
-      showInUpdate: false,
       closing: true,
     }
   }, 
   methods: {
-    checkMode: function() {
-      if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
-        delete this.videoData.showTime
-        if (this.videoData.mode == '소통') {
-          delete this.videoData.showInfoId
-        }
-      } 
-    },
     makeFormDataForUpdateDialog() {
       let formData = new FormData()
       let videoUpdateByIdPatchReq = {
@@ -85,19 +75,17 @@ export default {
       }
       formData.append('thumbnailImage', this.createdVideoData.thumbnailImage)
       formData.append('videoUpdateByIdPatchReq', new Blob([JSON.stringify(videoUpdateByIdPatchReq)] , {type: "application/json"}))
+
       return formData
     },
     roomSettingUpdateDialogButton: function () {
-      this.checkMode()
       let videoData = this.makeFormDataForUpdateDialog()
       let payload = {
         videoData: videoData,
         videoId: this.videoId
       }
-
       this.$store.dispatch('requestUpdateSettingDialog', payload)
       .then(res => {
-        console.log(res)
         this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
         var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
         roomSettingUpdateDialog.hide()
@@ -121,18 +109,13 @@ export default {
     ]),
   },
   mounted() {
-    // 오픈되었을 때 업데이트에서 켜졌다고 form에 알려줌 -> form에서 현재 켜져있는 라이브 데이터 가져와서 넣어줌, 
-    // 클로즈 되었을 때 closing되었다고 form에 알려줌 -> form이 자기자신 초기화함
     var modal= this.$refs.roomSettingUpdateDialog
     var _this = this
     modal.addEventListener('show.bs.modal', function (event) {
-      _this.showInUpdate = true
       _this.closing = false
-      console.log('RoomsettingUpdateDialog show')
     })
     modal.addEventListener('hidden.bs.modal', function (event) {
       _this.closing = true
-      console.log('RoomsettingUpdateDialog hidden')
     })
     this.$store.dispatch('requestGetCategoryIds')
     .then((response) => {
@@ -140,19 +123,9 @@ export default {
     })
     this.$store.dispatch('requestGetShowInfoIds')
     .then(response => {
-      console.log(response)
       this.showInfoList = response.data
     })
   },
-  watch: {
-    videoData(val, oldVal) {
-      console.log("========= VideoData 변화 감지 =========")
-      console.log("* OLD")
-      console.log(oldVal)
-      console.log("* NEW")
-      console.log(val)
-    },
-  }
 }
 </script>
 
