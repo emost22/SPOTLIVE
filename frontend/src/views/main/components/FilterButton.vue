@@ -48,6 +48,7 @@ export default {
   margin-bottom: 20px;
   margin-top: 20px;
   font-size: 18px;
+  cursor: pointer;
 }
 .filter-btn:hover {
   border: 2px solid #04F7CA;
