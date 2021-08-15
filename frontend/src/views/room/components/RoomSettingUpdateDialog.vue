@@ -69,7 +69,7 @@ export default {
   }, 
   methods: {
     checkMode: function() {
-       if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
+      if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
         delete this.videoData.showTime
         if (this.videoData.mode == '소통') {
           delete this.videoData.showInfoId
@@ -77,6 +77,10 @@ export default {
       } 
     },
     makeFormDataForUpdateDialog() {
+      
+      console.log("=================makeFormDataForUpdateDialog RUN...===========================")
+      console.log(this.videoData.thumbnailImage)
+
       let formData = new FormData()
       let videoUpdateByIdPatchReq = {
         "videoTitle": this.videoData.videoTitle,
@@ -88,22 +92,23 @@ export default {
       return formData
     },
     roomSettingUpdateDialogButton: function () {
-      // 버튼 누르면 데이터 업데이트하는 로직 탐
-      // 성공하면 vuex에 저장되어있는 created 데이터 갱신됨.
-      // videoId는 현재 켜져있는 라이브의 videoId임 -> 라이브 끌 때 초기화 해줘.
       this.checkMode()
-      var videoData = this.makeFormDataForUpdateDialog()
-      console.log("====================================")
+      let videoData = this.makeFormDataForUpdateDialog()
       console.log(videoData)
-      this.$store.dispatch('requestUpdateSettingDialog', this.videoId, videoData)
+
+      let payload = {
+        videoData: videoData,
+        videoId: this.videoId
+      }
+
+      this.$store.dispatch('requestUpdateSettingDialog', payload)
       .then(res => {
         console.log(res)
-        // 제대로 갱신돼 비디오데이터에 있을거 다있음 근데 FileName에 왜 아무것도없는지 모르겠음
         this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
         var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
         roomSettingUpdateDialog.hide()
       })
-      .catch(err =>{
+      .catch(err => {
         alert('라이브 영상 수정을 하다 오류가 났어요! 다시 시도해주세요!')
       })
     },
@@ -144,6 +149,15 @@ export default {
       this.showInfoList = response.data
     })
   },
+  watch: {
+    videoData(val, oldVal) {
+      console.log("========= VideoData 변화 감지 =========")
+      console.log("* OLD")
+      console.log(oldVal)
+      console.log("* NEW")
+      console.log(val)
+    },
+  }
 }
 </script>
 

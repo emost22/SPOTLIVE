@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="row g-3 needs-validation" novalidate>
+    <form class="row g-3 needs-validation" novalidate> </form>
     <div class="mb-3">
       <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
       <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
@@ -61,7 +61,7 @@
       <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
-    </form>
+    <button @click="check">gdgdgd</button>
   </div>
 </template>
 
@@ -108,6 +108,7 @@ export default {
       fileName:'',
       showInfoIds: [],
       toast: null,
+      box: "TEST",
     }
   },
   computed: {
@@ -139,10 +140,23 @@ export default {
     },
   },
   methods: {
+    check() {
+      console.log("====================== CHECK! =======================")
+      console.log(this.form)
+      console.log(this.box)
+    },
     handleFileChange(e) {
+      console.log("=================handleFileChange RUN...===========================")
+
       this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
-      this.$store.dispatch('requestSetCreatedVideoData', this.form)
+      // this.$store.dispatch('requestSetCreatedVideoData', this.form)
       this.fileName = e.target.files[0].name // 파일이름을 넣음
+
+      this.box = e.target.files[0]
+      console.log(this.form.thumbnailImage)
+      console.log(this.box)
+      console.log("=================handleFileChange DONE...===========================")
+
       this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {
@@ -168,6 +182,7 @@ export default {
       })
     },
     initDataWhenClosing() {
+      console.log("=================initDataWhenClosing RUN...===========================")
       this.form = {
             categoryId: '1',
             thumbnailImage: [], // 파일이 들어감
@@ -181,6 +196,7 @@ export default {
       this.showInfoIds = []
     },
     initDataWhenOpenSettingDialog() {
+      console.log("=================initDataWhenOpenSettingDialog RUN...===========================")
       this.form.categoryId = this.$props.createdVideoData.categoryId
       this.fileName = this.fileNamevuex
       this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
@@ -197,6 +213,7 @@ export default {
       this.getRecentlyTimeTable()
     },
     initDataWhenOpenSettingUpdateDialog() {
+      console.log("=================initDataWhenOpenSettingUpdateDialog RUN...===========================")
       this.form.categoryId = this.$props.createdVideoData.categoryId
       this.fileName = this.fileNamevuex
       this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
@@ -218,9 +235,24 @@ export default {
   mounted() {
     this.makeToolTipsObject()
   },
-  beforeUpdate() {
+  updated() {
+    console.log("DATA 변경 발생=================")
+    console.log(this.form)
+    console.log(this.box)
     this.$emit('form-data', this.form)
+    console.log("EMIT 이후=================")
+    console.log(this.form)
+    console.log(this.box)
   },
+  watch: {
+    box(val, oldVal) {
+      console.log("========= box 변화 감지 =========")
+      console.log("* OLD")
+      console.log(oldVal)
+      console.log("* NEW")
+      console.log(val)
+    }
+  }
 }
 </script>
 

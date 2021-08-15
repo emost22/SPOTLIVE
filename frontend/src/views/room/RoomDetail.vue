@@ -98,7 +98,7 @@ export default {
       chatList: [],
       recordName: "",
       recordURL: "",
-      isRecord: true,
+      isRecord: false,
     }
   },
   methods: {
@@ -192,6 +192,7 @@ export default {
       })
     },
     updateVideoInfo() {
+      console.log("updateVideoInfo() RUN...")
       this.$store.dispatch('requestGetRoomDetail', this.videoId)
       .then((response) => {
         console.log(response)
@@ -236,8 +237,8 @@ export default {
         thumbnailImage: response.data.thumbnailUrl,
         videoDescription: this.videoDescription,
         videoTitle: this.videoTitle,
-        showInfoId: response.data.showInfoRes.showInfoId != null ? response.data.showInfoRes.showInfoId : '',
-        showTime: response.data.showInfoRes.showTime != null ? response.data.showInfoRes.showTime : '',
+        showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+        showTime: response.data.showInfoRes != null ? response.data.showInfoRes.showTime : '',
         mode: response.data.mode,
       }
       console.log(videoData)
@@ -267,7 +268,7 @@ export default {
       console.log("저장된 URL: " + this.recordURL)
       if(this.isRecord) this.insertVideoUrlAndCloseStreaming()
       else {
-        this.$store.dispatch('requestCloseVideo', this.videoId)
+        this.$store.dispatch('requestDeleteVideo', this.videoId)
         .then(res => {
           console.log(res)
           this.$store.dispatch('requestLeaveSession')
