@@ -6,7 +6,7 @@
       </div> 
       <div class="d-flex flex-row mt-3">
         <div class="d-flex flex-column justify-content-center align-items-center">
-          <img :src="this.userThumbnail" class="profile-img bdcolor-npink">
+          <img :src="this.profileImageUrl" class="profile-img bdcolor-npink">
           <img src="~@/assets/icon-live-badge.png" class="badge-design">
         </div>
         <div class="d-flex flex-row justify-content-between detail-top ms-3">
@@ -87,7 +87,7 @@ export default {
       category: "",
       videoTitle: "",
       startTime: "",
-      userThumbnail: "",
+      profileImageUrl: "",
       takenTime: {
         h: '',
         m: '',
@@ -230,7 +230,7 @@ export default {
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
       this.hit = response.data.hit
-      this.userThumbnail = response.data.userRes.profileImageUrl
+      this.profileImageUrl = response.data.userRes.profileImageUrl
       var videoData = {
         categoryId: response.data.categoryRes.categoryId,
         thumbnailImage: response.data.thumbnailUrl,
