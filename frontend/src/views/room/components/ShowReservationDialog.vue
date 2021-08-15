@@ -121,6 +121,7 @@ export default {
       this.timetables = []
       this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
         .then(res => {
+          this.timetables=[]
           this.timetableId = res.data.timetables[0].timetableId
           res.data.timetables.forEach((timetable) => {
             var date = this.formatter(timetable.dateTime)
@@ -174,6 +175,7 @@ export default {
         _this.getShowInfoTimeTable()
       })
       modal.addEventListener('hidden.bs.modal', function (event) {
+        _this.timetables = []
       })
     }
   },

@@ -26,7 +26,7 @@
               <div class="ticket-show-info">  
                 <div class="mb-2"> 
                   <div><label class="ticket-label-in-dialog">TEAM</label></div>
-                  <div class="txtcolor-white-ngreen">{{}}</div>
+                  <div class="txtcolor-white-ngreen">{{ showReservationData.userRes.userName }}</div>
                 </div>       
                 <div class="mb-2">
                   <div><label class="ticket-label-in-dialog">공연명</label></div>
