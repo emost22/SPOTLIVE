@@ -75,5 +75,23 @@ class ShowInfoServiceImplTest {
         verify(showInfoRepository).getById(1L);
         verify(timetableRepository, times(2)).save(anyObject());
     }
+    
+    @Test
+    void findShowInfoByIdTest() {
+        //given
+        String accountEmail = "accountEmail";
+        User user = new User();
+        user.setAccountEmail(accountEmail);
+        ShowInfo showInfo = new ShowInfo();
+        showInfo.setUser(user);
+        showInfo.setShowInfoId(1L);
+        given(showInfoRepository.findShowInfoByShowInfoId(1L)).willReturn(Optional.of(showInfo));
+        //when
+        ShowInfoFindByIdGetRes showInfoFindByIdGetRes = showInfoService.findShowInfoById(1L);
+        //then
+        assertEquals(showInfo.getShowInfoId(), showInfoFindByIdGetRes.getShowInfoId());
+        assertThat(showInfoFindByIdGetRes).isNotNull();
+        verify(showInfoRepository).findShowInfoByShowInfoId(anyLong());
+    }
 
 }
