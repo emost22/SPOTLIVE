@@ -240,7 +240,7 @@ export default {
     SET_GETSHOW_DATA (state, payload) {
         state.getShowData = payload
     },
-    
+
     DELETE_TICKET_DATA(state, payload) {
         var i = 0
         state.loginUser.reservationResList.forEach(element => {

@@ -3,7 +3,7 @@
 
     <div> 
       <div class="profile-btn-line" v-if="inMyProfile">
-        <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow" data-bs-toggle="modal" data-bs-target="#ticketModal">예매 내역</button></div>
+        <div><button type="button" @click="getUserRes" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-nyellow" data-bs-toggle="modal" data-bs-target="#ticketModal">예매 내역</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-ngreen" data-bs-toggle="modal" data-bs-target="#showCreateModal">공연 생성</button></div>
         <div><button type="button" class="profile-btn main-bgcolor-black txtcolor-white bdcolor-npink" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">프로필 수정</button></div>
       </div>
@@ -16,7 +16,7 @@
     <div class="profile-info">
       <div><img :src="createdProfileData.myProfile.profileImageUrl" class="profile-big-img"></div>
       <div class="profile-detail d-flex flex-column justify-content-evenly">
-        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
+        <div class="profile-txt"> <span class="txtcolor-white-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
         <div class="profile-txt"> {{ createdProfileData.myProfile.profileDescription }} </div>
         <div divclass="profile-txt"> {{ createdProfileData.myProfile.accountEmail }} </div>
       </div>
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="mx-5">
+    <div class="mx-5 mt-5">
       <div class="txtcolor-white-npurple main-title">나의 공연 정보</div>
       <MyShow
         :shows="createdProfileData.myShows"
@@ -64,13 +64,13 @@ export default {
     return {
       inMyProfile: true,
       follow: false,
-      userId: this.loginUser.accountEmail,
-      profileId: this.$route.params.profileId,
+      userId: '',
+      profileId: this.$route.query.profileId,
     }
   },
   mounted() {
     this.$store.dispatch("requestSetCreatedProfileData", {})
-    this.profileId = this.$route.params.profileId
+    this.profileId = this.$route.query.profileId
     this.getUser()
     if (this.inMyProfile) {
       this.getMyProfile()
@@ -79,23 +79,6 @@ export default {
       this.getProfile()
       console.log('타인프로필')
     }    
-  },
-  created() {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-    console.log('created')
-  },
-  beforeMount() {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-    console.log('beforeMount')
-  },
-  beforeDestroy() {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-    console.log('beforeDestroy')
-  },
-  beforeRouteLeave (to, from, next) {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-    console.log('beforeRouteLeave')
-    next()
   },
   methods: {
     getUser() {
@@ -155,6 +138,7 @@ export default {
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
         this.follow = true
+        this.getProfile()
       })
       .catch((error) => {
         console.log(error)
@@ -171,22 +155,13 @@ export default {
         console.log(error)
       })
     },
+    getUserRes() {
+      this.$store.dispatch('requestGetLoginUser')
+    }
   },
+  
   computed: {
     ...mapGetters(['loginUser', 'createdProfileData', ]),
-  },
-  watch: {
-    loginUser: function(val, oldVal) {
-      this.getUser()
-    },
-    createdProfileData(val, oldVal) {
-      this.getUser()
-      if (this.inMyProfile) {
-        this.getMyProfile()
-      } else {
-        this.getProfile()
-      }    
-    },
   },
 }
 </script>

@@ -9,10 +9,10 @@
         <div class="modal-body mx-3">
             <form>
               <div class="d-flex flex-row mb-3 ms-3">
-                <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
+                <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
                 <div class="profile-small-detail">
-                  <div> {{ loginUser.profileNickname }} </div>
-                  <div> {{ loginUser.accountEmail }} </div>
+                  <div><span class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</span> 님</div>
+                  <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
 
@@ -56,7 +56,7 @@
                         <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
                       <div>
-                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">추가</button>
+                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">등록</button>
                       </div>
                     </div>
                   </div>
@@ -126,6 +126,25 @@ export default {
       this.timetables = showData.timetables
       // this.selected = showData.timetables[0].dateTime
     },
+    getMyProfile() {
+      this.$store.dispatch('requestGetMyProfile')
+      .then((response) => {
+        console.log("getMyProfile() SUCCESS!!")
+        console.log(response.data)
+        var ProfileData = {
+          myProfile : response.data,
+          following : response.data.followMyArtistResList,
+          follower : response.data.followMyFanResList,
+          myShows : response.data.showInfoResList,
+          myVideos : response.data.videoResList,
+          myReservations : response.data.reservationResList,
+        }
+        this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     handleChange(e) {
       var file = e.target.files[0]
       if (file && file.type.match(/^image\/(png|jpeg)$/)) {
@@ -182,7 +201,13 @@ export default {
       }
       console.log(this.posterImage)
       this.$store.dispatch('requestPutShow', data)
-    }
+      .then((res) => {
+        this.getMyProfile()
+      })
+      .catch((err) => {
+        console.log('fail')
+      })
+    },
   },
   computed: {
     ...mapGetters(['loginUser','getShowData']),
@@ -245,6 +270,11 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF;
 }
 .profile-small-detail{
   width: 100px;

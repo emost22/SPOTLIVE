@@ -1,62 +1,70 @@
 <template>
   <div>
-    <div class="modal fade" id="ticketDetailModal" ref="ticketDetailModal" tabindex="-1" aria-labelledby="ticketDetailModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">
-        
+    <div 
+      class="modal fade" 
+      id="ticketDetailModal" 
+      ref="ticketDetailModal" 
+      tabindex="-1" 
+      aria-labelledby="ticketDetailModalLabel" 
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple ticket-detail-modal-design">
         <div class="modal-content-m">
-          
           <div class="modal-header no-border">
-            <div class="information-header mt-3 ms-3">예약 상세 정보</div>
-            <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="information-header mt-3 ms-3">
+              예약 상세 정보
+            </div>
+            <button 
+              type="button" 
+              class="btn-close me-2 mt-1"
+              data-bs-dismiss="modal" 
+              aria-label="Close"
+            />
           </div>
-
-          <div class="modal-body mx-3">
-            <form>
-              <div class="d-flex flex-row mb-3">
-                <div><img :src="getShowData.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
-                <div class="profile-small-detail">
-                  <div>{{ getShowData.profileNickname }}님</div>
-                  <p>{{ getShowData.userId }}</p>
+          <div class="modal-body">
+            <div class="my-ticket-box d-flex flex-row justify-content-evenly">   
+              <div class="my-ticket-poster">
+                <div class="d-flex ticket-poster-box">
+                  <img :src="getShowData.posterUrl" class="ticket-poster-img bdcolor-bold-npurple"> 
                 </div>
               </div>
-
-              <div class="d-flex flex-row">                  
-                <div><img :src="getShowData.posterUrl" class="show-img"></div>        
-                <div class="show-info">                 
-                  <div class="mb-3">
-                    <div class="label-alignment"><label for="showDetailFormControlInput1" class="form-label label-in-dialog">공연명</label></div>
-                    <div>{{ getShowData.title }}</div>
+              <div class="my-ticket-info">           
+                <div class="ticket-show-info">  
+                  <div class="mb-2"> 
+                    <div><label class="ticket-label-in-dialog">TEAM</label></div>
+                    <div class="txtcolor-white-ngreen">{{ getShowData.profileNickname }}</div>
+                  </div>       
+                  <div class="mb-2">
+                    <div><label class="ticket-label-in-dialog">공연명</label></div>
+                    <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
                   </div>
-                  <div class="mb-3 d-flex">
-                    <div class="flex-fill me-3">
-                      <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
-                      <div class="d-flex">{{ getShowData.price }}원</div>
+                  <div class="mb-2">
+                    <div><label class="ticket-label-in-dialog">티켓가격</label></div>
+                    <div class="txtcolor-white-npurple">{{ getShowData.price }}원</div>
+                  </div>
+                  <div class="d-flex flex-row mb-2">
+                    <div class="me-3">
+                      <label class="ticket-label-in-dialog">공연 시간</label>
+                      <div class="txtcolor-white-nyellow"> {{dateTime}} </div>
                     </div>
-                    <div class="flex-fill me-3">
-                      <div class="label-alignment"><label class="form-label label-in-dialog">러닝타임</label></div>
-                      <div class="d-flex">{{ getShowData.runningTime }}min</div>                      
+                    <div>
+                      <div><label class="ticket-label-in-dialog">러닝타임</label></div>
+                      <div class="txtcolor-white-ngreen">{{ getShowData.runningTime }}min</div> 
                     </div>
                   </div>
-                  <div class="mb-3 d-flex">
-                    <div class="flex-fill me-3">
-                      <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
-                      <div> {{dateTime}} </div>
-                    </div>
+                  <div>
+                    <div><label class="ticket-label-in-dialog"> 공연 설명</label></div>
+                    <div>{{ getShowData.description }}</div>
                   </div>
                 </div>
               </div>
-              <div class="show-description mb-3">
-                <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label label-in-dialog"> 공연 설명</label></div>
-                <div>{{ getShowData.description }}</div>
-              </div>
-            </form>
+            </div>
           </div>
           
           <div class="modal-footer-m my-3">
             <button 
               type="button" 
               class="bdcolor-npink small-button" 
-              @click="clearGetShowData()" 
               data-bs-dismiss="modal"
             >
               닫기
@@ -98,9 +106,6 @@ export default {
     getShowInfoTimeTable(timetables) {
       this.dateTime = this.formatter(timetables[0].dateTime)
     },
-    clearGetShowData() {
-      // this.$store.dispatch('requestDeleteGetShowData')
-    },
   },
   computed: {
     ...mapGetters(['loginUser', 'getShowData',]),
@@ -108,56 +113,92 @@ export default {
   watch: {
     getShowData(val, oldVal) {
       this.getShowInfoTimeTable(this.getShowData.timetables)
-      var modal= this.$refs.showDetailModal
+      // var modal= this.$refs.showDetailModal
     }
   },
 }
 </script>
 
 <style scoped>
-.information-header {
-  font-size: 20px;
-  font-weight: bold;
-}
-.profile-small-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-}
-.profile-small-detail{
-  width: 100px;
-  height: 50px;
-  margin-left: 30px;
-  text-align: left;
-}
-.show-modal-design {
-  max-height: 700px;
-  min-width: 500px;
+.ticket-detail-modal-design {
+  max-height: 660px;
+  min-width: 550px;
   width: 70%;
   background-color: #242424;
   color: white;
 }
-.show-img {
-  margin: 20px;
-  min-width: 160px;
-  max-width: 160px;
-  min-height: 220px;
-  max-height: 220px;
+.my-ticket-box {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
 }
-.show-info {
-  margin: 20px;
+.my-ticket-poster {
+  min-width: 205px;
+  max-width: 205px;
+  min-height: 450px;
+  max-height: 450px;
+  border: none;
+  border-radius: .25rem;
+  background-size: cover;
+  background-image: url(~@/assets/ticket_without_content1_detail.png);
+  background-color: #242424;
+  background-repeat: no-repeat;
+  padding-top: 240px;
+  padding-left: 55px;
+}
+.my-ticket-info {
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 440px;
+  max-height: 440px;
+  border: none;
+  border-radius: .25rem;
+  background-size: cover;
+  background-image: url(~@/assets/ticket_without_content2_detail.png);
+  background-color: #242424;
+  background-repeat: no-repeat;
+  padding-top: 113px;
+  padding-bottom: 18px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
+}
+.ticket-profile-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  border: 2px #FFFFFF;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF,
+}
+.ticket-profile-detail{
+  width: 500px;
+  height: 50px;
+  margin-left: 30px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ticket-poster-box {
+}
+.ticket-poster-img {
+  min-width: 100px;
+  max-width: 100px;
+  min-height: 130px;
+  max-height: 130px;
+}
+.ticket-show-info {
   text-align: start;
 }
-.show-description {
-  margin-left: 20px;
-  margin-right: 20px;
-  text-align: start;
-}
-.show-timetable {
-  width: 160px;
-}
-.label-in-dialog {
-  font-size: 1.05rem;
+.ticket-label-in-dialog {
+  font-size: 15px;
   font-weight: bold;
 }
 </style>
