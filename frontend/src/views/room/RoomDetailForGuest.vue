@@ -199,6 +199,7 @@ export default {
     },
     goProfile() {
       this.$router.push({ name: 'Profile', query: { profileId : this.accountEmail } })
+      this.$router.go()
     },
   },
   beforeRouteLeave(to, from, next) {
