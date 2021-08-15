@@ -56,6 +56,7 @@ export default {
     },
     goProfile() {
       this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })
+      this.$router.go()
     },
   },
   computed: {
