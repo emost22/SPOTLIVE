@@ -37,11 +37,12 @@
                       <div class="label-alignment">
                         <label class="form-label label-in-dialog">공연 시간</label>
                       </div>
-                      <select class="custom-select-control-m" v-model="timetableId">
+                      <select class="custom-select-control-m" v-model="timetableId" v-if="timetables.length > 0">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
+                      <div class="d-flex" v-else>예약 가능한 시간이 없습니다.</div>
                     </div>
-                    <div>
+                    <div v-if="timetables.length > 0">
                       <div class="label-alignment">
                         <label class="form-label label-in-dialog">러닝타임</label>
                       </div>
@@ -57,9 +58,12 @@
             </form>
           </div>
         </div>
-        <div class="modal-footer-m">
+        <div class="modal-footer-m" v-if="timetables.length > 0">
           <button type="button" class="bdcolor-npink small-button me-5" data-bs-dismiss="modal">닫기</button>
           <button type="button" class="bdcolor-ngreen small-button" @click="reservateShow()">예약하기</button>
+        </div>
+        <div class="modal-footer-m" v-else>
+          <button type="button" class="bdcolor-npink small-button" data-bs-dismiss="modal">닫기</button>
         </div>
       </div>
     </div>
@@ -139,12 +143,17 @@ export default {
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable() {
+      var now = this.formatter(new Date())
+      this.timetables = []
       this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
         .then(res => {
           this.timetableId = res.data.timetables[0].timetableId
           res.data.timetables.forEach((timetable) => {
             var date = this.formatter(timetable.dateTime)
-            this.timetables.push({ v: timetable.timetableId, t: date})
+            if (date > now) {
+              if (this.timetableId == '') this.timetableId = timetable.timetableId
+              this.timetables.push({ v: timetable.timetableId, t: date})
+            }
           })
         })
     }
