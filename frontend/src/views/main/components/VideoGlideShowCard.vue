@@ -4,11 +4,10 @@
       <div 
         class="glide-card-img-box" 
         v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
-        @click="goRoomDetail"  
+        @click="goReservationConfirm"  
       >
         <div class="live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
         <div class="time-badge" v-if="!video.isLive">{{ videoLength }}</div>
-        <!-- {{ video.startTime }} -->
       </div>
       
       <div class="glide-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
@@ -40,6 +39,8 @@ export default {
   data: function() {
     return {
       videoLength: 0, 
+      reservation: false,
+      alert: false,
     }
   },
   created: function() {
@@ -52,31 +53,70 @@ export default {
       var sec = seconds % 60 < 10 ? '0'+seconds % 60 : seconds % 60
       this.videoLength = min+":" + sec
     },
-    goRoomDetail() {
-      console.log('공연용 로그인 정보 확인')
-      const reservations = this.loginUser.reservationResList
-      console.log(this.video)
-      // 비디오의 showInfoRes의 showInfoId
-      reservations.forEach((reservation) => { 
-        console.log(reservation.timetableFindByReservationRes.dateTime)
-        console.log(reservation.timetableFindByReservationRes.showInfoRes.showInfoId)
-      })
-      // 내 예약내역의 showInfoId
-      // 내 예약내역의 dateTime과 now 시간의 30분 전후 이면 입장 가능 
-
-      // 입장불가1 같은 showInfoId이지만 dateTime이 타임테이블 정확히 다른 경우 (다른 시간대의 공연에 예약했습니다) 
-      // 노란 팝업창 off canvas
-      
-      // 입장불가2 같은 showInfoId가 아예 없는 경우 (예약 모달)
-      // ShowReservationDialogInMain.vue 
-      // 예약 모달을 띄우고 데이터 showInfoId로 axios로 요청해서 데이터 받기 
-      
-      if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
-      else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
-    },
     goProfile() {
       this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })
       this.$router.go()
+    },
+    goRoomDetail() {
+      if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
+      else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
+    },
+    goShowReservationDialogInProfile() {
+      var showData = {
+        userId: this.video.showInfoRes.userRes.accountEmail,
+        profileNickname: this.video.showInfoRes.userRes.profileNickname,
+        profileImageUrl: this.video.showInfoRes.userRes.profileImageUrl,
+        showId: this.video.showInfoRes.showInfoId,
+        title: this.video.showInfoRes.showInfoTitle,
+        description: this.video.showInfoRes.showInfoDescription,
+        posterUrl: this.video.showInfoRes.posterUrl,
+        price: this.video.showInfoRes.price,
+        runningTime: this.video.showInfoRes.runningTime,
+        timetables: this.video.showInfoRes.timetables,
+      }
+      this.$store.dispatch('requestGetShowData', showData)
+      // ShowReservationDialogInMain.vue d
+    },
+    goAlert() {
+      // 노란 팝업창 off canvas "다른 시간대의 공연에 예약했습니다"
+    },
+    goReservationConfirm() {
+      console.log('공연용 로그인 정보 확인')
+      // 내 예약내역 showInfo
+      console.log(this.video.showInfoRes)
+      console.log(this.loginUser.reservationResList)
+      const reservations = this.loginUser.reservationResList
+      
+      // 비디오의 showInfo
+      const videoShowId = this.video.showInfoRes.showInfoId
+      console.log(this.video.showInfoRes.showInfoId)
+
+      // showInfoId가 같은 경우
+      reservations.forEach((reservation) => { 
+        console.log(reservation.timetableFindByReservationRes.showInfoRes.showInfoId)
+        console.log(reservation.timetableFindByReservationRes.dateTime)
+        const myShowId = reservation.timetableFindByReservationRes.showInfoRes.showInfoId
+        const myShowDate = reservation.timetableFindByReservationRes.dateTime
+        if (videoShowId == myShowId) {
+          const now = new Date()
+          const afterThirty = new Date(Date.parse(now) + 1000*1800)
+          const beforeThirty = new Date(Date.parse(now) - 1000*1800)
+          if (afterThirty > myShowDate > beforeThirty) {
+            // 1) 입장가능 (showInfoId는 같지만 dateTime과 now 시간의 30분 전후 이면 입장 가능) 
+            this.reservation = true
+            this.goRoomDetail()
+          } else {
+            // 2) 입장불가 (showInfoId는 같지만 dateTime이 now 시간의 30분 전후가 아닌 경우) 
+            this.goAlert()
+          }
+        } 
+      })
+
+      // showInfoId가 같지 않은 경우 
+      if (!this.reservation) {
+        // 3) 입장불가 같은 showInfoId가 아예 없는 경우 (예약 모달)
+        this.goShowReservationDialogInProfile()
+      }
     },
   },
   computed: {
