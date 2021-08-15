@@ -24,7 +24,9 @@
         </div>        
         <ul class="navbar-nav">
           <li class="nav-item header-item" v-if="this.onCreateVideoLive==false">
-            <div><router-link class="nav-link fw-bold" :to="{ name: 'RoomCreate' }"><img src="~@/assets/icon-streaming.png" class="header-icon-img"></router-link></div>
+            <div @click="clickStreamingBtn">
+              <img src="~@/assets/icon-streaming.png" class="header-icon-img">
+            </div>
           </li>
           <li class="nav-item header-item">
             <div @click="clickProfileBtn">
@@ -35,7 +37,9 @@
             <div><img src="~@/assets/icon-alarm.png" class="header-icon-img"></div>
           </li>
           <li class="nav-item header-item">
-            <div><router-link class="nav-link" @click.native="logout" :to="{ name: 'Login' }"><img src="~@/assets/icon-logout.png" class="header-icon-img"></router-link></div>
+            <div @click="clicklogoutBtn">
+              <img src="~@/assets/icon-logout.png" class="header-icon-img">
+            </div>
           </li>
         </ul>
       </div>
@@ -57,10 +61,6 @@ export default ({
     }
   },
   methods: {
-    logout: function () {
-      this.$store.dispatch('requestLogout')
-      this.$router.push({ name: 'Login' })
-    },
     clickSearchBtn() {
       if (this.input) {
         this.$router.push({ name: 'Search', params: { input: this.input } })
@@ -70,11 +70,17 @@ export default ({
         console.log('검색할 내용을 입력하세요')
       }
     },
+    clickStreamingBtn() {
+      this.$router.push({ name: 'RoomCreate' })
+    },
     clickProfileBtn() {
       this.$store.dispatch("requestSetCreatedProfileData", {})
-      // this.$router.go()
       this.$router.push({ name: 'Profile', query: { profileId : this.loginUser.accountEmail } })
       this.$router.go()
+    },
+    clicklogoutBtn: function () {
+      this.$store.dispatch('requestLogout')
+      this.$router.push({ name: 'Login' })
     },
   },
   computed: {
@@ -96,6 +102,7 @@ export default ({
   justify-content: center;
   width: 50px;
   height: 50px;
+  cursor: pointer;
 }
 .header-icon-img {
   width: 35px;

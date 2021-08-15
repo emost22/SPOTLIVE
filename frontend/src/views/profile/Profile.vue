@@ -21,7 +21,7 @@
         <div divclass="profile-txt"> {{ createdProfileData.myProfile.accountEmail }} </div>
       </div>
       <div class="follow-number">
-        <p>FOLLOWING </p>
+        <p>FOLLOWING</p>
         <p>{{ createdProfileData.following.length }}</p>
       </div>
       <div class="follow-number">
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="mx-5 mt-5">
+    <div class="mx-5 mt-5 mb-5">
       <div class="txtcolor-white-npurple main-title">나의 공연 정보</div>
       <MyShow
         :shows="createdProfileData.myShows"

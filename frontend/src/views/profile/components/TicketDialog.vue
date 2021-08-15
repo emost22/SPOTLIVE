@@ -11,7 +11,7 @@
       <div class="modal-content-m">
         <div class="modal-header no-border">
           <div class="information-header mt-3 ms-3">
-            내 예약 정보
+            {{this.loginUser.profileNickname}}의 예약 정보
           </div>
           <button 
             type="button" 
@@ -141,7 +141,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['reservations']),
+    ...mapGetters(['loginUser', 'reservations']),
   },
 }
 </script>

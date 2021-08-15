@@ -59,8 +59,6 @@ export default {
       this.$router.go()
     },
   },
-  computed: {
-  },
 }
 </script>
 
@@ -77,6 +75,7 @@ export default {
   overflow:hidden;
   background-size: cover;
   margin:0;
+  cursor: pointer;
 }
 .glide-card-info-box {
   width:300px;
@@ -84,6 +83,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 }
 .glide-card-img-profile {
   width: 40px;

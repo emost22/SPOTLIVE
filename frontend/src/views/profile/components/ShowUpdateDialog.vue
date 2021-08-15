@@ -11,7 +11,7 @@
               <div class="d-flex flex-row mb-3 ms-3">
                 <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
                 <div class="profile-small-detail">
-                  <div><span class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</span> 님</div>
+                  <div class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</div>
                   <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
@@ -27,8 +27,8 @@
                         <img :src="preview" class="show-preview">
                       </div>
                     </div>
-                    <div class="camera-input-bgcolor-light-grey show-img" v-else>
-                      <label class="camera-input-button" for="input-file-update"/>
+                    <div class="camera-input-bgcolor-light-grey show-update-img-box" v-else>
+                      <label class="camera-input-button show-update-img" for="input-file-update"/>
                       <input type="file" id="input-file-update" class="show-poster-input" v-on:change="handleChange">
                     </div>
                   </div>
@@ -56,7 +56,7 @@
                         <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
                       <div>
-                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">등록</button>
+                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-white-npurple">입력</button>
                       </div>
                     </div>
                   </div>
@@ -69,7 +69,7 @@
                         </option>
                       </select>
                       <div>
-                        <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-nyellow">삭제</button>
+                        <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-white-ngreen">삭제</button>
                       </div>
                   </div>
                   
@@ -113,7 +113,7 @@ export default {
   },
   created: function () {
     this.getUser()
-  },
+ },
   mounted(){
   },
   methods: {
@@ -124,7 +124,7 @@ export default {
       this.runningTime = showData.runningTime
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
-      // this.selected = showData.timetables[0].dateTime
+      this.selected = ''
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
@@ -203,6 +203,17 @@ export default {
       console.log(this.posterImage)
       this.$store.dispatch('requestPutShow', data)
       .then((res) => {
+        // this.getMyProfile()
+        var showData = {
+          showId: this.getShowData.showId,
+          title: this.showInfoTitle,
+          description: this.showInfoDescription,
+          posterUrl: this.preview,
+          price: this.price,
+          runningTime: this.runningTime,
+          timetables: this.timetables ,
+        }
+        this.$store.dispatch('requestGetShowData', showData)
         this.getMyProfile()
       })
       .catch((err) => {
@@ -243,7 +254,7 @@ export default {
   background-position: center;
 }
 .camera-input-button{
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
@@ -254,13 +265,24 @@ export default {
   background-image: url('~@/assets/icon-camera-input.png');
   background-repeat: no-repeat;
   background-position: center;
-  margin: auto;
-  margin-top: 50%;
+}
+.show-update-img-box {
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
+}
+.show-update-img {
+  width: 100%;
+  height: 100%;
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
+  margin-right: 20px;
+  cursor: pointer;
 }
 .show-img {
-  /* min-width: 100px; */
-  /* min-height: 200px; */
-  margin-right: 20px;
   width: 100%;
   height: 100%;
 }
@@ -393,7 +415,7 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
-  
+  cursor: pointer;
 }
 .btn-remove-timetable{
   display: block;
@@ -406,6 +428,7 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
+  cursor: pointer;
 }
 .show-img-box{
   width: 100%;

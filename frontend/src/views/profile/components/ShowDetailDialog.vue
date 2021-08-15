@@ -7,36 +7,36 @@
           <div class="information-header mt-3 ms-3">공연 상세 정보</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body mx-3">
+        <div class="modal-body mx-4">
             <form>
-              <div class="d-flex flex-row mb-3">
+              <div class="d-flex flex-row justify-content-start profile-info">
                 <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
                 <div class="profile-small-detail">
-                  <div><span class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</span> 님</div>
+                  <div class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</div>
                   <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
               <div class="d-flex flex-row">    
-                <div><img :src="getShowData.posterUrl" class="show-img"></div>
+                <div><img :src="getShowData.posterUrl" class="show-detail-img"></div>
                 <div class="show-info">
                   <div class="mb-3">
                     <div class="label-alignment"><label class="form-label">공연명</label></div>
                     <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
                   </div>
                   <div class="mb-3 d-flex">
-                    <div class="flex-fill me-3">
+                    <div class="flex-fill">
                       <div class="label-alignment"><label class="form-label">티켓가격</label></div>
                       <div class="d-flex txtcolor-white-npurple">{{ getShowData.price }}원</div>
                     </div>
-                    <div class="flex-fill me-3">
+                    <div class="flex-fill">
                       <div class="label-alignment"><label class="form-label">러닝타임</label></div>
                       <div class="d-flex txtcolor-white-ngreen">{{ getShowData.runningTime }}min</div>                      
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
-                    <div class="flex-fill me-3">
+                    <div class="flex-fill">
                       <div class="label-alignment"><label class="form-label">공연 시간</label></div>
-                      <select class="custom-select-control-m show-timetable" aria-label="Default select showDetail" v-model="timetableId">
+                      <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
@@ -45,7 +45,7 @@
                 </div>
               </div>
 
-              <div class="show-description mb-3">
+              <div class="show-description">
                 <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
                 <div>{{ getShowData.description }}</div>
               </div>
@@ -53,7 +53,7 @@
         </div>
         <div class="modal-footer-m my-3">
           <div><button class="bdcolor-ngreen small-button mx-3" data-bs-toggle="offcanvas" data-bs-target="#deleteShowInfo" aria-controls="deleteShowInfo">삭제</button></div>
-          <div><button type="button" @click="updateShow()" class="bdcolor-npink small-button mx-3" data-bs-toggle="modal" data-bs-target="#showUpdateModal">수정</button></div>
+          <div><button type="button" class="bdcolor-npink small-button mx-3" data-bs-toggle="modal" data-bs-target="#showUpdateModal">수정</button></div>
         </div>
 
       </div>
@@ -112,10 +112,10 @@ export default {
         console.log(error)
       })
     },
-    updateShow(){
-      var showDetailModal = bootstrap.Modal.getInstance(this.$refs.showDetailModal)
-      showDetailModal.hide()
-    },
+    // updateShow(){
+    //   var showDetailModal = bootstrap.Modal.getInstance(this.$refs.showDetailModal)
+    //   showDetailModal.hide()
+    // },
     deleteShow(){
       var showDetailModal = bootstrap.Modal.getInstance(this.$refs.showDetailModal)
       showDetailModal.hide()
@@ -174,6 +174,10 @@ export default {
   font-size: 20px;
   font-weight: bold;
 }
+.profile-info {
+  margin-left: 25px;
+  margin-bottom: 30px;
+}
 .profile-small-img {
   width: 50px;
   height: 50px;
@@ -185,38 +189,25 @@ export default {
     0 0 20px #FFFFFF;
 }
 .profile-small-detail{
-  width: 300px;
-  height: 50px;
   margin-left: 30px;
   text-align: left;
 }
-.show-img {
-  margin: 20px;
-  min-width: 160px;
-  max-width: 160px;
-  min-height: 220px;
-  max-height: 220px;
+.show-detail-img {
+  margin-left: 20px;
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
 }
 .show-info {
-  margin: 20px;
+  margin-left: 30px;
   text-align: start;
 }
 .show-description {
+  margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
   text-align: start;
-}
-.show-popup {
-  margin-top: 50px;
-}
-.popUpTitle {
-  text-align: left;
-  font-weight: bold;
-  font-size: 15px;
-  padding: 0 10%;
-}
-.show-timetable {
-  width: 230px;
 }
 .custom-select-control-m {
   background-color: #595959;
@@ -230,9 +221,15 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
 }
-.label-in-dialog {
-  font-size: 1.05rem;
+.show-popup {
+  margin-top: 50px;
+}
+.popUpTitle {
+  text-align: left;
   font-weight: bold;
+  font-size: 15px;
+  padding: 0 10%;
 }
 </style>

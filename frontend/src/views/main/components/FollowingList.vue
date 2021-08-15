@@ -70,6 +70,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 15%;
+  margin-bottom: 15px;
+  cursor: pointer;
 }
 </style>

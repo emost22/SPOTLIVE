@@ -11,18 +11,18 @@
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body mx-3">
+        <div class="modal-body mx-4">
           <form>
-            <div class="d-flex flex-row mb-3">
+            <div class="d-flex flex-row justify-content-start profile-info">
               <div><img :src="getShowData.profileImageUrl" class="profile-small-img"></div>
               <div class="profile-small-detail">
-                <div><span class="txtcolor-white-nyellow">{{ getShowData.profileNickname }}</span> 님</div>
+                <div class="txtcolor-white-nyellow">{{ getShowData.profileNickname }}</div>
                 <p>{{ getShowData.userId }}</p>
               </div>
             </div>
 
             <div class="d-flex flex-row">    
-              <div><img :src="getShowData.posterUrl" class="show-img"></div>
+              <div><img :src="getShowData.posterUrl" class="show-detail-img"></div>
               <div class="show-info">
                 <div class="mb-3">
                   <div class="label-alignment"><label class="form-label">공연명</label></div>
@@ -41,7 +41,7 @@
                 <div class="mb-3 d-flex">
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
-                    <select class="custom-select-control-m show-timetable" aria-label="Default select showDetail" v-model="timetableId">
+                    <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId">
                       <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                     </select>
                   </div>
@@ -49,7 +49,7 @@
               </div>
             </div>
 
-            <div class="show-description mb-3">
+            <div class="show-description">
               <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
               <div>{{ getShowData.description }}</div>
             </div>
@@ -176,6 +176,10 @@ export default {
   font-size: 20px;
   font-weight: bold;
 }
+.profile-info {
+  margin-left: 25px;
+  margin-bottom: 30px;
+}
 .profile-small-img {
   width: 50px;
   height: 50px;
@@ -192,28 +196,26 @@ export default {
   margin-left: 30px;
   text-align: left;
 }
-.show-img {
-  margin: 20px;
-  min-width: 160px;
-  max-width: 160px;
-  min-height: 220px;
-  max-height: 220px;
+.show-detail-img {
+  margin-left: 20px;
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
 }
 .show-info {
-  margin: 20px;
+  margin-left: 30px;
   text-align: start;
 }
 .show-description {
+  margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
   text-align: start;
 }
-.show-timetable {
-  width: 230px;
-}
 .custom-select-control-m {
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.8rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;
@@ -223,9 +225,6 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-.label-in-dialog {
-  font-size: 1.05rem;
-  font-weight: bold;
+  cursor: pointer;
 }
 </style>

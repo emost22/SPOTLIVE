@@ -12,7 +12,7 @@
         <div class="modal-content-m">
           <div class="modal-header no-border">
             <div class="information-header mt-3 ms-3">
-              예약 상세 정보
+              {{this.loginUser.profileNickname}}의 티켓 정보
             </div>
             <button 
               type="button" 
