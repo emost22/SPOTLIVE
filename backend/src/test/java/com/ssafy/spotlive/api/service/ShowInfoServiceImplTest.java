@@ -94,4 +94,16 @@ class ShowInfoServiceImplTest {
         verify(showInfoRepository).findShowInfoByShowInfoId(anyLong());
     }
 
+    @Test
+    void deleteShowInfoByIdTest() {
+        //given
+        ShowInfo showInfo = new ShowInfo();
+        long showInfoId = 1L;
+        showInfo.setShowInfoId(showInfoId);
+        //when
+        showInfoService.deleteShowInfoById(showInfoId);
+        //then
+        verify(showInfoRepository, times(1)).deleteShowInfoByShowInfoId(anyLong());
+    }
+
 }
