@@ -106,4 +106,31 @@ class ShowInfoServiceImplTest {
         verify(showInfoRepository, times(1)).deleteShowInfoByShowInfoId(anyLong());
     }
 
+    @Test
+    void updateShowInfoByIdTest() {
+        //given
+        ShowInfo showInfo = new ShowInfo();
+        long showInfoId = 1L;
+        showInfo.setShowInfoId(showInfoId);
+
+        TimetableInsertPostReq timetableInsertPostReq1 = new TimetableInsertPostReq();
+        timetableInsertPostReq1.setDateTime(LocalDateTime.now());
+        TimetableInsertPostReq timetableInsertPostReq2 = new TimetableInsertPostReq();
+        timetableInsertPostReq2.setDateTime(LocalDateTime.now());
+
+        ShowInfoUpdatePatchReq showInfoUpdatePatchReq = new ShowInfoUpdatePatchReq();
+        showInfoUpdatePatchReq.setTimetableInsertPostReq(new ArrayList<>());
+        showInfoUpdatePatchReq.getTimetableInsertPostReq().add(timetableInsertPostReq1);
+        showInfoUpdatePatchReq.getTimetableInsertPostReq().add(timetableInsertPostReq2);
+
+        given(showInfoRepository.findShowInfoByShowInfoId(1L)).willReturn(Optional.of(showInfo));
+        //when
+        Boolean isSuccess = showInfoService.updateShowInfoById(showInfoId, showInfoUpdatePatchReq, multipartFile);
+        //then
+        assertThat(isSuccess).isTrue();
+        verify(showInfoRepository).save(any(ShowInfo.class));
+        verify(timetableRepository).deleteAllByShowInfo_ShowInfoId(showInfoId);
+        verify(timetableRepository, times(2)).save(any(Timetable.class));
+    }
+
 }
