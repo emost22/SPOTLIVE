@@ -98,6 +98,10 @@ export default {
         context.commit("SEND_EXIT")
     },
 
+    requestSendUpdateVideo(context, payload) {
+        context.commit('SEND_UPDATE_VIDEO', payload)
+    },
+
     // RoomCreate.vue (희진)
     requestGetCategoryIds(context) {
         const URL = '/category/'
@@ -228,7 +232,7 @@ export default {
 
         return $axios.post(URL)
     },
-
+    
     // Main.vue
     requestGetCarouselVideos() {
         const URL = '/main/top'
