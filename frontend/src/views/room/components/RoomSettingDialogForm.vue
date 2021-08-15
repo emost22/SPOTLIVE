@@ -1,16 +1,22 @@
 <template>
   <div>
-    <form class="row g-3 needs-validation" novalidate> </form>
+    <!-- <form class="row g-3 needs-validation" novalidate> </form> -->
     <div class="mb-3">
+      <ValidationProvider rules="required|max:20" v-slot="v">
       <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
       <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
+        <span>{{ v.errors[0] }}</span>
+      </ValidationProvider>
     </div>
     <div class="mb-3 d-flex">
       <div class="flex-fill me-3">
+      <ValidationProvider v-slot="v"  rules="required">
         <div class="label-alignment"><label class="form-label" for="categoryId">분류</label></div>
         <select class="custon-select-control" aria-label="Default select example" v-model="form.categoryId" id="categoryId">
           <option :key="i" :value="d.categoryId" v-for="(d, i) in categoryIds">{{ d.categoryName }}</option>
         </select>
+        <span>{{ v.errors[0] }}</span>
+      </ValidationProvider>
       </div>
       <div>
         <div class="label-alignment"><label class="form-label">영상용도</label>
@@ -58,8 +64,11 @@
       </div>
     </div>
     <div class="mb-3">
-      <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
-      <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
+      <ValidationProvider v-slot="v"  rules="max:200 |required">
+        <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
+        <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
+        <span>{{ v.errors[0] }}</span>
+      </ValidationProvider>
     </div>
     <button @click="check">gdgdgd</button>
   </div>
@@ -68,6 +77,7 @@
 <script>
 import { ValidationProvider } from 'vee-validate';
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'RoomSettingDialogForm',
   components: {
