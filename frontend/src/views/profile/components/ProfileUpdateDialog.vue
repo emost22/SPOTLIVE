@@ -67,6 +67,7 @@ export default {
         accountEmail: this.loginUser.accountEmail,
         profileNickname: this.loginUser.profileNickname,
         profileDescription: this.loginUser.profileDescription,
+        userName: this.loginUser.userName,
       };
 
       this.$store
