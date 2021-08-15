@@ -12,7 +12,6 @@
             <div class='content'>
               <RoomSettingDialogForm
                 :categoryIds="categoryIds"
-                @invalid="invalid => isInvalid = invalid"
                 :showInfoList="showInfoList"
                 :closing="closing"
               />
@@ -26,7 +25,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button setting-button" :disabled="isInvalid" data-bs-dismiss="modal">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button setting-button" data-bs-dismiss="modal">확인</button>
         </div>
       </div>
     </div>

@@ -106,7 +106,6 @@ export default {
     },
 
     requestSetCreatedVideoData({ commit }, payload) {
-        console.log(payload)
         commit('SET_CREATEVIDEO_DATA', payload)
     },
 

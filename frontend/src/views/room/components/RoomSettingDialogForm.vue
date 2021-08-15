@@ -152,10 +152,11 @@ export default {
       if (this.$props.showInfoList.length == 0) {
         this.showInfoIds.push({v: 0, t: {showInfoId: 0, showInfoTitle: '등록된 공연이 없습니다.'}})
         this.form.showInfoId = 0
+        this.form.showTime = '현재 공연이 존재하지 않습니다. 공연을 등록해주세요.'
         console.log(this.showInfoIds)
       } else {
         this.$props.showInfoList.forEach((showInfo, index) => {
-        this.showInfoIds.push({ v: index, t: showInfo})
+          this.showInfoIds.push({ v: index, t: showInfo})
         })
         this.getRecentlyTimeTable()
       }
@@ -212,8 +213,7 @@ export default {
       console.log(valid)
     })
   },
-  updated() {
-  }
+  
 }
 </script>
 
