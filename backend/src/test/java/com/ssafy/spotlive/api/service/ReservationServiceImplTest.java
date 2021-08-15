@@ -78,4 +78,16 @@ class ReservationServiceImplTest {
         verify(reservationRepository).deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(anyLong(), anyString());
     }
 
+    @Test
+    void findReservationByIdTest() {
+        //given
+        long timetableId = 1L;
+        String accountEmail = "accountEmail";
+        given(reservationRepository.existsByTimetable_TimetableIdAndUser_AccountEmail(timetableId, accountEmail)).willReturn(Boolean.TRUE);
+        //when
+        Boolean isExist = reservationService.findReservationById(timetableId, accountEmail);
+        //then
+        assertThat(isExist).isTrue();
+        verify(reservationRepository).existsByTimetable_TimetableIdAndUser_AccountEmail(anyLong(), anyString());
+    }
 }
