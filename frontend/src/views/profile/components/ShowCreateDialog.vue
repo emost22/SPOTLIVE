@@ -158,6 +158,7 @@ export default {
       console.log(this.datetime)
       if (this.datetime != "") this.timetables.push({dateTime: this.datetime})
       this.selected = ''
+      this.datetime = ''
     },
     doRemove(){
       let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);

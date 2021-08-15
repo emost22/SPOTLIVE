@@ -146,6 +146,11 @@ export default {
         return $axios.patch(URL)
     },
 
+    requestDeleteVideo(context, payload) {
+        const URL = `/video/${payload}`
+        return $axios.delete(URL)
+    },
+
     requestLeaveSession(context, payload) {
         context.commit("LEAVE_SESSION")
     },
@@ -207,10 +212,10 @@ export default {
         return $axios.get(URL)
     },
 
-    requestUpdateSettingDialog(context, payload, data) {
-        const URL = `/video/${payload}`
+    requestUpdateSettingDialog(context, payload) {
+        const URL = `/video/${payload.videoId}`
 
-        return $axios.patch(URL, data)
+        return $axios.patch(URL, payload.videoData)
     },
 
     requestSetVideoId({ commit }, payload) {

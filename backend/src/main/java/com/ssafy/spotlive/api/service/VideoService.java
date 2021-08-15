@@ -20,6 +20,7 @@ public interface VideoService {
     VideoInsertPostRes insertVideo(VideoInsertPostReq videoInsertPostReq, MultipartFile thumbnailImage);
     VideoFindByIdGetRes findVideoById(Long id);
     Boolean updateVideoById(Long videoId, MultipartFile thumbnailImage, VideoUpdateByIdPatchReq videoUpdateByIdPatchReq, String accountEmail);
+    void deleteVideoById(long videoId);
     Boolean updateVideoEndTimeById(Long videoId, String accountEmail);
     List<VideoFindAllByUserIdGetRes> findVideoByAccountEmail(String accountEmail);
     VideoFindByIdGetRes insertRecordUrlById(VideoInsertUrlByIdPostReq videoInsertUrlByIdPostReq);
@@ -29,4 +30,5 @@ public interface VideoService {
     int closeSession(String sessionId);
     Boolean updateVideoHitPlusById(Long videoId);
     Boolean updateVideoHitMinusById(Long videoId);
+
 }
