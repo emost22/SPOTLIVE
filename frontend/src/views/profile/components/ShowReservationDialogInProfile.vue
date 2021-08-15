@@ -9,6 +9,7 @@
             class="btn-close me-2 mt-1"
             data-bs-dismiss="modal"
             aria-label="Close"
+            @click="clearTimeTableArray()"
           ></button>
         </div>
         <div class="modal-body mx-4">
@@ -35,7 +36,7 @@
                   </div>
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label">러닝타임</label></div>
-                    <div class="d-flex txtcolor-white-ngreen">{{ getShowData.runningTime }}min</div>                      
+                    <div class="d-flex txtcolor-white-ngreen">{{ getShowData.runningTime }} min</div>                      
                   </div>
                 </div>
                 <div class="mb-3 d-flex">
@@ -51,7 +52,7 @@
             </div>
 
             <div class="show-description">
-              <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
+              <div class="label-alignment"><label class="form-label"> 공연 설명</label></div>
               <div>{{ getShowData.description }}</div>
             </div>
 
