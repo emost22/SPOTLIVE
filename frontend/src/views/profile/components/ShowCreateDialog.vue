@@ -27,8 +27,8 @@
                         <img :src="preview" class="show-preview">
                       </div>
                     </div>
-                    <div class="camera-input-bgcolor-light-grey show-img" v-else>
-                      <label class="camera-input-button" for="input-file"/>
+                    <div class="camera-input-bgcolor-light-grey show-create-img-box" v-else>
+                      <label class="camera-input-button show-create-img" for="input-file"/>
                       <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export default {
   background-position: center;
 }
 .camera-input-button{
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
@@ -256,16 +256,24 @@ export default {
   background-image: url('~@/assets/icon-camera-input.png');
   background-repeat: no-repeat;
   background-position: center;
-  margin: auto;
-  margin-top: 50%;
+}
+.show-create-img-box {
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
+}
+.show-create-img {
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
+  margin-right: 20px;
+  cursor: pointer;
 }
 .show-img {
-  /* min-width: 100px; */
-  /* min-height: 200px; */
-  margin-right: 20px;
   width: 100%;
   height: 100%;
-  cursor: pointer;
 }
 .show-info {
   width: 300px;
