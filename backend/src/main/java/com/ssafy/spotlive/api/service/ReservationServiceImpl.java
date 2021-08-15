@@ -9,8 +9,6 @@ import com.ssafy.spotlive.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
  * @FileName : ReservationServiceImpl
  * @작성자 : 금아현
@@ -36,15 +34,13 @@ public class ReservationServiceImpl implements ReservationService{
          * @Method 설명 : 공연 예약 정보 추가
          */
         Reservation reservation = new Reservation();
-        Optional<User> optionalUser = userRepository.findById(accountEmail);
-        Optional<Timetable> optionalTimetable = timetableRepository.findById(timetableId);
-        if(optionalTimetable.isPresent() && optionalUser.isPresent()){
-            reservation.setUser(optionalUser.get());
-            reservation.setTimetable(optionalTimetable.get());
-            reservationRepository.save(reservation);
-            return Boolean.TRUE;
-        }
-        return Boolean.FALSE;
+        User user = userRepository.findById(accountEmail).orElse(null);
+        Timetable timetable = timetableRepository.findById(timetableId).orElse(null);
+        if(user == null || timetable == null) return Boolean.FALSE;
+        reservation.setUser(user);
+        reservation.setTimetable(timetable);
+        reservationRepository.save(reservation);
+        return Boolean.TRUE;
     }
 
     @Override
