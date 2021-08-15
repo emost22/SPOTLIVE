@@ -133,4 +133,21 @@ class ShowInfoServiceImplTest {
         verify(timetableRepository, times(2)).save(any(Timetable.class));
     }
 
+    @Test
+    void findShowInfoByUserTest() {
+        //given
+        String accountEmail = "accountEmail";
+        User user = new User();
+        user.setAccountEmail(accountEmail);
+        ShowInfo showInfo = new ShowInfo();
+        showInfo.setUser(user);
+        List<ShowInfo> showInfoList = new ArrayList<>();
+        showInfoList.add(showInfo);
+        given(showInfoRepository.findShowInfosByUser_AccountEmail(accountEmail)).willReturn(Optional.of(showInfoList));
+        //when
+        List<ShowInfoRes> showInfoResList = showInfoService.findShowInfoByUser(accountEmail);
+        //then
+        assertEquals(user.getAccountEmail(), showInfoResList.get(0).getUserRes().getAccountEmail());
+        verify(showInfoRepository).findShowInfosByUser_AccountEmail(any(String.class));
+    }
 }
