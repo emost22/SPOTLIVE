@@ -150,13 +150,14 @@ export default {
     },
     makeShowInfoIds() {
       if (this.$props.showInfoList.length == 0) {
-        this.showInfoIds.push({v: 0, t: '등록된 공연이 없습니다.'})
+        this.showInfoIds.push({v: 0, t: {showInfoId: 0, showInfoTitle: '등록된 공연이 없습니다.'}})
         this.form.showInfoId = 0
         console.log(this.showInfoIds)
       } else {
         this.$props.showInfoList.forEach((showInfo, index) => {
         this.showInfoIds.push({ v: index, t: showInfo})
-      })
+        })
+        this.getRecentlyTimeTable()
       }
     },
     getRecentlyTimeTable() {
@@ -202,7 +203,6 @@ export default {
       } else {
         this.form.showInfoId = this.showInfoIds[0].t.showInfoId
       }
-      this.getRecentlyTimeTable()
     },
   },
   mounted() {
