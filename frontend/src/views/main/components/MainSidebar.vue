@@ -90,6 +90,7 @@ export default {
   height: 60px;
   width: 55px;
   padding-top: 15px;
+  cursor: pointer;
 }
 .sidebar-close-item {
   height: 60px;
@@ -98,6 +99,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-right: 15px;
+  cursor: pointer;
 }
 .sidebar-icon-img {
   width: 15px;
