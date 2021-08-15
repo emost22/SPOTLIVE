@@ -37,7 +37,7 @@
             <div><img src="~@/assets/icon-alarm.png" class="header-icon-img"></div>
           </li>
           <li class="nav-item header-item">
-            <div @click.native="clicklogoutBtn">
+            <div @click="clicklogoutBtn">
               <img src="~@/assets/icon-logout.png" class="header-icon-img">
             </div>
           </li>
