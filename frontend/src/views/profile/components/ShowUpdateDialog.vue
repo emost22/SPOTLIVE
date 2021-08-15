@@ -113,7 +113,7 @@ export default {
   },
   created: function () {
     this.getUser()
-  },
+ },
   mounted(){
   },
   methods: {
@@ -124,7 +124,7 @@ export default {
       this.runningTime = showData.runningTime
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
-      // this.selected = showData.timetables[0].dateTime
+      this.selected = ''
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
@@ -203,6 +203,17 @@ export default {
       console.log(this.posterImage)
       this.$store.dispatch('requestPutShow', data)
       .then((res) => {
+        // this.getMyProfile()
+        var showData = {
+          showId: this.getShowData.showId,
+          title: this.showInfoTitle,
+          description: this.showInfoDescription,
+          posterUrl: this.preview,
+          price: this.price,
+          runningTime: this.runningTime,
+          timetables: this.timetables ,
+        }
+        this.$store.dispatch('requestGetShowData', showData)
         this.getMyProfile()
       })
       .catch((err) => {
