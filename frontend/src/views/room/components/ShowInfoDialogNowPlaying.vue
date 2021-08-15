@@ -1,65 +1,64 @@
 <template>
   <div class="modal fade" id="showInfoDialogNowPlaying" ref="showInfoDialogNowPlaying" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple ticket-detail-modal-design">
       <div class="modal-content-m">
+
         <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="information-header mt-3 ms-3">
+            {{this.loginUser.profileNickname}}의 티켓 정보
+          </div>
+          <button 
+            type="button" 
+            class="btn-close me-2 mt-1"
+            data-bs-dismiss="modal" 
+            aria-label="Close"
+          />       
         </div>
-        <div class="modal-body mx-2">
-          <div class="dialog-profile-info">
-            <div><img :src="showReservationData.userRes.profileImageUrl" class="profile-img"></div>
-            <div class="profile-detail-show-reservation">
-              <div> <span class="txtcolor-nyellow">{{ showReservationData.userRes.userName }}</span> 님</div>
-              <p> {{ showReservationData.userRes.accountEmail }}</p>
+
+        <div class="modal-body">
+          <div class="my-ticket-box d-flex flex-row justify-content-evenly">   
+            <div class="my-ticket-poster">
+              <div class="d-flex ticket-poster-box">
+                <img :src="showReservationData.posterUrl" class="ticket-poster-img bdcolor-bold-npurple"> 
+              </div>
+            </div>
+            <div class="my-ticket-info">           
+              <div class="ticket-show-info">  
+                <div class="mb-2"> 
+                  <div><label class="ticket-label-in-dialog">TEAM</label></div>
+                  <div class="txtcolor-white-ngreen">{{}}</div>
+                </div>       
+                <div class="mb-2">
+                  <div><label class="ticket-label-in-dialog">공연명</label></div>
+                  <div class="txtcolor-white-npink">{{ showReservationData.showInfoTitle }}</div>
+                </div>
+                <div class="mb-2">
+                  <div><label class="ticket-label-in-dialog">티켓가격</label></div>
+                  <div class="txtcolor-white-npurple">{{ showReservationData.price }}원</div>
+                </div>
+                <div class="d-flex flex-row mb-2">
+                  <div class="me-3">
+                    <label class="ticket-label-in-dialog">공연 시간</label>
+                    <div class="txtcolor-white-nyellow"> {{}} </div>
+                  </div>
+                  <div>
+                    <div><label class="ticket-label-in-dialog">러닝타임</label></div>
+                    <div class="txtcolor-white-ngreen">{{showReservationData.runningTime}} min</div> 
+                  </div>
+                </div>
+                <div>
+                  <div><label class="ticket-label-in-dialog"> 공연 설명</label></div>
+                  <div>{{ showReservationData.showInfoDescription }}</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="showInfoWrapper">
-            <form>
-              <div class="d-flex flex-row mb-3">
-                <div class="d-flex flex-row justify-content-center align-items-center camera-input-bgcolor-light-grey camera-size">
-                  <img :src="showReservationData.posterUrl" class="poster-image">
-                </div>
-                <div class="show-info">
-                  <div class="mb-3">
-                    <div class="label-alignment"><label class="form-label label-in-dialog">공연명</label></div>
-                    <div class="d-flex">
-                    {{ showReservationData.showInfoTitle }}
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
-                    <div class="d-flex">
-                    {{ showReservationData.price }}원
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex">
-                    <div class="me-3">
-                      <div class="label-alignment">
-                        <label class="form-label label-in-dialog">공연 시간</label>
-                      </div>
-                      <select class="custom-select-control-m" v-model="timetableId">
-                        <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                      </select>
-                    </div>
-                    <div>
-                      <div class="label-alignment">
-                        <label class="form-label label-in-dialog">러닝타임</label>
-                      </div>
-                      <input type="text" class="custom-form-control" v-model="showReservationDataRunningTime" readonly="readonly" disabled>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="mb-3 label-alignment">
-                <div ><label class="form-label label-in-dialog"> 공연 설명</label></div>
-                <div>{{ showReservationData.showInfoDescription }}</div>
-              </div>
-            </form>
-          </div>
         </div>
-        <div class="modal-footer-m">
+
+        <div class="modal-footer-m my-3">
           <button type="button" class="bdcolor-ngreen small-button" data-bs-dismiss="modal">닫기</button>
         </div>
+
       </div>
     </div>
   </div>
@@ -68,13 +67,13 @@
 <script scoped>
 import { mapGetters } from "vuex"
 export default {
-  name: 'ShowReservationDialog',
+  name: 'ShowInfoDialogNowPlaying',
   data: function () {
     return {
       showInfoId: '',
-      timetables: [],
       user: {},
       timetableId: '',
+      timetables: [],
     }
   }, 
   methods: {
@@ -96,12 +95,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-    'showReservationData'
-    ]),
-    showReservationDataRunningTime: function () {
-      return this.showReservationData.runningTime+' min'
-    }
+    ...mapGetters(['showReservationData', 'loginUser',]),
   },
   watch: {
     showReservationData: function(val, oldval) {
@@ -121,8 +115,88 @@ export default {
 </script>
 
 <style scoped>
+.ticket-detail-modal-design {
+  max-height: 660px;
+  min-width: 550px;
+  width: 70%;
+  background-color: #242424;
+  color: white;
+}
+.my-ticket-box {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+}
+.my-ticket-poster {
+  min-width: 205px;
+  max-width: 205px;
+  min-height: 450px;
+  max-height: 450px;
+  border: none;
+  border-radius: .25rem;
+  background-size: cover;
+  background-image: url(~@/assets/ticket_without_content1_detail.png);
+  background-color: #242424;
+  background-repeat: no-repeat;
+  padding-top: 240px;
+  padding-left: 55px;
+}
+.my-ticket-info {
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 440px;
+  max-height: 440px;
+  border: none;
+  border-radius: .25rem;
+  background-size: cover;
+  background-image: url(~@/assets/ticket_without_content2_detail.png);
+  background-color: #242424;
+  background-repeat: no-repeat;
+  padding-top: 113px;
+  padding-bottom: 18px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
+}
+.ticket-profile-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  border: 2px #FFFFFF;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF,
+}
+.ticket-profile-detail{
+  width: 500px;
+  height: 50px;
+  margin-left: 30px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ticket-poster-img {
+  min-width: 100px;
+  max-width: 100px;
+  min-height: 130px;
+  max-height: 130px;
+}
+.ticket-show-info {
+  text-align: start;
+}
+.ticket-label-in-dialog {
+  font-size: 15px;
+  font-weight: bold;
+}
 
-.btn-close {
+
+/* .btn-close {
   background-image: url('~@/assets/icon-x.png');
   opacity: 1;
 }
@@ -170,5 +244,5 @@ export default {
 .label-in-dialog {
   font-size: 1.05rem;
   font-weight: bold;
-}
+} */
 </style>
