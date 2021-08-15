@@ -253,7 +253,6 @@ export default {
       this.mainStreamAccountEmail = response.data.userRes.accountEmail
       this.hit = response.data.hit
       this.profileImageUrl = response.data.userRes.profileImageUrl
-      this.accountEmail = response.data.userRes.accountEmail
       if(this.mode != '소통') {
         var showInfoData = {
           runningTime: response.data.showInfoRes.runningTime,
@@ -274,11 +273,11 @@ export default {
       this.initSession(new OpenVidu())
       this.doOpenviduCall()
       let welcomeChat = {
-          userName: this.loginUser.userName,
-          profileImg: this.loginUser.profileImageUrl,
-          charStr: "[SPOTLIVE] 방송에 참여했습니다. 배려심 있는 소통 부탁드립니다. 감사합니다."
-        }
-        this.chatList.push(welcomeChat)
+        userName: this.loginUser.userName,
+        profileImg: this.loginUser.profileImageUrl,
+        charStr: "[SPOTLIVE] 방송에 참여했습니다. 배려심 있는 소통 부탁드립니다. 감사합니다."
+      }
+      this.chatList.push(welcomeChat)
     })
     this.startTimer()
   },
