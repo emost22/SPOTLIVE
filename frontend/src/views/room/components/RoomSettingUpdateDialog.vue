@@ -10,7 +10,7 @@
             <input type='radio' id='rr1' name='u' checked>
             <label for='rr1' class="tab-label-u">설정</label>
             <div class='content-u'>
-              <RoomSettingDialogForm
+              <RoomSettingUpdateDialogForm
                 :categoryIds="categoryIds"
                 @form-data="form => videoData = form"
                 :showInfoList="showInfoList"
@@ -51,12 +51,12 @@
 
 <script scoped>
 import { mapGetters } from "vuex"
-import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
+import RoomSettingUpdateDialogForm from './RoomSettingUpdateDialogForm.vue'
 import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
 export default {
   name: 'RoomSettingUpdateDialog',
   components: {
-    RoomSettingDialogForm,
+    RoomSettingUpdateDialogForm,
     RoomSettingDialogCameraForm
   },
   data: function () {
@@ -77,25 +77,19 @@ export default {
       } 
     },
     makeFormDataForUpdateDialog() {
-      
-      console.log("=================makeFormDataForUpdateDialog RUN...===========================")
-      console.log(this.videoData.thumbnailImage)
-
       let formData = new FormData()
       let videoUpdateByIdPatchReq = {
-        "videoTitle": this.videoData.videoTitle,
-        "videoDescription": this.videoData.videoDescription,
-        "categoryId": this.videoData.categoryId,
+        "videoTitle": this.createdVideoData.videoTitle,
+        "videoDescription": this.createdVideoData.videoDescription,
+        "categoryId": this.createdVideoData.categoryId,
       }
-      formData.append('thumbnailImage', this.videoData.thumbnailImage)
+      formData.append('thumbnailImage', this.createdVideoData.thumbnailImage)
       formData.append('videoUpdateByIdPatchReq', new Blob([JSON.stringify(videoUpdateByIdPatchReq)] , {type: "application/json"}))
       return formData
     },
     roomSettingUpdateDialogButton: function () {
       this.checkMode()
       let videoData = this.makeFormDataForUpdateDialog()
-      console.log(videoData)
-
       let payload = {
         videoData: videoData,
         videoId: this.videoId

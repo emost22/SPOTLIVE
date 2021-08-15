@@ -1,87 +1,88 @@
 <template>
   <div>
-    <!-- <form class="row g-3 needs-validation" novalidate> </form> -->
-    <div class="mb-3">
-      <ValidationProvider rules="required|max:20" v-slot="v">
-      <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
-      <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
-        <span>{{ v.errors[0] }}</span>
-      </ValidationProvider>
-    </div>
-    <div class="mb-3 d-flex">
-      <div class="flex-fill me-3">
-      <ValidationProvider v-slot="v"  rules="required">
-        <div class="label-alignment"><label class="form-label" for="categoryId">분류</label></div>
-        <select class="custon-select-control" aria-label="Default select example" v-model="form.categoryId" id="categoryId">
-          <option :key="i" :value="d.categoryId" v-for="(d, i) in categoryIds">{{ d.categoryName }}</option>
+    <form> 
+      <div class="mb-3">
+        <ValidationProvider rules="required|max:20" v-slot="v">
+        <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
+        <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
+          <span>{{ v.errors[0] }}</span>
+        </ValidationProvider>
+      </div>
+      <div class="mb-3 d-flex">
+        <div class="flex-fill me-3">
+        <ValidationProvider v-slot="v"  rules="required">
+          <div class="label-alignment"><label class="form-label" for="categoryId">분류</label></div>
+          <select class="custon-select-control" aria-label="Default select example" v-model="form.categoryId" id="categoryId">
+            <option :key="i" :value="d.categoryId" v-for="(d, i) in categoryIds">{{ d.categoryName }}</option>
+          </select>
+          <span>{{ v.errors[0] }}</span>
+        </ValidationProvider>
+        </div>
+        <div>
+          <div class="label-alignment"><label class="form-label">영상용도</label>
+          <div class="icon-info" data-bs-toggle="tooltip" data-bs-placement="top" title="용도를 꼭 확인해주세요!💥"></div>
+          </div>
+          <div class="d-flex mt-1">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
+              <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
+                공연용
+              </label>
+            </div>
+            <div class="form-check ms-2">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
+              <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
+                홍보용
+              </label>
+            </div>
+            <div class="form-check ms-2">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
+              <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
+                소통용
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3" v-if="form.mode=='공연' || form.mode=='홍보'">
+        <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
+        <div class="d-flex">
+        <select @change="getRecentlyTimeTable()" class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
+          <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
         </select>
-        <span>{{ v.errors[0] }}</span>
-      </ValidationProvider>
-      </div>
-      <div>
-        <div class="label-alignment"><label class="form-label">영상용도</label>
-        <div class="icon-info" data-bs-toggle="tooltip" data-bs-placement="top" title="용도를 꼭 확인해주세요!💥"></div>
+        <button class="plus-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"> </button>
         </div>
-        <div class="d-flex mt-1">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
-            <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
-              공연용
-            </label>
-          </div>
-          <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
-            <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
-              홍보용
-            </label>
-          </div>
-          <div class="form-check ms-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
-            <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
-              소통용
-            </label>
-          </div>
+        <input v-if="form.mode=='공연'" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
+      </div>
+      <div class="mb-3">
+        <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
+        <div class="d-flex">
+          <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
+          <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
+          <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
+          </label>
         </div>
       </div>
-    </div>
-    <div class="mb-3" v-if="form.mode=='공연' || form.mode=='홍보'">
-      <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
-      <div class="d-flex">
-      <select @change="getRecentlyTimeTable()" class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
-        <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
-      </select>
-      <button class="plus-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"> </button>
+      <div class="mb-3">
+        <ValidationProvider v-slot="v"  rules="max:200 |required">
+          <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
+          <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
+          <span>{{ v.errors[0] }}</span>
+        </ValidationProvider>
       </div>
-      <input v-if="form.mode=='공연'" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
-    </div>
-    <div class="mb-3">
-      <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
-      <div class="d-flex">
-        <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
-        <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
-        <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
-        </label>
-      </div>
-    </div>
-    <div class="mb-3">
-      <ValidationProvider v-slot="v"  rules="max:200 |required">
-        <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
-        <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
-        <span>{{ v.errors[0] }}</span>
-      </ValidationProvider>
-    </div>
-    <button @click="check">gdgdgd</button>
+    </form>
   </div>
 </template>
 
 <script>
-import { ValidationProvider } from 'vee-validate';
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'RoomSettingDialogForm',
   components: {
     ValidationProvider,
+    ValidationObserver,
   },
   props: {
     categoryIds: {
@@ -118,7 +119,6 @@ export default {
       fileName:'',
       showInfoIds: [],
       toast: null,
-      box: "TEST",
     }
   },
   computed: {
@@ -150,23 +150,9 @@ export default {
     },
   },
   methods: {
-    check() {
-      console.log("====================== CHECK! =======================")
-      console.log(this.form)
-      console.log(this.box)
-    },
     handleFileChange(e) {
-      console.log("=================handleFileChange RUN...===========================")
-
       this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
-      // this.$store.dispatch('requestSetCreatedVideoData', this.form)
       this.fileName = e.target.files[0].name // 파일이름을 넣음
-
-      this.box = e.target.files[0]
-      console.log(this.form.thumbnailImage)
-      console.log(this.box)
-      console.log("=================handleFileChange DONE...===========================")
-
       this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {
@@ -246,23 +232,9 @@ export default {
     this.makeToolTipsObject()
   },
   updated() {
-    console.log("DATA 변경 발생=================")
-    console.log(this.form)
-    console.log(this.box)
     this.$emit('form-data', this.form)
-    console.log("EMIT 이후=================")
-    console.log(this.form)
-    console.log(this.box)
+    this.$emit('invalid', this.$refs.observer.invalid)
   },
-  watch: {
-    box(val, oldVal) {
-      console.log("========= box 변화 감지 =========")
-      console.log("* OLD")
-      console.log(oldVal)
-      console.log("* NEW")
-      console.log(val)
-    }
-  }
 }
 </script>
 

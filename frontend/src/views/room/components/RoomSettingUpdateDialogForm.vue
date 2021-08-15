@@ -51,17 +51,16 @@
     <div class="mb-3">
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
       <div class="d-flex">
-        <input type="file" class="custom-file-update-input" id="updateThumbnail" @change="updatehandleFileChange">
-        <input class="custom-form-control" v-model="this.fileName" readonly="readonly" @click="clickDodBoki" disabled="disabled"/>
-        <label data-browse="Browse" class="search-button" for="updateThumbnail" @change="updatehandleFileChange">
+        <input type="file" class="custom-file-update-input" id="updateThumbnail" @change="updateHandleFileChange">
+        <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
+        <label data-browse="Browse" class="search-button" for="updateThumbnail" @change="updateHandleFileChange">
         </label>
       </div>
     </div>
     <div class="mb-3">
-      <div class="label-alignment"><label for="videoDescription" class="form-label" @click="showNowThumbnail">설명</label></div>
+      <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
-    <button @click="check">gdgdgd</button>
   </div>
 </template>
 
@@ -108,7 +107,6 @@ export default {
       fileName:'',
       showInfoIds: [],
       toast: null,
-      box: "TEST",
     }
   },
   computed: {
@@ -133,53 +131,17 @@ export default {
     form: {
       deep: true,
       handler(value) {
-        console.log("여기는 업데이트 폼")
-        // console.log("폼이 바꼈따!! this.closing : ",this.closing,"this.$props.closing : ",this.$props.closing)
-        // // this.closing = false
-        // console.log(this.form)
-        // console.log("typeof this.form.thumbnailImage",typeof (this.form.thumbnailImage))
-        console.log("이게 왜 지혼자 바뀜..? this.closing : ",this.closing,"this.$props.closing : ",this.$props.closing)
-        
-        // if(this.$props.closing != true) {//모달이 켜져있을 때만 실행하기 위함?
-        console.log("폼 정보:",value)
         this.$store.dispatch('requestSetCreatedVideoData', value)
-        // }
       }
     },
   },
   methods: {
-    check() {
-      console.log("====================== CHECK! =======================")
-      console.log(this.form)
-      console.log(this.box)
-    },
-    clickDodBoki() {
-      console.log("클릭 돋보기")
-      console.log("this.$props.closing : ", this.$props.closing)
-      this.closing = false
-    },
-    showNowThumbnail() {
-      console.log("현재 폼에 파일 확인 : ",this.form.thumbnailImage)
-      console.log("this.$props.closing : ", this.$props.closing)
-      // this.$store.state.createdVideoData.thumbnailImage = '22'
-      // this.$store.state.createdVideoData.thumbnailImage = this.form.thumbnailImage
-    },
-    updatehandleFileChange(e) {
-      console.log("=================handleFileChange RUN...===========================")
-      
+    updateHandleFileChange(e) {
       this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
-      // this.$store.dispatch('requestSetCreatedVideoData', this.form)
       this.fileName = e.target.files[0].name // 파일이름을 넣음
-
-      this.box = e.target.files[0]
-      console.log(this.form.thumbnailImage)
-      console.log(this.box)
-      console.log("=================handleFileChange DONE...===========================")
-
       this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {
-      console.log("공연정보들 폼에 초기화 되나요?")
       this.$props.showInfoList.forEach((showInfo, index) => {
         this.showInfoIds.push({ v: index, t: showInfo})
       })
