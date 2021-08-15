@@ -27,9 +27,17 @@ export default {
   beforeRouteLeave (to, from, next) {
     if (to.name != "RoomDetail") {
       this.$store.dispatch("requestSetUserOnCreateVideo", false)
-      this.$store.dispatch("requestSetCreatedVideoData", {})
       this.$store.dispatch("requestSetFileNameOfVideo", "")
       this.$store.dispatch('requestLeaveSession')
+      this.$store.dispatch("requestSetCreatedVideoData", {
+        categoryId: '1',
+        thumbnailImage: [],
+        videoDescription: '',
+        videoTitle: '',
+        showInfoId: '',
+        showTime:'',
+        mode: '공연',
+      })
     }
     next()
   },

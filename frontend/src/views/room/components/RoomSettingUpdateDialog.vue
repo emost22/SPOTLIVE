@@ -14,7 +14,6 @@
                 :categoryIds="categoryIds"
                 @form-data="form => videoData = form"
                 :showInfoList="showInfoList"
-                :createdVideoData="createdVideoData"
                 :closing="closing"
               />
             </div>
@@ -41,7 +40,7 @@
       <strong>프로필 > 공연 생성</strong> 버튼 클릭하여<br>
       상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
       <div class="d-flex justify-content-center mt-4">
-        <div><button type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas" @click="routeToProfile()">프로필로 가기</button></div>
+        <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas" @click="routeToProfile()">프로필로 가기</button></div>
       </div>
     </div>
   </div>

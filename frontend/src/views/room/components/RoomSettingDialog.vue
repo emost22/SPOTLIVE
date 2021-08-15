@@ -14,7 +14,6 @@
                 :categoryIds="categoryIds"
                 @invalid="invalid => isInvalid = invalid"
                 :showInfoList="showInfoList"
-                :createdVideoData="createdVideoData"
                 :closing="closing"
               />
             </div>
@@ -77,7 +76,6 @@ export default {
   computed: {
     ...mapGetters([
     'loginUser',
-    'createdVideoData'
     ]),
   },
   mounted() {

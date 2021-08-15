@@ -1,8 +1,8 @@
 <template>
   <div>
-    <form>
+    <form v-on:submit.prevent autocomplete="off">
       <div class="mb-3">
-        <div class="label-alignment"><label for="videoTitle" class="form-label">업데이트다이알로그제목</label></div>
+        <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
         <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
       </div>
       <div class="mb-3 d-flex">
@@ -18,19 +18,19 @@
           </div>
           <div class="d-flex mt-1">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode" onclick="return(false);">
               <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
                 공연용
               </label>
             </div>
             <div class="form-check ms-2">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode" onclick="return(false);">
               <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
                 홍보용
               </label>
             </div>
             <div class="form-check ms-2">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode" onclick="return(false);">
               <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
                 소통용
               </label>
@@ -82,9 +82,6 @@ export default {
       type: Array,
       default: [],
     },
-    createdVideoData: {
-      type: Object,
-    },
     closing: {
       type: Boolean
     }
@@ -107,7 +104,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex']),
+    ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex', 'createdVideoData']),
   },
   watch: {
     fileNamevuex(value, oldvalue) {
@@ -115,7 +112,7 @@ export default {
     },
     closing(value, oldvalue) {
       if (value == true) {
-        this.initDataWhenClosing()
+        // this.initDataWhenClosing()
       } else {
         this.initDataWhenOpenSettingUpdateDialog()
       }
@@ -123,7 +120,9 @@ export default {
     form: {
       deep: true,
       handler(value) {
-        this.$store.dispatch('requestSetCreatedVideoData', value)
+        if(this.$props.closing != true) { 
+          this.$store.dispatch('requestSetCreatedVideoData', value)
+        }
       }
     },
   },
@@ -168,19 +167,19 @@ export default {
       this.showInfoIds = []
     },
     initDataWhenOpenSettingUpdateDialog() {
-      this.form.categoryId = this.$props.createdVideoData.categoryId
+      this.form.categoryId = this.createdVideoData.categoryId
       this.fileName = this.fileNamevuex
-      this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
-      this.form.videoDescription = this.$props.createdVideoData.videoDescription
-      this.form.videoTitle = this.$props.createdVideoData.videoTitle
+      this.form.thumbnailImage = this.createdVideoData.thumbnailImage
+      this.form.videoDescription = this.createdVideoData.videoDescription
+      this.form.videoTitle = this.createdVideoData.videoTitle
+      this.form.mode = this.createdVideoData.mode
       this.makeShowInfoIds()
-      if (this.$props.createdVideoData.showInfoId != '') {
-        this.form.showInfoId = this.$props.createdVideoData.showInfoId
+      if (this.createdVideoData.showInfoId != '') {
+        this.form.showInfoId = this.createdVideoData.showInfoId
       } else {
         this.form.showInfoId = this.showInfoIds[0].t.showInfoId
       }
       this.getRecentlyTimeTable()
-      this.form.mode = this.$props.createdVideoData.mode
     },
   },
   mounted() {

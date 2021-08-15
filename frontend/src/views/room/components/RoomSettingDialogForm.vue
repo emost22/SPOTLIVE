@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form> 
+    <form v-on:submit.prevent autocomplete="off"> 
       <div class="mb-3">
         <ValidationProvider rules="required|max:20" v-slot="v">
         <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
@@ -93,9 +93,6 @@ export default {
       type: Array,
       default: [],
     },
-    createdVideoData: {
-      type: Object,
-    },
     closing: {
       type: Boolean
     }
@@ -118,7 +115,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex']),
+    ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex', 'createdVideoData']),
   },
   watch: {
     fileNamevuex(value, oldvalue) {
@@ -128,14 +125,13 @@ export default {
       if (value == true) {
         this.initDataWhenClosing()
       } else {
-          this.initDataWhenOpenSettingDialog()
+        this.initDataWhenOpenSettingDialog()
       }
     },
     form: {
       deep: true,
       handler(value) {
         if(this.$props.closing != true) { 
-          console.log(value)
           this.$store.dispatch('requestSetCreatedVideoData', value)
         }
       }
@@ -183,15 +179,15 @@ export default {
       this.showInfoIds = []
     },
     initDataWhenOpenSettingDialog() {
-      this.form.categoryId = this.$props.createdVideoData.categoryId
+      this.form.categoryId = this.createdVideoData.categoryId
       this.fileName = this.fileNamevuex
-      this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
-      this.form.mode = this.$props.createdVideoData.mode
-      this.form.videoDescription = this.$props.createdVideoData.videoDescription
-      this.form.videoTitle = this.$props.createdVideoData.videoTitle
+      this.form.thumbnailImage = this.createdVideoData.thumbnailImage
+      this.form.mode = this.createdVideoData.mode
+      this.form.videoDescription = this.createdVideoData.videoDescription
+      this.form.videoTitle = this.createdVideoData.videoTitle
       this.makeShowInfoIds()
-      if (this.$props.createdVideoData.showInfoId != '') {
-        this.form.showInfoId = this.$props.createdVideoData.showInfoId
+      if (this.createdVideoData.showInfoId != '') {
+        this.form.showInfoId = this.createdVideoData.showInfoId
       } else {
         this.form.showInfoId = this.showInfoIds[0].t.showInfoId
       }
