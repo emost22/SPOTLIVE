@@ -1,8 +1,9 @@
 <template>
   <div>
+    <form class="row g-3 needs-validation" novalidate> </form>
     <div class="mb-3">
-      <div class="label-alignment"><label for="videoTitle" class="form-label">{{ form.videoTitle }}</label></div>
-      <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle"> <br>
+      <div class="label-alignment"><label for="videoTitle" class="form-label">업데이트다이알로그제목</label></div>
+      <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
     </div>
     <div class="mb-3 d-flex">
       <div class="flex-fill me-3">
@@ -50,23 +51,28 @@
     <div class="mb-3">
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
       <div class="d-flex">
-        <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
-        <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
-        <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
+        <input type="file" class="custom-file-update-input" id="updateThumbnail" @change="updatehandleFileChange">
+        <input class="custom-form-control" v-model="this.fileName" readonly="readonly" @click="clickDodBoki" disabled="disabled"/>
+        <label data-browse="Browse" class="search-button" for="updateThumbnail" @change="updatehandleFileChange">
         </label>
       </div>
     </div>
     <div class="mb-3">
-      <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
+      <div class="label-alignment"><label for="videoDescription" class="form-label" @click="showNowThumbnail">설명</label></div>
       <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
     </div>
+    <button @click="check">gdgdgd</button>
   </div>
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate';
 import { mapGetters } from 'vuex'
 export default {
-  name: 'RoomSettingUpdateDialogForm',
+  name: 'RoomSettingDialogForm',
+  components: {
+    ValidationProvider,
+  },
   props: {
     categoryIds: {
       type: Array,
@@ -76,6 +82,16 @@ export default {
       type: Array,
       default: [],
     },
+    showInUpdate: {
+      type: Boolean,
+      default: false
+    },
+    createdVideoData: {
+      type: Object,
+    },
+    closing: {
+      type: Boolean
+    }
   },
   data: function () {
     return {
@@ -92,41 +108,90 @@ export default {
       fileName:'',
       showInfoIds: [],
       toast: null,
+      box: "TEST",
     }
   },
   computed: {
-    ...mapGetters(['createdVideoData', 'isSettingDialogOpen', 'settingDialogViewId']),
+    ...mapGetters(['isSettingDialogOpen', 'settingDialogViewId', 'fileNamevuex']),
   },
   watch: {
-    isSettingDialogOpen(value, oldvalue) {
-      if (value && this.settingDialogViewId==2) {
-        this.form.categoryId = this.createdVideoData.categoryId
-        this.form.fileName = this.createdVideoData.thumbnailImage
-        this.form.videoDescription = this.createdVideoData.videoDescription
-        this.form.videoTitle = this.createdVideoData.videoTitle
-        this.form.showInfoId = this.createdVideoData.showInfoId
-        this.form.showTime = this.createdVideoData.showTime
+    fileNamevuex(value, oldvalue) {
+      this.fileName = value
+    },
+    closing(value, oldvalue) {
+      console.log("클로징 감지")
+      if (value == true) {
+        this.initDataWhenClosing()
+      } else {
+        if (this.$props.showInUpdate) {
+            this.initDataWhenOpenSettingUpdateDialog()
+          } else {
+            this.initDataWhenOpenSettingDialog()
+          }
+        }
+    },
+    form: {
+      deep: true,
+      handler(value) {
+        console.log("여기는 업데이트 폼")
+        // console.log("폼이 바꼈따!! this.closing : ",this.closing,"this.$props.closing : ",this.$props.closing)
+        // // this.closing = false
+        // console.log(this.form)
+        // console.log("typeof this.form.thumbnailImage",typeof (this.form.thumbnailImage))
+        console.log("이게 왜 지혼자 바뀜..? this.closing : ",this.closing,"this.$props.closing : ",this.$props.closing)
+        
+        // if(this.$props.closing != true) {//모달이 켜져있을 때만 실행하기 위함?
+        console.log("폼 정보:",value)
+        this.$store.dispatch('requestSetCreatedVideoData', value)
+        // }
       }
     },
   },
   methods: {
-    handleFileChange(e) {
+    check() {
+      console.log("====================== CHECK! =======================")
+      console.log(this.form)
+      console.log(this.box)
+    },
+    clickDodBoki() {
+      console.log("클릭 돋보기")
+      console.log("this.$props.closing : ", this.$props.closing)
+      this.closing = false
+    },
+    showNowThumbnail() {
+      console.log("현재 폼에 파일 확인 : ",this.form.thumbnailImage)
+      console.log("this.$props.closing : ", this.$props.closing)
+      // this.$store.state.createdVideoData.thumbnailImage = '22'
+      // this.$store.state.createdVideoData.thumbnailImage = this.form.thumbnailImage
+    },
+    updatehandleFileChange(e) {
       console.log("=================handleFileChange RUN...===========================")
-      this.form.thumbnailImage = e.target.files[0]
-      this.fileName = e.target.files[0].name
+      
+      this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
+      // this.$store.dispatch('requestSetCreatedVideoData', this.form)
+      this.fileName = e.target.files[0].name // 파일이름을 넣음
+
+      this.box = e.target.files[0]
       console.log(this.form.thumbnailImage)
+      console.log(this.box)
       console.log("=================handleFileChange DONE...===========================")
+
+      this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
     },
     makeShowInfoIds() {
-      this.showInfoList.filter((showInfo, index) => {
-        this.showInfoIds.push({ v: index, t: showInfo,})
+      console.log("공연정보들 폼에 초기화 되나요?")
+      this.$props.showInfoList.forEach((showInfo, index) => {
+        this.showInfoIds.push({ v: index, t: showInfo})
       })
     },
     getRecentlyTimeTable() {
       this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
       .then((response) => {
-        console.log(response.data)
-        this.form.showTime = response.data.dateTime
+        if (response.data.length == 0) {
+          this.form.showTime = '현재 30분 내 공연이 존재하지 않습니다. '
+        } else {
+          this.form.showTime = response.data.dateTime
+        }
       }).catch((error) => {
       })
     },
@@ -135,24 +200,62 @@ export default {
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return bootstrap.Tooltip.getOrCreateInstance(tooltipTriggerEl)
       })
-    }
-  },
-  created() {
-    this.makeShowInfoIds()
+    },
+    initDataWhenClosing() {
+      console.log("=================initDataWhenClosing RUN...===========================")
+      this.form = {
+            categoryId: '1',
+            thumbnailImage: [], // 파일이 들어감
+            videoDescription: '',
+            videoTitle: '',
+            showInfoId: '1',
+            showTime:'',
+            mode: '공연',
+          }
+      this.fileName = ''
+      this.showInfoIds = []
+    },
+    initDataWhenOpenSettingDialog() {
+      console.log("=================initDataWhenOpenSettingDialog RUN...===========================")
+      this.form.categoryId = this.$props.createdVideoData.categoryId
+      this.fileName = this.fileNamevuex
+      this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
+      this.form.mode = this.$props.createdVideoData.mode
+      this.form.videoDescription = this.$props.createdVideoData.videoDescription
+      this.form.videoTitle = this.$props.createdVideoData.videoTitle
+      if (this.$props.createdVideoData.showInfoId != '') {
+        this.makeShowInfoIds()
+        this.form.showInfoId = this.$props.createdVideoData.showInfoId
+      } else {
+        this.makeShowInfoIds()
+        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
+      }
+      this.getRecentlyTimeTable()
+    },
+    initDataWhenOpenSettingUpdateDialog() {
+      console.log("=================initDataWhenOpenSettingUpdateDialog RUN...===========================")
+      this.form.categoryId = this.$props.createdVideoData.categoryId
+      this.fileName = this.fileNamevuex
+      this.form.thumbnailImage = this.$props.createdVideoData.thumbnailImage
+      this.form.videoDescription = this.$props.createdVideoData.videoDescription
+      this.form.videoTitle = this.$props.createdVideoData.videoTitle
+      if (this.$props.createdVideoData.showInfoId != '') {
+        this.makeShowInfoIds()
+        this.form.showInfoId = this.$props.createdVideoData.showInfoId
+      } else {
+        this.makeShowInfoIds()
+        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
+      }
+      this.getRecentlyTimeTable()
+      // this.form.showInfoId = this.$props.createdVideoData.showInfoId
+      // this.form.showTime = this.$props.createdVideoData.showTime
+      this.form.mode = this.$props.createdVideoData.mode
+    },
+    
   },
   mounted() {
     this.makeToolTipsObject()
   },
-  updated() {
-    console.log("=====================UPDATED=====================")
-    if (this.form.mode == '홍보' || this.form.mode == '소통') {
-        delete this.form.showTime
-      if (this.form.mode == '소통') {
-        delete this.form.showInfoId
-      }
-    } 
-    this.$emit('form-data', this.form)
-  }
 }
 </script>
 
@@ -235,7 +338,7 @@ form {
   border-color: #04F7CA;
 }
 
-.custom-file-input {
+.custom-file-update-input {
     display: none;
 }
 .tooltip.tooltip-top,

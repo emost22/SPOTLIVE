@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -27,12 +28,22 @@ public class VideoRes {
     String thumbnailUrl;
     String videoUrl;
     Boolean isLive;
+    Long videoLength;
     Long hit;
     String sessionId;
     ShowInfoRes showInfoRes;
     CategoryRes categoryRes;
 
     public static VideoRes of(Video video) {
+
+        Duration duration = null;
+        Long videoLength = null;
+
+        if(video.getEndTime() != null){
+            duration = Duration.between(video.getEndTime(), video.getStartTime());
+            videoLength = Math.abs(duration.getSeconds());
+        }
+
         if(video.getShowInfo() != null) {
             return VideoRes.builder()
                     .videoId(video.getVideoId())
@@ -45,6 +56,7 @@ public class VideoRes {
                     .videoUrl(video.getVideoUrl())
                     .isLive(video.getIsLive())
                     .hit(video.getHit())
+                    .videoLength(videoLength)
                     .sessionId(video.getSessionId())
                     .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
                     .categoryRes(CategoryRes.of(video.getCategory()))
@@ -61,6 +73,7 @@ public class VideoRes {
                     .videoUrl(video.getVideoUrl())
                     .isLive(video.getIsLive())
                     .hit(video.getHit())
+                    .videoLength(videoLength)
                     .sessionId(video.getSessionId())
 //                    .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
                     .categoryRes(CategoryRes.of(video.getCategory()))
