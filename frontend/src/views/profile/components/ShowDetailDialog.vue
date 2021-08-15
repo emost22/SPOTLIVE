@@ -17,7 +17,7 @@
                 </div>
               </div>
               <div class="d-flex flex-row">    
-                <div><img :src="getShowData.posterUrl" class="show-img"></div>
+                <div><img :src="getShowData.posterUrl" class="show-detail-img"></div>
                 <div class="show-info">
                   <div class="mb-3">
                     <div class="label-alignment"><label class="form-label">공연명</label></div>
@@ -36,7 +36,7 @@
                   <div class="mb-3 d-flex">
                     <div class="flex-fill">
                       <div class="label-alignment"><label class="form-label">공연 시간</label></div>
-                      <select class="custom-select-control-m show-timetable" aria-label="Default select showDetail" v-model="timetableId">
+                      <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
@@ -165,7 +165,7 @@ export default {
 <style scoped>
 .show-modal-design {
   max-height: 700px;
-  min-width: 600px;
+  min-width: 550px;
   width: 70%;
   background-color: #242424;
   color: white;
@@ -175,8 +175,8 @@ export default {
   font-weight: bold;
 }
 .profile-info {
-  margin-left: 30px;
-  margin-bottom: 40px;
+  margin-left: 25px;
+  margin-bottom: 30px;
 }
 .profile-small-img {
   width: 50px;
@@ -192,7 +192,7 @@ export default {
   margin-left: 30px;
   text-align: left;
 }
-.show-img {
+.show-detail-img {
   margin-left: 20px;
   min-width: 180px;
   max-width: 180px;
@@ -200,17 +200,14 @@ export default {
   max-height: 230px;
 }
 .show-info {
-  margin-left: 20px;
+  margin-left: 30px;
   text-align: start;
 }
 .show-description {
-  margin-top: 40px;
+  margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
   text-align: start;
-}
-.show-timetable {
-  width: 230px;
 }
 .custom-select-control-m {
   background-color: #595959;
@@ -224,6 +221,7 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
 }
 .show-popup {
   margin-top: 50px;

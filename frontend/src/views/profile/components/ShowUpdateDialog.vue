@@ -263,6 +263,7 @@ export default {
   margin-right: 20px;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 }
 .show-info {
   width: 300px;
@@ -393,7 +394,7 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
-  
+  cursor: pointer;
 }
 .btn-remove-timetable{
   display: block;
@@ -406,6 +407,7 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
+  cursor: pointer;
 }
 .show-img-box{
   width: 100%;

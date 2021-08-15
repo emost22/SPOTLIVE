@@ -265,6 +265,7 @@ export default {
   margin-right: 20px;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 }
 .show-info {
   width: 300px;
@@ -366,13 +367,15 @@ export default {
 
 .datetime-theme .vdatetime-popup{
   background-color: #242424;
-  color: white
+  color: white;
 }
-
+.datetime-theme {
+  cursor: pointer;
+}
 .show-create-timetable {
   width: 220px;
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.25rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;
@@ -382,6 +385,7 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
 }
 .btn-add-timetable{
   display: block;
@@ -395,11 +399,11 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
-  
+  cursor: pointer;
 }
 .btn-remove-timetable{
   display: block;
-  width: 65px;
+  width: 6px;
   height: 37px;
   font-size: 16px;
   background-color: #595959;
@@ -408,6 +412,7 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
+  cursor: pointer;
 }
 .show-img-box{
   width: 100%;

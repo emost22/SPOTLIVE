@@ -251,6 +251,7 @@ textarea {
   font-size: 15px;
   font-weight: bold;
   color: white;
+  cursor: pointer;
 }
 .full-wide-screen {
   margin-left: 30px;

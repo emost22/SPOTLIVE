@@ -59,6 +59,7 @@ export default {
   overflow:hidden;
   background-size: cover;
   margin:0;
+  cursor: pointer;
 }
 .my-video-card-info-box {
   width:300px;
@@ -66,6 +67,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 }
 .my-video-card-img-profile {
   width: 40px;
