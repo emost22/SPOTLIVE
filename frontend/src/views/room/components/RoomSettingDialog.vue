@@ -2,31 +2,33 @@
   <div class="modal fade" id="roomSettingDialog" ref="roomSettingDialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
-        <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeRoomSettingDialog()"></button>
-        </div>
-        <div class="modal-body">
-          <div class='tabs'>
-            <input type='radio' id='r1' name='t' checked>
-            <label for='r1' class="tab-label">설정</label>
-            <div class='content'>
-              <RoomSettingDialogForm
-                :categoryIds="categoryIds"
-                :showInfoList="showInfoList"
-                :closing="closing"
-              />
-            </div>
-            <input type='radio' id='r2' name='t'>
-            <label for='r2' class="tab-label">카메라</label>
-            <div class='content'>
-              <RoomSettingDialogCameraForm/>
-            </div>
-            <div id='slider'></div>
+          <div class="modal-header no-border">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeRoomSettingDialog()"></button>
           </div>
-        </div>
-        <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button setting-button" data-bs-dismiss="modal">확인</button>
-        </div>
+          <div class="modal-body">
+            <div class='tabs'>
+              <input type='radio' id='r1' name='t' checked>
+              <label for='r1' class="tab-label">설정</label>
+              <div class='content'>
+                <ValidationObserver ref="settingDialogObserver" @change="changeInput()">
+                  <RoomSettingDialogForm
+                    :categoryIds="categoryIds"
+                    :showInfoList="showInfoList"
+                    :closing="closing"
+                  />
+                </ValidationObserver>
+              </div>
+              <input type='radio' id='r2' name='t'>
+              <label for='r2' class="tab-label">카메라</label>
+              <div class='content'>
+                <RoomSettingDialogCameraForm/>
+              </div>
+              <div id='slider'></div>
+            </div>
+          </div>
+          <div class="modal-footer-m">
+            <button type="button" class="bdcolor-ngreen small-button setting-button" :disabled="invalid" data-bs-dismiss="modal">확인</button>
+          </div>
       </div>
     </div>
     <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
@@ -50,17 +52,20 @@
 import { mapGetters } from "vuex"
 import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
 import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
+import { ValidationObserver } from 'vee-validate';
 export default {
   name: 'RoomSettingDialog',
   components: {
     RoomSettingDialogForm,
-    RoomSettingDialogCameraForm
+    RoomSettingDialogCameraForm,
+    ValidationObserver,
   },
   data: function () {
     return {
       categoryIds: [],
       showInfoList: [],
       closing: true,
+      invalid: true,
     }
   }, 
   methods: {
@@ -69,7 +74,16 @@ export default {
       roomSettingModal.hide()
       this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
       this.$router.go()
-    }
+    },
+    changeInput: function () {
+      if (this.$refs.settingDialogObserver.flags.invalid) {
+        this.invalid = true
+        this.$store.dispatch('requestSetInvalidStartStreaming', this.invalid)
+      } else {
+        this.invalid = false
+        this.$store.dispatch('requestSetInvalidStartStreaming', this.invalid)
+      }
+    },
   },
   computed: {
     ...mapGetters([
@@ -94,6 +108,7 @@ export default {
       this.showInfoList = response.data
     })
   },
+  
 }
 </script>
 

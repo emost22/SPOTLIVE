@@ -129,6 +129,10 @@ export default {
         return $axios.get(URL)
     },
 
+    requestSetInvalidStartStreaming({ commit }, payload) {
+        commit('SET_INVALID_START_STREAMING', payload)
+    },
+
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
