@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MainServiceImplTest {
+    static final int MAX = 2147483647;
     @Mock
     private VideoRepository videoRepository;
 
@@ -39,7 +40,7 @@ class MainServiceImplTest {
     void findAllVideoByModeAndCategoryId() {
         // given
         int page = 0;
-        int size = 3;
+        int size = MAX;
         Long categoryId1 = 6L;
         Long categoryId2 = null;
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
@@ -61,11 +62,11 @@ class MainServiceImplTest {
     void findAllReplayVideoByIsLiveAndCategoryId() {
         // given
         int page = 0;
-        int size = 3;
+        int size = MAX;
         Long categoryId1 = 6L;
         Long categoryId2 = null;
         Boolean isLive = false;
-        Sort sort = Sort.by(Sort.Direction.DESC, "hit").by(Sort.Direction.DESC, "videoId");
+        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
@@ -83,7 +84,7 @@ class MainServiceImplTest {
     void findAllLiveVideoByIsLiveAndCategoryId() {
         // given
         int page = 0;
-        int size = 3;
+        int size = MAX;
         Long categoryId1 = 6L;
         Long categoryId2 = null;
         Boolean isLive = true;
@@ -105,7 +106,7 @@ class MainServiceImplTest {
     void findAllFollowVideoByCategoryId() {
         // given
         int page = 0;
-        int size = 3;
+        int size = MAX;
         Long categoryId1 = 6L;
         Long categoryId2 = null;
         String accountEmail = "emoney96@naver.com";
@@ -150,7 +151,7 @@ class MainServiceImplTest {
     void findAllSearchVideoByKeywordContains(){
         // given
         int page = 0;
-        int size = 3;
+        int size = MAX;
         String keyword = "1";
         Long categoryId1 = 6L;
         Long categoryId2 = null;
