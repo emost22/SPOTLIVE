@@ -59,12 +59,9 @@
           </form>
         </div>
 
-        <div class="modal-footer-m my-3" v-if="timetables.length > 0">
-          <button type="button" class="bdcolor-npink small-button me-5" @click="clearTimeTableArray()" data-bs-dismiss="modal">닫기</button>
-          <button type="button" class="bdcolor-ngreen small-button" @click="reservateShow()">예약하기</button>
-        </div>
-        <div class="modal-footer-m my-3" v-else>
+        <div class="modal-footer-m my-3" >
           <button type="button" class="bdcolor-npink small-button" @click="clearTimeTableArray()" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="bdcolor-ngreen small-button ms-5" @click="reservateShow()" v-if="timetables.length > 0">예약하기</button>
         </div>
       </div>
     </div>
