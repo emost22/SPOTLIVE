@@ -99,10 +99,6 @@ export default {
     },
 
     // RoomCreate.vue (희진)
-    requestSetIsOpenSettingDialog({ commit }, payload) {
-        commit('SET_IS_OPEN_SETTING_DIALOG', payload)
-    },
-
     requestGetCategoryIds(context) {
         const URL = '/category/'
         
@@ -110,7 +106,6 @@ export default {
     },
 
     requestSetCreatedVideoData({ commit }, payload) {
-        console.log(payload)
         commit('SET_CREATEVIDEO_DATA', payload)
     },
 
