@@ -59,4 +59,23 @@ class ReservationServiceImplTest {
         verify(reservationRepository).save(any(Reservation.class));
     }
 
+    @Test
+    void deleteReservationByIdTest() {
+        //given
+        User user = new User();
+        String accountEmail = "accountEmail";
+        String accessToken = "accessToken";
+        user.setAccountEmail(accountEmail);
+        user.setAccessToken(accessToken);
+        Timetable timetable = new Timetable();
+        timetable.setTimetableId(1L);
+        doReturn(Optional.of(user)).when(userRepository).findUserByAccessToken(accessToken);
+        //when
+        Long isSuccess = reservationService.deleteReservationById(accessToken, 1);
+        //then
+        assertThat(isSuccess).isBetween(0L, 1L);
+        verify(userRepository).findUserByAccessToken(anyString());
+        verify(reservationRepository).deleteReservationByTimetable_TimetableIdAndUser_AccountEmail(anyLong(), anyString());
+    }
+
 }
