@@ -8,7 +8,7 @@
       </div> 
       <div class="d-flex flex-row mt-3">
         <div class="d-flex flex-column justify-content-center align-items-center">
-          <img src="~@/assets/icon-profile.png" class="profile-img bdcolor-npink">
+          <img :src="profileImageUrl" @click="goProfile" class="profile-img bdcolor-npink">
           <img src="~@/assets/icon-live-badge.png" class="badge-design">
         </div>
         <div class="d-flex flex-row justify-content-between detail-top ms-3">
@@ -19,9 +19,9 @@
           </div>
           <div class="d-flex flex-column">
             <div class="d-flex flex-column align-items-center mt-3">
-              <button class="bdcolor-nyellow extra-big-button m-1" @click="exitReplay()"> 나가기 </button>
               <button v-if="mode=='홍보'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showReservationDialog">예약하기</button>
               <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showInfoDialogNowPlaying">공연 상세 정보 보기</button>
+              <button class="bdcolor-nyellow extra-big-button m-1" @click="exitReplay()"> 나가기 </button>
             </div>
           </div>
         </div>
@@ -37,6 +37,8 @@ export default {
   name: 'RoomDetail',
   data: function () {
     return {
+      profileImageUrl:"",
+      accountEmail: "",
       videoId:"",
       videoDescription: "",
       mainStreamAccountEmail: "",
@@ -53,6 +55,9 @@ export default {
     exitReplay() {
       this.$router.push({ name: 'Main' })
     },
+    goProfile() {
+      this.$router.push({ name: 'Profile', query: { profileId : this.accountEmail } })
+    },
   },
   created() {
     console.log("MOUNTED!!!")
@@ -60,12 +65,15 @@ export default {
     this.videoId = this.$route.params.videoId
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
+      console.log("영상정보 가져왔음 reponse : ", response.data.userRes.profileImageUrl)
       this.videoDescription = response.data.videoDescription
       this.category = response.data.categoryRes.categoryName
       this.videoTitle = response.data.videoTitle
       this.mainStreamAccountEmail = response.data.userRes.mainStreamAccountEmail
       this.videoUrl = response.data.videoUrl
       this.mode = response.data.mode
+      this.profileImageUrl = response.data.userRes.profileImageUrl
+      this.accountEmail = response.data.userRes.accountEmail
       if(this.mode != '소통') {
         var showInfoData = {
           runningTime: response.data.showInfoRes.runningTime,

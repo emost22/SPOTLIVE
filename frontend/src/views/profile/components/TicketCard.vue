@@ -158,7 +158,7 @@ export default {
 .ticket-img {
   min-width: 375px;
   max-width: 390px;
-  min-height: 170px;
+  min-height: 172px;
   max-height: 170px;
   background-color: #242424;
   border: none;
