@@ -5,8 +5,11 @@
       v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
       @click="goRoomDetail"  
     >
-      <!-- <div class="time-badge" v-if="!video.isLive">{{ Number(video.videoLength)/60 }}m</div> -->
-      <div v-if="inMyProfile" @click="deleteReplayVideo" type="button" class="btn-close"></div>
+      <div class="d-flex flex-row justify-content-between">
+        <div class="my-video-live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
+        <div class="my-video-time-badge" v-if="!video.isLive">{{ videoLength }}</div>
+        <div class="btn-close my-video-delete-badge" v-if="inMyProfile" @click="deleteReplayVideo" type="button"></div>
+      </div>
     </div>
     <div class="my-video-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
       <div>
@@ -32,7 +35,23 @@ export default {
       required: true
     }
   },
+  data: function() {
+    return {
+      videoLength: 0, 
+    }
+  },
+  created: function() {
+    this.getVideoLength()
+  },
   methods: {
+    getVideoLength() {
+      console.log(this.video)
+      console.log(this.video.videoLength)
+      var seconds = Number(this.video.videoLength)
+      var min = parseInt((seconds%3600)/60) < 10 ? '0'+ parseInt((seconds%3600)/60) : parseInt((seconds%3600)/60)
+      var sec = seconds % 60 < 10 ? '0'+seconds % 60 : seconds % 60
+      this.videoLength = min+":" + sec
+    },
     goRoomDetail() {
       if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
       else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
@@ -40,8 +59,6 @@ export default {
     deleteReplayVideo() {
       // videoResList 내 동영상 삭제 axios
     },
-  },
-  computed: {
   },
 }
 </script>
@@ -79,5 +96,37 @@ export default {
   margin-bottom: 0;
   margin-left: 10px;
   text-align: start;
+}
+.my-video-live-badge{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: none;
+  border: none;
+  background-image: url('~@/assets/icon-live-badge.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 10px;
+}
+.my-video-time-badge{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: #242424;
+  color: #FFFFFF;
+  border: none;
+  margin: 10px;
+}
+.my-video-delete-badge {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 </style>

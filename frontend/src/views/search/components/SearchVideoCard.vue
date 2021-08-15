@@ -5,7 +5,7 @@
       v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
       @click="goRoomDetail"  
     >
-      <div class="live-badge" v-if="video.isLive"></div>
+      <div class="live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
       <div class="time-badge" v-if="!video.isLive">{{ videoLength }}</div>
     </div>
     <!-- {{ video.startTime }} -->
@@ -57,8 +57,6 @@ export default {
       this.$router.go()
     },
   },
-  computed: {
-  },
 }
 </script>
 
@@ -106,6 +104,18 @@ export default {
   background-image: url('~@/assets/icon-live-badge.png');
   background-repeat: no-repeat;
   background-position: center;
+  margin: 10px;
+}
+.time-badge{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: #242424;
+  color: #FFFFFF;
+  border: none;
   margin: 10px;
 }
 </style>

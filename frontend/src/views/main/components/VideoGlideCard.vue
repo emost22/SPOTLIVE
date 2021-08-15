@@ -59,8 +59,6 @@ export default {
       this.$router.go()
     },
   },
-  computed: {
-  },
 }
 </script>
 
