@@ -8,6 +8,7 @@
       >
         <div class="live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
         <div class="time-badge" v-if="!video.isLive">{{ videoLength }}</div>
+        <!-- {{ video.startTime }} -->
       </div>
       
       <div class="glide-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
@@ -26,8 +27,10 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default {
-  name: "VideoGlideCard",
+  name: "VideoGlideShowCard",
   props: {
     video: {
       type: Object,
@@ -50,6 +53,24 @@ export default {
       this.videoLength = min+":" + sec
     },
     goRoomDetail() {
+      console.log('공연용 로그인 정보 확인')
+      const reservations = this.loginUser.reservationResList
+      console.log(this.video)
+      // 비디오의 showInfoRes의 showInfoId
+      reservations.forEach((reservation) => { 
+        console.log(reservation.timetableFindByReservationRes.dateTime)
+        console.log(reservation.timetableFindByReservationRes.showInfoRes.showInfoId)
+      })
+      // 내 예약내역의 showInfoId
+      // 내 예약내역의 dateTime과 now 시간의 30분 전후 이면 입장 가능 
+
+      // 입장불가1 같은 showInfoId이지만 dateTime이 타임테이블 정확히 다른 경우 (다른 시간대의 공연에 예약했습니다) 
+      // 노란 팝업창 off canvas
+      
+      // 입장불가2 같은 showInfoId가 아예 없는 경우 (예약 모달)
+      // ShowReservationDialogInMain.vue 
+      // 예약 모달을 띄우고 데이터 showInfoId로 axios로 요청해서 데이터 받기 
+      
       if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
       else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
     },
@@ -57,6 +78,9 @@ export default {
       this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })
       this.$router.go()
     },
+  },
+  computed: {
+    ...mapGetters(['loginUser', ]),
   },
 }
 </script>

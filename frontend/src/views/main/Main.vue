@@ -15,7 +15,7 @@
         <p class="txtcolor-white-ngreen main-title"> 홍보용 영상</p>
         <VideoGlide :videos="ad_videos"/>
         <p class="txtcolor-white-npink main-title"> 공연용 영상</p>
-        <VideoGlide :videos="show_videos"/>
+        <VideoGlideShow :videos="show_videos"/>
         <p class="txtcolor-white-nyellow main-title"> 소통용 영상</p>
         <VideoGlide :videos="talk_videos"/>
         <p class="txtcolor-white-npurple main-title"> 실시간 시청자 높은 영상</p>
@@ -34,6 +34,7 @@ import { mapGetters } from "vuex"
 import MainSidebar from '@/views/main/components/MainSidebar.vue'
 import VideoCarousel from '@/views/main/components/VideoCarousel.vue'
 import VideoGlide from '@/views/main/components/VideoGlide.vue'
+import VideoGlideShow from '@/views/main/components/VideoGlideShow.vue'
 import FilterGlide from '@/views/main/components/FilterGlide.vue'
 
 export default {
@@ -42,6 +43,7 @@ export default {
     MainSidebar,
     VideoCarousel,
     VideoGlide,
+    VideoGlideShow,
     FilterGlide,
   },
   data: function () {
