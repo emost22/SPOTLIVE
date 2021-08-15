@@ -11,7 +11,7 @@
               <div class="d-flex flex-row mb-3 ms-3">
                 <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
                 <div class="profile-small-detail">
-                  <div><span class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</span> 님</div>
+                  <div class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</div>
                   <div>{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
@@ -56,7 +56,7 @@
                         <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
                       <div>
-                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">등록</button>
+                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-white-npurple">입력</button>
                       </div>
                     </div>
                   </div>
@@ -69,7 +69,7 @@
                         </option>
                       </select>
                       <div>
-                        <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-nyellow">삭제</button>
+                        <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-white-ngreen">삭제</button>
                       </div>
                   </div>
                   

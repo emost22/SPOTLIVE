@@ -11,12 +11,12 @@
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body mx-3">
+        <div class="modal-body mx-4">
           <form>
-            <div class="d-flex flex-row mb-3">
+            <div class="d-flex flex-row justify-content-start profile-info">
               <div><img :src="getShowData.profileImageUrl" class="profile-small-img"></div>
               <div class="profile-small-detail">
-                <div><span class="txtcolor-white-nyellow">{{ getShowData.profileNickname }}</span> 님</div>
+                <div class="txtcolor-white-nyellow">{{ getShowData.profileNickname }}</div>
                 <p>{{ getShowData.userId }}</p>
               </div>
             </div>
@@ -49,7 +49,7 @@
               </div>
             </div>
 
-            <div class="show-description mb-3">
+            <div class="show-description">
               <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
               <div>{{ getShowData.description }}</div>
             </div>
@@ -167,7 +167,7 @@ export default {
 <style scoped>
 .show-modal-design {
   max-height: 700px;
-  min-width: 550px;
+  min-width: 600px;
   width: 70%;
   background-color: #242424;
   color: white;
@@ -175,6 +175,10 @@ export default {
 .information-header {
   font-size: 20px;
   font-weight: bold;
+}
+.profile-info {
+  margin-left: 30px;
+  margin-bottom: 40px;
 }
 .profile-small-img {
   width: 50px;
@@ -193,17 +197,18 @@ export default {
   text-align: left;
 }
 .show-img {
-  margin: 20px;
-  min-width: 160px;
-  max-width: 160px;
-  min-height: 220px;
-  max-height: 220px;
+  margin-left: 20px;
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
 }
 .show-info {
-  margin: 20px;
+  margin-left: 20px;
   text-align: start;
 }
 .show-description {
+  margin-top: 40px;
   margin-left: 20px;
   margin-right: 20px;
   text-align: start;
@@ -213,7 +218,7 @@ export default {
 }
 .custom-select-control-m {
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.8rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;
@@ -223,9 +228,5 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-.label-in-dialog {
-  font-size: 1.05rem;
-  font-weight: bold;
 }
 </style>
