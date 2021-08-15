@@ -41,9 +41,10 @@
                 <div class="mb-3 d-flex">
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
-                    <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId">
+                    <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId" v-if="timetables.length > 0">
                       <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                     </select>
+                    <div class="d-flex" v-else>예약 가능한 시간이 없습니다.</div>
                   </div>
                 </div>
               </div>
@@ -57,9 +58,12 @@
           </form>
         </div>
 
-        <div class="modal-footer-m my-3">
+        <div class="modal-footer-m my-3" v-if="timetables.length > 0">
           <button type="button" class="bdcolor-npink small-button me-5" @click="clearTimeTableArray()" data-bs-dismiss="modal">닫기</button>
           <button type="button" class="bdcolor-ngreen small-button" @click="reservateShow()">예약하기</button>
+        </div>
+        <div class="modal-footer-m my-3" v-else>
+          <button type="button" class="bdcolor-npink small-button" @click="clearTimeTableArray()" data-bs-dismiss="modal">닫기</button>
         </div>
       </div>
     </div>
@@ -115,12 +119,15 @@ export default {
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable(timetables) {
-      this.timetableId = timetables[0].timetableId
       let length = timetables.length
-      this.timetables=[]
+      this.timetables = []
+      var now = this.formatter(new Date())
       for(var i = 0; i < length; i++){
         var date = this.formatter(timetables[i].dateTime)
-        this.timetables.push({ v: timetables[i].timetableId, t: date})
+        if (date > now) {
+          if (this.timetableId == '') this.timetableId = timetables[i].timetableId
+          this.timetables.push({ v: timetables[i].timetableId, t: date})
+        }
       }
     },
     clearTimeTableArray() {
