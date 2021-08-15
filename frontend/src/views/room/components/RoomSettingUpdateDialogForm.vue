@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="mb-3">
-      <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
-      <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
+      <div class="label-alignment"><label for="videoTitle" class="form-label">{{ form.videoTitle }}</label></div>
+      <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle"> <br>
     </div>
     <div class="mb-3 d-flex">
       <div class="flex-fill me-3">
@@ -51,7 +51,7 @@
       <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
       <div class="d-flex">
         <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
-        <input class="custom-form-control" v-model="fileName" readonly="readonly" disabled="disabled"/>
+        <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
         <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
         </label>
       </div>
@@ -111,8 +111,11 @@ export default {
   },
   methods: {
     handleFileChange(e) {
+      console.log("=================handleFileChange RUN...===========================")
       this.form.thumbnailImage = e.target.files[0]
       this.fileName = e.target.files[0].name
+      console.log(this.form.thumbnailImage)
+      console.log("=================handleFileChange DONE...===========================")
     },
     makeShowInfoIds() {
       this.showInfoList.filter((showInfo, index) => {
@@ -140,8 +143,8 @@ export default {
   mounted() {
     this.makeToolTipsObject()
   },
-  beforeUpdate() {
-    console.log("asdf")
+  updated() {
+    console.log("=====================UPDATED=====================")
     if (this.form.mode == '홍보' || this.form.mode == '소통') {
         delete this.form.showTime
       if (this.form.mode == '소통') {

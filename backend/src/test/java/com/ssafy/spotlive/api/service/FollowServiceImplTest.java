@@ -5,6 +5,7 @@ import com.ssafy.spotlive.api.response.follow.FollowFindByFanAccountEmailGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.repository.FollowRepository;
+import com.ssafy.spotlive.db.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,9 @@ class FollowServiceImplTest {
 
     @Mock
     private FollowRepository followRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private FollowServiceImpl followService;
@@ -42,15 +46,24 @@ class FollowServiceImplTest {
     @Test
     void deleteFollowByAccountEmail() {
         //given
+        String accessToken = "SOME_TOKEN_VALUE";
         String fanEmail = "ssss@naver.com";
         String artistEmail = "aaaa@naver.com";
 
-        //when
-        followService.deleteFollowByAccountEmail(artistEmail, fanEmail);
+        User user = new User();
+        user.setAccessToken(accessToken);
+        user.setAccountEmail(fanEmail);
+
+        Mockito.when(userRepository.findUserByAccessToken(accessToken)).thenReturn(Optional.ofNullable(user));
+
+        // when
+        followService.deleteFollowByAccountEmail(accessToken, artistEmail);
 
         //then
         Mockito.verify(followRepository).deleteById(Mockito.any());
     }
+
+
 
     @Test
     void findArtistByFanAccountEmail() {

@@ -144,6 +144,11 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
+    public void deleteVideoById(long videoId) {
+        videoRepository.deleteById(videoId);
+    }
+
+    @Override
     public Boolean updateVideoEndTimeById(Long videoId, String accountEmail){
         /**
          * @Method Name : updateVideoEndTimeById
