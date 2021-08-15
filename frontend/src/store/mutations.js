@@ -269,4 +269,8 @@ export default {
     SET_CREATEPROFILE_DATA (state, payload) {
         state.createdProfileData = payload
     },
+
+    SET_INVALID_START_STREAMING(state, payload) {
+        state.invalidForStart = payload
+    }
 }

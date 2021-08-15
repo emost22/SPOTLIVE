@@ -5,7 +5,7 @@
     </div>
     <div class="btn-wrapper">
       <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog"> 설정 </button>
-      <button class="bdcolor-bold-npink extra-big-button start-streaming" @click="startStreaming()" :disabled="isDisabled"> 스트리밍 시작 </button>
+      <button class="bdcolor-bold-npink extra-big-button start-streaming" @click="startStreaming()" :disabled="this.invalidForStart"> 스트리밍 시작 </button>
     </div>
   </div>
 </template>
@@ -18,13 +18,13 @@ export default {
   name:'RoomCreate',
   data() {
     return  {
-      isDisabled: false
     }
   },
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
   beforeRouteLeave (to, from, next) {
+    this.$store.dispatch('requestSetInvalidStartStreaming', true)
     if (to.name != "RoomDetail") {
       this.$store.dispatch("requestSetUserOnCreateVideo", false)
       this.$store.dispatch("requestSetFileNameOfVideo", "")
@@ -117,7 +117,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager']),
+    ...mapGetters([
+      'loginUser', 
+      'ovSessionId', 
+      'ovToken', 
+      'OV', 
+      'ovSession', 
+      'audioDevices', 
+      'videoDevices', 
+      'createdVideoData', 
+      'mainStreamManager',
+      'invalidForStart'
+      ]),
   },
 }
 </script>

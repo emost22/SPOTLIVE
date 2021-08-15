@@ -69,4 +69,7 @@ export default {
     createdProfileData(state) {
         return state.createdProfileData
     },
+    invalidForStart(state) {
+        return state.invalidForStart
+    }
 }
