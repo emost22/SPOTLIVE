@@ -149,6 +149,15 @@ export default {
       this.showInfoList = response.data
     })
   },
+  watch: {
+    videoData(val, oldVal) {
+      console.log("========= VideoData 변화 감지 =========")
+      console.log("* OLD")
+      console.log(oldVal)
+      console.log("* NEW")
+      console.log(val)
+    },
+  }
 }
 </script>
 
