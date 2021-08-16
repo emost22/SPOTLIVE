@@ -125,6 +125,7 @@ export default {
       this.fileName = value
     },
     closing(value, oldvalue) {
+      console.log("룸쎄다폼켜져따")
       if (value == true) {
         this.initDataWhenClosing()
       } else {
@@ -208,6 +209,7 @@ export default {
       } else {
         this.form.showInfoId = this.showInfoIds[0].t.showInfoId
       }
+      this.getRecentlyTimeTable()
     },
     onSubmit() {
       this.$refs.settingDialogObserver.validate()
