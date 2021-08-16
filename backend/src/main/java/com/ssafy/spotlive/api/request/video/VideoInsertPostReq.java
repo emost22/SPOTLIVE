@@ -57,14 +57,17 @@ public class VideoInsertPostReq {
         category.setCategoryId(this.categoryId);
         video.setCategory(category);
 
-        Timetable timetable = new Timetable();
-        timetable.setTimetableId(this.timetableId);
-        video.setTimetable(timetable);
-
         if(this.showInfoId != null) {
             showInfo.setShowInfoId(this.showInfoId);
             video.setShowInfo(showInfo);
         }
+
+        if(this.timetableId != null) {
+            Timetable timetable = new Timetable();
+            timetable.setTimetableId(this.timetableId);
+            video.setTimetable(timetable);
+        }
+
         user.setAccountEmail(this.accountEmail);
         video.setUser(user);
         video.setSessionId(this.sessionId);

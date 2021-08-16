@@ -35,6 +35,7 @@ export default {
         videoDescription: '',
         videoTitle: '',
         showInfoId: '',
+        timetableId: '',
         showTime:'',
         mode: '공연',
       })
@@ -98,6 +99,7 @@ export default {
         "mode": this.createdVideoData.mode,
         "categoryId": this.createdVideoData.categoryId,
         "showInfoId": this.createdVideoData.showInfoId,
+        "timetableId": this.createdVideoData.timetableId,
         "accountEmail": this.loginUser.accountEmail,
         "sessionId": this.ovSessionId,
       }

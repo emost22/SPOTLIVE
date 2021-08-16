@@ -50,7 +50,7 @@ public class VideoController {
     })
     public ResponseEntity<VideoInsertPostRes> insertVideo(
             @ApiIgnore @RequestHeader("Authorization") String accessToken,
-            @RequestPart(value = "posterImage", required = false)  MultipartFile thumbnailImage,
+            @RequestPart(value = "posterImage", required = false) MultipartFile thumbnailImage,
             @RequestPart(value = "videoInsertPostReq") VideoInsertPostReq videoInsertPostReq) {
         /**
          * @Method Name : insertVideo

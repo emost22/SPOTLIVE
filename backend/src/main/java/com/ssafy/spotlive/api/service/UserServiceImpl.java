@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
          * @작성자 : 김민권
          * @Method 설명 : 존재하지않는 회원에 대해서 각 토큰 값을 포함한 user를 삽입하고 반환한다.
          */
+        newUser.setProfileNickname(newUser.getUserName());
         userRepository.save(newUser);
         return UserRes.of(newUser);
     }
