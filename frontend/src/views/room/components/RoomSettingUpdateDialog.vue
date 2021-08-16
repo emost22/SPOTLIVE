@@ -77,25 +77,51 @@ export default {
 
       return formData
     },
-    roomSettingUpdateDialogButton: function () {
+    async roomSettingUpdateDialogButton() {
       let videoData = this.makeFormDataForUpdateDialog()
       let payload = {
         videoData: videoData,
         videoId: this.videoId
       }
-      this.$store.dispatch('requestUpdateSettingDialog', payload)
+      await this.$store.dispatch('requestUpdateSettingDialog', payload)
       .then(res => {
         this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
-        var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
-        this.sendUpdateVideo()
-        roomSettingUpdateDialog.hide()
       })
       .catch(err => {
         alert('라이브 영상 수정을 하다 오류가 났어요! 다시 시도해주세요!')
       })
+
+      await this.$store.dispatch('requestGetRoomDetail', this.videoId)
+      .then((response) => {
+        console.log(response)
+        this.videoDescription = response.data.videoDescription
+        this.category = response.data.categoryRes.categoryName
+        this.videoTitle = response.data.videoTitle
+        this.startTime = response.data.startTime
+        this.hit = response.data.hit
+        this.profileImageUrl = response.data.userRes.profileImageUrl
+        let videoData = {
+          categoryId: response.data.categoryRes.categoryId,
+          thumbnailImage: response.data.thumbnailUrl,
+          videoDescription: this.videoDescription,
+          videoTitle: this.videoTitle,
+          showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+          showTime: response.data.showInfoRes != null ? response.data.showInfoRes.showTime : '',
+          timetableRes: response.data.timetableRes != null ? response.data.timetableRes : '',
+          mode: response.data.mode,
+        }
+        console.log(videoData)
+        this.$store.dispatch('requestSetCreatedVideoData', videoData)
+      }).catch(err => {
+        alert('수정된 데이터를 가져오지 못했어요! 다시 시도해주세요!')
+      })
+
+      let roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
+      this.sendUpdateVideo()
+      roomSettingUpdateDialog.hide()
     },
-    routeToProfile: function () {
-      var roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
+    routeToProfile() {
+      let roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
       roomSettingModal.hide()
       this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
       this.$router.go()
@@ -112,8 +138,8 @@ export default {
     ]),
   },
   mounted() {
-    var modal= this.$refs.roomSettingUpdateDialog
-    var _this = this
+    let modal= this.$refs.roomSettingUpdateDialog
+    let _this = this
     modal.addEventListener('show.bs.modal', function (event) {
       _this.closing = false
     })
