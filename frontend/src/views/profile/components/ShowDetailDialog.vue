@@ -30,7 +30,7 @@
                     </div>
                     <div class="flex-fill">
                       <div class="label-alignment"><label class="form-label">러닝타임</label></div>
-                      <div class="d-flex txtcolor-white-ngreen">{{ getShowData.runningTime }}min</div>                      
+                      <div class="d-flex txtcolor-white-ngreen">{{ getShowData.runningTime }} min</div>                      
                     </div>
                   </div>
                   <div class="mb-3 d-flex">

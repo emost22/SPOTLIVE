@@ -22,7 +22,7 @@
             </div>
             <div v-if="isLive==false" class="d-flex flex-column align-items-center mt-3">
               <button v-if="mode=='홍보'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showReservationDialog">예약하기</button>
-              <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#ShowInfoDialog">공연 상세 정보 보기</button>
+              <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showInfoDialogNowPlaying">공연 정보 확인</button>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@
       </div>
       <div v-if="isLive" class="d-flex flex-column align-items-center mt-3">
         <button v-if="mode=='홍보'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showReservationDialog">예약하기</button>
-        <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showInfoDialog">공연 상세 정보 보기</button>
+        <button v-if="mode=='공연'" class="bdcolor-ngreen extra-big-button m-1" data-bs-toggle="modal" data-bs-target="#showInfoDialogNowPlaying">공연 정보 확인</button>
         <button class="bdcolor-nyellow extra-big-button m-1" @click="closeStreaming()">나가기</button>
       </div>
     </div>
@@ -114,7 +114,7 @@ export default {
         this.addEventForChat()
         this.connectSessionForGuest()
         this.addEventFormainStreamManager()
-        this.addEventForJoinAndExit()
+        this.addEventForJoinAndUpdateAndExit()
       }).catch((error) => {
         console.log(error)
       })
@@ -139,10 +139,15 @@ export default {
         }
       })
     },
-    addEventForJoinAndExit() {
+    addEventForJoinAndUpdateAndExit() {
       this.ovSession.on('signal:join-video', (event) => {
         let eventAccountEmail = event.data
         console.log('[OPENVIDU] JOIN ACCESSED: ' + eventAccountEmail)
+        this.updateVideoInfo()
+      })
+
+      this.ovSession.on('signal:update-video', (event) => {
+        console.log('[OPENVIDU] UPDATE ACCESSED')
         this.updateVideoInfo()
       })
       
@@ -195,10 +200,29 @@ export default {
         this.videoTitle = response.data.videoTitle
         this.startTime = response.data.startTime
         this.hit = response.data.hit
+        this.mode = response.data.mode
+        this.mainStreamAccountEmail = response.data.userRes.accountEmail
+        this.profileImageUrl = response.data.userRes.profileImageUrl
+        if(this.mode != '소통') {
+          var showInfoData = {
+            runningTime: response.data.showInfoRes.runningTime,
+            posterUrl: response.data.showInfoRes.posterUrl,
+            price: response.data.showInfoRes.price,
+            showInfoDescription: response.data.showInfoRes.showInfoDescription,
+            showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+            showInfoTitle: response.data.showInfoRes.showInfoTitle,
+            userRes: {
+              accountEmail: response.data.userRes.accountEmail,
+              userName: response.data.userRes.userName,
+              profileImageUrl:response.data.userRes.profileImageUrl
+            }
+          }
+          this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
+        }
       })
     },
     goProfile() {
-      this.$router.push({ name: 'Profile', query: { profileId : this.accountEmail } })
+      this.$router.push({ name: 'Profile', query: { profileId : this.mainStreamAccountEmail } })
       this.$router.go()
     },
   },
@@ -229,7 +253,6 @@ export default {
       this.mainStreamAccountEmail = response.data.userRes.accountEmail
       this.hit = response.data.hit
       this.profileImageUrl = response.data.userRes.profileImageUrl
-      this.accountEmail = response.data.userRes.accountEmail
       if(this.mode != '소통') {
         var showInfoData = {
           runningTime: response.data.showInfoRes.runningTime,
@@ -250,11 +273,11 @@ export default {
       this.initSession(new OpenVidu())
       this.doOpenviduCall()
       let welcomeChat = {
-          userName: this.loginUser.userName,
-          profileImg: this.loginUser.profileImageUrl,
-          charStr: "[SPOTLIVE] 방송에 참여했습니다. 배려심 있는 소통 부탁드립니다. 감사합니다."
-        }
-        this.chatList.push(welcomeChat)
+        userName: this.loginUser.userName,
+        profileImg: this.loginUser.profileImageUrl,
+        charStr: "[SPOTLIVE] 방송에 참여했습니다. 배려심 있는 소통 부탁드립니다. 감사합니다."
+      }
+      this.chatList.push(welcomeChat)
     })
     this.startTimer()
   },

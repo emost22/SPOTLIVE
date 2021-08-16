@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="showReservationInProfileModal" ref="showReservationInProfileModal" tabindex="-1" aria-labelledby="showReservationInProfileModalLabel" aria-hidden="true">
+  <div class="modal fade" id="showReservationInMainModal" ref="showReservationInMainModal" tabindex="-1" aria-labelledby="showReservationInMainModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">  
       <div class="modal-content-m">
         <div class="modal-header no-border">
@@ -100,7 +100,7 @@
 import { mapGetters } from "vuex"
 
 export default {
-  name: 'ShowReservationDialogInProfile',
+  name: 'ShowReservationDialogInMain',
   data: function() {
     return {
       timetableId: '',

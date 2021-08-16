@@ -1,77 +1,75 @@
 <template>
-  <div>
-    <div 
-      class="modal fade" 
-      id="ticketDetailModal" 
-      ref="ticketDetailModal" 
-      tabindex="-1" 
-      aria-labelledby="ticketDetailModalLabel" 
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple ticket-detail-modal-design">
-        <div class="modal-content-m">
-          <div class="modal-header no-border">
-            <div class="information-header mt-3 ms-3">
-              {{this.loginUser.profileNickname}}의 티켓 정보
-            </div>
-            <button 
-              type="button" 
-              class="btn-close me-2 mt-1"
-              data-bs-dismiss="modal" 
-              aria-label="Close"
-            />
+  <div 
+    class="modal fade" 
+    id="ticketDetailModal" 
+    ref="ticketDetailModal" 
+    tabindex="-1" 
+    aria-labelledby="ticketDetailModalLabel" 
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple ticket-detail-modal-design">
+      <div class="modal-content-m">
+        <div class="modal-header no-border">
+          <div class="information-header mt-3 ms-3">
+            {{this.loginUser.profileNickname}}의 티켓 정보
           </div>
-          <div class="modal-body">
-            <div class="my-ticket-box d-flex flex-row justify-content-evenly">   
-              <div class="my-ticket-poster">
-                <div class="d-flex ticket-poster-box">
-                  <img :src="getShowData.posterUrl" class="ticket-poster-img bdcolor-bold-npurple"> 
-                </div>
+          <button 
+            type="button" 
+            class="btn-close me-2 mt-1"
+            data-bs-dismiss="modal" 
+            aria-label="Close"
+          />
+        </div>
+        <div class="modal-body">
+          <div class="my-ticket-box d-flex flex-row justify-content-evenly">   
+            <div class="my-ticket-poster">
+              <div class="d-flex ticket-poster-box">
+                <img :src="getShowData.posterUrl" class="ticket-poster-img bdcolor-bold-npurple"> 
               </div>
-              <div class="my-ticket-info">           
-                <div class="ticket-show-info">  
-                  <div class="mb-2"> 
-                    <div><label class="ticket-label-in-dialog">TEAM</label></div>
-                    <div class="txtcolor-white-ngreen">{{ getShowData.profileNickname }}</div>
-                  </div>       
-                  <div class="mb-2">
-                    <div><label class="ticket-label-in-dialog">공연명</label></div>
-                    <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
-                  </div>
-                  <div class="mb-2">
-                    <div><label class="ticket-label-in-dialog">티켓가격</label></div>
-                    <div class="txtcolor-white-npurple">{{ getShowData.price }}원</div>
-                  </div>
-                  <div class="d-flex flex-row mb-2">
-                    <div class="me-3">
-                      <label class="ticket-label-in-dialog">공연 시간</label>
-                      <div class="txtcolor-white-nyellow"> {{dateTime}} </div>
-                    </div>
-                    <div>
-                      <div><label class="ticket-label-in-dialog">러닝타임</label></div>
-                      <div class="txtcolor-white-ngreen">{{ getShowData.runningTime }}min</div> 
-                    </div>
+            </div>
+            <div class="my-ticket-info">           
+              <div class="ticket-show-info">  
+                <div class="mb-2"> 
+                  <div><label class="ticket-label-in-dialog">TEAM</label></div>
+                  <div class="txtcolor-white-ngreen">{{ getShowData.profileNickname }}</div>
+                </div>       
+                <div class="mb-2">
+                  <div><label class="ticket-label-in-dialog">공연명</label></div>
+                  <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
+                </div>
+                <div class="mb-2">
+                  <div><label class="ticket-label-in-dialog">티켓가격</label></div>
+                  <div class="txtcolor-white-npurple">{{ getShowData.price }}원</div>
+                </div>
+                <div class="d-flex flex-row mb-2">
+                  <div class="me-3">
+                    <label class="ticket-label-in-dialog">공연 시간</label>
+                    <div class="txtcolor-white-nyellow"> {{dateTime}} </div>
                   </div>
                   <div>
-                    <div><label class="ticket-label-in-dialog"> 공연 설명</label></div>
-                    <div>{{ getShowData.description }}</div>
+                    <div><label class="ticket-label-in-dialog">러닝타임</label></div>
+                    <div class="txtcolor-white-ngreen">{{ getShowData.runningTime }}min</div> 
                   </div>
+                </div>
+                <div>
+                  <div><label class="ticket-label-in-dialog"> 공연 설명</label></div>
+                  <div>{{ getShowData.description }}</div>
                 </div>
               </div>
             </div>
           </div>
-          
-          <div class="modal-footer-m my-3">
-            <button 
-              type="button" 
-              class="bdcolor-npink small-button" 
-              data-bs-dismiss="modal"
-            >
-              닫기
-            </button>
-          </div>
-
         </div>
+        
+        <div class="modal-footer-m my-3">
+          <button 
+            type="button" 
+            class="bdcolor-ngreen small-button" 
+            data-bs-dismiss="modal"
+          >
+            닫기
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -185,8 +183,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.ticket-poster-box {
 }
 .ticket-poster-img {
   min-width: 100px;

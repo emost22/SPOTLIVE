@@ -87,6 +87,7 @@ export default {
       .then(res => {
         this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
         var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
+        this.sendUpdateVideo()
         roomSettingUpdateDialog.hide()
       })
       .catch(err => {
@@ -98,7 +99,10 @@ export default {
       roomSettingModal.hide()
       this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
       this.$router.go()
-    }
+    },
+    sendUpdateVideo() {
+      this.$store.dispatch("requestSendUpdateVideo")
+    },
   },
   computed: {
     ...mapGetters([
