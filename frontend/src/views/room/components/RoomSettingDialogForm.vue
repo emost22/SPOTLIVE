@@ -125,6 +125,7 @@ export default {
       this.fileName = value
     },
     closing(value, oldvalue) {
+      console.log("룸쎄다폼켜져따")
       if (value == true) {
         this.initDataWhenClosing()
       } else {
@@ -157,13 +158,19 @@ export default {
         this.getRecentlyTimeTable()
       }
     },
+    formatter(date) {
+      var dateTime = new Date(date)
+      var month = parseInt(dateTime.getMonth()) + 1
+      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
+    },
     getRecentlyTimeTable() {
       this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
       .then((response) => {
         if (response.data.length == 0) {
           this.form.showTime = '현재 30분 내 공연이 존재하지 않습니다. 공연을 등록해주세요.'
         } else {
-          this.form.showTime = response.data.dateTime
+
+          this.form.showTime = this.formatter(response.data.dateTime)
           this.form.timetableId = response.data.timetableId
         }
       }).catch((error) => {
@@ -202,6 +209,7 @@ export default {
       } else {
         this.form.showInfoId = this.showInfoIds[0].t.showInfoId
       }
+      this.getRecentlyTimeTable()
     },
     onSubmit() {
       this.$refs.settingDialogObserver.validate()
