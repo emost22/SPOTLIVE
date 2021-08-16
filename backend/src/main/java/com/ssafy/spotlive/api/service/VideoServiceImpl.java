@@ -133,11 +133,6 @@ public class VideoServiceImpl implements VideoService{
                 category.setCategoryId(videoUpdateByIdPatchReq.getCategoryId());
                 video.setCategory(category);
             }
-            if (videoUpdateByIdPatchReq.getShowInfoId() != null) {
-                ShowInfo showInfo = new ShowInfo();
-                showInfo.setShowInfoId(videoUpdateByIdPatchReq.getShowInfoId());
-                video.setShowInfo(showInfo);
-            }
         }
         videoRepository.save(video);
         return Boolean.TRUE;

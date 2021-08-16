@@ -215,6 +215,19 @@ export default {
         })
     },
 
+    SEND_UPDATE_VIDEO(state) {
+        console.log("MUTATION: SEND_UPDATE_VIDEO() RUN...")
+        state.ovSession.signal({
+            data: "UPDATE_SIGNAL",
+            to: [],
+            type: 'update-video'
+        }).then(() => {
+            console.log('UPDATE SIGNAL successfully sent');
+        }).catch(error => {
+            console.error(error);
+        })
+    },
+
     SET_CREATEVIDEO_DATA (state, payload) {
         state.createdVideoData = payload
     },
@@ -256,4 +269,8 @@ export default {
     SET_CREATEPROFILE_DATA (state, payload) {
         state.createdProfileData = payload
     },
+
+    SET_INVALID_START_STREAMING(state, payload) {
+        state.invalidForStart = payload
+    }
 }

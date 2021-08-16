@@ -2,7 +2,6 @@ package com.ssafy.spotlive.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,4 +24,7 @@ public class Timetable{
 
     @OneToMany(mappedBy = "timetable", cascade = CascadeType.ALL)
     List<Reservation> reservationList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "timetable", cascade = CascadeType.ALL)
+    List<Video> videoList = new ArrayList<>();
 }
