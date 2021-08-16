@@ -7,6 +7,7 @@ import {
   excluded,
   is_not,
   numeric,
+  required_if
 } from 'vee-validate/dist/rules';
 
 extend('required', {
@@ -39,4 +40,9 @@ extend('is_not', {
   ...is_not,
   params: ['value'],
   message: '공연을 등록해주세요.'
+})
+extend('required_if', {
+  ...required_if,
+  params: ['target', '...values'],
+  message: '{...values}용일 경우 값을 넣어주세요.'
 })

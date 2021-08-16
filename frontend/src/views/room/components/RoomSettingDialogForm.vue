@@ -22,37 +22,45 @@
           <div class="label-alignment"><label class="form-label">영상용도</label>
             <div class="icon-info" data-bs-toggle="tooltip" data-bs-placement="top" title="용도를 꼭 확인해주세요!💥"></div>
           </div>
-          <div class="d-flex mt-1">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
-              <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
-                공연용
-              </label>
+          <ValidationProvider rules="" vid="mode">
+            <div class="d-flex mt-1">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
+                <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
+                  공연용
+                </label>
+              </div>
+              <div class="form-check ms-2">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
+                <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
+                  홍보용
+                </label>
+              </div>
+              <div class="form-check ms-2">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
+                <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
+                  소통용
+                </label>
+              </div>
             </div>
-            <div class="form-check ms-2">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
-              <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
-                홍보용
-              </label>
-            </div>
-            <div class="form-check ms-2">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
-              <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
-                소통용
-              </label>
-            </div>
-          </div>
+          </ValidationProvider>
         </div>
       </div>
       <div class="mb-3" v-if="form.mode=='공연' || form.mode=='홍보'">
         <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
         <div class="d-flex">
-          <select @change="getRecentlyTimeTable()" class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
-            <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
-          </select>
+          <ValidationProvider rules="required_if:mode,공연,홍보|is_not:-1" class="flex-fill" v-slot="v">
+            <select @change="getRecentlyTimeTable()" aria-label="Default select example" class="custon-select-control" v-model="form.showInfoId" id="showInfoId">
+              <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
+            </select>
+            <span>{{ v.errors[0] }}</span>
+          </ValidationProvider>
           <button class="plus-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"> </button>
         </div>
-        <input v-if="form.mode=='공연' && this.$props.showInfoList.length!=0" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
+        <!-- <ValidationProvider rules="required_if:mode,공연|min:1" v-slot="v"> -->
+          <input v-if="form.mode=='공연' && this.$props.showInfoList.length!=0" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
+          <!-- <span>{{ v.errors[0] }}</span> -->
+        <!-- </ValidationProvider> -->
       </div>
       <div class="mb-3">
         <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
@@ -164,6 +172,13 @@ export default {
         this.$props.showInfoList.forEach((showInfo, index) => {
           this.showInfoIds.push({ v: index, t: showInfo})
         })
+        if (this.createdVideoData.showInfoId != '') {
+          this.form.showInfoId = this.createdVideoData.showInfoId
+        } else {
+          this.form.showInfoId = this.showInfoIds[0].t.showInfoId
+        }
+      }
+      if (this.showInfoId != -1) {
         this.getRecentlyTimeTable()
       }
     },
@@ -175,8 +190,10 @@ export default {
     getRecentlyTimeTable() {
       this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
       .then((response) => {
+        console.log(response)
         if (response.data.length == 0) {
-          this.form.showTime = '현재 30분 내 공연이 존재하지 않습니다. 공연을 등록해주세요.'
+          '현재 30분 내 공연이 존재하지 않습니다. 공연을 등록해주세요.'
+          this.form.showTime = ''
         } else {
 
           this.form.showTime = this.formatter(response.data.dateTime)
@@ -213,12 +230,6 @@ export default {
       this.form.videoDescription = this.createdVideoData.videoDescription
       this.form.videoTitle = this.createdVideoData.videoTitle
       this.makeShowInfoIds()
-      if (this.createdVideoData.showInfoId != '') {
-        this.form.showInfoId = this.createdVideoData.showInfoId
-      } else {
-        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
-      }
-      this.getRecentlyTimeTable()
     },
     onSubmit() {
       this.$refs.settingDialogObserver.validate()
