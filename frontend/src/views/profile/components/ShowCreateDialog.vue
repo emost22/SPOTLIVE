@@ -89,10 +89,59 @@
         </div>
         <div class="modal-footer-m my-3">
           <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
-          <div><button @click="clickShowPostButton" type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="modal">등록</button></div>
+          <div>
+            <button 
+              type="button" 
+              class="bdcolor-npink small-button mx-3" 
+              data-bs-toggle="offcanvas"
+              data-bs-target="#postShowInfo" 
+              aria-controls="postShowInfo"
+              @click="clickShowPostButton"
+            >
+              등록
+            </button>
+          </div>
         </div>
       </div>
     </div>
+    <!--오프캔버스-->
+    <div 
+      class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" 
+      tabindex="-1" 
+      id="postShowInfo" 
+      ref="showPopup" 
+      aria-labelledby="offcanvasTopLabel"
+    >
+      <div class="offcanvas-header">
+        <button 
+          type="button" 
+          class="btn-close text-reset" 
+          data-bs-dismiss="offcanvas" 
+          aria-label="Close"
+        >
+        </button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="mt-3">
+          <p class="ticket-popup-title">
+            공연이 등록되었습니다.
+          </p>
+        </div>
+        <div class="d-flex justify-content-end ticket-popup-button">
+          <div>
+            <button 
+              type="button" 
+              class="bdcolor-ngreen small-button mx-3"
+              data-bs-dismiss="offcanvas"
+              @click="clickConfirm"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--오프캔버스-->
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
       <div class="toast-body" style="text-align: center">
         {{toastMessage}}
@@ -235,13 +284,17 @@ export default {
       .then((response) => {
         this.clearShowCreateData()
         this.getMyProfile()
-        this.$router.go(this.$router.currentroute)
+        
         // this.$router.push({ name: 'Profile', query: { profileId : this.loginUser.accountEmail } })
       }).catch(error => {
         console.log(error)
         this.clearShowCreateData()
       })
     },
+    clickConfirm() {
+      bootstrap.Modal.getInstance(this.$refs.showCreateModal).hide()
+      this.$router.go(this.$router.currentroute)
+    }
   },
   computed: {
     ...mapGetters(['loginUser',]),
