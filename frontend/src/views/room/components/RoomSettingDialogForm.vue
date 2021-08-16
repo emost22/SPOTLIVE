@@ -49,7 +49,7 @@
       <div class="mb-3" v-if="form.mode=='공연' || form.mode=='홍보'">
         <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
         <div class="d-flex">
-          <ValidationProvider rules="required_if:mode,공연,홍보|is_not:-1" class="flex-fill" v-slot="v">
+          <ValidationProvider rules="required_if:mode,'홍보','공연'|is_not:-1" class="flex-fill" v-slot="v">
             <select @change="getRecentlyTimeTable()" aria-label="Default select example" class="custon-select-control" v-model="form.showInfoId" id="showInfoId">
               <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
             </select>
@@ -57,10 +57,10 @@
           </ValidationProvider>
           <button class="plus-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"> </button>
         </div>
-        <!-- <ValidationProvider rules="required_if:mode,공연|min:1" v-slot="v"> -->
-          <input v-if="form.mode=='공연' && this.$props.showInfoList.length!=0" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
-          <!-- <span>{{ v.errors[0] }}</span> -->
-        <!-- </ValidationProvider> -->
+        <ValidationProvider rules="min:1|required_if:mode,'공연'" v-slot="v">
+          <input v-if="form.mode=='공연' && $props.showInfoList.length!=0" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" >
+          <span>{{ v.errors[0] }}</span>
+        </ValidationProvider>
       </div>
       <div class="mb-3">
         <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>

@@ -7,7 +7,8 @@ import {
   excluded,
   is_not,
   numeric,
-  required_if
+  required_if,
+  min,
 } from 'vee-validate/dist/rules';
 
 extend('required', {
@@ -45,4 +46,9 @@ extend('required_if', {
   ...required_if,
   params: ['target', '...values'],
   message: '{...values}용일 경우 값을 넣어주세요.'
+})
+extend('min', {
+  ...min,
+  params: [length],
+  message: '공연을 등록해주세요.'
 })
