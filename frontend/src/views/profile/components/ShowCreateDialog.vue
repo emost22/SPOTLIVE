@@ -93,26 +93,10 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-      <div class="toast align-items-center" ref="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-          추가되었습니다.
-        </div>
-          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
+      <div class="toast-body" style="text-align: center">
+        {{toastMessage}}
       </div>
-    </div> -->
-    <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
-    <div class="toast-container position-absolute p-3" id="toastPlacement">
-  <!-- Then put toasts within -->
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
-        <div class="toast-body">
-          공연 시간이 등록되었습니다.
-        </div>
-      </div>
-    </div>
     </div>
   </div>
 </template>
@@ -135,6 +119,7 @@ export default {
       timetables:[],
       selected: '',
       timtetableReq: [],
+      toastMessage: '',
     }
   },
   created() {
@@ -147,10 +132,9 @@ export default {
     this.clearShowCreateData()
   },
   methods: {
-    clickEvent(){
-        var toast = new bootstrap.Toast(this.$refs.toast)
-
-    toast.show()
+    toastEvent(){
+      var toast = new bootstrap.Toast(this.$refs.toast)
+      toast.show()
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
@@ -188,14 +172,23 @@ export default {
       console.log(this.datetime)
       if (this.datetime != ""){
         this.timetables.push({dateTime: this.datetime})
-        this.clickEvent()
-      } 
+        this.toastMessage = "공연 시간이 등록되었습니다."
+      }else{
+        this.toastMessage = "공연 시간을 입력해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
       this.datetime = ''
     },
     doRemove(){
-      let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
-      this.timetables = filtered;
+      if(this.selected != ""){
+        let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
+        this.timetables = filtered;
+        this.toastMessage = "공연 시간이 삭제되었습니다."
+      }else{
+        this.toastMessage = "삭제할 공연 시간을 선택해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
     },
     getUser() {
@@ -470,5 +463,18 @@ export default {
 .information-header {
   font-size: 20px;
   font-weight: bold;
+}
+.toast {
+    top: 9%; 
+    right: 0;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0px);
+    z-index: 9999;
+    width: 220px;
+}
+.toast-body {
+    color: white;
+    text-align: center;
 }
 </style>
