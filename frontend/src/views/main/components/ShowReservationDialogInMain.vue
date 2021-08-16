@@ -42,10 +42,11 @@
                 <div class="mb-3 d-flex">
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
-                    <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId" v-if="timetables.length > 0">
+                    {{ getShowData.dateTime }}
+                    <!-- <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId" v-if="timetables.length > 0">
                       <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                     </select>
-                    <div class="d-flex" v-else>예약 가능한 시간이 없습니다.</div>
+                    <div class="d-flex" v-else>예약 가능한 시간이 없습니다.</div> -->
                   </div>
                 </div>
               </div>

@@ -64,25 +64,28 @@ export default {
     },
     goShowReservationDialogInProfile() {
       let showData = {
-        userId: this.video.showInfoRes.userRes.accountEmail,
-        profileNickname: this.video.showInfoRes.userRes.profileNickname,
-        profileImageUrl: this.video.showInfoRes.userRes.profileImageUrl,
+        userId: this.video.user.accountEmail,
+        profileNickname: this.video.user.profileNickname,
+        profileImageUrl: this.video.user.profileImageUrl,
         showId: this.video.showInfoRes.showInfoId,
         title: this.video.showInfoRes.showInfoTitle,
         description: this.video.showInfoRes.showInfoDescription,
         posterUrl: this.video.showInfoRes.posterUrl,
         price: this.video.showInfoRes.price,
         runningTime: this.video.showInfoRes.runningTime,
-        timetables: this.video.showInfoRes.timetables,
+        dateTime: this.video.timetableRes.dateTime,
+        timetableId: this.video.timetableRes.timetableId,
       }
       this.$store.dispatch('requestGetShowData', showData)
-      // ShowReservationDialogInMain.vue d
+      // ShowReservationDialogInMain.vue 
     },
     goAlert() {
-      alert("예약된 공연이 아닙니다.") // 임시 처리
-      // 노란 팝업창 off canvas "다른 시간대의 공연에 예약했습니다"
+      alert("예약된 공연이 아닙니다.") 
+      // 노란 팝업창 off canvas "예약된 공연이 아닙니다."
     },
     goReservationConfirm() {
+      console.log(this.video)
+
       const myReservationsList = this.loginUser.reservationResList
       const timetableIdOfAccessVideo = this.video.timetableRes.timetableId
 
@@ -93,7 +96,9 @@ export default {
       })
       
       if(isEnter) this.goRoomDetail()
-      else this.goAlert()
+      else this.goRoomDetail()
+      // this.goAlert()
+      // this.goShowReservationDialogInProfile()
     },
   },
   computed: {
