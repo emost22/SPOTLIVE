@@ -40,15 +40,31 @@ extend('numeric', {
 extend('is_not', {
   ...is_not,
   params: ['value'],
+  validate(value) {
+    console.log(value)
+  },
   message: '공연을 등록해주세요.'
 })
 extend('required_if', {
   ...required_if,
   params: ['target', '...values'],
-  message: '{...values}용일 경우 값을 넣어주세요.'
+  validate(target, values) {
+    console.log(target, values)
+    if (values.contains('홍보')||values.contains('공연')) { 
+      return '{target} 용일 경우 값을 넣어주세요'
+    }
+    return true
+  },
 })
 extend('min', {
   ...min,
   params: [length],
+  validate(value) {
+    if (value == undefined) {
+      return '공연을 등록해주세요.'
+    } else {
+      return true
+    }
+  },
   message: '공연을 등록해주세요.'
 })

@@ -49,15 +49,15 @@
       <div class="mb-3" v-if="form.mode=='공연' || form.mode=='홍보'">
         <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
         <div class="d-flex">
-          <ValidationProvider rules="required_if:mode,'홍보','공연'|is_not:-1" class="flex-fill" v-slot="v">
-            <select @change="getRecentlyTimeTable()" aria-label="Default select example" class="custon-select-control" v-model="form.showInfoId" id="showInfoId">
+          <ValidationProvider :rules="`${reuiqredShowInfo ?'required':''}|min:1`" class="flex-fill" v-slot="v">
+            <select @change="getRecentlyTimeTable()" class="custon-select-control" v-model="form.showInfoId" id="showInfoId">
               <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
             </select>
             <span>{{ v.errors[0] }}</span>
           </ValidationProvider>
           <button class="plus-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"> </button>
         </div>
-        <ValidationProvider rules="min:1|required_if:mode,'공연'" v-slot="v">
+        <ValidationProvider :rules="`${requiredShowTime ?'required':''}|min:1`" v-slot="v">
           <input v-if="form.mode=='공연' && $props.showInfoList.length!=0" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" >
           <span>{{ v.errors[0] }}</span>
         </ValidationProvider>
@@ -75,7 +75,7 @@
           {{ this.fileErrorMessage }}
       </div>
       <div class="mb-3">
-        <ValidationProvider v-slot="v"  rules="max:200 |required" >
+        <ValidationProvider v-slot="v"  rules="max:200|required" >
           <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
           <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
           <span>{{ v.errors[0] }}</span>
@@ -128,6 +128,8 @@ export default {
   },
   computed: {
     ...mapGetters(['fileNamevuex', 'createdVideoData']),
+    reuiqredShowInfo() { return (this.form.mode == '공연' || this.form.mode=='홍보') },
+    requiredShowTime() { return this.form.mode == '공연'}
   },
   watch: {
     fileNamevuex(value, oldvalue) {
@@ -166,19 +168,20 @@ export default {
     },
     makeShowInfoIds() {
       if (this.$props.showInfoList.length == 0) {
-        this.showInfoIds.push({v: 0, t: {showInfoId: -1, showInfoTitle: '등록된 공연이 없습니다.'}})
-        this.form.showInfoId = -1
+        this.showInfoIds.push({v: 0, t: {showInfoId: '', showInfoTitle: '등록된 공연이 없습니다.'}})
+        this.form.showInfoId = ''
       } else {
         this.$props.showInfoList.forEach((showInfo, index) => {
           this.showInfoIds.push({ v: index, t: showInfo})
         })
         if (this.createdVideoData.showInfoId != '') {
           this.form.showInfoId = this.createdVideoData.showInfoId
+
         } else {
           this.form.showInfoId = this.showInfoIds[0].t.showInfoId
         }
       }
-      if (this.showInfoId != -1) {
+      if (this.form.showInfoId != '') {
         this.getRecentlyTimeTable()
       }
     },
@@ -190,12 +193,10 @@ export default {
     getRecentlyTimeTable() {
       this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
       .then((response) => {
-        console.log(response)
         if (response.data.length == 0) {
           '현재 30분 내 공연이 존재하지 않습니다. 공연을 등록해주세요.'
           this.form.showTime = ''
         } else {
-
           this.form.showTime = this.formatter(response.data.dateTime)
           this.form.timetableId = response.data.timetableId
         }
@@ -207,6 +208,12 @@ export default {
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return bootstrap.Tooltip.getOrCreateInstance(tooltipTriggerEl)
       })
+    },
+    formatter(date) {
+      var dateTime = new Date(date)
+      var month = parseInt(dateTime.getMonth()) + 1
+      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
+        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     initDataWhenClosing() {
       this.form = {
