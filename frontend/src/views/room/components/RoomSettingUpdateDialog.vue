@@ -13,8 +13,6 @@
               <ValidationObserver ref="settingUpdateDialogObserver" @change="changeInput()">
                 <RoomSettingUpdateDialogForm
                   :categoryIds="categoryIds"
-                  @form-data="form => videoData = form"
-                  :showInfoList="showInfoList"
                   :closing="closing"
                 />
               </ValidationObserver>
@@ -28,7 +26,7 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-npink small-button" :disabled="invalid" @click="roomSettingUpdateDialogButton()">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button setting-button" :disabled="invalid" @click="roomSettingUpdateDialogButton()">확인</button>
         </div>
       </div>
     </div>
@@ -39,11 +37,13 @@
 import { mapGetters } from "vuex"
 import RoomSettingUpdateDialogForm from './RoomSettingUpdateDialogForm.vue'
 import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
+import { ValidationObserver } from 'vee-validate';
 export default {
   name: 'RoomSettingUpdateDialog',
   components: {
     RoomSettingUpdateDialogForm,
-    RoomSettingDialogCameraForm
+    RoomSettingDialogCameraForm,
+    ValidationObserver,
   },
   data: function () {
     return {
@@ -69,8 +69,10 @@ export default {
     },
     changeInput: function () {
       if (this.$refs.settingUpdateDialogObserver.flags.invalid) {
+        console.log(true)
         this.invalid = true
       } else {
+        console.log(false)
         this.invalid = false
       }
     },
@@ -80,9 +82,12 @@ export default {
         videoData: videoData,
         videoId: this.videoId
       }
-      await this.$store.dispatch('requestUpdateSettingDialog', payload)
+      console.log(payload)
+      this.$store.dispatch('requestUpdateSettingDialog', payload)
       .then(res => {
-        this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
+        var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
+        this.sendUpdateVideo()
+        roomSettingUpdateDialog.hide()
       })
       .catch(err => {
         alert('라이브 영상 수정을 하다 오류가 났어요! 다시 시도해주세요!')
@@ -140,10 +145,6 @@ export default {
     this.$store.dispatch('requestGetCategoryIds')
     .then((response) => {
       this.categoryIds = response.data
-    })
-    this.$store.dispatch('requestGetShowInfoIds')
-    .then(response => {
-      this.showInfoList = response.data
     })
   },
 }
@@ -224,5 +225,9 @@ label:hover {
 }
 .btn-close:hover {
   background-image: url('~@/assets/icon-x.png');
+}
+.setting-button:disabled {
+  border-color: black;
+  color: gray;
 }
 </style>
