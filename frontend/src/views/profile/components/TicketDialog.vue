@@ -45,34 +45,25 @@
       ref="showPopup" 
       aria-labelledby="offcanvasTopLabel"
     >
-      <div class="offcanvas-header">
-        <button 
-          type="button" 
-          class="btn-close text-reset" 
-          data-bs-dismiss="offcanvas" 
-          aria-label="Close"
-        >
-        </button>
-      </div>
       <div class="offcanvas-body">
         <div class="mt-3">
-          <div class="offcanvas-text-box">
+          <div class="offcanvas-text-box-in-ticket">
             <div class="ticket-popup-title">
-              {{ title }} 
+              {{ title }}
             </div>
-            <div class="ticket-popup-title">
+            <div class="ticket-popup-date">
               {{ date }} {{ time }}
             </div>
           </div> 
-          <p class="ticket-popup-title">
+          <p class="ticket-popup-content">
             예약을 정말로 삭제하시겠습니까?
           </p>
         </div>
-        <div class="d-flex justify-content-end ticket-popup-button">
+        <div class="d-flex ticket-popup-button">
           <div>
             <button 
               type="button" 
-              class="bdcolor-ngreen small-button mx-3"
+              class="bdcolor-ngreen small-button-in-ticket mx-3"
               data-bs-dismiss="offcanvas"
             >
               취소
@@ -82,7 +73,7 @@
             <button 
               type="button" 
               @click="clickConfirmbutton"
-              class="bdcolor-npink small-button mx-3" 
+              class="bdcolor-npink small-button-in-ticket mx-3" 
               data-bs-dismiss="offcanvas"
             >
               확인
@@ -151,6 +142,9 @@ export default {
   font-size: 20px;
   font-weight: bold;
 }
+.offcanvas-text-box-in-ticket {
+    padding: 0 85px;
+}
 .ticket-modal-design {
   max-height: 650px;
   min-width: 500px;
@@ -162,17 +156,48 @@ export default {
   margin: 0;
 }
 .ticket-popup-button {
-  margin-top: 50px;
+  margin-top: 30px;
+  justify-content: center;
 }
 .ticket-popup-title {
+  overflow: hidden;
+  white-space: nowrap;
+  height: 27px;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+.ticket-popup-date {
   text-align: center;
   font-size: 20px;
   font-weight: bold;
   padding: 0 10%;
   margin: 10px 0;
 }
-.offcanvas-text-box {
-    display: flex;
+.ticket-popup-content {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
 }
-
+.ticket-popup-button {
+    margin-top: 30px;
+    justify-content: center;
+}
+div#deleteTicketInfo {
+    margin: 15px auto;
+    width: 500px;
+    height: 212px;
+}
+.small-button-in-ticket {
+    width: 90px;
+    height: 30px;
+    background: none;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
 </style>

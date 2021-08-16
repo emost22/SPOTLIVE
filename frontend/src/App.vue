@@ -381,9 +381,4 @@ label:hover {
 .offcanvas {
   z-index: 1060;
 }
-div#deleteTicketInfo {
-    margin: auto auto;
-    width: 500px;
-    height: 212px;
-}
 </style>

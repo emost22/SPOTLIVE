@@ -112,22 +112,13 @@
       ref="showPopup" 
       aria-labelledby="offcanvasTopLabel"
     >
-      <div class="offcanvas-header">
-        <button 
-          type="button" 
-          class="btn-close text-reset" 
-          data-bs-dismiss="offcanvas" 
-          aria-label="Close"
-        >
-        </button>
-      </div>
       <div class="offcanvas-body">
         <div class="mt-3">
-          <p class="ticket-popup-title">
+          <p class="show-create-popup-title">
             공연이 등록되었습니다.
           </p>
         </div>
-        <div class="d-flex justify-content-end ticket-popup-button">
+        <div class="d-flex show-create-popup-button">
           <div>
             <button 
               type="button" 
@@ -529,5 +520,23 @@ export default {
 .toast-body {
     color: white;
     text-align: center;
+}
+.show-create-popup-title {
+  overflow: hidden;
+  white-space: nowrap;
+  height: 27px;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 40px 0;
+}
+.d-flex.show-create-popup-button {
+    justify-content: center;
+}
+div#postShowInfo {
+  width : 400px;
+  height: 200px;
+  margin-top: 15px;
 }
 </style>
