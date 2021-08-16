@@ -39,7 +39,11 @@ export default {
           accountEmail:'',
           userName: '',
           profileImageUrl:''
-        }
+        },
+        timetableRes: {
+          dateTime: '',
+          timetableId: ''
+        },
       },
     fileNamevuex: '',
     invalidForStart: true,

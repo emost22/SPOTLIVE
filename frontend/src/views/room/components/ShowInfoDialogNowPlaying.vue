@@ -39,7 +39,7 @@
                 <div class="d-flex flex-row mb-2">
                   <div class="me-3">
                     <label class="ticket-label-in-dialog">공연 시간</label>
-                    <div class="txtcolor-white-nyellow"> {{}} </div>
+                    <div class="txtcolor-white-nyellow"> {{ dateTime }} </div>
                   </div>
                   <div>
                     <div><label class="ticket-label-in-dialog">러닝타임</label></div>
@@ -70,45 +70,25 @@ export default {
   name: 'ShowInfoDialogNowPlaying',
   data: function () {
     return {
-      showInfoId: '',
-      user: {},
-      timetableId: '',
-      timetables: [],
+      dateTime: '',
     }
   }, 
   methods: {
     formatter(date) {
-      let dateTime = new Date(date)
-      let month = parseInt(dateTime.getMonth()) + 1
-      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
-        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
+      var dateTime = new Date(date)
+      
+      return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()} ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
-    getShowInfoTimeTable() {
-      this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
-        .then(res => {
-          this.timetableId = res.data.timetables[0].timetableId
-          res.data.timetables.forEach((timetable) => {
-            var date = this.formatter(timetable.dateTime)
-            this.timetables.push({ v: timetable.timetableId, t: date})
-          })
-        })
-    }
+    getShowInfoTimeTable(dateTime) {
+      this.dateTime = this.formatter(dateTime)
+    },
   },
   computed: {
     ...mapGetters(['showReservationData', 'loginUser',]),
   },
   watch: {
     showReservationData: function(val, oldval) {
-      var modal= this.$refs.showInfoDialogNowPlaying
-      var _this = this
-      console.log(val)
-      modal.addEventListener('show.bs.modal', function (event) {
-        _this.showInfoId = val.showInfoId
-        _this.user = val.userRes
-        _this.getShowInfoTimeTable()
-      })
-      modal.addEventListener('hidden.bs.modal', function (event) {
-      })
+      this.getShowInfoTimeTable(this.showReservationData.timetableRes.dateTime)
     }
   },
 }
@@ -194,55 +174,4 @@ export default {
   font-size: 15px;
   font-weight: bold;
 }
-
-
-/* .btn-close {
-  background-image: url('~@/assets/icon-x.png');
-  opacity: 1;
-}
-.btn-close:hover {
-  background-image: url('~@/assets/icon-x.png');
-}
-.profile-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-}
-.profile-detail-show-reservation{
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: 30px;
-  text-align: left;
-}
-.dialog-profile-info{
-  display: flex;
-  flex-direction: row;
-  margin: 20px;
-}
-.camera-size {
-  width: 280px;
-  margin-right: 18px;
-}
-.custom-select-control-m {
-  background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  color: white;
-  background-repeat: no-repeat;
-  background-position: right .75rem center;
-  background-size: 16px 12px;
-  border: 0px;
-  border-radius: .25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-.poster-image{
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-}
-.label-in-dialog {
-  font-size: 1.05rem;
-  font-weight: bold;
-} */
 </style>

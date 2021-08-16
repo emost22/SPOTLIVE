@@ -215,8 +215,9 @@ export default {
         this.mode = response.data.mode
         this.mainStreamAccountEmail = response.data.userRes.accountEmail
         this.profileImageUrl = response.data.userRes.profileImageUrl
-        if(this.mode != '소통') {
-          var showInfoData = {
+        var showInfoData = ''
+        if(this.mode == '홍보') {
+          showInfoData = {
             runningTime: response.data.showInfoRes.runningTime,
             posterUrl: response.data.showInfoRes.posterUrl,
             price: response.data.showInfoRes.price,
@@ -227,7 +228,27 @@ export default {
               accountEmail: response.data.userRes.accountEmail,
               userName: response.data.userRes.userName,
               profileImageUrl:response.data.userRes.profileImageUrl
-            }
+            },
+          }
+          this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
+        }
+        else if(this.mode == '공연') {
+          showInfoData = {
+            runningTime: response.data.showInfoRes.runningTime,
+            posterUrl: response.data.showInfoRes.posterUrl,
+            price: response.data.showInfoRes.price,
+            showInfoDescription: response.data.showInfoRes.showInfoDescription,
+            showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+            showInfoTitle: response.data.showInfoRes.showInfoTitle,
+            userRes: {
+              accountEmail: response.data.userRes.accountEmail,
+              userName: response.data.userRes.userName,
+              profileImageUrl:response.data.userRes.profileImageUrl
+            },
+            timetableRes: {
+              dateTime: response.data.timetableRes.dateTime,
+              timetableId: response.data.timetableRes.timetableId,
+            },
           }
           this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
         }
@@ -253,6 +274,7 @@ export default {
     this.$store.dispatch('requestPlusHit', { videoId: this.videoId })
     this.$store.dispatch('requestGetRoomDetail', this.videoId)
     .then((response) => {
+      console.log('잘찍혔을까')
       console.log(response)
       console.log("영상정보 가져왔음 reponse : ", response.data.userRes.profileImageUrl)
       this.videoDescription = response.data.videoDescription
@@ -265,8 +287,9 @@ export default {
       this.mainStreamAccountEmail = response.data.userRes.accountEmail
       this.hit = response.data.hit
       this.profileImageUrl = response.data.userRes.profileImageUrl
-      if(this.mode != '소통') {
-        var showInfoData = {
+      var showInfoData = ''
+      if(this.mode == '홍보') {
+        showInfoData = {
           runningTime: response.data.showInfoRes.runningTime,
           posterUrl: response.data.showInfoRes.posterUrl,
           price: response.data.showInfoRes.price,
@@ -277,7 +300,27 @@ export default {
             accountEmail: response.data.userRes.accountEmail,
             userName: response.data.userRes.userName,
             profileImageUrl:response.data.userRes.profileImageUrl
-          }
+          },
+        }
+        this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
+      }
+      else if(this.mode == '공연') {
+        showInfoData = {
+          runningTime: response.data.showInfoRes.runningTime,
+          posterUrl: response.data.showInfoRes.posterUrl,
+          price: response.data.showInfoRes.price,
+          showInfoDescription: response.data.showInfoRes.showInfoDescription,
+          showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+          showInfoTitle: response.data.showInfoRes.showInfoTitle,
+          userRes: {
+            accountEmail: response.data.userRes.accountEmail,
+            userName: response.data.userRes.userName,
+            profileImageUrl:response.data.userRes.profileImageUrl
+          },
+          timetableRes: {
+            dateTime: response.data.timetableRes.dateTime,
+            timetableId: response.data.timetableRes.timetableId,
+          },
         }
         this.$store.dispatch('requestSetShowReservationInfo', showInfoData)
       }

@@ -21,6 +21,7 @@
       <TicketDialog/>
       <TicketDetailDialog/>
       <ShowInfoDialogNowPlaying/>
+      <ShowReservationDialogInMain/>
     </div>
 
   </div>
@@ -40,6 +41,7 @@ import TicketDialog from './views/profile/components/TicketDialog.vue'
 import ShowReservationDialog from './views/room/components/ShowReservationDialog.vue'
 import TicketDetailDialog from './views/profile/components/TicketDetailDialog.vue'
 import ShowInfoDialogNowPlaying from './views/room/components/ShowInfoDialogNowPlaying.vue'
+import ShowReservationDialogInMain from './views/main/components/ShowReservationDialogInMain.vue'
 
 export default ({
   name: "App",
@@ -56,6 +58,7 @@ export default ({
     ShowReservationDialog,
     TicketDetailDialog,
     ShowInfoDialogNowPlaying,
+    ShowReservationDialogInMain,
   },
   data: function () {
     return {
