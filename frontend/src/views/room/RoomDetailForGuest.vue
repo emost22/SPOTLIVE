@@ -2,7 +2,10 @@
   <div class="wrapper">
     <div class="left-side">
       <div class="wide-screen">
-        <video class="userVideo" ref="myVideo" autoplay/>
+        <div v-if="!isEndStream">          
+          <video class="userVideo" ref="myVideo" autoplay/>
+        </div>
+        <div class="end-stream" v-else />
       </div> 
       <div class="d-flex flex-row mt-3">
         <div class="d-flex flex-column justify-content-center align-items-center">
@@ -88,7 +91,8 @@ export default {
       },
       hit: 0,
       chatMsg: "",
-      chatList: []
+      chatList: [],
+      isEndStream: false,
     }
   },
   methods: {
@@ -155,6 +159,14 @@ export default {
         let eventAccountEmail = event.data
         console.log('[OPENVIDU] EXIT ACCESSED: ' + eventAccountEmail)
         this.updateVideoInfo()
+      })
+    
+      this.ovSession.on('streamDestroyed', ({ stream }) => {
+        console.log('[OPENVIDU] (VUE) Stream Destroyed!')
+        this.isEndStream = true
+        setTimeout(function () {
+          this.closeStreaming()
+        }.bind(this), 3000);
       })
     },
     addEventFormainStreamManager() {
@@ -444,5 +456,13 @@ export default {
   font-size: 1.2rem;
   margin-top: 10px;
   margin-left: -1.5rem;
+}
+/* END STRAMING... */
+.end-stream {
+  min-height: 100%;
+  width: 100%;
+  background-image: url('~@/assets/end-stream.png');
+  background-position: center;
+  background-size: cover;
 }
 </style>
