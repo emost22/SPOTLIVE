@@ -53,8 +53,12 @@
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
                       <div>
                         <div class="label-alignment"><label for="showCreateFormControlInput4" class="form-label">공연 시간</label></div>
+                        <div id="toast" class="toast-wrap" style="display:none;">
+                        <div class="toast"  v-bind="toast">dd</div>
+                      </div>
                         <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                       </div>
+                      
                       <div>
                         <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-white-npurple">입력</button>
                       </div>
@@ -138,6 +142,11 @@
       </div>
     </div>
     <!--오프캔버스-->
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
+      <div class="toast-body" style="text-align: center">
+        {{toastMessage}}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -159,6 +168,7 @@ export default {
       timetables:[],
       selected: '',
       timtetableReq: [],
+      toastMessage: '',
     }
   },
   created() {
@@ -171,6 +181,10 @@ export default {
     this.clearShowCreateData()
   },
   methods: {
+    toastEvent(){
+      var toast = new bootstrap.Toast(this.$refs.toast)
+      toast.show()
+    },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
       .then((response) => {
@@ -205,13 +219,25 @@ export default {
     },
     doAdd(){
       console.log(this.datetime)
-      if (this.datetime != "") this.timetables.push({dateTime: this.datetime})
+      if (this.datetime != ""){
+        this.timetables.push({dateTime: this.datetime})
+        this.toastMessage = "공연 시간이 등록되었습니다."
+      }else{
+        this.toastMessage = "공연 시간을 입력해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
       this.datetime = ''
     },
     doRemove(){
-      let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
-      this.timetables = filtered;
+      if(this.selected != ""){
+        let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
+        this.timetables = filtered;
+        this.toastMessage = "공연 시간이 삭제되었습니다."
+      }else{
+        this.toastMessage = "삭제할 공연 시간을 선택해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
     },
     getUser() {
@@ -490,5 +516,18 @@ export default {
 .information-header {
   font-size: 20px;
   font-weight: bold;
+}
+.toast {
+    top: 9%; 
+    right: 0;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0px);
+    z-index: 9999;
+    width: 220px;
+}
+.toast-body {
+    color: white;
+    text-align: center;
 }
 </style>
