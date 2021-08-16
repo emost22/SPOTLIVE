@@ -49,10 +49,10 @@ export default {
   methods: {
     getVideoLength() {
       var seconds = Number(this.video.videoLength)
-      // var min = parseInt((seconds%3600)/60) < 10 ? '0'+ parseInt((seconds%3600)/60) : parseInt((seconds%3600)/60)
-      var min = parseInt(seconds / 60) < 10 ? '0'+ parseInt(seconds / 60) : parseInt(seconds / 60)
+      var hour = parseInt(seconds / 3600)
+      var min = parseInt((seconds % 3600) / 60) < 10 ? '0'+ parseInt((seconds % 3600) / 60) : parseInt((seconds % 3600) / 60)
       var sec = seconds % 60 < 10 ? '0'+seconds % 60 : seconds % 60
-      this.videoLength = min+":" + sec
+      this.videoLength = hour + ":" + min + ":" + sec
     },
     goProfile() {
       this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })
@@ -135,31 +135,5 @@ export default {
   margin-bottom: 0;
   margin-left: 10px;
   text-align: start;
-}
-.live-badge{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: none;
-  border: none;
-  background-image: url('~@/assets/icon-live-badge.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  margin: 10px;
-}
-.time-badge{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: #242424;
-  color: #FFFFFF;
-  border: none;
-  margin: 10px;
 }
 </style>
