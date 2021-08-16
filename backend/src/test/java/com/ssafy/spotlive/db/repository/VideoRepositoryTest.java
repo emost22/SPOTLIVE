@@ -223,12 +223,17 @@ public class VideoRepositoryTest {
         showInfoInsertPostReq.setPosterUrl(posterUrl);
         ShowInfo showInfo = showInfoRepository.save(showInfoInsertPostReq.toShowInfo());
 
+        TimetableInsertPostReq timetableInsertPostReq = new TimetableInsertPostReq();
+        timetableInsertPostReq.setDateTime(LocalDateTime.now());
+        Timetable timetable = timetableRepository.save(timetableInsertPostReq.toTimetable(showInfo));
+
         VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
         videoInsertPostReq.setVideoTitle(insertVideoTitle);
         videoInsertPostReq.setVideoDescription(insertVideoDescription);
         videoInsertPostReq.setMode(insertMode);
         videoInsertPostReq.setCategoryId(insertCategoryId);
         videoInsertPostReq.setShowInfoId(showInfo.getShowInfoId());
+        videoInsertPostReq.setTimetableId(timetable.getTimetableId());
         videoInsertPostReq.setAccountEmail(insertAccountEmail);
         videoInsertPostReq.setSessionId(insertSessionId);
 
