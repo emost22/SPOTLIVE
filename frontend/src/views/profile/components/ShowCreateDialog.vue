@@ -108,6 +108,7 @@
                   data-bs-target="#postShowInfo" 
                   aria-controls="postShowInfo"
                   @click="clickShowPostButton"
+                  :disabled="invalid"
                 >
                   등록
               </button>
