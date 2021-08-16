@@ -10,12 +10,14 @@
             <input type='radio' id='rr1' name='u' checked>
             <label for='rr1' class="tab-label-u">설정</label>
             <div class='content-u'>
-              <RoomSettingUpdateDialogForm
-                :categoryIds="categoryIds"
-                @form-data="form => videoData = form"
-                :showInfoList="showInfoList"
-                :closing="closing"
-              />
+              <ValidationObserver ref="settingUpdateDialogObserver" @change="changeInput()">
+                <RoomSettingUpdateDialogForm
+                  :categoryIds="categoryIds"
+                  @form-data="form => videoData = form"
+                  :showInfoList="showInfoList"
+                  :closing="closing"
+                />
+              </ValidationObserver>
             </div>
             <input type='radio' id='rr2' name='u'>
             <label for='rr2' class="tab-label-u">카메라</label>
@@ -26,24 +28,10 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-npink small-button" @click="roomSettingUpdateDialogButton()">확인</button>
+          <button type="button" class="bdcolor-npink small-button" :disabled="invalid" @click="roomSettingUpdateDialogButton()">확인</button>
         </div>
       </div>
     </div>
-    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
-    <div class="offcanvas-header">
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <h5 class="popUpTitle">공연을 추가하기 위해 프로필로 이동해주세요</h5>
-      등록된 공연이 없다면<br>
-      <strong>프로필 > 공연 생성</strong> 버튼 클릭하여<br>
-      상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
-      <div class="d-flex justify-content-center mt-4">
-        <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas" @click="routeToProfile()">프로필로 가기</button></div>
-      </div>
-    </div>
-  </div>
   </div>
 </template>
 
@@ -63,6 +51,7 @@ export default {
       showInfoList : '',
       videoData: {},
       closing: true,
+      invalid: true,
     }
   }, 
   methods: {
@@ -78,7 +67,14 @@ export default {
 
       return formData
     },
-    async roomSettingUpdateDialogButton() {
+    changeInput: function () {
+      if (this.$refs.settingUpdateDialogObserver.flags.invalid) {
+        this.invalid = true
+      } else {
+        this.invalid = false
+      }
+    },
+    roomSettingUpdateDialogButton: function () {
       let videoData = this.makeFormDataForUpdateDialog()
       let payload = {
         videoData: videoData,
@@ -120,12 +116,6 @@ export default {
       let roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
       this.sendUpdateVideo()
       roomSettingUpdateDialog.hide()
-    },
-    routeToProfile() {
-      let roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
-      roomSettingModal.hide()
-      this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
-      this.$router.go()
     },
     sendUpdateVideo() {
       this.$store.dispatch("requestSendUpdateVideo")
