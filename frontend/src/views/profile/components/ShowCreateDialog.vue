@@ -40,7 +40,6 @@
 
                   <div class="show-info">
                     <div class="mb-3">
-
                       <ValidationProvider rules="required|max:20" v-slot="v">
                         <div class="label-alignment"><label for="showCreateFormControlInput1" class="form-label">공연명</label></div>
                         <input type="text" class="custom-form-control" id="showCreateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
@@ -76,12 +75,15 @@
                     </div>
                     <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
+                      <ValidationProvider rules="required" v-slot="v">
                         <select class="show-create-timetable" v-model="selected">
                           <option value='' disabled>공연 시간 목록</option>
                           <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                             {{ formatter(d.dateTime) }}
                           </option>
                         </select>
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
                         <div>
                           <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-white-ngreen">삭제</button>
                         </div>

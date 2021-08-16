@@ -75,12 +75,15 @@
                     </div>
                     <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
+                      <ValidationProvider rules="required" v-slot="v">
                         <select class="show-update-timetable" v-model="selected">
                           <option value='' disabled>공연 시간 목록</option>
                           <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                             {{ formatter(d.dateTime) }}
                           </option>
                         </select>
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
                         <div>
                           <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-white-ngreen">삭제</button>
                         </div>
