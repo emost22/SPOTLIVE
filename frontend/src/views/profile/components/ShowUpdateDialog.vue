@@ -89,6 +89,11 @@
         </div>
       </div>
     </div>
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
+      <div class="toast-body" style="text-align: center">
+        {{toastMessage}}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -109,6 +114,7 @@ export default {
       datetime: '',
       timetables:[],
       selected: '',
+      toastMessage: '',
     }
   },
   created: function () {
@@ -145,6 +151,10 @@ export default {
         console.log(error)
       })
     },
+    toastEvent(){
+      var toast = new bootstrap.Toast(this.$refs.toast)
+      toast.show()
+    },
     handleChange(e) {
       var file = e.target.files[0]
       if (file && file.type.match(/^image\/(png|jpeg)$/)) {
@@ -159,13 +169,25 @@ export default {
       this.$refs.datetimePicker.open(event);
     },
     doAdd(){
-      if(this.datetime != "") this.timetables.push({dateTime: this.datetime})
+      if (this.datetime != ""){
+        this.timetables.push({dateTime: this.datetime})
+        this.toastMessage = "공연 시간이 등록되었습니다."
+      }else{
+        this.toastMessage = "공연 시간을 입력해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
       this.datetime = ''
     },
     doRemove(){
-      let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
-      this.timetables = filtered;
+      if(this.selected != ""){
+        let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
+        this.timetables = filtered;
+        this.toastMessage = "공연 시간이 삭제되었습니다."
+      }else{
+        this.toastMessage = "삭제할 공연 시간을 선택해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
     },
     getUser() {
@@ -445,5 +467,18 @@ export default {
 .information-header {
   font-size: 20px;
   font-weight: bold;
+}
+.toast {
+    top: 9%; 
+    right: 0;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0px);
+    z-index: 9999;
+    width: 220px;
+}
+.toast-body {
+    color: white;
+    text-align: center;
 }
 </style>
