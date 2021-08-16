@@ -57,10 +57,8 @@
       <div class="mb-3">
         <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
           <div class="d-flex">
-            <ValidationProvider class="custom-form-control" rules="required" ref="fileInput">
-              <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
-              </ValidationProvider>
-            <ValidationProvider rules="required|image|size:1000" ref="fileBrowser" v-slot="{errors}">
+            <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
+            <ValidationProvider rules="required|image|size:1000" ref="fileBrowser">
               <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
               <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
               </label>
