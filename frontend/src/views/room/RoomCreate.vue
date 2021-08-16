@@ -16,10 +16,6 @@ import { OpenVidu } from 'openvidu-browser'
 
 export default {
   name:'RoomCreate',
-  data() {
-    return  {
-    }
-  },
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
