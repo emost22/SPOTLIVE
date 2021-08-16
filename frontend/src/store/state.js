@@ -1,5 +1,4 @@
 export default {
-    
     loginUser: undefined,
     isLogin: false,
     // in openvidu variable

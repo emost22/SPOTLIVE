@@ -36,6 +36,8 @@ export default {
         mode: '공연',
       })
     }
+
+    this.$store.dispatch('requestShowLoadingSpinner', false)
     next()
   },
   created() {
@@ -80,6 +82,7 @@ export default {
       this.$store.dispatch("requestAddEventInSession")
     },
     startStreaming () {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       let formData = this.makeFormDataForStartStreaming()
       this.$store.dispatch('requestStartStreaming', formData)
       .then((response) => {
