@@ -76,7 +76,7 @@ export default {
         this.invalid = false
       }
     },
-    roomSettingUpdateDialogButton: function () {
+    async roomSettingUpdateDialogButton() {
       this.$store.dispatch('requestShowLoadingSpinner', true)
       let videoData = this.makeFormDataForUpdateDialog()
       let payload = {
@@ -84,11 +84,8 @@ export default {
         videoId: this.videoId
       }
       console.log(payload)
-      this.$store.dispatch('requestUpdateSettingDialog', payload)
+      await this.$store.dispatch('requestUpdateSettingDialog', payload)
       .then(res => {
-        var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
-        this.sendUpdateVideo()
-        roomSettingUpdateDialog.hide()
         this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch(err => {
