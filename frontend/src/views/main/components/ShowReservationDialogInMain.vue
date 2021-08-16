@@ -42,11 +42,7 @@
                 <div class="mb-3 d-flex">
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
-                    {{ getShowData.dateTime }}
-                    <!-- <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId" v-if="timetables.length > 0">
-                      <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                    </select>
-                    <div class="d-flex" v-else>예약 가능한 시간이 없습니다.</div> -->
+                    <div>{{ dateTime }}</div>
                   </div>
                 </div>
               </div>
@@ -61,8 +57,8 @@
         </div>
 
         <div class="modal-footer-m my-3" >
-          <button type="button" class="bdcolor-npink small-button" @click="clearTimeTableArray()" data-bs-dismiss="modal">닫기</button>
-          <button type="button" class="bdcolor-ngreen small-button ms-5" @click="reservateShow()" v-if="timetables.length > 0">예약하기</button>
+          <button type="button" class="bdcolor-npink small-button" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="bdcolor-ngreen small-button ms-5" @click="reservateShow()">예약하기</button>
         </div>
       </div>
     </div>
@@ -104,11 +100,8 @@ export default {
   name: 'ShowReservationDialogInMain',
   data: function() {
     return {
-      timetableId: '',
-      timetables: [],
+      dateTime: '',
     }
-  },
-  created: function () {
   },
   methods: {
     formatter(date) {
@@ -117,20 +110,11 @@ export default {
       return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
-    getShowInfoTimeTable(timetables) {
-      let length = timetables.length
-      this.timetables = []
-      var now = this.formatter(new Date())
-      for(var i = 0; i < length; i++){
-        var date = this.formatter(timetables[i].dateTime)
-        if (date > now) {
-          if (this.timetableId == '') this.timetableId = timetables[i].timetableId
-          this.timetables.push({ v: timetables[i].timetableId, t: date})
-        }
-      }
-    },
-    clearTimeTableArray() {
-      this.timetables = []
+    getShowInfoTimeTable(dateTime) {
+      this.dateTime = this.formatter(dateTime)
+      console.log(this.getShowData.timetableId)
+      console.log(this.getShowData.dateTime)
+      console.log(this.dateTime)
     },
     reservateShow() {
       this.$store.dispatch('requestShowIsReservated', this.timetableId)
@@ -139,7 +123,7 @@ export default {
           this.clickToast(1)
         } else if(status == 204) { // 예약안한 공연이므로 예약 axios 한번 더 호출
           this.clickToast(2)
-          this.$store.dispatch('requestReservateShow', {timetableId : this.timetableId})
+          this.$store.dispatch('requestReservateShow', {timetableId : this.getShowData.timetableId})
         } else {
           console.log("requestShowIsReservated Fail...")
         }
@@ -163,8 +147,7 @@ export default {
   },
   watch: {
     getShowData(val, oldVal) {
-      console.log(this.getShowData.timetables)
-      this.getShowInfoTimeTable(this.getShowData.timetables)
+      this.getShowInfoTimeTable(this.getShowData.dateTime)
     },
   },
 }
