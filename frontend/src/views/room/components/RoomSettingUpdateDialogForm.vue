@@ -94,6 +94,7 @@ export default {
         videoDescription: '',
         videoTitle: '',
         showInfoId: '',
+        timetableId: '',
         showTime:'',
         mode: '공연',
       },
@@ -160,6 +161,7 @@ export default {
             videoDescription: '',
             videoTitle: '',
             showInfoId: '1',
+            timetableId: '1',
             showTime:'',
             mode: '공연',
           }
@@ -173,6 +175,7 @@ export default {
       this.form.videoDescription = this.createdVideoData.videoDescription
       this.form.videoTitle = this.createdVideoData.videoTitle
       this.form.mode = this.createdVideoData.mode
+      this.form.timetableId = this.createdVideoData.timetableRes != null ? this.createdVideoData.timetableRes.timetableId : ''
       this.makeShowInfoIds()
       if (this.createdVideoData.showInfoId != '') {
         this.form.showInfoId = this.createdVideoData.showInfoId
