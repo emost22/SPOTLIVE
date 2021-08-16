@@ -204,18 +204,18 @@ export default {
       })
     },
     initCreateVideoDataInVuex() {
-    let initData = {
-          categoryId: '0',
-          thumbnailImage: [], // 파일이 들어감
-          videoDescription: '',
-          videoTitle: '',
-          showInfoId: '',
-          showTime:'',
-          mode: '공연',
-        }
-    this.$store.dispatch("requestSetCreatedVideoData", initData)
-    this.$store.dispatch("requestSetFileNameOfVideo", "")
-    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+      let initData = {
+        categoryId: '0',
+        thumbnailImage: [], // 파일이 들어감
+        videoDescription: '',
+        videoTitle: '',
+        showInfoId: '',
+        showTime:'',
+        mode: '공연',
+      }
+      this.$store.dispatch("requestSetCreatedVideoData", initData)
+      this.$store.dispatch("requestSetFileNameOfVideo", "")
+      this.$store.dispatch("requestSetUserOnCreateVideo", false)
     }
   },
   beforeMount() {
@@ -232,13 +232,14 @@ export default {
       this.startTime = response.data.startTime
       this.hit = response.data.hit
       this.profileImageUrl = response.data.userRes.profileImageUrl
-      var videoData = {
+      let videoData = {
         categoryId: response.data.categoryRes.categoryId,
         thumbnailImage: response.data.thumbnailUrl,
         videoDescription: this.videoDescription,
         videoTitle: this.videoTitle,
         showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
         showTime: response.data.showInfoRes != null ? response.data.showInfoRes.showTime : '',
+        timetableRes: response.data.timetableRes != null ? response.data.timetableRes : '',
         mode: response.data.mode,
       }
       console.log(videoData)
