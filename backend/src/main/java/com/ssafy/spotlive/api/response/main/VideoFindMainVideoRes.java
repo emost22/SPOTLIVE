@@ -1,5 +1,7 @@
 package com.ssafy.spotlive.api.response.main;
 
+import com.ssafy.spotlive.api.response.showInfo.ShowInfoRes;
+import com.ssafy.spotlive.api.response.timetable.TimetableRes;
 import com.ssafy.spotlive.db.entity.Video;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,7 +31,8 @@ public class VideoFindMainVideoRes {
     Long videoLength;
     Boolean isLive;
     Long hit;
-
+    ShowInfoRes showInfoRes;
+    TimetableRes timetableRes;
     VideoFindUserRes user;
     LocalDateTime startTime;
     String categoryName;
@@ -47,20 +50,54 @@ public class VideoFindMainVideoRes {
             duration = Duration.between(video.getEndTime(), video.getStartTime());
             videoLength = Math.abs(duration.getSeconds());
         }
-
-        return VideoFindMainVideoRes.builder()
-                .videoId(video.getVideoId())
-                .videoTitle(video.getVideoTitle())
-                .videoDescription(video.getVideoDescription())
-                .mode(video.getMode())
-                .thumbnailUrl(video.getThumbnailUrl())
-                .videoUrl(video.getVideoUrl())
-                .videoLength(videoLength)
-                .isLive(video.getIsLive())
-                .hit(video.getHit())
-                .user(VideoFindUserRes.of(video.getUser()))
-                .startTime(video.getStartTime())
-                .categoryName(video.getCategory().getCategoryName())
-                .build();
+        if(video.getTimetable() != null) {
+            return VideoFindMainVideoRes.builder()
+                    .videoId(video.getVideoId())
+                    .videoTitle(video.getVideoTitle())
+                    .videoDescription(video.getVideoDescription())
+                    .mode(video.getMode())
+                    .thumbnailUrl(video.getThumbnailUrl())
+                    .videoUrl(video.getVideoUrl())
+                    .videoLength(videoLength)
+                    .isLive(video.getIsLive())
+                    .hit(video.getHit())
+                    .user(VideoFindUserRes.of(video.getUser()))
+                    .startTime(video.getStartTime())
+                    .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
+                    .timetableRes(TimetableRes.of(video.getTimetable()))
+                    .categoryName(video.getCategory().getCategoryName())
+                    .build();
+        } else if(video.getShowInfo() != null) {
+            return VideoFindMainVideoRes.builder()
+                    .videoId(video.getVideoId())
+                    .videoTitle(video.getVideoTitle())
+                    .videoDescription(video.getVideoDescription())
+                    .mode(video.getMode())
+                    .thumbnailUrl(video.getThumbnailUrl())
+                    .videoUrl(video.getVideoUrl())
+                    .videoLength(videoLength)
+                    .isLive(video.getIsLive())
+                    .hit(video.getHit())
+                    .user(VideoFindUserRes.of(video.getUser()))
+                    .startTime(video.getStartTime())
+                    .showInfoRes(ShowInfoRes.of(video.getShowInfo()))
+                    .categoryName(video.getCategory().getCategoryName())
+                    .build();
+        } else {
+            return VideoFindMainVideoRes.builder()
+                    .videoId(video.getVideoId())
+                    .videoTitle(video.getVideoTitle())
+                    .videoDescription(video.getVideoDescription())
+                    .mode(video.getMode())
+                    .thumbnailUrl(video.getThumbnailUrl())
+                    .videoUrl(video.getVideoUrl())
+                    .videoLength(videoLength)
+                    .isLive(video.getIsLive())
+                    .hit(video.getHit())
+                    .user(VideoFindUserRes.of(video.getUser()))
+                    .startTime(video.getStartTime())
+                    .categoryName(video.getCategory().getCategoryName())
+                    .build();
+        }
     }
 }

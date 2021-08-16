@@ -2,7 +2,6 @@ package com.ssafy.spotlive.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -41,6 +40,10 @@ public class Video{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showInfoId")
     ShowInfo showInfo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "timetableId")
+    Timetable timetable;
 
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL)
     List<UserVideo> userVideoList = new ArrayList<>();
