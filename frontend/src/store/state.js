@@ -1,5 +1,4 @@
 export default {
-    
     loginUser: undefined,
     isLogin: false,
     // in openvidu variable
@@ -44,4 +43,5 @@ export default {
       },
     fileNamevuex: '',
     invalidForStart: true,
+    loading: false,
 }

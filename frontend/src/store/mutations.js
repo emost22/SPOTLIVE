@@ -272,5 +272,9 @@ export default {
 
     SET_INVALID_START_STREAMING(state, payload) {
         state.invalidForStart = payload
+    },
+
+    SHOW_LOADING_SPINNER(state, payload) {
+        state.loading = payload
     }
 }

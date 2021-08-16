@@ -22,52 +22,60 @@
           <div class="label-alignment"><label class="form-label">영상용도</label>
             <div class="icon-info" data-bs-toggle="tooltip" data-bs-placement="top" title="용도를 꼭 확인해주세요!💥"></div>
           </div>
-          <div class="d-flex mt-1">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
-              <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
-                공연용
-              </label>
+          <ValidationProvider rules="" vid="mode">
+            <div class="d-flex mt-1">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="forShow" value="공연" v-model="form.mode">
+                <label class="form-check-label" for="forShow" ref="forShow" data-bs-toggle="tooltip" data-placement="bottom" title="등록된 공연을 보여주기 위한 목적">
+                  공연용
+                </label>
+              </div>
+              <div class="form-check ms-2">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
+                <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
+                  홍보용
+                </label>
+              </div>
+              <div class="form-check ms-2">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
+                <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
+                  소통용
+                </label>
+              </div>
             </div>
-            <div class="form-check ms-2">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forAd" value="홍보" v-model="form.mode">
-              <label class="form-check-label" for="forAd" ref="forAd" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템이 갖춰진 공연 홍보 목적">
-                홍보용
-              </label>
-            </div>
-            <div class="form-check ms-2">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="forCommunicate" value="소통" v-model="form.mode">
-              <label class="form-check-label" for="forCommunicate" ref="forCommunicate" data-bs-toggle="tooltip" data-placement="bottom" title="예매시스템 없이 관객과의 소통 목적">
-                소통용
-              </label>
-            </div>
-          </div>
+          </ValidationProvider>
         </div>
       </div>
       <div class="mb-3" v-if="form.mode=='공연' || form.mode=='홍보'">
         <div class="label-alignment"><label for="showInfoId" class="form-label">등록한 공연 선택</label></div>
         <div class="d-flex">
-          <select @change="getRecentlyTimeTable()" class="custon-select-control" aria-label="Default select example" v-model="form.showInfoId" id="showInfoId">
-            <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
-          </select>
+          <ValidationProvider :rules="`${reuiqredShowInfo ?'required':''}|min:1`" class="flex-fill" v-slot="v">
+            <select @change="getRecentlyTimeTable()" class="custon-select-control" v-model="form.showInfoId" id="showInfoId">
+              <option :key="i" :value="d.t.showInfoId" v-for="(d, i) in showInfoIds">{{ d.t.showInfoTitle }}</option>
+            </select>
+            <span>{{ v.errors[0] }}</span>
+          </ValidationProvider>
           <button class="plus-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"> </button>
         </div>
-        <input v-if="form.mode=='공연' && this.$props.showInfoList.length!=0" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" disabled="disabled">
+        <ValidationProvider :rules="`${requiredShowTime ?'required':''}|min:1`" v-slot="v">
+          <input v-if="form.mode=='공연' && $props.showInfoList.length!=0" class="custom-form-control mt-1" id="showTime" v-model="form.showTime" readonly="readonly" >
+          <span>{{ v.errors[0] }}</span>
+        </ValidationProvider>
       </div>
       <div class="mb-3">
         <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
-        <div class="d-flex">
-          <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
-          <ValidationProvider rules="size:100" v-slot="{ errors }">
-            <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
-            <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
-          </label>
-            <span>{{errors[0]}}</span>
-          </ValidationProvider>
-        </div>
+          <div class="d-flex">
+            <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
+            <ValidationProvider rules="required|image|size:1000" ref="fileBrowser">
+              <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
+              <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
+              </label>
+            </ValidationProvider>
+          </div>
+          {{ this.fileErrorMessage }}
       </div>
       <div class="mb-3">
-        <ValidationProvider v-slot="v"  rules="max:200 |required" >
+        <ValidationProvider v-slot="v"  rules="max:200|required" >
           <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
           <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
           <span>{{ v.errors[0] }}</span>
@@ -115,10 +123,13 @@ export default {
       fileName:'',
       showInfoIds: [],
       toast: null,
+      fileErrorMessage: ''
     }
   },
   computed: {
     ...mapGetters(['fileNamevuex', 'createdVideoData']),
+    reuiqredShowInfo() { return (this.form.mode == '공연' || this.form.mode=='홍보') },
+    requiredShowTime() { return this.form.mode == '공연'}
   },
   watch: {
     fileNamevuex(value, oldvalue) {
@@ -142,19 +153,35 @@ export default {
     },
   },
   methods: {
-    handleFileChange(e) {
-      this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
-      this.fileName = e.target.files[0].name // 파일이름을 넣음
-      this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
+    async handleFileChange(e) {
+      const { valid } = await this.$refs.fileBrowser.validate(e);
+      if (valid) {
+        this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
+        this.fileName = e.target.files[0].name // 파일이름을 넣음
+        this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
+        this.fileErrorMessage = ''
+        console.log('Uploaded the file...');
+      } else {
+        this.fileName = ''
+        this.fileErrorMessage = this.$refs.fileBrowser.errors[0]        
+      }
     },
     makeShowInfoIds() {
       if (this.$props.showInfoList.length == 0) {
-        this.showInfoIds.push({v: 0, t: {showInfoId: -1, showInfoTitle: '등록된 공연이 없습니다.'}})
-        this.form.showInfoId = -1
+        this.showInfoIds.push({v: 0, t: {showInfoId: '', showInfoTitle: '등록된 공연이 없습니다.'}})
+        this.form.showInfoId = ''
       } else {
         this.$props.showInfoList.forEach((showInfo, index) => {
           this.showInfoIds.push({ v: index, t: showInfo})
         })
+        if (this.createdVideoData.showInfoId != '') {
+          this.form.showInfoId = this.createdVideoData.showInfoId
+
+        } else {
+          this.form.showInfoId = this.showInfoIds[0].t.showInfoId
+        }
+      }
+      if (this.form.showInfoId != '') {
         this.getRecentlyTimeTable()
       }
     },
@@ -167,9 +194,9 @@ export default {
       this.$store.dispatch("requestGetRecentlyTimeTable", { showInfoId: this.form.showInfoId })
       .then((response) => {
         if (response.data.length == 0) {
-          this.form.showTime = '현재 30분 내 공연이 존재하지 않습니다. 공연을 등록해주세요.'
+          '현재 30분 내 공연이 존재하지 않습니다. 공연을 등록해주세요.'
+          this.form.showTime = ''
         } else {
-
           this.form.showTime = this.formatter(response.data.dateTime)
           this.form.timetableId = response.data.timetableId
         }
@@ -181,6 +208,12 @@ export default {
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return bootstrap.Tooltip.getOrCreateInstance(tooltipTriggerEl)
       })
+    },
+    formatter(date) {
+      var dateTime = new Date(date)
+      var month = parseInt(dateTime.getMonth()) + 1
+      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
+        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     initDataWhenClosing() {
       this.form = {
@@ -204,12 +237,6 @@ export default {
       this.form.videoDescription = this.createdVideoData.videoDescription
       this.form.videoTitle = this.createdVideoData.videoTitle
       this.makeShowInfoIds()
-      if (this.createdVideoData.showInfoId != '') {
-        this.form.showInfoId = this.createdVideoData.showInfoId
-      } else {
-        this.form.showInfoId = this.showInfoIds[0].t.showInfoId
-      }
-      this.getRecentlyTimeTable()
     },
     onSubmit() {
       this.$refs.settingDialogObserver.validate()
