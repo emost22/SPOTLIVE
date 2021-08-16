@@ -400,4 +400,32 @@ div#deleteTicketInfo {
   top: 50%;
   left: 50%;
 }
+.live-badge{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55px;
+  height: 25px;
+  border-radius: 15px;
+  background-color: none;
+  border: none;
+  background-image: url('~@/assets/icon-live-badge.png');
+  background-size: 110%;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 7px;
+}
+.time-badge{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55px;
+  height: 25px;
+  border-radius: 15px;
+  background-color: #242424;
+  color: #FFFFFF;
+  border: none;
+  margin: 7px;
+  font-size: 14px;
+}
 </style>
