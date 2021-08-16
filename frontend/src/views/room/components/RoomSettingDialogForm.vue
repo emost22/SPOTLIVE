@@ -107,6 +107,7 @@ export default {
         videoDescription: '',
         videoTitle: '',
         showInfoId: '',
+        timetableId: '',
         showTime:'',
         mode: '공연',
       },
@@ -163,6 +164,7 @@ export default {
           this.form.showTime = '현재 30분 내 공연이 존재하지 않습니다. 공연을 등록해주세요.'
         } else {
           this.form.showTime = response.data.dateTime
+          this.form.timetableId = response.data.timetableId
         }
       }).catch((error) => {
       })
@@ -175,14 +177,15 @@ export default {
     },
     initDataWhenClosing() {
       this.form = {
-            categoryId: '0',
-            thumbnailImage: [], // 파일이 들어감
-            videoDescription: '',
-            videoTitle: '',
-            showInfoId: '1',
-            showTime:'',
-            mode: '공연',
-          }
+        categoryId: '0',
+        thumbnailImage: [], // 파일이 들어감
+        videoDescription: '',
+        videoTitle: '',
+        showInfoId: '1',
+        timetableId: '',
+        showTime:'',
+        mode: '공연',
+      }
       this.fileName = ''
       this.showInfoIds = []
     },
