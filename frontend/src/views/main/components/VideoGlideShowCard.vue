@@ -62,7 +62,7 @@ export default {
       else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
     },
     goShowReservationDialogInProfile() {
-      var showData = {
+      let showData = {
         userId: this.video.showInfoRes.userRes.accountEmail,
         profileNickname: this.video.showInfoRes.userRes.profileNickname,
         profileImageUrl: this.video.showInfoRes.userRes.profileImageUrl,
@@ -78,45 +78,21 @@ export default {
       // ShowReservationDialogInMain.vue d
     },
     goAlert() {
+      alert("예약된 공연이 아닙니다.") // 임시 처리
       // 노란 팝업창 off canvas "다른 시간대의 공연에 예약했습니다"
     },
     goReservationConfirm() {
-      console.log('공연용 로그인 정보 확인')
-      // 내 예약내역 showInfo
-      console.log(this.video.showInfoRes)
-      console.log(this.loginUser.reservationResList)
-      const reservations = this.loginUser.reservationResList
-      
-      // 비디오의 showInfo
-      const videoShowId = this.video.showInfoRes.showInfoId
-      console.log(this.video.showInfoRes.showInfoId)
+      const myReservationsList = this.loginUser.reservationResList
+      const timetableIdOfAccessVideo = this.video.timetableRes.timetableId
 
-      // showInfoId가 같은 경우
-      reservations.forEach((reservation) => { 
-        console.log(reservation.timetableFindByReservationRes.showInfoRes.showInfoId)
-        console.log(reservation.timetableFindByReservationRes.dateTime)
-        const myShowId = reservation.timetableFindByReservationRes.showInfoRes.showInfoId
-        const myShowDate = reservation.timetableFindByReservationRes.dateTime
-        if (videoShowId == myShowId) {
-          const now = new Date()
-          const afterThirty = new Date(Date.parse(now) + 1000*1800)
-          const beforeThirty = new Date(Date.parse(now) - 1000*1800)
-          if (afterThirty > myShowDate > beforeThirty) {
-            // 1) 입장가능 (showInfoId는 같지만 dateTime과 now 시간의 30분 전후 이면 입장 가능) 
-            this.reservation = true
-            this.goRoomDetail()
-          } else {
-            // 2) 입장불가 (showInfoId는 같지만 dateTime이 now 시간의 30분 전후가 아닌 경우) 
-            this.goAlert()
-          }
-        } 
+      let isEnter = false
+      myReservationsList.forEach(reservation => { 
+        if(reservation.timetableFindByReservationRes.timetableId == timetableIdOfAccessVideo) 
+          isEnter = true 
       })
-
-      // showInfoId가 같지 않은 경우 
-      if (!this.reservation) {
-        // 3) 입장불가 같은 showInfoId가 아예 없는 경우 (예약 모달)
-        this.goShowReservationDialogInProfile()
-      }
+      
+      if(isEnter) this.goRoomDetail()
+      else this.goAlert()
     },
   },
   computed: {
