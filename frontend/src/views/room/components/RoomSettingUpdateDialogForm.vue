@@ -161,7 +161,7 @@ export default {
             videoDescription: '',
             videoTitle: '',
             showInfoId: '1',
-            timetableId: '1',
+            timetableId: '',
             showTime:'',
             mode: '공연',
           }
