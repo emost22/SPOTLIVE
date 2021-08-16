@@ -49,14 +49,14 @@
                     </div>
                     <div class="mb-3 d-flex">
                       <div class="flex-fill me-3">
-                      <ValidationProvider rules="required|max:10" v-slot="v">
+                      <ValidationProvider rules="required|max:10|numeric" v-slot="v">
                         <div class="label-alignment"><label for="showCreateFormControlInput2" class="form-label">티켓가격</label></div>
                         <input type="text" class="custom-form-control" id="showCreateFormControlInput2" v-model="price" autocomplete="off">
                         <span>{{ v.errors[0] }}</span>
                       </ValidationProvider>
                       </div>
                       <div class="flex-fill">
-                      <ValidationProvider rules="required|max:10" v-slot="v">
+                      <ValidationProvider rules="required|max:10|numeric" v-slot="v">
                         <div class="label-alignment"><label for="showCreateFormControlInput3" class="form-label">러닝타임</label></div>
                         <input type="text" class="custom-form-control" id="showCreateFormControlInput4" v-model="runningTime" autocomplete="off">
                         <span>{{ v.errors[0] }}</span>
