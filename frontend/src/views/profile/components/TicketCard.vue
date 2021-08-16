@@ -101,6 +101,11 @@ export default {
       this.getReservationInfo()
     }
   },
+  created() {
+    this.getHostInfo()
+    this.getTicketImg()
+    this.getReservationInfo()
+  },
   methods: {
     getHostInfo() {
       this.userId = this.showHost.accountEmail
