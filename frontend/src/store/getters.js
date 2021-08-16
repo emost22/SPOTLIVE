@@ -71,5 +71,8 @@ export default {
     },
     invalidForStart(state) {
         return state.invalidForStart
+    },
+    loading(state) {
+        return state.loading
     }
 }

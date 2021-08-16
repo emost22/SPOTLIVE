@@ -16,10 +16,6 @@ import { OpenVidu } from 'openvidu-browser'
 
 export default {
   name:'RoomCreate',
-  data() {
-    return  {
-    }
-  },
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
@@ -40,9 +36,12 @@ export default {
         mode: '공연',
       })
     }
+
+    this.$store.dispatch('requestShowLoadingSpinner', false)
     next()
   },
   created() {
+    this.$store.dispatch('requestShowLoadingSpinner', true)
     this.initSession(new OpenVidu())
     this.doOpenviduCall()
     this.$store.dispatch("requestGetLoginUser")
@@ -61,11 +60,14 @@ export default {
           this.setAllDevices()
           this.addEventInSession()
           this.connectSession()
+          this.$store.dispatch('requestShowLoadingSpinner', false)
         }).catch((error) => {
           console.log(error)
+          this.$store.dispatch('requestShowLoadingSpinner', false)
         })         
       }).catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     setSessionIdAndTokenForOpenvidu(sessionId, token) {
@@ -84,6 +86,7 @@ export default {
       this.$store.dispatch("requestAddEventInSession")
     },
     startStreaming () {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       let formData = this.makeFormDataForStartStreaming()
       this.$store.dispatch('requestStartStreaming', formData)
       .then((response) => {

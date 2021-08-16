@@ -45,9 +45,10 @@ export default {
   methods: {
     getVideoLength() {
       var seconds = Number(this.video.videoLength)
-      var min = parseInt((seconds%3600)/60) < 10 ? '0'+ parseInt((seconds%3600)/60) : parseInt((seconds%3600)/60)
-      var sec = seconds % 60 < 10 ? '0'+seconds % 60 : seconds % 60
-      this.videoLength = min+":" + sec
+      // var min = parseInt((seconds%3600)/60) < 10 ? '0'+ parseInt((seconds%3600)/60) : parseInt((seconds%3600)/60)
+      var min = parseInt(seconds / 60) < 10 ? '0'+ parseInt(seconds / 60) : parseInt(seconds / 60)
+      var sec = seconds % 60 < 10 ? '0' + (seconds % 60) : seconds % 60
+      this.videoLength = min + ":" + sec
     },
     goRoomDetail() {
       if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })

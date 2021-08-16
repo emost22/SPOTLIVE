@@ -186,7 +186,7 @@ export default {
         console.log("MUTATION: SEND_CHAT() RUN...")
         let chatStr = payload.chatMsg
         let imgUrl = state.loginUser.profileImageUrl
-        let userName = state.loginUser.userName
+        let userName = state.loginUser.profileNickname
 
         let sendData = chatStr + "####" + imgUrl + "####" + userName
         console.log(payload.chatMsg)
@@ -272,5 +272,9 @@ export default {
 
     SET_INVALID_START_STREAMING(state, payload) {
         state.invalidForStart = payload
+    },
+
+    SHOW_LOADING_SPINNER(state, payload) {
+        state.loading = payload
     }
 }
