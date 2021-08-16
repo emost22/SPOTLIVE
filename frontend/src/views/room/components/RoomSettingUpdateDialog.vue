@@ -77,6 +77,7 @@ export default {
       }
     },
     roomSettingUpdateDialogButton: function () {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       let videoData = this.makeFormDataForUpdateDialog()
       let payload = {
         videoData: videoData,
@@ -88,9 +89,11 @@ export default {
         var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
         this.sendUpdateVideo()
         roomSettingUpdateDialog.hide()
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch(err => {
         alert('라이브 영상 수정을 하다 오류가 났어요! 다시 시도해주세요!')
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
 
       await this.$store.dispatch('requestGetRoomDetail', this.videoId)

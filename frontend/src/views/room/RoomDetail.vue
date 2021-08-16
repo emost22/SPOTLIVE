@@ -103,6 +103,7 @@ export default {
   },
   methods: {
     closeStreaming() {
+      this.$store.dispatch("requestShowLoadingSpinner", true)
       this.$router.push({ name: 'Main' })
     },
     startTimer() {
@@ -278,9 +279,11 @@ export default {
         })
       }
       next()
+      this.$store.dispatch("requestShowLoadingSpinner", false)
     }).catch(error => {
       console.log("the error in endRecoding()...")	
       console.log(error)	
+      this.$store.dispatch("requestShowLoadingSpinner", false)
 		}) 
   },
   watch: {

@@ -41,6 +41,7 @@ export default {
     next()
   },
   created() {
+    this.$store.dispatch('requestShowLoadingSpinner', true)
     this.initSession(new OpenVidu())
     this.doOpenviduCall()
     this.$store.dispatch("requestGetLoginUser")
@@ -59,11 +60,14 @@ export default {
           this.setAllDevices()
           this.addEventInSession()
           this.connectSession()
+          this.$store.dispatch('requestShowLoadingSpinner', false)
         }).catch((error) => {
           console.log(error)
+          this.$store.dispatch('requestShowLoadingSpinner', false)
         })         
       }).catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     setSessionIdAndTokenForOpenvidu(sessionId, token) {
