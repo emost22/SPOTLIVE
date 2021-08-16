@@ -28,8 +28,11 @@
         </template>
       </slide>
     </carousel-3d>
-    <div v-if="!shows.length">
-      <p class="txtcolor-white-nyellow main-title">등록된 공연이 존재하지 않습니다.</p>
+    
+    <div class="my-show-grid-box container-fluid">
+      <div v-if="!shows.length">
+        <p class="txtcolor-white-nyellow main-title">등록된 공연이 존재하지 않습니다.</p>
+      </div>
     </div>
   </div>
 </template>
@@ -61,6 +64,11 @@ export default {
 </script>
 
 <style>
+.my-show-grid-box {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+}
 .carousel-3d-container[data-v-07917306]  {
   padding-top: 50px;
   padding-bottom: 50px;
