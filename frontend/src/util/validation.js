@@ -3,6 +3,7 @@ import {
   required, 
   max,
   size,
+  image,
 } from 'vee-validate/dist/rules';
 
 extend('required', {
@@ -19,3 +20,7 @@ extend('size',{
   params: ['size'],
   message: '최대 1MB 첨부 가능합니다 :)'
 }) 
+extend('image', {
+  ...image,
+  message: '이미지파일만 가능합니다. :)'
+})

@@ -56,15 +56,17 @@
       </div>
       <div class="mb-3">
         <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
-        <div class="d-flex">
-          <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
-          <ValidationProvider rules="size:100" v-slot="{ errors }">
-            <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
-            <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
-          </label>
-            <span>{{errors[0]}}</span>
-          </ValidationProvider>
-        </div>
+          <div class="d-flex">
+            <ValidationProvider class="custom-form-control" rules="required" ref="fileInput">
+              <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
+              </ValidationProvider>
+            <ValidationProvider rules="required|image|size:1000" ref="fileBrowser" v-slot="{errors}">
+              <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
+              <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
+              </label>
+            </ValidationProvider>
+          </div>
+          {{ this.fileErrorMessage }}
       </div>
       <div class="mb-3">
         <ValidationProvider v-slot="v"  rules="max:200 |required" >
@@ -115,6 +117,7 @@ export default {
       fileName:'',
       showInfoIds: [],
       toast: null,
+      fileErrorMessage: ''
     }
   },
   computed: {
@@ -142,10 +145,18 @@ export default {
     },
   },
   methods: {
-    handleFileChange(e) {
-      this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
-      this.fileName = e.target.files[0].name // 파일이름을 넣음
-      this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
+    async handleFileChange(e) {
+      const { valid } = await this.$refs.fileBrowser.validate(e);
+      if (valid) {
+        this.form.thumbnailImage = e.target.files[0] // 파일을 넣고
+        this.fileName = e.target.files[0].name // 파일이름을 넣음
+        this.$store.dispatch('requestSetFileNameOfVideo', this.fileName)
+        this.fileErrorMessage = ''
+        console.log('Uploaded the file...');
+      } else {
+        this.fileName = ''
+        this.fileErrorMessage = this.$refs.fileBrowser.errors[0]        
+      }
     },
     makeShowInfoIds() {
       if (this.$props.showInfoList.length == 0) {
