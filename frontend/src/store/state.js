@@ -43,4 +43,5 @@ export default {
         }
       },
     fileNamevuex: '',
+    invalidForStart: true,
 }

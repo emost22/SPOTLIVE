@@ -8,7 +8,6 @@
       >
         <div class="live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
         <div class="time-badge" v-if="!video.isLive">{{ videoLength }}</div>
-        <!-- {{ video.startTime }} -->
       </div>
       
       <div class="glide-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
