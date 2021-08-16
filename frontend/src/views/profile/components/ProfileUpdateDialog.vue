@@ -8,59 +8,75 @@
   >
     <div class="modal-dialog bdcolor-bold-npurple modal-design">
 
-      <div class="modal-content-m">
-        <div class="modal-header no-border">
-          <div class="profile-update-header mt-3 ms-3">프로필 수정</div>
-          <button
-            type="button"
-            class="btn-close me-2 mt-1"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-
-        <div class="modal-body mx-3 profile-update-box">
-          <div class="profile-update-img-box"><img :src="loginUser.profileImageUrl" class="profile-update-img" /></div>
-          <div>
-            <div class="label-alignment profile-update-info mb-2">닉네임</div>
-            <div class="profile-update-info profile-update-info mb-2"><input class="custom-form-control" v-model="loginUser.profileNickname" /></div>
-            <div class="label-alignment profile-update-info mb-2">소개</div>
-            <div class="profile-update-info"><textarea class="custom-form-control" v-model="loginUser.profileDescription" rows="3"/></div> 
-          </div>
-        </div>
-
-        <div class="modal-footer-m my-3">
-          <div>
+      <ValidationObserver ref="profileUpdateObserver" v-slot="{ invalid }">
+        <div class="modal-content-m">
+          <div class="modal-header no-border">
+            <div class="profile-update-header mt-3 ms-3">프로필 수정</div>
             <button
+              type="button"
+              class="btn-close me-2 mt-1"
               data-bs-dismiss="modal"
               aria-label="Close"
-              type="button"
-              class="bdcolor-ngreen small-button mx-3"
-            >
-              취소
-            </button>
+            ></button>
           </div>
-          <div>
-            <button
-              @click="clickProfileUpdateButton"
-              type="button"
-              class="bdcolor-npink small-button mx-3"
-              data-bs-dismiss="modal"
-            >
-              저장
-            </button>
+
+          <div class="modal-body mx-3 profile-update-box">
+            <div class="profile-update-img-box"><img :src="loginUser.profileImageUrl" class="profile-update-img" /></div>
+            <div>
+              <div class="label-alignment profile-update-info mb-2">닉네임</div>
+              <div class="profile-update-info profile-update-info mb-2">
+                <ValidationProvider rules="required|max:20" v-slot="v">
+                  <input class="custom-form-control" v-model="loginUser.profileNickname" />
+                  <span>{{ v.errors[0] }}</span>
+                </ValidationProvider>
+              </div>
+              <div class="label-alignment profile-update-info mb-2">소개</div>
+                <ValidationProvider rules="required|max:50" v-slot="v">
+                  <div class="profile-update-info"><textarea class="custom-form-control" v-model="loginUser.profileDescription" rows="3"/></div>
+                  <span>{{ v.errors[0] }}</span>
+                </ValidationProvider> 
+            </div>
+          </div>
+
+          <div class="modal-footer-m my-3">
+            <div>
+              <button
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                type="button"
+                class="bdcolor-ngreen small-button mx-3"
+              >
+                취소
+              </button>
+            </div>
+            <div>
+              <button
+                @click="clickProfileUpdateButton"
+                type="button"
+                class="bdcolor-npink small-button mx-3 setting-button"
+                data-bs-dismiss="modal"
+                :disabled="invalid"
+              >
+                저장
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </ValidationObserver>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 
 export default {
   name: 'ProfileUdateDialog',
+  components: {
+    ValidationObserver,
+    ValidationProvider
+  },
   methods: {
     clickProfileUpdateButton() {
       let userUpdatePatchReq = {
@@ -138,5 +154,9 @@ export default {
 }
 .profile-update-info {
   text-align: left;
+}
+.setting-button:disabled {
+  border-color: black;
+  color: gray;
 }
 </style>

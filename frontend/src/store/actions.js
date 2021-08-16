@@ -391,5 +391,10 @@ export default {
         const URL = `/showinfo/${payload.showInfoId}`
 
         return $axios.put(URL, payload.formData)
+    },
+
+    // loadingSpinner
+    requestShowLoadingSpinner({ commit }, payload) {
+      commit("SHOW_LOADING_SPINNER", payload)
     }
 }

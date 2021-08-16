@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <div v-if="loading" class="d-flex justify-content-center">
+      <div class="spinner-border text-light " role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
     <div class="sticky-top match-parent">
       <MainHeader v-if="isLogin"/>
       <router-view :key="$route.fullPath"></router-view>
@@ -17,6 +22,7 @@
       <TicketDetailDialog/>
       <ShowInfoDialogNowPlaying/>
     </div>
+
   </div>
 </template>
 
@@ -63,6 +69,7 @@ export default ({
   computed: {
     ...mapGetters([
     'isLogin', 
+    'loading', 
     ]),
   },
   created: function () {
@@ -385,5 +392,12 @@ div#deleteTicketInfo {
     margin: auto auto;
     width: 500px;
     height: 212px;
+}
+.spinner-border {
+  display: block;
+  position: fixed;
+  z-index: 10000;
+  top: 50%;
+  left: 50%;
 }
 </style>
