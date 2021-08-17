@@ -593,62 +593,6 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(){
-        // given
-        String insertVideoTitle = "알고리즘 잘하는법";
-        String insertVideoDescription = "kmk님이 알려주실겁니다";
-        String insertMode = "소통";
-        Long insertCategoryId = 2L;
-        String insertAccountEmail = "emoney96@naver.com";
-        String insertSessionId = "123123";
-        String insertThumbnailUrl = "solvedac.png";
-
-        String posterUrl = "posterUrl.png";
-        Long price = 10000L;
-        int runningTime = 180;
-        String showInfoDescription = "description";
-        String showInfoTitle = "title";
-
-        ShowInfoInsertPostReq showInfoInsertPostReq = new ShowInfoInsertPostReq();
-        showInfoInsertPostReq.setAccountEmail(insertAccountEmail);
-        showInfoInsertPostReq.setShowInfoTitle(showInfoTitle);
-        showInfoInsertPostReq.setShowInfoDescription(showInfoDescription);
-        showInfoInsertPostReq.setPrice(price);
-        showInfoInsertPostReq.setRunningTime(runningTime);
-        showInfoInsertPostReq.setPosterUrl(posterUrl);
-        ShowInfo showInfo = showInfoRepository.save(showInfoInsertPostReq.toShowInfo());
-
-        TimetableInsertPostReq timetableInsertPostReq = new TimetableInsertPostReq();
-        timetableInsertPostReq.setDateTime(LocalDateTime.now());
-        Timetable timetable = timetableRepository.save(timetableInsertPostReq.toTimetable(showInfo));
-
-        VideoInsertPostReq videoInsertPostReq = new VideoInsertPostReq();
-        videoInsertPostReq.setVideoTitle(insertVideoTitle);
-        videoInsertPostReq.setVideoDescription(insertVideoDescription);
-        videoInsertPostReq.setMode(insertMode);
-        videoInsertPostReq.setCategoryId(insertCategoryId);
-        videoInsertPostReq.setShowInfoId(showInfo.getShowInfoId());
-        videoInsertPostReq.setTimetableId(timetable.getTimetableId());
-        videoInsertPostReq.setAccountEmail(insertAccountEmail);
-        videoInsertPostReq.setSessionId(insertSessionId);
-
-        int page = 0;
-        int size = MAX;
-        Long categoryId = 2L;
-        String videoTitle = "kmk";
-        String videoDescription = "kmk";
-        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
-        PageRequest pageRequest = PageRequest.of(page, size, sort);
-
-        // when
-        Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
-        Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, videoTitle, videoDescription);
-
-        // then
-        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
-    }
-
-    @Test
     void findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(){
         // given
         String insertVideoTitle = "알고리즘 잘하는법";
