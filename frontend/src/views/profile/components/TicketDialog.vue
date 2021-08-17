@@ -26,11 +26,11 @@
             :key="idx"
           >
             <TicketCard
-             :timetable="reservation.timetableFindByReservationRes"
-             :showInfo="reservation.timetableFindByReservationRes.showInfoRes"
-             :showHost="reservation.timetableFindByReservationRes.showInfoRes.userRes"
-             :idx="idx"
-             @clickCancleTicketbutton="clickCancleTicketbutton"
+              :timetable="reservation.timetableFindByReservationRes"
+              :showInfo="reservation.timetableFindByReservationRes.showInfoRes"
+              :showHost="reservation.timetableFindByReservationRes.showInfoRes.userRes"
+              :idx="idx"
+              @clickCancleTicketbutton="clickCancleTicketbutton"
             />
           </div> 
         </div>

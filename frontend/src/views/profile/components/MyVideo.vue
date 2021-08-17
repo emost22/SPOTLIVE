@@ -15,7 +15,7 @@
       </div>
       <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
     </div>
-    <div v-if="!videos.length">
+    <div v-if="!videos.length" class="main-font-light">
       <p class="txtcolor-white-npink main-title">저장된 동영상이 존재하지 않습니다.</p>
     </div>
   </div>

@@ -17,16 +17,16 @@
       <div><img :src="createdProfileData.myProfile.profileImageUrl" class="profile-big-img"></div>
       <div class="profile-detail d-flex flex-column justify-content-evenly">
         <div class="profile-txt"> <span class="txtcolor-white-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
-        <div class="profile-txt"> {{ createdProfileData.myProfile.profileDescription }} </div>
+        <div class="profile-txt main-font-light"> {{ createdProfileData.myProfile.profileDescription }} </div>
         <div divclass="profile-txt"> {{ createdProfileData.myProfile.accountEmail }} </div>
       </div>
       <div class="follow-number">
         <p>FOLLOWING</p>
-        <p>{{ createdProfileData.following.length }}</p>
+        <p class="main-font-light">{{ createdProfileData.following.length }}</p>
       </div>
       <div class="follow-number">
         <p>FOLLOWER</p>
-        <p>{{ createdProfileData.follower.length }} </p>
+        <p class="main-font-light">{{ createdProfileData.follower.length }} </p>
       </div>
     </div>
 

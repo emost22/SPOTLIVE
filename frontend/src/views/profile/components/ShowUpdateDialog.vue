@@ -13,7 +13,7 @@
                   <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
                   <div class="profile-small-detail">
                     <div class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</div>
-                    <div>{{ loginUser.accountEmail }}</div>
+                    <div class="main-font-light">{{ loginUser.accountEmail }}</div>
                   </div>
                 </div>
 
@@ -42,7 +42,7 @@
                     <div class="mb-3">
                       <ValidationProvider rules="required|max:20" v-slot="v">
                         <div class="label-alignment"><label for="showUpdateFormControlInput1" class="form-label">공연명</label></div>
-                        <input type="text" class="custom-form-control" id="showUpdateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
+                        <input type="text" class="custom-form-control main-font-light" id="showUpdateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
                         <span>{{ v.errors[0] }}</span>
                       </ValidationProvider>
                     </div>
@@ -50,14 +50,14 @@
                       <div class="flex-fill me-3">
                       <ValidationProvider rules="required|max:10|numeric" v-slot="v">
                         <div class="label-alignment"><label for="showUpdateFormControlInput2" class="form-label">티켓가격</label></div>
-                        <input type="text" class="custom-form-control" id="showUpdateFormControlInput2" v-model="price" autocomplete="off">
+                        <input type="text" class="custom-form-control main-font-light" id="showUpdateFormControlInput2" v-model="price" autocomplete="off">
                         <span>{{ v.errors[0] }}</span>
                       </ValidationProvider>
                       </div>
                       <div class="flex-fill">
                       <ValidationProvider rules="required|max:10|numeric" v-slot="v">
                         <div class="label-alignment"><label for="showUpdateFormControlInput3" class="form-label">러닝타임</label></div>
-                        <input type="text" class="custom-form-control" id="showUpdateFormControlInput4" v-model="runningTime" autocomplete="off">
+                        <input type="text" class="custom-form-control main-font-light" id="showUpdateFormControlInput4" v-model="runningTime" autocomplete="off">
                         <span>{{ v.errors[0] }}</span>
                       </ValidationProvider>
                       </div>
@@ -66,7 +66,7 @@
                       <div class="flex-fill me-3 d-flex flex-row justify-content-start">
                         <div>
                           <div class="label-alignment"><label for="showUpdateFormControlInput4" class="form-label">공연 시간</label></div>
-                          <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
+                          <datetime class="datetime-theme main-font-light" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
                         </div>
                         <div>
                           <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-white-npurple">입력</button>
@@ -76,7 +76,7 @@
                     <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
                       <ValidationProvider rules="excluded:0" v-slot="v">
-                        <select class="show-update-timetable" v-model="selected">
+                        <select class="show-update-timetable main-font-light" v-model="selected">
                           <option :value="defaultValue">공연 시간 목록</option>
                           <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                             {{ formatter(d.dateTime) }}
@@ -96,7 +96,7 @@
                 <div class="mb-3 mx-3">
                   <ValidationProvider rules="required|max:200" v-slot="v">
                     <div class="label-alignment"><label for="showUpdateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
-                    <textarea class="custom-form-control" id="showUpdateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
+                    <textarea class="custom-form-control main-font-light" id="showUpdateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
                     <span>{{ v.errors[0] }}</span>
                   </ValidationProvider>
                 </div>

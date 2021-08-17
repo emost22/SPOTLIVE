@@ -7,7 +7,7 @@
     >
       <div class="d-flex flex-row justify-content-between">
         <div class="my-video-live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
-        <div class="my-video-time-badge" v-if="!video.isLive">{{ videoLength }}</div>
+        <div class="my-video-time-badge main-font-light" v-if="!video.isLive">{{ videoLength }}</div>
         <div class="btn-close my-video-delete-badge" v-if="inMyProfile" @click="deleteReplayVideo" type="button"></div>
       </div>
     </div>
@@ -15,7 +15,6 @@
       <div>
         <p class="text-nowrap overflow-hidden fw-bold my-video-card-info-detail">
           {{ video.videoTitle }}
-          {{ video.categoryRes.categoryName }}
         </p>
       </div>           
     </div>
@@ -203,7 +202,7 @@ export default {
   color: #FFFFFF;
   border: none;
   margin: 7px;
-  font-size: 14px;
+  font-size: 13px;
 }
 .my-video-delete-badge {
   display: flex;

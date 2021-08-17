@@ -26,29 +26,29 @@
               <div class="ticket-show-info">  
                 <div class="mb-2"> 
                   <div><label class="ticket-label-in-dialog">TEAM</label></div>
-                  <div class="txtcolor-white-ngreen">{{ showReservationData.userRes.userName }}</div>
+                  <div class="txtcolor-white-ngreen main-font-light">{{ showReservationData.userRes.userName }}</div>
                 </div>       
                 <div class="mb-2">
                   <div><label class="ticket-label-in-dialog">공연명</label></div>
-                  <div class="txtcolor-white-npink">{{ showReservationData.showInfoTitle }}</div>
+                  <div class="txtcolor-white-npink main-font-light">{{ showReservationData.showInfoTitle }}</div>
                 </div>
                 <div class="mb-2">
                   <div><label class="ticket-label-in-dialog">티켓가격</label></div>
-                  <div class="txtcolor-white-npurple">{{ showReservationData.price }}원</div>
+                  <div class="txtcolor-white-npurple main-font-light">{{ showReservationData.price }}원</div>
                 </div>
                 <div class="d-flex flex-row mb-2">
                   <div class="me-3">
                     <label class="ticket-label-in-dialog">공연 시간</label>
-                    <div class="txtcolor-white-nyellow"> {{ dateTime }} </div>
+                    <div class="txtcolor-white-nyellow main-font-light"> {{ dateTime }} </div>
                   </div>
                   <div>
                     <div><label class="ticket-label-in-dialog">러닝타임</label></div>
-                    <div class="txtcolor-white-ngreen">{{showReservationData.runningTime}} min</div> 
+                    <div class="txtcolor-white-ngreen main-font-light">{{showReservationData.runningTime}} min</div> 
                   </div>
                 </div>
                 <div>
                   <div><label class="ticket-label-in-dialog"> 공연 설명</label></div>
-                  <div>{{ showReservationData.showInfoDescription }}</div>
+                  <div class="main-font-light">{{ showReservationData.showInfoDescription }}</div>
                 </div>
               </div>
             </div>

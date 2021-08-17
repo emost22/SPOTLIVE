@@ -15,10 +15,10 @@
           <img :src="video.user.profileImageUrl" class="glide-card-img-profile" @click="goProfile">
         </div>
         <div>
-          <p class="text-nowrap overflow-hidden fw-bold glide-card-info-detail">
+          <p class="text-nowrap overflow-hidden glide-card-info-detail">
             {{ video.videoTitle }}
           </p>
-          <p class="glide-card-info-detail"> {{ video.user.profileNickname }} </p> 
+          <p class="glide-card-info-detail main-font-light"> {{ video.user.profileNickname }} </p> 
         </div>           
       </div>
     </div>

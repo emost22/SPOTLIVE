@@ -15,7 +15,7 @@
           <div class="d-flex flex-column">
             <div class="videoTitle">{{ videoTitle }}</div>
             <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ category }}</div>
-            <div class="videoDescription">{{ videoDescription }}</div>
+            <div class="videoDescription main-font-light">{{ videoDescription }}</div>
           </div>
           <div class="d-flex flex-column">
             <div class="d-flex flex-column align-items-center mt-3">
