@@ -301,13 +301,13 @@ public class MainController {
     })
     @GetMapping("/search")
     public ResponseEntity<VideoGetRes> findAllSearchVideo(
-            @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam("keyword") String keyword, @RequestParam(name = "categoryId", required = false) Long categoryId){
+            @RequestParam("size") int size, @RequestParam("page") int page, @RequestParam("keyword") String keyword){
         /**
          * @Method Name : findAllSearchVideo
          * @작성자 : 강용수
          * @Method 설명 : 입력된 keyword가 포함되는 제목과 설명이 있는 Video를 categoryId 기준으로 조회하는 메소드
          */
-        VideoGetRes videoGetRes = mainService.findAllSearchVideoByKeywordContains(page, size, keyword, categoryId);
+        VideoGetRes videoGetRes = mainService.findAllSearchVideoByKeywordContains(page, size, keyword);
 
         List<VideoFindMainVideoRes> videoFindMainVideoResList = videoGetRes.getVideoResList();
 
