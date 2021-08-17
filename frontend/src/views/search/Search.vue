@@ -29,6 +29,7 @@ export default {
   },
   methods: {
     getSearchs(keywordValue, pageValue, sizeValue) {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestGetSearchVideos', { 
         keywordValue: keywordValue,
         pageValue: pageValue,
@@ -38,9 +39,11 @@ export default {
         console.log("getGetSearchVideos() SUCCESS!!")
         console.log(response.data)
         this.search_videos = response.data.videoResList
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
   },
