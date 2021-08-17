@@ -18,7 +18,7 @@
               <div><img :src="showReservationData.userRes.profileImageUrl" class="profile-small-img"></div>
               <div class="profile-small-detail">
                 <div class="txtcolor-white-nyellow">{{ showReservationData.userRes.userName }}</div>
-                <p>{{ showReservationData.userRes.accountEmail }}</p>
+                <p class="main-font-light">{{ showReservationData.userRes.accountEmail }}</p>
               </div>
             </div>
 
@@ -27,22 +27,22 @@
               <div class="show-info">
                 <div class="mb-3">
                   <div class="label-alignment"><label class="form-label">공연명</label></div>
-                  <div class="txtcolor-white-npink">{{ showReservationData.showInfoTitle }}</div>
+                  <div class="txtcolor-white-npink main-font-light">{{ showReservationData.showInfoTitle }}</div>
                 </div>
                 <div class="mb-3 d-flex">
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label">티켓가격</label></div>
-                    <div class="d-flex txtcolor-white-npurple">{{ showReservationData.price }}원</div>
+                    <div class="d-flex txtcolor-white-npurple main-font-light">{{ showReservationData.price }}원</div>
                   </div>
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label">러닝타임</label></div>
-                    <div class="d-flex txtcolor-white-ngreen">{{ showReservationData.runningTime }} min</div>                      
+                    <div class="d-flex txtcolor-white-ngreen main-font-light">{{ showReservationData.runningTime }} min</div>                      
                   </div>
                 </div>
                 <div class="mb-3 d-flex">
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label">공연 시간</label></div>
-                    <select class="custom-select-control-m" v-model="timetableId" v-if="timetables.length > 0">
+                    <select class="custom-select-control-m main-font-light" v-model="timetableId" v-if="timetables.length > 0">
                       <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                     </select>
                     <div class="d-flex" v-else>예약 가능한 시간이 없습니다.</div>
@@ -53,7 +53,7 @@
 
             <div class="show-description">
               <div class="label-alignment"><label class="form-label"> 공연 설명</label></div>
-              <div>{{ showReservationData.showInfoDescription }}</div>
+              <div class="main-font-light">{{ showReservationData.showInfoDescription }}</div>
             </div>
 
           </form>

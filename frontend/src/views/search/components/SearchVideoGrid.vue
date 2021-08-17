@@ -15,7 +15,7 @@
       <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
     </div>
     <div v-if="!videos.length">
-      <p class="txtcolor-white-nyellow main-title">해당 검색 결과가 존재하지 않습니다.</p>
+      <p class="txtcolor-white-nyellow main-title main-font-light">해당 검색 결과가 존재하지 않습니다.</p>
     </div>
   </div>
 </template>

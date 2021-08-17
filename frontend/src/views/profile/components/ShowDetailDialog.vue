@@ -13,7 +13,7 @@
                 <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
                 <div class="profile-small-detail">
                   <div class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</div>
-                  <div>{{ loginUser.accountEmail }}</div>
+                  <div class="main-font-light">{{ loginUser.accountEmail }}</div>
                 </div>
               </div>
               <div class="d-flex flex-row">    
@@ -21,22 +21,22 @@
                 <div class="show-info">
                   <div class="mb-3">
                     <div class="label-alignment"><label class="form-label">공연명</label></div>
-                    <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
+                    <div class="txtcolor-white-npink main-font-light">{{ getShowData.title }}</div>
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill">
                       <div class="label-alignment"><label class="form-label">티켓가격</label></div>
-                      <div class="d-flex txtcolor-white-npurple">{{ getShowData.price }}원</div>
+                      <div class="d-flex txtcolor-white-npurple main-font-light">{{ getShowData.price }}원</div>
                     </div>
                     <div class="flex-fill">
                       <div class="label-alignment"><label class="form-label">러닝타임</label></div>
-                      <div class="d-flex txtcolor-white-ngreen">{{ getShowData.runningTime }} min</div>                      
+                      <div class="d-flex txtcolor-white-ngreen main-font-light">{{ getShowData.runningTime }} min</div>                      
                     </div>
                   </div>
                   <div class="mb-3 d-flex">
                     <div class="flex-fill">
                       <div class="label-alignment"><label class="form-label">공연 시간</label></div>
-                      <select class="custom-select-control-m" aria-label="Default select showDetail" v-model="timetableId">
+                      <select class="custom-select-control-m main-font-light" aria-label="Default select showDetail" v-model="timetableId">
                         <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
                       </select>
                     </div>
@@ -47,7 +47,7 @@
 
               <div class="show-description">
                 <div class="label-alignment"><label for="showDetailFormControlTextarea1" class="form-label"> 공연 설명</label></div>
-                <div>{{ getShowData.description }}</div>
+                <div class="main-font-light">{{ getShowData.description }}</div>
               </div>
             </form>
         </div>

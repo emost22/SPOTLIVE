@@ -3,10 +3,10 @@
     <div class="prev-camera-screen">
       <video class="user-video" ref="myVideo" autoplay/>
     </div>
-    <select @change="changeDevice()" class="camera-setting-selector mb-3" v-model="videoDeviceId" id="videoDeviceId">
+    <select @change="changeDevice()" class="camera-setting-selector mb-3 main-font-light" v-model="videoDeviceId" id="videoDeviceId">
       <option :key="index" :value="index" v-for="(videoDevice, index) in this.videoDevices">{{ videoDevice.label }}</option>
     </select>
-    <select @change="changeDevice()" class="camera-setting-selector mb-3" v-model="audioDeviceId" id="audioDeviceId">
+    <select @change="changeDevice()" class="camera-setting-selector mb-3 main-font-light" v-model="audioDeviceId" id="audioDeviceId">
       <option :key="index" :value="index" v-for="(audioDevice, index) in this.audioDevices">{{ audioDevice.label }}</option>
     </select>
   </div>

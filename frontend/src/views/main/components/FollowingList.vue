@@ -9,7 +9,7 @@
         </div>
         <div v-if="following.isLive" class="live-circle-badge bdcolor-npink"></div>
         <div v-if="open" style="overflow:hidden;">
-          <p class="sidebar-following-nickname txtcolor-white" >{{following.profileNickname}}</p>
+          <p class="sidebar-following-nickname txtcolor-white main-font-light">{{following.profileNickname}}</p>
         </div>
       </div>
     </li>
