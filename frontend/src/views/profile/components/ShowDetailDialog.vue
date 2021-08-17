@@ -137,6 +137,7 @@ export default {
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable(timetables) {
+      if (!timetables) return
       this.timetableId = timetables[0].timetableId
       this.timetables = []
       for(var i = 0; i < timetables.length; i++){

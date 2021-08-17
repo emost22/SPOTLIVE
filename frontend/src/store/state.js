@@ -48,4 +48,5 @@ export default {
     fileNamevuex: '',
     invalidForStart: true,
     loading: false,
+    isReservation: false
 }

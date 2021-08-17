@@ -102,6 +102,7 @@ export default {
       return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()} ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable(timetables) {
+      if (!timetables) return
       this.dateTime = this.formatter(timetables[0].dateTime)
     },
   },

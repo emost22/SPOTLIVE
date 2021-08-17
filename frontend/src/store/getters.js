@@ -74,5 +74,8 @@ export default {
     },
     loading(state) {
         return state.loading
+    },
+    isReservation(state) {
+        return state.isReservation
     }
 }

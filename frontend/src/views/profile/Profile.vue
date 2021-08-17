@@ -69,7 +69,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
+    // this.$store.dispatch("requestSetCreatedProfileData", {})
     this.profileId = this.$route.query.profileId
     this.getUser()
     if (this.inMyProfile) {
