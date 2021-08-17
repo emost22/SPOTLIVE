@@ -144,7 +144,7 @@ form {
 }
 .search-button {
   width: 45px;
-  height: 40px;
+  height: 36px;
   margin-left: 10px;
   background-color: #595959;
   border: none;
