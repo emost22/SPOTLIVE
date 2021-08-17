@@ -210,6 +210,12 @@ export default {
     openDatetime() {
       this.$refs.datetimePicker.open(event);
     },
+    modifyDatetime(){
+      let newVal = new Date(this.datetime)
+      newVal.setHours(newVal.getHours() + 9)
+      newVal = newVal.toISOString().substring(0, 19)
+      return newVal
+    },
     doAdd(){
       if (this.datetime != ""){
         this.timetables.push({dateTime: this.datetime})
