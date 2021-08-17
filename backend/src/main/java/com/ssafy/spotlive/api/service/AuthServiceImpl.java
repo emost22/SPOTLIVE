@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoRestApiKey;
 
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
     private String kakaoRestSecretKey;
 
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
