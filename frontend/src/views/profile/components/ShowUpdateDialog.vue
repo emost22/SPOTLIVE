@@ -6,8 +6,8 @@
           <div class="information-header mt-3 ms-3">공연 정보 수정</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <ValidationObserver ref="profileUpdateObserver" v-slot="{ invalid }">
           <div class="modal-body mx-3">
+            <ValidationObserver ref="showUpdateObserver" @change="changeInput()">
               <form>
                 <div class="d-flex flex-row mb-3 ms-3">
                   <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
@@ -101,12 +101,12 @@
                   </ValidationProvider>
                 </div>
               </form>
+            </ValidationObserver>
           </div>
           <div class="modal-footer-m my-3">
             <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
             <div><button @click="clickShowUpdateButton" type="button" class="bdcolor-npink small-button mx-3 setting-button" data-bs-dismiss="modal" :disabled="invalid">저장</button></div>
           </div>
-        </ValidationObserver>
       </div>
     </div>
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
@@ -140,7 +140,8 @@ export default {
       timetables:[],
       selected: '',
       toastMessage: '',
-      fileErrorMessage: ''
+      fileErrorMessage: '',
+      invalid: true,
     }
   },
   created: function () {
@@ -161,6 +162,13 @@ export default {
         this.posterImage = ''
         this.preview = ''
         this.fileErrorMessage = this.$refs.showCreateFileBrowser.errors[0]        
+      }
+    },
+    changeInput: function () {
+      if (this.$refs.showUpdateObserver.flags.invalid) {
+        this.invalid = true
+      } else {
+        this.invalid = false
       }
     },
     async init(showData){
@@ -513,5 +521,9 @@ export default {
 .toast-body {
     color: white;
     text-align: center;
+}
+.setting-button:disabled {
+  border-color: black;
+  color: gray;
 }
 </style>
