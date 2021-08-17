@@ -35,25 +35,25 @@
                 </div>       
                 <div class="mb-2">
                   <div><label class="ticket-label-in-dialog">공연명</label></div>
-                  <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
+                  <div class="txtcolor-white-npink main-font-light">{{ getShowData.title }}</div>
                 </div>
                 <div class="mb-2">
                   <div><label class="ticket-label-in-dialog">티켓가격</label></div>
-                  <div class="txtcolor-white-npurple">{{ getShowData.price }}원</div>
+                  <div class="txtcolor-white-npurple main-font-light">{{ getShowData.price }}원</div>
                 </div>
                 <div class="d-flex flex-row mb-2">
                   <div class="me-3">
                     <label class="ticket-label-in-dialog">공연 시간</label>
-                    <div class="txtcolor-white-nyellow"> {{dateTime}} </div>
+                    <div class="txtcolor-white-nyellow main-font-light"> {{dateTime}} </div>
                   </div>
                   <div>
                     <div><label class="ticket-label-in-dialog">러닝타임</label></div>
-                    <div class="txtcolor-white-ngreen">{{ getShowData.runningTime }}min</div> 
+                    <div class="txtcolor-white-ngreen main-font-light">{{ getShowData.runningTime }}min</div> 
                   </div>
                 </div>
                 <div>
                   <div><label class="ticket-label-in-dialog"> 공연 설명</label></div>
-                  <div>{{ getShowData.description }}</div>
+                  <div class="main-font-light">{{ getShowData.description }}</div>
                 </div>
               </div>
             </div>

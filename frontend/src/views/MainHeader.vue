@@ -113,9 +113,10 @@ export default ({
   height: 80px;
 }
 .logo {
+  font-family: Arial;
   font-weight: bold;
   font-size: 25px;
-  margin: 5px;
+  margin: 3px;
 }
 .search {
   display: flex;

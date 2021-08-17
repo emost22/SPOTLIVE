@@ -29,7 +29,7 @@
       </slide>
     </carousel-3d>
     
-    <div class="my-show-grid-box container-fluid">
+    <div class="my-show-grid-box container-fluid main-font-light">
       <div v-if="!shows.length">
         <p class="txtcolor-white-nyellow main-title">등록된 공연이 존재하지 않습니다.</p>
       </div>

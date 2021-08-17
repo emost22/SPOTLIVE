@@ -89,16 +89,16 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Optional<List<Video>> findVideosByUser_AccountEmailIn(List<String> accountEmailList);
 
     /**
-     * @Method Name : findVideosByVideoTitleContainsOrVideoDescriptionContains
+     * @Method Name : findVideosByVideoTitleContainsOrVideoDescriptionContainsOrUser_ProfileNicknameContains
      * @작성자 : 강용수
-     * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 검색하는 메소드
+     * @Method 설명 : 검색 키워드가 영상 제목이나 설명이나 닉네임에 포함된 Video를 검색하는 메소드
      */
-    Page<Video> findVideosByVideoTitleContainsOrVideoDescriptionContains(Pageable pageable, String videoTitle, String videoDescription);
+    Page<Video> findVideosByVideoTitleContainsOrVideoDescriptionContainsOrUser_ProfileNicknameContains(Pageable pageable, String videoTitle, String videoDescription, String profileNickname);
 
     /**
-     * @Method Name : findVideosByModeAndIsLiveAndTimetable_TimetableIdIn
+     * @Method Name : findVideosByModeAndTimetable_TimetableIdIn
      * @작성자 : 강용수
-     * @Method 설명 : mode가 공연인 라이브 중 본인이 예약한 공연의 videoList를 조회하는 메소드
+     * @Method 설명 : mode가 공연인 영상 중본인이 예약한 공연의 videoList를 조회하는 메소드
      */
-    Optional<List<Video>> findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(String mode, Boolean isLive, List<Long> timetableIdList);
+    Optional<List<Video>> findVideosByModeAndTimetable_TimetableIdIn(String mode, List<Long> timetableIdList);
 }

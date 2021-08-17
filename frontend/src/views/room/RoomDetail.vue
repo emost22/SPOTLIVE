@@ -13,11 +13,11 @@
           <div class="d-flex flex-column">
             <div class="videoTitle">{{ this.videoTitle }}</div>
             <div class="category bdcolor-npurple txtcolor-npurple my-2">{{ this.category }}</div>
-            <div class="videoDescription">{{ this.videoDescription }}</div>
+            <div class="videoDescription main-font-light">{{ this.videoDescription }}</div>
           </div>
           <div>
             <span class="watching-people"><img src="~@/assets/icon-people-watching.png"> {{ hit }}</span>
-            <span class="current-time"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
+            <span class="current-time main-font-light"> {{ takenTime.h }}:{{ takenTime.m }}:{{ takenTime.s }} </span>
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
               <div class="mb-2 txtcolor-white">
                 <strong> {{ chat.userName }}</strong>
               </div>
-              <div class="txtcolor-white">
+              <div class="txtcolor-white main-font-light">
                 {{ chat.charStr }}
               </div>
             </div>
@@ -41,7 +41,7 @@
         </div>
         <div class="align-items-center" style="">
           <div class="input-part">
-            <input class="chat-input" type="text" v-model="chatMsg" @keyup.enter="sendChat">
+            <input class="chat-input main-font-light" type="text" v-model="chatMsg" @keyup.enter="sendChat">
           </div>
           <div>
           </div>

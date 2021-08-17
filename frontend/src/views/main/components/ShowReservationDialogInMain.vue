@@ -17,7 +17,7 @@
               <div><img :src="getShowData.profileImageUrl" class="profile-small-img"></div>
               <div class="profile-small-detail">
                 <div class="txtcolor-white-nyellow">{{ getShowData.profileNickname }}</div>
-                <p>{{ getShowData.userId }}</p>
+                <p class="main-font-light">{{ getShowData.userId }}</p>
               </div>
             </div>
 
@@ -26,22 +26,22 @@
               <div class="show-info">
                 <div class="mb-3">
                   <div class="label-alignment"><label class="form-label">공연명</label></div>
-                  <div class="txtcolor-white-npink">{{ getShowData.title }}</div>
+                  <div class="txtcolor-white-npink main-font-light">{{ getShowData.title }}</div>
                 </div>
                 <div class="mb-3 d-flex">
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label">티켓가격</label></div>
-                    <div class="d-flex txtcolor-white-npurple">{{ getShowData.price }}원</div>
+                    <div class="d-flex txtcolor-white-npurple main-font-light">{{ getShowData.price }}원</div>
                   </div>
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label">러닝타임</label></div>
-                    <div class="d-flex txtcolor-white-ngreen">{{ getShowData.runningTime }} min</div>                      
+                    <div class="d-flex txtcolor-white-ngreen main-font-light">{{ getShowData.runningTime }} min</div>                      
                   </div>
                 </div>
                 <div class="mb-3 d-flex">
                   <div class="flex-fill me-3">
                     <div class="label-alignment"><label class="form-label label-in-dialog">공연 시간</label></div>
-                    <div>{{ dateTime }}</div>
+                    <div class="main-font-light">{{ dateTime }}</div>
                   </div>
                 </div>
               </div>
@@ -49,7 +49,7 @@
 
             <div class="show-description">
               <div class="label-alignment"><label class="form-label"> 공연 설명</label></div>
-              <div>{{ getShowData.description }}</div>
+              <div class="main-font-light">{{ getShowData.description }}</div>
             </div>
 
           </form>

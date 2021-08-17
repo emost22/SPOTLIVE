@@ -3,21 +3,60 @@
     <div 
       class="my-video-card-img-box" 
       v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
-      @click="goReservationConfirm"  
+      @click="goReservationConfirm"
     >
       <div class="d-flex flex-row justify-content-between">
         <div class="my-video-live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
-        <div class="my-video-time-badge" v-if="!video.isLive">{{ videoLength }}</div>
-        <div class="btn-close my-video-delete-badge" v-if="inMyProfile" @click="deleteReplayVideo" type="button"></div>
+        <div class="my-video-time-badge main-font-light" v-if="!video.isLive">{{ videoLength }}</div>
+        <div class="btn-close my-video-delete-badge" v-if="inMyProfile && !video.isLive" @click="deleteReplayVideo"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#deleteVideo" 
+          aria-controls="deleteVideo" type="button"></div>
       </div>
     </div>
     <div class="my-video-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
       <div>
         <p class="text-nowrap overflow-hidden fw-bold my-video-card-info-detail">
           {{ video.videoTitle }}
-          {{ video.categoryRes.categoryName }}
         </p>
-      </div>           
+      </div>
+    </div>
+    <div 
+      class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" 
+      tabindex="-1" 
+      id="deleteVideo" 
+      ref="showPopup" 
+      aria-labelledby="offcanvasTopLabel"
+    >
+      <div class="offcanvas-header">
+        <button 
+          type="button" 
+          class="btn-close text-reset" 
+          data-bs-dismiss="offcanvas" 
+          aria-label="Close"
+          @click="clickConfirm"
+        >
+        </button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="mt-3">
+          <p class="ticket-popup-title">
+            영상이 삭제되었습니다.
+          </p>
+        </div>
+        <div class="d-flex justify-content-end ticket-popup-button">
+          <div>
+            <button 
+              type="button" 
+              class="bdcolor-ngreen small-button"
+              data-bs-dismiss="offcanvas"
+              @click="clickConfirm"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -54,11 +93,26 @@ export default {
       this.videoLength = hour + ":" + min + ":" + sec
     },
     goRoomDetail() {
+      if(this.video.videoId == -1) return
+
       if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
       else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
     },
     deleteReplayVideo() {
       // videoResList 내 동영상 삭제 axios
+      if(this.video.isLive) return
+
+      this.$store.dispatch('requestDeleteVideo', this.video.videoId)
+      .then((response) => {
+        console.log(resopnse.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      this.video.videoId = -1
+    },
+    clickConfirm(){
+      this.$router.go()
     },
     goTicketDetailDialogInMain() {
       // Vuex
@@ -143,7 +197,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .my-video-card-box {
   width:300px;
   height:250px;
@@ -203,12 +257,17 @@ export default {
   color: #FFFFFF;
   border: none;
   margin: 7px;
-  font-size: 14px;
+  font-size: 13px;
 }
 .my-video-delete-badge {
   display: flex;
   justify-content: end;
   margin-top: 10px;
   margin-right: 10px;
+}
+.m-offcanvas {
+  background-color: #242424;
+  color: white;
+  margin: 15px auto;
 }
 </style>

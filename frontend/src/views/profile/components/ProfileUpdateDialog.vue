@@ -26,13 +26,13 @@
               <div class="label-alignment profile-update-info mb-2">닉네임</div>
               <div class="profile-update-info profile-update-info mb-2">
                 <ValidationProvider rules="required|max:20" v-slot="v">
-                  <input class="custom-form-control" v-model="loginUser.profileNickname" />
+                  <input class="custom-form-control main-font-light" v-model="loginUser.profileNickname" />
                   <span>{{ v.errors[0] }}</span>
                 </ValidationProvider>
               </div>
               <div class="label-alignment profile-update-info mb-2">소개</div>
                 <ValidationProvider rules="required|max:50" v-slot="v">
-                  <div class="profile-update-info"><textarea class="custom-form-control" v-model="loginUser.profileDescription" rows="3"/></div>
+                  <div class="profile-update-info"><textarea class="custom-form-control main-font-light" v-model="loginUser.profileDescription" rows="3"/></div>
                   <span>{{ v.errors[0] }}</span>
                 </ValidationProvider> 
             </div>
