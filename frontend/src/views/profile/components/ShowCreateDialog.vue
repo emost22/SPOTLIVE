@@ -257,17 +257,23 @@ export default {
     },
     checkDuplicateDatetime(){
       for(var key in this.timetables){
-          if(this.timetables[key].dateTime==this.datetime){
+          if(this.timetables[key].dateTime==this.modifyDatetime()){
             this.duplicate = true
             break
           }
-        }
+      }
+    },
+    modifyDatetime(){
+      let newVal = new Date(this.datetime)
+      newVal.setHours(newVal.getHours() + 9)
+      newVal = newVal.toISOString().substring(0, 19)
+      return newVal
     },
     doAdd(){
       if (this.datetime != ""){
         this.checkDuplicateDatetime()
         if(!this.duplicate){
-          this.timetables.push({dateTime: this.datetime})
+          this.timetables.push({dateTime: this.modifyDatetime()})
           this.toastMessage = "공연 시간이 등록되었습니다."
           this.selected = this.datetime
           this.datetime = ''
