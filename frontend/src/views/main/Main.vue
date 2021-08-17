@@ -128,6 +128,7 @@ export default {
       })
     },
     getReservationVideos() {
+      this.reservation_videos = []
       this.$store.dispatch('requestGetReservationVideos')
       .then((response) => {
         console.log("getReservationVideos() SUCCESS!!")
