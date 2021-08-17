@@ -33,7 +33,7 @@ instance.interceptors.response.use(
             alert("토큰이 만료되었습니다. 다시 로그인해주세요.")
             store.dispatch('requestLogout')
         } else if (error.response.status == 500) {
-            alert("서버에서 오류가 발생했습니다. 다시 시도해주세요.")
+            console.log(error)
         }
         return Promise.reject(error)
     }
