@@ -117,8 +117,8 @@ export default {
       console.log(this.dateTime)
     },
     reservateShow() {
-      this.$store.dispatch('requestShowIsReservated', this.timetableId)
-      .then(({ status} ) => {
+      this.$store.dispatch('requestShowIsReservated', this.getShowData.timetableId)
+      .then(({ status } ) => {
         if(status == 200) {
           this.clickToast(1)
         } else if(status == 204) { // 예약안한 공연이므로 예약 axios 한번 더 호출
