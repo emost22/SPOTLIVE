@@ -142,11 +142,11 @@
             공연이 등록되었습니다.
           </p>
         </div>
-        <div class="d-flex justify-content-end ticket-popup-button">
+        <div class="d-flex justify-content-center ticket-popup-button">
           <div>
             <button 
               type="button" 
-              class="bdcolor-ngreen small-button mx-3"
+              class="bdcolor-ngreen small-button mx-3 mt-4"
               data-bs-dismiss="offcanvas"
               @click="clickConfirm"
             >
@@ -601,5 +601,9 @@ export default {
 .setting-button:disabled {
   border-color: black;
   color: gray;
+}
+div#postShowInfo {
+  height: 230px;
+  margin-top: 15px;
 }
 </style>
