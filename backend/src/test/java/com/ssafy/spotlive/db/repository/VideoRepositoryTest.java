@@ -538,7 +538,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByVideoTitleContainsOrVideoDescriptionContains(){
+    void findVideosByVideoTitleContainsOrVideoDescriptionContainsOrUser_ProfileNicknameContains(){
         // given
         String insertVideoTitle = "알고리즘 잘하는법";
         String insertVideoDescription = "kmk님이 알려주실겁니다";
@@ -581,12 +581,13 @@ public class VideoRepositoryTest {
         int size = MAX;
         String videoTitle = "kmk";
         String videoDescription = "kmk";
+        String profileNickname = "kmk";
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
         Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
-        Page<Video> pageVideo = videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, videoTitle, videoDescription);
+        Page<Video> pageVideo = videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContainsOrUser_ProfileNicknameContains(pageRequest, videoTitle, videoDescription, profileNickname);
 
         // then
         assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);

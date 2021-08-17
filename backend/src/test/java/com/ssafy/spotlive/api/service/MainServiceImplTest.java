@@ -162,11 +162,11 @@ class MainServiceImplTest {
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
-        when(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword)).thenReturn(pageVideo);
+        when(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContainsOrUser_ProfileNicknameContains(pageRequest, keyword, keyword, keyword)).thenReturn(pageVideo);
         mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword);
 
         // then
-        verify(videoRepository).findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword);
+        verify(videoRepository).findVideosByVideoTitleContainsOrVideoDescriptionContainsOrUser_ProfileNicknameContains(pageRequest, keyword, keyword, keyword);
     }
 
     @Test

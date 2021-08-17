@@ -306,6 +306,16 @@ export default {
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
+
+    requestGetReservationVideos(context, payload) {
+        const URL = '/main/reservation'
+
+        return $axios.get(URL)
+    },
+
+    requestSetIsReservation(context, payload){
+        context.commit('SET_UPDATE_ISRESERVATION', payload)
+    },
     
     // MainSidebar.vue
     requestGetFollowingList() {
@@ -396,5 +406,12 @@ export default {
     // loadingSpinner
     requestShowLoadingSpinner({ commit }, payload) {
       commit("SHOW_LOADING_SPINNER", payload)
+    },
+
+    // MyVideoCard.vue
+    requestDeleteVideo(context, payload){
+        const URL = `video/${payload}`
+
+        return $axios.delete(URL)
     }
 }

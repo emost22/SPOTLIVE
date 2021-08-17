@@ -148,7 +148,7 @@ public class MainServiceImpl implements MainService {
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-        return VideoGetRes.of(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword), pageRequest, sort);
+        return VideoGetRes.of(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContainsOrUser_ProfileNicknameContains(pageRequest, keyword, keyword, keyword), pageRequest, sort);
     }
 
     @Override

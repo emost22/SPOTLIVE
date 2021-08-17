@@ -69,7 +69,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
+    // this.$store.dispatch("requestSetCreatedProfileData", {})
     this.profileId = this.$route.query.profileId
     this.getUser()
     if (this.inMyProfile) {
@@ -90,6 +90,7 @@ export default {
       }
     },
     getMyProfile() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestGetMyProfile')
       .then((response) => {
         console.log("getMyProfile() SUCCESS!!")
@@ -103,12 +104,15 @@ export default {
           myReservations : response.data.reservationResList,
         }
         this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     getProfile() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestGetProfile', { profileId : this.profileId})
       .then((response) => {
         console.log("getProfile() SUCCESS!!")
@@ -128,31 +132,39 @@ export default {
           follow: this.follow,
         }
         this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     clickFollowButton() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestClickFollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickFollowButton() SUCCESS!!")
         this.follow = true
         this.getProfile()
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     clickUnfollowButton() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestClickUnfollowButton', { profileId : this.profileId})
       .then((response) => {
         console.log("getClickUnfollowButton() SUCCESS!!")
         this.follow = false
         this.getProfile()
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     getUserRes() {

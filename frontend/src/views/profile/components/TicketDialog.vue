@@ -45,15 +45,6 @@
       ref="showPopup" 
       aria-labelledby="offcanvasTopLabel"
     >
-      <div class="offcanvas-header">
-        <button 
-          type="button" 
-          class="btn-close text-reset" 
-          data-bs-dismiss="offcanvas" 
-          aria-label="Close"
-        >
-        </button>
-      </div>
       <div class="offcanvas-body">
         <div class="mt-3">
           <div class="offcanvas-text-box">
@@ -68,7 +59,7 @@
             예약을 정말로 삭제하시겠습니까?
           </p>
         </div>
-        <div class="d-flex justify-content-end ticket-popup-button">
+        <div class="d-flex ticket-popup-button">
           <div>
             <button 
               type="button" 
@@ -162,17 +153,19 @@ export default {
   margin: 0;
 }
 .ticket-popup-button {
-  margin-top: 50px;
+  margin-top: 30px;
+  justify-content: center;
 }
 .ticket-popup-title {
-  text-align: center;
+  text-align: center  ;
   font-size: 20px;
   font-weight: bold;
   padding: 0 10%;
-  margin: 10px 0;
+  margin: 5px 0;
 }
-.offcanvas-text-box {
-    display: flex;
+div#deleteTicketInfo {
+    margin: 15px auto;
+    width: 500px;
+    height: 230px;
 }
-
 </style>

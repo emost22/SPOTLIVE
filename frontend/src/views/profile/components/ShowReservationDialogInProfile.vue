@@ -117,6 +117,7 @@ export default {
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable(timetables) {
+      if (!timetables) return
       let length = timetables.length
       this.timetables = []
       var now = this.formatter(new Date())
@@ -132,6 +133,7 @@ export default {
       this.timetables = []
     },
     reservateShow() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestShowIsReservated', this.timetableId)
       .then(({ status} ) => {
         if(status == 200) {
@@ -142,9 +144,11 @@ export default {
         } else {
           console.log("requestShowIsReservated Fail...")
         }
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     clickToast(viewId) {
