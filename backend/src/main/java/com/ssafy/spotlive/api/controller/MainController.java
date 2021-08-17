@@ -337,7 +337,7 @@ public class MainController {
             String[] splitToken = accessToken.split(" ");
             UserRes userRes = userService.findUserByAccessToken(splitToken[1]);
 
-            List<VideoFindMainVideoRes> videoFindMainVideoResList = mainService.findAllReservationVideoByModeAndIsLiveAndTimetableIdIn("공연", true, userRes.getAccountEmail());
+            List<VideoFindMainVideoRes> videoFindMainVideoResList = mainService.findAllReservationVideoByModeAndTimetableIdIn("공연", userRes.getAccountEmail());
 
             if (videoFindMainVideoResList == null || videoFindMainVideoResList.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

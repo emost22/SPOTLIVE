@@ -170,10 +170,9 @@ class MainServiceImplTest {
     }
 
     @Test
-    void findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(){
+    void findAllReservationVideoByModeAndTimetableIdIn(){
         // given
         String mode = "공연";
-        Boolean isLive = true;
         String accountEmail = "emoney96@naver.com";
         List<Reservation> reservationList = new ArrayList<>();
         List<Long> timetableIdList = new ArrayList<>();
@@ -181,11 +180,11 @@ class MainServiceImplTest {
 
         // when
         when(reservationRepository.findReservationByUser_AccountEmail(accountEmail)).thenReturn(Optional.ofNullable(reservationList));
-        when(videoRepository.findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList)).thenReturn(Optional.ofNullable(videoList));
-        mainServiceImpl.findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(mode, isLive, accountEmail);
+        when(videoRepository.findVideosByModeAndTimetable_TimetableIdIn(mode, timetableIdList)).thenReturn(Optional.ofNullable(videoList));
+        mainServiceImpl.findAllReservationVideoByModeAndTimetableIdIn(mode, accountEmail);
 
         // then
         verify(reservationRepository).findReservationByUser_AccountEmail(accountEmail);
-        verify(videoRepository).findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList);
+        verify(videoRepository).findVideosByModeAndTimetable_TimetableIdIn(mode, timetableIdList);
     }
 }
