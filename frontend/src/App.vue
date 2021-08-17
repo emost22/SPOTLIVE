@@ -96,6 +96,16 @@ html {
   height:100%; 
 }
 
+@font-face {
+  font-family: main-font;
+  src: url('~@/assets/font/NanumSquareB.ttf');
+}
+
+@font-face {
+  font-family: main-light-font;
+  src: url('~@/assets/font/NanumSquareL.ttf');
+}
+
 body {
   /* 메인 배경 */
   background-color: #121212;
@@ -112,7 +122,7 @@ textarea {
   height:100%;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: main-font, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; 
   text-align: center;
@@ -437,5 +447,8 @@ div#deleteTicketInfo {
   border: none;
   margin: 7px;
   font-size: 14px;
+}
+.main-font-light {
+  font-family: main-light-font;
 }
 </style>
