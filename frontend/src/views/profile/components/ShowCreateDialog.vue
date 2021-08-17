@@ -278,7 +278,7 @@ export default {
         if(!this.duplicate){
           this.timetables.push({dateTime: this.modifyDatetime()})
           this.toastMessage = "공연 시간이 등록되었습니다."
-          this.selected = this.datetime
+          this.selected = this.modifyDatetime()
           this.datetime = ''
           this.defaultValue = ''
         }else{
@@ -296,7 +296,7 @@ export default {
         this.timetables = filtered;
         this.toastMessage = "공연 시간이 삭제되었습니다."
         if (this.timetables.length > 0) {
-          this.selected = this.timetables[0]
+          this.selected = this.timetables[0].dateTime
         } else {
           this.selected = '0'
           this.defaultValue = '0'
