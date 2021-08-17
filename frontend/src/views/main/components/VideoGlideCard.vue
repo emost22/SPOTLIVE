@@ -151,6 +151,7 @@ export default {
   height:250px;
   border: none;
   border-radius: 0%;
+  margin: 0 auto;
 }
 .glide-card-img-box {
   width:300px;
