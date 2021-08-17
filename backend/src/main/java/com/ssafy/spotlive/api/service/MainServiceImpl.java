@@ -139,19 +139,16 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public VideoGetRes findAllSearchVideoByKeywordContains(int page, int size, String keyword, Long categoryId){
+    public VideoGetRes findAllSearchVideoByKeywordContains(int page, int size, String keyword){
         /**
          * @Method Name : findAllSearchVideoByKeywordContains
          * @작성자 : 강용수
-         * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 categoryId를 기준으로 검색하는 메소드
+         * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 검색하는 메소드
          */
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-        if (categoryId == null)
-            return VideoGetRes.of(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword), pageRequest, sort);
-        else
-            return VideoGetRes.of(videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, keyword, keyword), pageRequest, sort);
+        return VideoGetRes.of(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword), pageRequest, sort);
     }
 
     @Override
