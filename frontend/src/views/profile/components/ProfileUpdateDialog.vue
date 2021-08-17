@@ -86,18 +86,22 @@ export default {
         userName: this.loginUser.userName,
       };
 
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store
         .dispatch('requestUpdateProfile', userUpdatePatchReq)
         .then((response) => {
           console.log(response.data);
           localStorage.setItem('loginUser', JSON.stringify(response.data));
           this.getMyProfile()
+          this.$store.dispatch('requestShowLoadingSpinner', false)
         })
         .catch((error) => {
           console.log(error);
+          this.$store.dispatch('requestShowLoadingSpinner', false)
         });
     },
     getMyProfile() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestGetMyProfile')
       .then((response) => {
         console.log("getMyProfile() SUCCESS!!")
@@ -111,9 +115,11 @@ export default {
           myReservations : response.data.reservationResList,
         }
         this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
   },

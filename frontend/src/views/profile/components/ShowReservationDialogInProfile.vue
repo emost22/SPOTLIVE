@@ -133,6 +133,7 @@ export default {
       this.timetables = []
     },
     reservateShow() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestShowIsReservated', this.timetableId)
       .then(({ status} ) => {
         if(status == 200) {
@@ -143,9 +144,11 @@ export default {
         } else {
           console.log("requestShowIsReservated Fail...")
         }
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     clickToast(viewId) {

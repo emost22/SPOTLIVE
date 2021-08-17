@@ -72,7 +72,7 @@ public class UserController {
         UserRes userRes;
         if(userResForCheck != null) {
             // 존재한다면 Token 값을 갱신하고 반환한다.
-            userRes = authService.refreshTokensForExistUser(kakaoUserRes.getKakao_account().getEmail(), kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token"));
+            userRes = authService.refreshTokensForExistUser(userResForCheck.getAccountEmail(), kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token"));
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
             userRes = userService.insertUser(kakaoUserRes.toUser(kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token")));

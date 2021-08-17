@@ -142,7 +142,8 @@ export default {
       toastMessage: '',
       fileErrorMessage: '',
       invalid: true,
-      defaultValue: ''
+      defaultValue: '',
+      duplicate: false,
     }
   },
   created: function () {
@@ -210,17 +211,37 @@ export default {
     openDatetime() {
       this.$refs.datetimePicker.open(event);
     },
+    checkDuplicateDatetime(){
+      for(var key in this.timetables){
+          if(this.timetables[key].dateTime==this.modifyDatetime()){
+            this.duplicate = true
+            break
+          }
+      }
+    },
+    modifyDatetime(){
+      let newVal = new Date(this.datetime)
+      newVal.setHours(newVal.getHours() + 9)
+      newVal = newVal.toISOString().substring(0, 19)
+      return newVal
+    },
     doAdd(){
       if (this.datetime != ""){
-        this.timetables.push({dateTime: this.datetime})
-        this.toastMessage = "공연 시간이 등록되었습니다."
-        this.selected = this.datetime
-        this.datetime = ''
-        this.defaultValue = ''
+        this.checkDuplicateDatetime()
+        if(!this.duplicate){
+          this.timetables.push({dateTime: this.modifyDatetime()})
+          this.toastMessage = "공연 시간이 등록되었습니다."
+          this.selected = this.datetime
+          this.datetime = ''
+          this.defaultValue = ''
+        }else{
+          this.toastMessage = "이미 등록한 시간입니다!"
+        }    
       }else{
         this.toastMessage = "공연 시간을 입력해주세요!"
       }
       this.toastEvent()
+      this.duplicate = false
     },
     doRemove(){
       if(this.selected != ""){
@@ -250,6 +271,7 @@ export default {
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     clickShowUpdateButton(){
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       let formData = new FormData()
       let showInfoUpdatePatchReq = {
         "showInfoTitle": this.showInfoTitle,
@@ -285,9 +307,11 @@ export default {
         }
         this.$store.dispatch('requestGetShowData', showData)
         this.getMyProfile()
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((err) => {
         console.log('fail')
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
   },

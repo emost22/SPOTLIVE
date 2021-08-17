@@ -65,8 +65,8 @@
       <div class="mb-3">
         <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
           <div class="d-flex">
-            <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
-            <ValidationProvider rules="required|image|size:1000" ref="fileBrowser">
+            <input class="custom-form-control thumbnail-provide" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
+            <ValidationProvider tag="div" rules="required|image|size:1000" ref="fileBrowser">
               <input type="file" class="custom-file-input" id="thumbnail" @change="handleFileChange">
               <label data-browse="Browse" class="search-button" for="thumbnail" @change="handleFileChange">
               </label>
@@ -270,7 +270,7 @@ form {
 
 .search-button {
   width: 45px;
-  height: 40px;
+  height: 36px;
   margin-left: 10px;
   background-color: #595959;
   border: none;
@@ -288,18 +288,6 @@ form {
   background-image: url('~@/assets/icon-info.png');
   background-repeat: no-repeat;
   background-position: center;
-}
-
-.custom-form-control {
-  display: block;
-  padding: .375rem 2.25rem .375rem .75rem;
-  width: 100%;
-  background-color: #595959;
-  border: 0px;
-  font-size: 1rem;
-  color: white;
-  border: 0px;
-  border-radius: .25rem;
 }
 
 .custon-select-control {
