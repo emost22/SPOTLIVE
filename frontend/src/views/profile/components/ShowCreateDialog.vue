@@ -488,6 +488,7 @@ export default {
   color: white;
   border-radius: .25rem;
   padding: .375rem .75rem;
+  width: 220px;
 }
 .custom-select-control-m {
   background-color: #595959;
@@ -539,6 +540,7 @@ export default {
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   cursor: pointer;
+  height: 36px;
 }
 .btn-add-timetable{
   display: block;
