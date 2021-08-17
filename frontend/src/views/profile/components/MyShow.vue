@@ -1,32 +1,40 @@
 <template>
-  <carousel-3d 
-    v-if="shows.length"
-    :width="200" 
-    :height="300"
-    :autoplay="true"
-    :autoplayTimeout="1500"
-    :space="300"
-    :display="5"
-  >
-    <slide 
-      v-for="(show, i) in shows" 
-      :index="i" 
-      :key="i"
+  <div>
+    <carousel-3d 
+      v-if="shows.length"
+      :width="200" 
+      :height="300"
+      :autoplay="true"
+      :autoplayTimeout="1500"
+      :space="300"
+      :display="5"
     >
-      <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
-          <MyShowCard
-            :data-index="index" 
-            :class="{ 
-              showCurrent: isCurrent, 
-              showOnLeft: (leftIndex >= 0), 
-              showOnRight: (rightIndex >=0),
-            }" 
-            :show="show"
-            :inMyProfile="inMyProfile"
-          />
-      </template>
-    </slide>
-  </carousel-3d>
+      <slide 
+        v-for="(show, i) in shows" 
+        :index="i" 
+        :key="i"
+      >
+        <template slot-scope="{ index, isCurrent, leftIndex, rightIndex }">
+            <MyShowCard
+              :data-index="index" 
+              :class="{ 
+                showCurrent: isCurrent, 
+                showOnLeft: (leftIndex >= 0), 
+                showOnRight: (rightIndex >=0),
+              }" 
+              :show="show"
+              :inMyProfile="inMyProfile"
+            />
+        </template>
+      </slide>
+    </carousel-3d>
+    
+    <div class="my-show-grid-box container-fluid">
+      <div v-if="!shows.length">
+        <p class="txtcolor-white-nyellow main-title">등록된 공연이 존재하지 않습니다.</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -56,6 +64,11 @@ export default {
 </script>
 
 <style>
+.my-show-grid-box {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+}
 .carousel-3d-container[data-v-07917306]  {
   padding-top: 50px;
   padding-bottom: 50px;

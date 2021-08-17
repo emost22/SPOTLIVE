@@ -1,7 +1,6 @@
 package com.ssafy.spotlive.api.request.video;
 
 import com.ssafy.spotlive.db.entity.Category;
-import com.ssafy.spotlive.db.entity.ShowInfo;
 import com.ssafy.spotlive.db.entity.Video;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,8 +24,6 @@ public class VideoUpdateByIdPatchReq {
     String videoDescription;
     @ApiModelProperty(name="categoryId : 카테고리 ID", example="6")
     Long categoryId;
-    @ApiModelProperty(name="showInfoId : 공연정보 ID", example="2")
-    Long showInfoId;
 
     public Video toVideo(Long id) {
         /**
@@ -36,15 +33,12 @@ public class VideoUpdateByIdPatchReq {
          */
         Category category = new Category();
         category.setCategoryId(this.categoryId);
-        ShowInfo showInfo = new ShowInfo();
-        showInfo.setShowInfoId(this.showInfoId);
 
         Video video = new Video();
         video.setVideoId(id);
         video.setVideoTitle(this.videoTitle);
         video.setVideoDescription(this.videoDescription);
         video.setCategory(category);
-        video.setShowInfo(showInfo);
 
         return video;
     }

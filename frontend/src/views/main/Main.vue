@@ -58,6 +58,7 @@ export default {
     }
   },
   created: function () {
+    this.$store.dispatch('requestShowLoadingSpinner', true)
     this.getCarouselVideos()
     this.getFilterButtons()
     // this.getAdVideos(0, 20)
@@ -75,6 +76,7 @@ export default {
         console.log("getCarouselVideos() SUCCESS!!")
         console.log(response.data)
         this.carousel_videos = response.data
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)

@@ -1,9 +1,6 @@
 package com.ssafy.spotlive.api.request.video;
 
-import com.ssafy.spotlive.db.entity.Category;
-import com.ssafy.spotlive.db.entity.ShowInfo;
-import com.ssafy.spotlive.db.entity.User;
-import com.ssafy.spotlive.db.entity.Video;
+import com.ssafy.spotlive.db.entity.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -30,6 +27,8 @@ public class VideoInsertPostReq {
     Long categoryId;
     @ApiModelProperty(name="showInfoId : 공연의 경우 해당 공연ID, 홍보의 경우 연결된 공연ID, 홍보의 경우 비움, 없는 공연 Id를 넣으면 500 에러", example="")
     Long showInfoId;
+    @ApiModelProperty(name="timetableId : 위 공연의 타임테이블 아이디", example="")
+    Long timetableId;
     @ApiModelProperty(name="accountEmail : 유저 email", example="email@email.com", hidden = true)
     String accountEmail;
     @ApiModelProperty(name="sessionId : Openvidu Server의 Session id", example="session12345678")
@@ -42,7 +41,7 @@ public class VideoInsertPostReq {
          * @Method 설명 : VideoInsertPostReqDto를 Entity로 변환하는 메소드
          */
         Video video = new Video();
-        Category category = new Category();
+
         ShowInfo showInfo = new ShowInfo();
         User user = new User();
         System.out.println(showInfoId);
@@ -53,12 +52,22 @@ public class VideoInsertPostReq {
         video.setThumbnailUrl(thumbnailUrl);
         video.setIsLive(Boolean.TRUE);
         video.setHit(0L);
+
+        Category category = new Category();
         category.setCategoryId(this.categoryId);
         video.setCategory(category);
+
         if(this.showInfoId != null) {
             showInfo.setShowInfoId(this.showInfoId);
             video.setShowInfo(showInfo);
         }
+
+        if(this.timetableId != null) {
+            Timetable timetable = new Timetable();
+            timetable.setTimetableId(this.timetableId);
+            video.setTimetable(timetable);
+        }
+
         user.setAccountEmail(this.accountEmail);
         video.setUser(user);
         video.setSessionId(this.sessionId);

@@ -1,73 +1,77 @@
 <template>
   <div class="modal fade" id="showReservationDialog" ref="showReservationDialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
+    <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple show-modal-design">  
       <div class="modal-content-m">
         <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="information-header mt-3 ms-3">공연 상세 정보</div>
+          <button
+            type="button"
+            class="btn-close me-2 mt-1"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            @click="clearTimeTableArray()"
+          ></button>
         </div>
-        <div class="modal-body mx-2">
-          <div class="dialog-profile-info">
-            <div><img :src="showReservationData.userRes.profileImageUrl" class="profile-img"></div>
-            <div class="profile-detail-show-reservation">
-              <div> <span class="txtcolor-nyellow">{{ showReservationData.userRes.userName }}</span> 님</div>
-              <p> {{ showReservationData.userRes.accountEmail }}</p>
+        <div class="modal-body mx-4">
+          <form>
+            <div class="d-flex flex-row justify-content-start profile-info">
+              <div><img :src="showReservationData.userRes.profileImageUrl" class="profile-small-img"></div>
+              <div class="profile-small-detail">
+                <div class="txtcolor-white-nyellow">{{ showReservationData.userRes.userName }}</div>
+                <p>{{ showReservationData.userRes.accountEmail }}</p>
+              </div>
             </div>
-          </div>
-          <div class="showInfoWrapper">
-            <form>
-              <div class="d-flex flex-row mb-3">
-                <div class="d-flex flex-row justify-content-center align-items-center camera-input-bgcolor-light-grey camera-size">
-                  <img :src="showReservationData.posterUrl" class="poster-image">
+
+            <div class="d-flex flex-row"> 
+              <div><img :src="showReservationData.posterUrl" class="show-detail-img"></div>
+              <div class="show-info">
+                <div class="mb-3">
+                  <div class="label-alignment"><label class="form-label">공연명</label></div>
+                  <div class="txtcolor-white-npink">{{ showReservationData.showInfoTitle }}</div>
                 </div>
-                <div class="show-info">
-                  <div class="mb-3">
-                    <div class="label-alignment"><label class="form-label label-in-dialog">공연명</label></div>
-                    <div class="d-flex">
-                    {{ showReservationData.showInfoTitle }}
-                    </div>
+                <div class="mb-3 d-flex">
+                  <div class="flex-fill me-3">
+                    <div class="label-alignment"><label class="form-label">티켓가격</label></div>
+                    <div class="d-flex txtcolor-white-npurple">{{ showReservationData.price }}원</div>
                   </div>
-                  <div class="mb-3">
-                    <div class="label-alignment"><label class="form-label label-in-dialog">티켓가격</label></div>
-                    <div class="d-flex">
-                    {{ showReservationData.price }}원
-                    </div>
+                  <div class="flex-fill me-3">
+                    <div class="label-alignment"><label class="form-label">러닝타임</label></div>
+                    <div class="d-flex txtcolor-white-ngreen">{{ showReservationData.runningTime }} min</div>                      
                   </div>
-                  <div class="mb-3 d-flex">
-                    <div class="me-3">
-                      <div class="label-alignment">
-                        <label class="form-label label-in-dialog">공연 시간</label>
-                      </div>
-                      <select class="custom-select-control-m" v-model="timetableId">
-                        <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
-                      </select>
-                    </div>
-                    <div>
-                      <div class="label-alignment">
-                        <label class="form-label label-in-dialog">러닝타임</label>
-                      </div>
-                      <input type="text" class="custom-form-control" v-model="showReservationDataRunningTime" readonly="readonly" disabled>
-                    </div>
+                </div>
+                <div class="mb-3 d-flex">
+                  <div class="flex-fill me-3">
+                    <div class="label-alignment"><label class="form-label">공연 시간</label></div>
+                    <select class="custom-select-control-m" v-model="timetableId" v-if="timetables.length > 0">
+                      <option :key="i" :value="d.v" v-for="(d, i) in timetables">{{ d.t }}</option>
+                    </select>
+                    <div class="d-flex" v-else>예약 가능한 시간이 없습니다.</div>
                   </div>
                 </div>
               </div>
-              <div class="mb-3 label-alignment">
-                <div ><label class="form-label label-in-dialog"> 공연 설명</label></div>
-                <div>{{ showReservationData.showInfoDescription }}</div>
-              </div>
-            </form>
-          </div>
+            </div>
+
+            <div class="show-description">
+              <div class="label-alignment"><label class="form-label"> 공연 설명</label></div>
+              <div>{{ showReservationData.showInfoDescription }}</div>
+            </div>
+
+          </form>
         </div>
-        <div class="modal-footer-m">
-          <button type="button" class="bdcolor-npink small-button me-5" data-bs-dismiss="modal">닫기</button>
-          <button type="button" class="bdcolor-ngreen small-button" @click="reservateShow()">예약하기</button>
+
+        <div class="modal-footer-m my-3">
+          <button type="button" class="bdcolor-npink small-button" @click="clearTimeTableArray()" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="bdcolor-ngreen small-button ms-5" @click="reservateShow()" v-if="timetables.length > 0">예약하기</button>
         </div>
       </div>
     </div>
+
     <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
     <div class="offcanvas-header">
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
   </div>
+  
   <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
     <div id="liveToast" ref="alreadyBooked" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-delay="3000">
       <div class="toast-header">
@@ -90,7 +94,7 @@
       </div>
     </div>
   </div> 
-  </div>
+</div>
 </template>
 
 <script scoped>
@@ -100,12 +104,37 @@ export default {
   data: function () {
     return {
       showInfoId: '',
-      timetables: [],
       user: {},
       timetableId: '',
+      timetables: [],
     }
   }, 
   methods: {
+    formatter(date) {
+      let dateTime = new Date(date)
+      let month = parseInt(dateTime.getMonth()) + 1
+      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
+        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
+    },
+    getShowInfoTimeTable() {
+      var now = this.formatter(new Date())
+      this.timetables = []
+      this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
+        .then(res => {
+          this.timetables=[]
+          this.timetableId = res.data.timetables[0].timetableId
+          res.data.timetables.forEach((timetable) => {
+            var date = this.formatter(timetable.dateTime)
+            if (date > now) {
+              if (this.timetableId == '') this.timetableId = timetable.timetableId
+              this.timetables.push({ v: timetable.timetableId, t: date})
+            }
+          })
+        })
+    },
+    clearTimeTableArray() {
+      this.timetables = []
+    },
     reservateShow() {
       this.$store.dispatch('requestShowIsReservated', this.timetableId)
       .then(res => {
@@ -132,30 +161,9 @@ export default {
         myToast.show()
       }
     },
-    formatter(date) {
-      let dateTime = new Date(date)
-      let month = parseInt(dateTime.getMonth()) + 1
-      return `${dateTime.getFullYear()}년 ${month >= 10 ? month : '0' + month}월 ${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()}일 
-        ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
-    },
-    getShowInfoTimeTable() {
-      this.$store.dispatch('requestGetShowTimetable', this.showInfoId)
-        .then(res => {
-          this.timetableId = res.data.timetables[0].timetableId
-          res.data.timetables.forEach((timetable) => {
-            var date = this.formatter(timetable.dateTime)
-            this.timetables.push({ v: timetable.timetableId, t: date})
-          })
-        })
-    }
   },
   computed: {
-    ...mapGetters([
-    'showReservationData'
-    ]),
-    showReservationDataRunningTime: function () {
-      return this.showReservationData.runningTime+' min'
-    }
+    ...mapGetters(['showReservationData']),
   },
   watch: {
     showReservationData: function(val, oldval) {
@@ -167,6 +175,7 @@ export default {
         _this.getShowInfoTimeTable()
       })
       modal.addEventListener('hidden.bs.modal', function (event) {
+        _this.timetables = []
       })
     }
   },
@@ -174,37 +183,57 @@ export default {
 </script>
 
 <style scoped>
-
-.btn-close {
-  background-image: url('~@/assets/icon-x.png');
-  opacity: 1;
+.show-modal-design {
+  max-height: 700px;
+  min-width: 550px;
+  width: 70%;
+  background-color: #242424;
+  color: white;
 }
-.btn-close:hover {
-  background-image: url('~@/assets/icon-x.png');
+.information-header {
+  font-size: 20px;
+  font-weight: bold;
 }
-.profile-img {
+.profile-info {
+  margin-left: 25px;
+  margin-bottom: 30px;
+}
+.profile-small-img {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF;
 }
-.profile-detail-show-reservation{
-  margin-top: auto;
-  margin-bottom: auto;
+.profile-small-detail{
+  width: 300px;
+  height: 50px;
   margin-left: 30px;
   text-align: left;
 }
-.dialog-profile-info{
-  display: flex;
-  flex-direction: row;
-  margin: 20px;
+.show-detail-img {
+  margin-left: 20px;
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
 }
-.camera-size {
-  width: 280px;
-  margin-right: 18px;
+.show-info {
+  margin-left: 30px;
+  text-align: start;
+}
+.show-description {
+  margin-top: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: start;
 }
 .custom-select-control-m {
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.8rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;
@@ -214,18 +243,6 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-.poster-image{
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-}
-.label-in-dialog {
-  font-size: 1.05rem;
-  font-weight: bold;
-}
-.showInfoWrapper {
-  margin-left: 20px;
-  margin-right: 20px;
+  cursor: pointer;
 }
 </style>

@@ -40,9 +40,9 @@ public class DataSample {
 
 //    @Test
 //    void 스트리머_데이터_생성() {
-//        int n = 10;
+//        int n = 240;
 //        while( n--> 0) {
-//            category.setCategoryId(faker_eng.options().option(1L, 2L, 3L, 4L, 5L));
+//            category.setCategoryId(faker_eng.options().option(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L));
 //            setUser();
 //            userRepository.save(user);
 //            setShowInfo();
@@ -55,13 +55,14 @@ public class DataSample {
 //    }
 //    @Test
 //    void 시청자_데이터_생성() {
-//        int n = 10;
+//        int n = 260;
 //        while( n--> 0) {
 //            setUser();
 //            userRepository.save(user);
 //            userReservation();
 //        }
 //    }
+//
 //    @Test
 //    void 팔로우_데이터_생성() {
 //        userFollowing();
@@ -75,24 +76,57 @@ public class DataSample {
         user.setGender(faker_eng.options().option("female", "male"));
         user.setAgeRange(faker_eng.options().option("10~19","20~29","30~39","40~49"));
         user.setProfileDescription(faker_ko.company().name());
-        user.setProfileImageUrl(faker_eng.options().option("https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99CEA7415A323B1A11",
-                "https://cdn.ppomppu.co.kr/zboard/data3/2020/0721/20200721102637_nuobypxg.jpg",
-                "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdtH5u8%2FbtqwCPUCBTM%2FlfWlkYMx4XaoZddlOTvtSK%2Fimg.png",
-                "https://opgg-com-image.akamaized.net/attach/images/20190227180604.767248.png",
-                "https://static-cdn.jtvnw.net/jtv_user_pictures/18c169cf-c0e7-4885-ae29-47f81ef2c4d4-profile_image-300x300.png",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQangJSkdWvxiZpyy4la8J9gW9kyuZwss4BZA&usqp=CAU",
-                "https://im.vsco.co/aws-us-west-2/8c2e24/8353436/5c8694681f5b701085000000/vsco5c86946defab2.jpg?w=412&dpr=2.625",
-                "https://t1.daumcdn.net/liveboard/benter/8b7466c3c55146bfac3c46781962367c.png",
-                "https://t1.daumcdn.net/news/202005/08/newsen/20200508194808230exit.jpg",
-                "https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg",
-                "https://mblogthumb-phinf.pstatic.net/20150722_33/studio_amabile231_1437515041139XWDNp_PNG/4.PNG?type=w2",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyYOQCy7vou_pquhMPx8PYsDQ3oWv_CI_K4w&usqp=CAU",
-                "https://1.bp.blogspot.com/-L9txCMCEzzw/YIZaDIKJN2I/AAAAAAAAr4U/lrYCGM6tb3AayC7ZwV_Or6cuUCNmP7ZhgCLcBGAsYHQ/s0/ggoorr.net_001.jpg",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnN7PTHw0f2KouPNcmY8VYOHDqt52f1jdDtA&usqp=CAU",
-                "https://t1.daumcdn.net/cfile/blog/99EF44335A17F02F38",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT59BZYpb3nMi7kHlEEQrAqUz9f0Q9DkglDkg&usqp=CAU",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5OVzFksygKDfBIJKMvs8tO7eMpyWwk3tA1w&usqp=CAU",
-                "https://blog.kakaocdn.net/dn/n3Au0/btq8wkQZQQu/LJ3LtDExszwyeanBA75jK1/img.jpg"
+        user.setProfileImageUrl(faker_eng.options().option(
+                "https://i.ibb.co/bBB7kVH/2c2c60b20cb817a80afd381ae23dab05.jpg",
+                "https://i.ibb.co/fMbvrPv/4.png",
+                "https://i.ibb.co/YDgFSvs/8b7466c3c55146bfac3c46781962367c.png",
+                "https://i.ibb.co/42P0SWp/99-EF44335-A17-F02-F38.jpg",
+                "https://i.ibb.co/dcM8P1W/20190227180604-767248.png",
+                "https://i.ibb.co/vZMSC2B/20200721102637-nuobypxg.jpg",
+                "https://i.ibb.co/5r8QKz5/20200508194808230exit.jpg",
+                "https://i.ibb.co/jwZMrsZ/ggoorr-net-001.jpg",
+                "https://i.ibb.co/5YpNFPS/images-1.jpg",
+                "https://i.ibb.co/nQQ5P8Y/images-2.jpg",
+                "https://i.ibb.co/HhBKXB9/images-3.jpg",
+                "https://i.ibb.co/9ZSHkkx/images-4.jpg",
+                "https://i.ibb.co/WkgRbKj/images.jpg",
+                "https://i.ibb.co/4pMFy6L/img.jpg",
+                "https://i.ibb.co/J7fTQGp/img-640x640.jpg",
+                "https://i.ibb.co/YDZygm2/vsco5c86946defab2.jpg",
+                "https://i.ibb.co/HDS3RdX/1.png",
+                "https://i.ibb.co/QKN8n2z/image.png",
+                "https://i.ibb.co/fNvSLhN/unnamed.jpg",
+                "https://i.ibb.co/8M295C0/l-2020101601001687000138341.jpg",
+                "https://i.ibb.co/3yFDKV5/IMG-5587.jpg",
+                "https://i.ibb.co/jfz3FQn/fea8a1041bd990a77bf70a157b791f4c.jpg",
+                "https://i.ibb.co/ZBhWwp8/Crop-Area0000.png",
+                "https://i.ibb.co/RPPN3cK/AKR20140602074500005-01-i-P4.jpg",
+                "https://i.ibb.co/1KMRXww/20210524164601105824.jpg",
+                "https://i.ibb.co/f0ZWBdJ/20200528164228601365.png",
+                "https://i.ibb.co/VQPtkqN/201706240417395229-1.jpg",
+                "https://i.ibb.co/qgBBpD4/99681-E3-A5-CEB7-B3519.png",
+                "https://i.ibb.co/9wn5j15/2cungRr0.jpg",
+                "https://i.ibb.co/L9jcz0Z/image.jpg",
+                "https://i.ibb.co/F8w5HJy/1.jpg",
+                "https://i.ibb.co/4Snnpng/UlD8WMd2.jpg",
+                "https://i.ibb.co/XJK2QWc/Key-in-Marie-Claire-interview-in-July-2021-02.png",
+                "https://i.ibb.co/Nxxh79V/GVCJ9-EOx-400x400.jpg",
+                "https://i.ibb.co/C6cTcRm/AKR20190507087800005-02-i-P2.jpg",
+                "https://i.ibb.co/ypxHFn2/2018120219202963819-1543746029.jpg",
+                "https://i.ibb.co/1zb6kfz/201911281613072621-1.jpg",
+                "https://i.ibb.co/GsNSvkN/14945901-8-600x600.jpg",
+                "https://i.ibb.co/JnZXH9P/99-F0-A7385-E74-C74-C1-D.jpg",
+                "https://i.ibb.co/86V5V8b/1-ZBRQSP0-V9-1.jpg",
+                "https://i.ibb.co/g4WVtrZ/6d0e24243437272e.jpg",
+                "https://i.ibb.co/XDcw9Wm/20210122171753-lnamkhol.jpg",
+                "https://i.ibb.co/Hqfxh3K/202105180841845171-1.jpg",
+                "https://i.ibb.co/ydYRg3g/d630f9b28a1d2ff4f49244331aa85556.jpg",
+                "https://i.ibb.co/1f8ndsB/Ez-TNg-Wf-Uc-Aw42-UH.jpg",
+                "https://i.ibb.co/t2qTTmf/Fk-2-WJr5-400x400.jpg",
+                "https://i.ibb.co/VMLm0c5/PS20051300049.jpg",
+                "https://i.ibb.co/XFvYR9R/unnamed.jpg",
+                "https://i.ibb.co/0sXLP52/ZZTTXEVQSPKUGPKJBB5-CL5-CBYQ.jpg",
+                "https://i.ibb.co/jHvBKtQ/image.jpg"
         ));
     }
     private void setVideo(User user) {
@@ -116,104 +150,288 @@ public class DataSample {
                 "https://smrmembers-smr.smartmediarep.com/smc/smrmembers/single/eng/0/smr/contents/video/2021/07/29/e9ff71514f1836bf1c862d5d1dfb21ff_t34.mp4",
                 "https://smrmembers-smr.smartmediarep.com/smc/smrmembers/single/eng/0/smr/contents/video/2021/07/01/a0790396d92f0ab025bdc4f939866383_t34.mp4"
                 ));
-        if(!Objects.equals(mode, "소통")) video.setShowInfo(showInfo);
+        video.setShowInfo(null);
+        video.setTimetable(null);
+        if(!Objects.equals(mode, "소통")) {
+            if(Objects.equals(mode, "공연")) {
+                video.setShowInfo(showInfo);
+                video.setTimetable(timetable);
+            } else {
+                video.setShowInfo(showInfo);
+            }
+        }
         else video.setShowInfo(null);
     }
     private String getVideoThumbnailUrlByMode(String mode){
-        if(mode == "소통") {
+        if(mode.equals("소통")) {
             return faker_eng.options().option(
-                    "http://img.newspim.com/news/2019/10/28/1910281051017890.jpg",
-                    "https://i.ytimg.com/vi/YrDmbaFSPN8/maxresdefault.jpg",
-                    "https://t1.daumcdn.net/cfile/tistory/99146E345B38AB9137",
-                    "https://i.ytimg.com/vi/YN0vvVYm1Rw/maxresdefault.jpg",
-                    "https://i.ytimg.com/vi/D0OmLtpfOm4/mqdefault.jpg",
-                    "https://i.ytimg.com/vi/bgvYCOEShsY/maxresdefault.jpg",
-                    "https://cdn.imweb.me/upload/S201909015ff825328ab63/ecd56d51befde.png",
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa13Yfz7ARn4PQ8tD-QsWu4qlDPqaZHh8YZpBpH_dltU_XvJukv2CbSUVxJfhEOUHiX2c&usqp=CAU",
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6yeJ5vsrjWbdM8S-H1hYy5ylGfPGxqYLf4kRgKGjp33jMdmCLc0q-g1k01xUNZesOlag&usqp=CAU",
-                    "https://1.bp.blogspot.com/-9g3yckkJg9g/YEI9RlkdrsI/AAAAAAACOsk/Wr0qiNwzLyU7sP6jI5kzxFyniLI180C8ACLcBGAsYHQ/s715/20210305231456.jpg",
-                    "https://cliimage.commutil.kr/phpwas/restmb_allidxmake.php?idx=3&simg=201812190925310606601286bacad121131233211.jpg",
-                    "http://img.khan.co.kr/news/2020/10/12/l_2020101301001082300093861.jpg",
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLPi1GNyjcMo5LOZHWnM6yTwWz_oHYcoXAzkzdJX4gXF0Vuxhn2Xm1TtZkUNi2hT8CWSE&usqp=CAU"
+                    "https://i.ibb.co/Byw1vNs/mqdefault.jpg",
+                    "https://i.ibb.co/Km1Grmp/mqdefault.jpg",
+                    "https://i.ibb.co/JK4yd1f/mqdefault.jpg",
+                    "https://i.ibb.co/1nVky7y/mqdefault.jpg",
+                    "https://i.ibb.co/mvFbnjq/original-1.jpg",
+                    "https://i.ibb.co/D71TXxN/original-2.jpg",
+                    "https://i.ibb.co/Q8hshd3/original-3.jpg",
+                    "https://i.ibb.co/Dw7h8nH/original-4.jpg",
+                    "https://i.ibb.co/G9V8zH3/original-5.jpg",
+                    "https://i.ibb.co/84n9ydf/original-6.jpg",
+                    "https://i.ibb.co/vHr028V/original.jpg",
+                    "https://i.ibb.co/CKb9dSv/original-6.jpg",
+                    "https://i.ibb.co/FqGgjV2/original-7.jpg",
+                    "https://i.ibb.co/GnWRQkJ/original-8.jpg",
+                    "https://i.ibb.co/7rhwndR/original-9.jpg",
+                    "https://i.ibb.co/NZPkHDq/original-10.jpg",
+                    "https://i.ibb.co/x3yHGrX/original-11.jpg",
+                    "https://i.ibb.co/SQXtdx9/original-12.jpg",
+                    "https://i.ibb.co/ykCr79p/original-13.jpg",
+                    "https://i.ibb.co/S36p8Jr/original-14.jpg",
+                    "https://i.ibb.co/gS7tmTF/original-15.jpg",
+                    "https://i.ibb.co/Fs4ZPbL/original-16.jpg",
+                    "https://i.ibb.co/GxggZz3/original-17.jpg",
+                    "https://i.ibb.co/X3mxpkc/original-18.jpg",
+                    "https://i.ibb.co/MMvQhyb/original-19.jpg",
+                    "https://i.ibb.co/jbQK5nw/original-20.jpg",
+                    "https://i.ibb.co/mJ9yY9c/original.jpg",
+                    "https://i.ibb.co/Ss90Vpt/original-1.jpg",
+                    "https://i.ibb.co/wC01vzY/original-2.jpg",
+                    "https://i.ibb.co/934kkPv/original-3.jpg",
+                    "https://i.ibb.co/4ZSnYfD/original-4.jpg",
+                    "https://i.ibb.co/0jzwmq7/original-5.jpg"
             );
-        } else {
-            /**
-             * 1 버스킹
-             * 2 뮤지컬(버스킹으로 들어가있음)
-             * 3 오페라(버스킹으로 들어가있음)
-             * 4 마술(버스킹으로 들어가있음)
-             * 5 연극(버스킹으로 들어가있음)
-             */
+        }
+        else if(mode.equals("공연")) {
             Long category = video.getCategory().getCategoryId();
             if (category == 1L) {// 버스킹
                 return faker_eng.options().option(
-                        "https://lh3.googleusercontent.com/proxy/7CYVCs2qEPcX_Su-6RQEhddvZkT3bVKLk77n5v-MW_IEQN9OblllvzNthPULDcQplabuuQ9vMYDN5kjwP-ouheQlHwYgtuy2LS1msY_OlT4A2YYwMyTAqTAWqR3G",
-                        "https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/guest/image/9-76nQMUy7bKP1WleZ7LhlqZdKE.JPG",
-                        "https://lh3.googleusercontent.com/proxy/Vqp4KhLPM8VUKHsdjrkGH1lvrxrDG7V6qqfLMvw0kRI8wFhf30WuZzSQ1ZCqsgEktuPVbwXoNs9k5f0zTPR5RBKFnkco1ckk4xhKW02CB-1EVdGThZ8",
-                        "http://cdnimage.dailian.co.kr/news/202002/news_1581993821_869287_m_1.jpeg",
-                        "https://i.ytimg.com/vi/cGxtTqCwUDQ/maxresdefault.jpg",
-                        "http://www.safetimes.co.kr/news/photo/201912/78812_54936_3412.jpg",
-                        "https://cdn.jjan.kr/news/photo/201509/559478_177636_2717.jpg",
-                        "https://lh3.googleusercontent.com/proxy/YitZ-vF3NtdSQDRoUT1tzW1pOmGIjg3EXm4FAS9-Kocp3r7bglvF0LwSOKuOmKjOSS_swSvlb839i5sx8RdkQi9BA28QbHSFiuHFDzgChCJxeExsj0TkiHcWVwTFpyBhbzVs12mFKk3uEbL0zEx27lh_zlB8ZO0lHp-neoeEXilR4fS0VbM",
-                        "https://i.ytimg.com/vi/ccFBMTNG9hg/maxresdefault.jpg",
-                        "http://talkimg.imbc.com/TVianUpload//tvian/image/2014/08/28/toNWUBYXgmHn635448334432870740.jpg",
-                        "http://file2.nocutnews.co.kr/newsroom/image/2019/07/18/20190718141403827950_0_650_350.jpg"
+                        "https://i.ibb.co/w40NNhh/image.jpg",
+                        "https://i.ibb.co/C8RHF0Z/W20201103-9-10.png",
+                        "https://i.ibb.co/Db3fN0F/t-Ao-Kv-Hs29aeh-Viaw-Gd-Lua-B-640.jpg",
+                        "https://i.ibb.co/41BGsMs/news-1581993821-869287-m-1.jpg",
+                        "https://i.ibb.co/yRpsnqd/m-KZ8-Zcg-Nv-A4a-U4-Pn-Mk-ECz-W-640.jpg",
+                        "https://i.ibb.co/gvq5Cg2/c6069ed364037.jpg",
+                        "https://i.ibb.co/XkQMv9m/2005141730024050.jpg",
+                        "https://i.ibb.co/jTYPMCv/20200916501336.jpg",
+                        "https://i.ibb.co/Wtnw0s9/360944-99472-2315.jpg",
+                        "https://i.ibb.co/G9crBS9/37544-49362-4241.jpg"
                 );
             }
             if (category == 2L) { // 뮤지컬
                 return faker_eng.options().option(
-                        "https://t1.daumcdn.net/liveboard/fanzeel/1175321b1ccd4964b10d0ffebb56d464.JPG",
-                        "http://img.khan.co.kr/news/2019/04/19/2019041901002490500198421.jpg",
-                        "https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1275512_16076750364468420.jpg",
-                        "https://img.hankyung.com/photo/202005/AKR20200517023400005_01_i.jpg",
-                        "https://i.ytimg.com/vi/VLP0-tfF-Nw/maxresdefault.jpg",
-                        "http://image.newdaily.co.kr/site/data/img/2018/09/05/2018090500010_0.jpg",
-                        "https://lh3.googleusercontent.com/proxy/9pVhqG39Dza0Ua3S2fJcraAAHQRLljtbq_783iikqYgZ1Rmb-uKZ-iSurEbyRbgIaITDgV4YH_1WX-YU-XgHix0iMaWHjmADtYyuBETccsf92Cro7B9H",
-                        "https://t4.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2VOP/image/yYop6juWwJeS3J4LjFknSRuuCpo",
-                        "https://t1.daumcdn.net/liveboard/cineplay/f97e52678e7b4f78af698b3cd42dbce6.JPG"
+                        "https://i.ibb.co/zfFGXTC/CHICAGO.png",
+                        "https://i.ibb.co/wpbJRJm/image.png",
+                        "https://i.ibb.co/bNVTjQ2/1.png",
+                        "https://i.ibb.co/rsB5rQg/2.png",
+                        "https://i.ibb.co/WcY4ndN/2.png",
+                        "https://i.ibb.co/vq0nDK0/3.png",
+                        "https://i.ibb.co/L0dwFWb/image.png",
+                        "https://i.ibb.co/ZX3STsC/image.png",
+                        "https://i.ibb.co/4Y59m0F/1.png",
+                        "https://i.ibb.co/Cn3Khg2/2.png"
                 );
             }
-            if (category == 3L) { // 오페라
+            if (category == 3L) { // 밴드
                 return faker_eng.options().option(
-                        "https://t1.daumcdn.net/liveboard/fanzeel/1175321b1ccd4964b10d0ffebb56d464.JPG",
-                        "http://img.khan.co.kr/news/2019/04/19/2019041901002490500198421.jpg",
-                        "https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1275512_16076750364468420.jpg",
-                        "https://img.hankyung.com/photo/202005/AKR20200517023400005_01_i.jpg",
-                        "https://i.ytimg.com/vi/VLP0-tfF-Nw/maxresdefault.jpg",
-                        "http://image.newdaily.co.kr/site/data/img/2018/09/05/2018090500010_0.jpg",
-                        "https://lh3.googleusercontent.com/proxy/9pVhqG39Dza0Ua3S2fJcraAAHQRLljtbq_783iikqYgZ1Rmb-uKZ-iSurEbyRbgIaITDgV4YH_1WX-YU-XgHix0iMaWHjmADtYyuBETccsf92Cro7B9H",
-                        "https://t4.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2VOP/image/yYop6juWwJeS3J4LjFknSRuuCpo",
-                        "https://t1.daumcdn.net/liveboard/cineplay/f97e52678e7b4f78af698b3cd42dbce6.JPG"
+                        "https://i.ibb.co/JyYCfFr/1.png",
+                        "https://i.ibb.co/MkqD5bd/2.png",
+                        "https://i.ibb.co/5xm8pg3/3.png",
+                        "https://i.ibb.co/CWcVzLf/4.png",
+                        "https://i.ibb.co/09sY56H/5.png",
+                        "https://i.ibb.co/F0w4wmm/6.png",
+                        "https://i.ibb.co/T1RX4XC/7.png",
+                        "https://i.ibb.co/t31jkqY/8.png",
+                        "https://i.ibb.co/yhfwJys/9.png",
+                        "https://i.ibb.co/PmQgT3p/10.png"
                 );
             }
             if (category == 4L) { // 마술
                 return faker_eng.options().option(
-                        "https://static.wixstatic.com/media/0cfcf9_e358971a2f4d451a887d5b057d1357cb~mv2.jpg/v1/fill/w_554,h_370,al_c,q_80,usm_0.66_1.00_0.01/%5B%ED%81%AC%EA%B8%B0%EB%B3%80%ED%99%98%5D%ED%95%9C%EA%B8%B0%EC%9A%A9%EB%B9%84%EB%91%98%EA%B8%B0%EB%A7%88%EC%88%A0(1).webp",
-                        "http://ojsfile.ohmynews.com/STD_IMG_FILE/2013/0714/IE001599505_STD.jpg",
-                        "https://image.kkday.com/v2/image/get/w_960%2Cc_fit%2Cq_55%2Ct_webp/s1.kkday.com/product_33498/20191108075734_Jagij/jpg",
-                        "https://pds.joins.com/news/component/htmlphoto_mmdata/201905/14/a22ccda5-0656-4b17-b923-b6147d637089.jpg",
-                        "http://mnews.imaeil.com/inc/photos/2019/09/20/2019092016462909790_l.jpg",
-                        "https://t1.daumcdn.net/cfile/tistory/9913CF335A1AC98727",
-                        "https://www.yangsanilbo.com/news/photo/201904/68148_32939_2832.jpg"
+                        "https://i.ibb.co/tCrB9gS/1.png",
+                        "https://i.ibb.co/sv3s0D6/2.png",
+                        "https://i.ibb.co/ZVG16QQ/3.png",
+                        "https://i.ibb.co/LgzDc4p/4.png",
+                        "https://i.ibb.co/Ss0QbGG/5.png",
+                        "https://i.ibb.co/3MhMTqT/6.png",
+                        "https://i.ibb.co/zXHQ7qB/7.png",
+                        "https://i.ibb.co/cx1g0cb/8.png",
+                        "https://i.ibb.co/LdQcxCy/9.png",
+                        "https://i.ibb.co/MPLsnX8/10.png"
                 );
             }
-            if (category == 5L) { // 뮤지컬
+            if (category == 5L) { // 연극
                 return faker_eng.options().option(
-                        "https://lh3.googleusercontent.com/proxy/7CYVCs2qEPcX_Su-6RQEhddvZkT3bVKLk77n5v-MW_IEQN9OblllvzNthPULDcQplabuuQ9vMYDN5kjwP-ouheQlHwYgtuy2LS1msY_OlT4A2YYwMyTAqTAWqR3G",
-                        "https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/guest/image/9-76nQMUy7bKP1WleZ7LhlqZdKE.JPG",
-                        "https://lh3.googleusercontent.com/proxy/Vqp4KhLPM8VUKHsdjrkGH1lvrxrDG7V6qqfLMvw0kRI8wFhf30WuZzSQ1ZCqsgEktuPVbwXoNs9k5f0zTPR5RBKFnkco1ckk4xhKW02CB-1EVdGThZ8",
-                        "http://cdnimage.dailian.co.kr/news/202002/news_1581993821_869287_m_1.jpeg",
-                        "https://i.ytimg.com/vi/cGxtTqCwUDQ/maxresdefault.jpg",
-                        "http://www.safetimes.co.kr/news/photo/201912/78812_54936_3412.jpg",
-                        "https://cdn.jjan.kr/news/photo/201509/559478_177636_2717.jpg",
-                        "https://lh3.googleusercontent.com/proxy/YitZ-vF3NtdSQDRoUT1tzW1pOmGIjg3EXm4FAS9-Kocp3r7bglvF0LwSOKuOmKjOSS_swSvlb839i5sx8RdkQi9BA28QbHSFiuHFDzgChCJxeExsj0TkiHcWVwTFpyBhbzVs12mFKk3uEbL0zEx27lh_zlB8ZO0lHp-neoeEXilR4fS0VbM",
-                        "https://i.ytimg.com/vi/ccFBMTNG9hg/maxresdefault.jpg",
-                        "http://talkimg.imbc.com/TVianUpload//tvian/image/2014/08/28/toNWUBYXgmHn635448334432870740.jpg",
-                        "http://file2.nocutnews.co.kr/newsroom/image/2019/07/18/20190718141403827950_0_650_350.jpg"
+                        "https://i.ibb.co/0h4hjvD/3.png",
+                        "https://i.ibb.co/LxM6CMz/4.png",
+                        "https://i.ibb.co/7YfBmH1/5.png",
+                        "https://i.ibb.co/1Lyf4FZ/6.png",
+                        "https://i.ibb.co/TcwKRrh/7.png",
+                        "https://i.ibb.co/PGMKCyg/8.png",
+                        "https://i.ibb.co/KFHxTPz/9.png",
+                        "https://i.ibb.co/vYt7Y5Q/10.png",
+                        "https://i.ibb.co/xqZS877/11.png",
+                        "https://i.ibb.co/mBLKQPc/12.png"
+                );
+            }
+            if (category == 6L) { // 댄스
+                return faker_eng.options().option(
+                        "https://i.ibb.co/b6NRc8d/original-14.jpg",
+                        "https://i.ibb.co/hW00sjy/original-16.jpg",
+                        "https://i.ibb.co/gZDPjbX/original-17.jpg",
+                        "https://i.ibb.co/ZTj55rp/original.jpg",
+                        "https://i.ibb.co/ncnvWqw/original-1.jpg",
+                        "https://i.ibb.co/XyXstTZ/original-2.jpg",
+                        "https://i.ibb.co/VHn6Wjn/original-3.jpg",
+                        "https://i.ibb.co/Sd8zwz8/original-6.jpg",
+                        "https://i.ibb.co/zrMyH4F/original-12.jpg",
+                        "https://i.ibb.co/3drXcHj/original-13.jpg"
+                );
+            }
+            if (category == 7L) { // 힙합
+                return faker_eng.options().option(
+                        "https://i.ibb.co/8N84m2g/5b42d5d75d094.png",
+                        "https://i.ibb.co/tXT0qsd/88467-77597-151.jpg",
+                        "https://i.ibb.co/Z6BwyLy/206226-234744-4750.jpg",
+                        "https://i.ibb.co/1RGWpT6/20210504153227-1616226-993-552.jpg",
+                        "https://i.ibb.co/9pKbF2W/1607251801550830.jpg",
+                        "https://i.ibb.co/q5MW4Yy/2011110920232490.jpg",
+                        "https://i.ibb.co/NsrdgKD/2017011619312998.jpg",
+                        "https://i.ibb.co/WkNbMK2/e-VQpqgn3g-BCHz-Hhg-Sf9k-Tm-640.jpg",
+                        "https://i.ibb.co/7Wd36sx/images-1.jpg",
+                        "https://i.ibb.co/khNWQJ0/images.jpg"
+                );
+            }
+            if (category == 8L) { // 코미디
+                return faker_eng.options().option(
+                        "https://i.ibb.co/3FyTQZG/1.png",
+                        "https://i.ibb.co/8jt6ZXR/2.png",
+                        "https://i.ibb.co/HVfDXSN/3.png",
+                        "https://i.ibb.co/Y0r6pTr/4.png",
+                        "https://i.ibb.co/k46cnfK/5.png",
+                        "https://i.ibb.co/4KFPdW3/6.png",
+                        "https://i.ibb.co/VwDvbc1/7.png",
+                        "https://i.ibb.co/TRvcXSB/8.png",
+                        "https://i.ibb.co/HNnfQcj/9.png",
+                        "https://i.ibb.co/JRSxz8D/10.png"
                 );
             }
             return "";
         }
+        else if(mode.equals("홍보")) {
+            Long category = video.getCategory().getCategoryId();
+            if (category == 1L) {// 버스킹
+                return faker_eng.options().option(
+                        "https://i.ibb.co/7j65yrt/199411-141251-5146.jpg",
+                        "https://i.ibb.co/1rnk12z/c-A3br-TSQxqe6tx4-ZHn-Fy-S9-640.jpg",
+                        "https://i.ibb.co/2jfYqBb/images-1.jpg",
+                        "https://i.ibb.co/dfbgWZF/images-2.jpg",
+                        "https://i.ibb.co/mN06dNB/images-3.jpg",
+                        "https://i.ibb.co/KrP6qV3/images.jpg",
+                        "https://i.ibb.co/k5S2zjp/mont-5fc4301c112bb.jpg",
+                        "https://i.ibb.co/Fqr1sfq/thumbnail-1.jpg",
+                        "https://i.ibb.co/h7m1RD4/thumbnail.jpg",
+                        "https://i.ibb.co/JcK6K7z/unnamed.jpg"
+                );
+            }
+            if (category == 2L) { // 뮤지컬
+                return faker_eng.options().option(
+                        "https://i.ibb.co/1fRJgwB/20181108152828.jpg",
+                        "https://i.ibb.co/tsFqCGZ/20190325163815-w.jpg",
+                        "https://i.ibb.co/whZ83rd/190611170545786.jpg",
+                        "https://i.ibb.co/2S1rnt1/1701101014390300.jpg",
+                        "https://i.ibb.co/r3h7WX9/1711281638307200.jpg",
+                        "https://i.ibb.co/MsmZT6F/1801091653424221.jpg",
+                        "https://i.ibb.co/55YkkpS/1805210808259090.jpg",
+                        "https://i.ibb.co/CsrdgFn/1807051630505810.jpg",
+                        "https://i.ibb.co/R20PyNT/1812140852359680.jpg",
+                        "https://i.ibb.co/NF3MdY4/2007031527300581.jpg"
+                );
+            }
+            if (category == 3L) { // 밴드
+                return faker_eng.options().option(
+                        "https://i.ibb.co/K9cRbZL/3b191d8ee1d68.jpg",
+                        "https://i.ibb.co/Q6HVmCX/37900-32142-3849.jpg",
+                        "https://i.ibb.co/cg8YBHg/2017102201001358700060161.jpg",
+                        "https://i.ibb.co/0FrtJh5/images.jpg",
+                        "https://i.ibb.co/NZmvN2q/l-2021043002001755500299432.jpg",
+                        "https://i.ibb.co/r30HpSm/office-worker-band-08.jpg",
+                        "https://i.ibb.co/Lv0rF14/people-music-fun-musical-instrument-band-stage-performance-entertainment-musicians-thumbnail.jpg",
+                        "https://i.ibb.co/tPjmLWT/thumbnail.jpg",
+                        "https://i.ibb.co/yhg1Jcs/tp-97349-1392615007-230x153.jpg",
+                        "https://i.ibb.co/j6q3VbK/20181212-19.jpg"
+                );
+            }
+            if (category == 4L) { // 마술
+                return faker_eng.options().option(
+                        "https://i.ibb.co/YTSrfkp/images-1.jpg",
+                        "https://i.ibb.co/DwLvvv9/99-D80-D4-C5-E1-CA1-AD03.jpg",
+                        "https://i.ibb.co/sb4FfXD/9913-CF335-A1-AC98727.png",
+                        "https://i.ibb.co/TRskVxv/a22ccda5-0656-4b17-b923-b6147d637089.jpg",
+                        "https://i.ibb.co/Q6wSQgM/AKR20190413001900072-07-i-P2.jpg",
+                        "https://i.ibb.co/YN3FYpR/images.jpg",
+                        "https://i.ibb.co/wRZvnkx/maxresdefault-1.jpg",
+                        "https://i.ibb.co/r4BYHL2/maxresdefault.jpg",
+                        "https://i.ibb.co/7NKBT7Q/unnamed.jpg",
+                        "https://i.ibb.co/n8KDQ5t/image.jpg"
+                );
+            }
+            if (category == 5L) { // 연극
+                return faker_eng.options().option(
+                        "https://i.ibb.co/tcJZ1Bw/original-4.jpg",
+                        "https://i.ibb.co/NCPtKNW/original-5.jpg",
+                        "https://i.ibb.co/DbFWnRB/original-6.jpg",
+                        "https://i.ibb.co/mqff5j7/original-7.jpg",
+                        "https://i.ibb.co/Q8mMxxQ/original.jpg",
+                        "https://i.ibb.co/QMFzWXh/hqdefault-1.jpg",
+                        "https://i.ibb.co/Khcvy9q/hqdefault.jpg",
+                        "https://i.ibb.co/qjYjRPh/maxresdefault.jpg",
+                        "https://i.ibb.co/Ht8txjK/original-1.jpg",
+                        "https://i.ibb.co/cyMvVtv/original-2.jpg",
+                        "https://i.ibb.co/Th9WnqR/original-3.jpg"
+                );
+            }
+            if (category == 6L) { // 댄스
+                return faker_eng.options().option(
+                        "https://i.ibb.co/HxqQBwP/hqdefault-1.jpg",
+                        "https://i.ibb.co/M5TCX4Y/hqdefault.jpg",
+                        "https://i.ibb.co/3M3CjfX/original-4.jpg",
+                        "https://i.ibb.co/SPYVRSX/original-5.jpg",
+                        "https://i.ibb.co/7n94pL4/original-7.jpg",
+                        "https://i.ibb.co/LS2gFD3/original-8.jpg",
+                        "https://i.ibb.co/0GQQCPh/original-9.jpg",
+                        "https://i.ibb.co/RSJHbLK/original-10.jpg",
+                        "https://i.ibb.co/LYJ9d1r/original-11.jpg",
+                        "https://i.ibb.co/fFxRTct/original-15.jpg"
+                );
+            }
+            if (category == 7L) { // 힙합
+                return faker_eng.options().option(
+                        "https://i.ibb.co/5WbtQn3/maxresdefault.jpg",
+                        "https://i.ibb.co/tLLyd0d/mug-obj-157231334845188663.jpg",
+                        "https://i.ibb.co/ZMfSqn8/q-MUCsi6-CKS3dn8e-Lk-PLT6-U-640.jpg",
+                        "https://i.ibb.co/LtzJw89/t9kok6nm-Q5-K7-Lh-VXUe-Zzb-T-640.jpg",
+                        "https://i.ibb.co/k8yb474/thumbnail.jpg",
+                        "https://i.ibb.co/1d2ShgR/unnamed-1.jpg",
+                        "https://i.ibb.co/FDLpYN3/unnamed.jpg",
+                        "https://i.ibb.co/mzj2zHB/image.jpg",
+                        "https://i.ibb.co/Krg5Pg9/image.png",
+                        "https://i.ibb.co/KmXRj6s/image.jpg"
+                );
+            }
+            if (category == 8L) { // 코미디
+                return faker_eng.options().option(
+                        "https://i.ibb.co/c2xH281/1.png",
+                        "https://i.ibb.co/RghJwp1/2.png",
+                        "https://i.ibb.co/KDmmk1S/3.png",
+                        "https://i.ibb.co/s3TdXjz/4.png",
+                        "https://i.ibb.co/48Y46Fv/5.png",
+                        "https://i.ibb.co/xSK2CFt/6.png",
+                        "https://i.ibb.co/0BFcVT7/7.png",
+                        "https://i.ibb.co/Zc2xPpj/8.png",
+                        "https://i.ibb.co/py3GcX6/9.png",
+                        "https://i.ibb.co/yQz3YpF/10.png"
+                );
+            }
+        }
+        return "";
     }
     private void setTimeTalbeAndSave(){
         //3. 공연하나 만들때마다 타임테이블에 1~4개 시간 만들어서 저장
@@ -232,10 +450,10 @@ public class DataSample {
 
         int size = userList.size();
         for (int i = 0; i < size; i++) {
-            int num = (int) (Math.random() * 20);
-            if (size <= num) continue;
-            for (int j = 0; j < num; j++) {
+            for (int j = 0; j < size; j++) {
                 if (i == j) continue;
+                int x = (int) (Math.random() * 100);
+                if (x >= 5) continue;
 
                 User fan = userList.get(i);
                 User artist = userList.get(j);
@@ -281,14 +499,59 @@ public class DataSample {
         showInfo.setShowInfoDescription(faker_ko.dog().name());
         showInfo.setPrice(faker_eng.number().randomNumber(7, false));
         showInfo.setRunningTime(faker_eng.number().numberBetween(30, 300));
-        showInfo.setPosterUrl(faker_eng.options().option("https://i.pinimg.com/originals/a6/94/33/a6943328f2aadbe2ec9e9103087bb0cb.jpg",
-                "https://images.chosun.com/resizer/VEaKqo3pUn9Go6lXB0dpBAylSUY=/464x0/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/ZYSWGA4P6VYIMYFWD7RZGLBBVM.jpg",
-                "https://mblogthumb-phinf.pstatic.net/20160513_119/aproeasy_1463123866649MHzTF_JPEG/%B9%E3%C7%CF%B4%C32.jpg?type=w2",
-                "https://cdn.gukjenews.com/news/photo/202011/2109322_2103661_3134.jpg",
-                "https://cdn.thecheongna.net/news/photo/202105/4896_4492_1331.jpg",
-                "https://t1.daumcdn.net/cfile/tistory/2635C33F5580BCFE17",
-                "https://cdn.gukjenews.com/news/photo/201811/1022597_796348_114.jpg"
-        ));
+        showInfo.setPosterUrl(faker_eng.options().option(
+                "https://i.ibb.co/pb2k6t6/2164-5749-3840.jpg",
+                "https://i.ibb.co/QpPzHqL/20190703-pos-31169.jpg",
+                "https://i.ibb.co/vmQNPY4/20201230-35994-1.jpg",
+                "https://i.ibb.co/f2QFfC2/20210208-38051.jpg",
+                "https://i.ibb.co/gdmtgHc/20210106-37865.jpg",
+                "https://i.ibb.co/C1hRzHr/20210215-38417.jpg",
+                "https://i.ibb.co/s1BBKDd/20210316-38572.jpg",
+                "https://i.ibb.co/KwfqRkV/20210317-38677.jpg",
+                "https://i.ibb.co/0fsQRR6/20210325-38749.jpg",
+                "https://i.ibb.co/Gnq0cWD/20210507-39022.jpg",
+                "https://i.ibb.co/6s8J7sP/20210524-38853.jpg",
+                "https://i.ibb.co/pPJfMxs/20210531-29266.jpg",
+                "https://i.ibb.co/XXHtpPQ/20210602-39217.jpg",
+                "https://i.ibb.co/4TXM3xM/20210611-39288.jpg",
+                "https://i.ibb.co/xFMxGhw/20210614-39335.jpg",
+                "https://i.ibb.co/FgmxqM5/20210614-39338.jpg",
+                "https://i.ibb.co/X8GNM6m/20210625-39388.jpg",
+                "https://i.ibb.co/bQshw9n/20210628-38894.jpg",
+                "https://i.ibb.co/VSkr6pY/20210629-39541.jpg",
+                "https://i.ibb.co/x2h4Pxh/20210705-39605.jpg",
+                "https://i.ibb.co/RQ2GN4L/20210706-39592.jpg",
+                "https://i.ibb.co/q1PW9B4/20210712-39608.jpg",
+                "https://i.ibb.co/WVLvLFP/20210714-39693.jpg",
+                "https://i.ibb.co/ZVKQTPY/20210715-39577-1.jpg",
+                "https://i.ibb.co/znKW8rW/20210715-39695.jpg",
+                "https://i.ibb.co/BtQxyHy/20210715-s39695.jpg",
+                "https://i.ibb.co/tLdFZqy/20210719-39029.jpg",
+                "https://i.ibb.co/G0bt6Pg/20210720-39714.jpg",
+                "https://i.ibb.co/CmtWHDh/20210721-39737.jpg",
+                "https://i.ibb.co/xjDKpt3/20210723-39751.jpg",
+                "https://i.ibb.co/w0n9wRP/20210726-39766.jpg",
+                "https://i.ibb.co/w76dyH2/20210727-39777-1.jpg",
+                "https://i.ibb.co/3NRvqvt/20210728-39774.jpg",
+                "https://i.ibb.co/DD4jj6N/20210728-39784.jpg",
+                "https://i.ibb.co/89w0BCJ/20210729-39792.jpg",
+                "https://i.ibb.co/RvrBXB2/20210802-39806.jpg",
+                "https://i.ibb.co/XDp9L6Z/20210803-39821.jpg",
+                "https://i.ibb.co/Dgp2tjz/20210803-39822.jpg",
+                "https://i.ibb.co/gZLDBwz/20210804-39718.jpg",
+                "https://i.ibb.co/0K64BHS/20210804-39827.jpg",
+                "https://i.ibb.co/CHz5VxS/20210805-34882-2.jpg",
+                "https://i.ibb.co/zNVRLhf/20210806-39850-1.jpg",
+                "https://i.ibb.co/87Cb4Tt/20210809-39045.jpg",
+                "https://i.ibb.co/YjC5m03/20210811-38482.jpg",
+                "https://i.ibb.co/2hbFmQR/20210811-39880.jpg",
+                "https://i.ibb.co/VqYN1YW/20210812-39879.jpg",
+                "https://i.ibb.co/hFkNKk3/20210814-39900.jpg",
+                "https://i.ibb.co/5RtQJwp/a6943328f2aadbe2ec9e9103087bb0cb.jpg",
+                "https://i.ibb.co/rmTbxSc/agt-pst0716.jpg",
+                "https://i.ibb.co/TtRZF2B/dnc0810.jpg",
+                "https://i.ibb.co/6Y8ygXj/main0506.jpg"
+                ));
     }
 
 }

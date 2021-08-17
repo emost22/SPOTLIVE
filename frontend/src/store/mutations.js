@@ -186,7 +186,7 @@ export default {
         console.log("MUTATION: SEND_CHAT() RUN...")
         let chatStr = payload.chatMsg
         let imgUrl = state.loginUser.profileImageUrl
-        let userName = state.loginUser.userName
+        let userName = state.loginUser.profileNickname
 
         let sendData = chatStr + "####" + imgUrl + "####" + userName
         console.log(payload.chatMsg)
@@ -214,11 +214,18 @@ export default {
             console.error(error);
         })
     },
-    
-    SET_IS_OPEN_SETTING_DIALOG(state, payload) {
-        state.isSettingDialogOpen = !state.isSettingDialogOpen
-        console.log(!state.isSettingDialogOpen)
-        state.settingDialogViewId = payload
+
+    SEND_UPDATE_VIDEO(state) {
+        console.log("MUTATION: SEND_UPDATE_VIDEO() RUN...")
+        state.ovSession.signal({
+            data: "UPDATE_SIGNAL",
+            to: [],
+            type: 'update-video'
+        }).then(() => {
+            console.log('UPDATE SIGNAL successfully sent');
+        }).catch(error => {
+            console.error(error);
+        })
     },
 
     SET_CREATEVIDEO_DATA (state, payload) {
@@ -262,4 +269,12 @@ export default {
     SET_CREATEPROFILE_DATA (state, payload) {
         state.createdProfileData = payload
     },
+
+    SET_INVALID_START_STREAMING(state, payload) {
+        state.invalidForStart = payload
+    },
+
+    SHOW_LOADING_SPINNER(state, payload) {
+        state.loading = payload
+    }
 }

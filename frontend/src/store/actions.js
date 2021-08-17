@@ -98,11 +98,11 @@ export default {
         context.commit("SEND_EXIT")
     },
 
-    // RoomCreate.vue (희진)
-    requestSetIsOpenSettingDialog({ commit }, payload) {
-        commit('SET_IS_OPEN_SETTING_DIALOG', payload)
+    requestSendUpdateVideo(context, payload) {
+        context.commit('SEND_UPDATE_VIDEO', payload)
     },
 
+    // RoomCreate.vue (희진)
     requestGetCategoryIds(context) {
         const URL = '/category/'
         
@@ -110,7 +110,6 @@ export default {
     },
 
     requestSetCreatedVideoData({ commit }, payload) {
-        console.log(payload)
         commit('SET_CREATEVIDEO_DATA', payload)
     },
 
@@ -134,6 +133,10 @@ export default {
         return $axios.get(URL)
     },
 
+    requestSetInvalidStartStreaming({ commit }, payload) {
+        commit('SET_INVALID_START_STREAMING', payload)
+    },
+
     // RoomDetail.vue
     requestGetRoomDetail(context, payload) {
         const URL = `/video/${payload}`
@@ -144,6 +147,11 @@ export default {
     requestCloseVideo(context, payload) {
         const URL = `/video/close/${payload}`
         return $axios.patch(URL)
+    },
+
+    requestDeleteVideo(context, payload) {
+        const URL = `/video/${payload}`
+        return $axios.delete(URL)
     },
 
     requestLeaveSession(context, payload) {
@@ -207,10 +215,10 @@ export default {
         return $axios.get(URL)
     },
 
-    requestUpdateSettingDialog(context, payload, data) {
-        const URL = `/video/${payload}`
+    requestUpdateSettingDialog(context, payload) {
+        const URL = `/video/${payload.videoId}`
 
-        return $axios.patch(URL, data)
+        return $axios.patch(URL, payload.videoData)
     },
 
     requestSetVideoId({ commit }, payload) {
@@ -228,7 +236,7 @@ export default {
 
         return $axios.post(URL)
     },
-
+    
     // Main.vue
     requestGetCarouselVideos() {
         const URL = '/main/top'
@@ -383,5 +391,10 @@ export default {
         const URL = `/showinfo/${payload.showInfoId}`
 
         return $axios.put(URL, payload.formData)
+    },
+
+    // loadingSpinner
+    requestShowLoadingSpinner({ commit }, payload) {
+      commit("SHOW_LOADING_SPINNER", payload)
     }
 }

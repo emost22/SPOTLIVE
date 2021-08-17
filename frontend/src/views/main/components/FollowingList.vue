@@ -1,19 +1,17 @@
 <template>
   <div>    
-    <li class="nav-item">
-      <router-link class="nav-link" :to="{ name: 'Profile', query: { profileId : following.accountEmail } }">
-        <div class="sidebar-following-info">
-          <div 
-            class="sidebar-img-box" 
-            v-bind:style="{ backgroundImage: 'url(' + following.profileImageUrl + ')' }"
-          >
-          </div>
-          <div v-if="following.isLive" class="live-circle-badge bdcolor-npink"></div>
-          <div v-if="open" style="overflow:hidden;">
-            <p class="sidebar-following-nickname txtcolor-white" >{{following.profileNickname}}</p>
-          </div>
+    <li class="nav-item" @click="clickProfileBtn">
+      <div class="sidebar-following-info">
+        <div 
+          class="sidebar-img-box" 
+          v-bind:style="{ backgroundImage: 'url(' + following.profileImageUrl + ')' }"
+        >
         </div>
-      </router-link>
+        <div v-if="following.isLive" class="live-circle-badge bdcolor-npink"></div>
+        <div v-if="open" style="overflow:hidden;">
+          <p class="sidebar-following-nickname txtcolor-white" >{{following.profileNickname}}</p>
+        </div>
+      </div>
     </li>
   </div>
 </template>
@@ -31,6 +29,13 @@ export default {
       required: true
     },
   },
+  methods: {
+    clickProfileBtn() {
+      this.$store.dispatch("requestSetCreatedProfileData", {})
+      this.$router.push({ name: 'Profile', query: { profileId : this.following.accountEmail } })
+      this.$router.go()
+    }
+  }
 }
 </script>
 
@@ -65,5 +70,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 15px;
+  cursor: pointer;
 }
 </style>

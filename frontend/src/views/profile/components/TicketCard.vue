@@ -1,7 +1,3 @@
-<!--
-  작성자 : 권영린
-  컴포넌트 설명 : TicketDialog에서 받아온 예약정보를 하나의 티켓으로 출력
--->
 <template>
   <div class="ticket">
     <div :class="className+' ticket-img'">
@@ -9,9 +5,6 @@
         <div class="ticket-header ticket-title">
           {{ title }}
         </div>
-        <!-- <div class="ticket-header ticket-host">
-          {{ profileNickname }}
-        </div> -->
       </div>
       <div class="ticket-btns-box">
         <div class="ticket-small-btn-line">
@@ -108,6 +101,11 @@ export default {
       this.getReservationInfo()
     }
   },
+  created() {
+    this.getHostInfo()
+    this.getTicketImg()
+    this.getReservationInfo()
+  },
   methods: {
     getHostInfo() {
       this.userId = this.showHost.accountEmail
@@ -152,7 +150,7 @@ export default {
       this.$store.dispatch('requestGetShowData', showData)
     },
     clickCancleTicketbutton(){
-      this.$emit('clickCancleTicketbutton', this.timetableId)
+      this.$emit('clickCancleTicketbutton', this.timetableId, this.title, this.date, this.time)
     },
   },
 }
@@ -160,13 +158,13 @@ export default {
 
 <style>
 .ticket {
-  padding: 20px 10px;
+  padding: 15px 10px;
 }
 .ticket-img {
-  min-width: 350px;
-  max-width: 350px;
-  min-height: 156px;
-  max-height: 156px;
+  min-width: 375px;
+  max-width: 390px;
+  min-height: 172px;
+  max-height: 170px;
   background-color: #242424;
   border: none;
   border-radius: .25rem;
@@ -184,74 +182,53 @@ export default {
   display: flex;
   place-content: space-between;
 }
-.ticket-header.ticket-title {
-  font-size: 20px;
+.ticket-title {
+  font-size: 22px;
   font-weight: bold;
-  margin-left: 90px;
-  width: 250px;
+  padding-left: 100px;
+  padding-top: 5px;
+  width: 350px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: start;
 }
-.ticket-header.ticket-host {
-  font-size: 15px;
-  font-weight: bold;
-  padding: 0px 20px 0px 0px;
-  align-self: flex-end;
-}
-.ticket-btns-box {
-  padding: 0 0;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
 .ticket-small-btn-line {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-left: 55px;
-  margin-bottom: 37px;
-  margin-right: 30px;
+  padding-top: 10px;
+  padding-left: 40px;
+  padding-bottom: 32px;
+}
+.ticket-small-btn-box {
+  width: 70px;
+  height: 30px;
 }
 .ticket-small-btn {
   width: 60px;
   height: 25px;
   border-radius: 12.5px;
   font-size: 15px;
-}
-.ticket-small-btn-box {
-  width: 70px;
-  height: 30px;
+  text-align: center;
 }
 .ticket-btn-line {
   display: flex;
   justify-content: flex-end;
+  padding-right: 30px;
 }
 .ticket-btn-box {
-  /* width: 70px;
-    height: 30px;
-    border-radius: 15px;
-    margin-left: 20px;
-    font-size: 12px;
-    text-align: center; */
-}
-.ticket-btn{
   width: 70px;
   height: 30px;
   border-radius: 15px;
-  margin-left: 20px;
-  /* margin-bottom: 10px; */
-  font-size: 12px;
+  margin-left: 30px;
   text-align: center;
 }
-.ticket-popup-button {
-  margin-top: 50px;
-}
-.ticket-popup-title {
+.ticket-btn{
+  width: 90px;
+  height: 30px;
+  border-radius: 15px;
+  font-size: 15px;
   text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 0 10%;
 }
 </style>

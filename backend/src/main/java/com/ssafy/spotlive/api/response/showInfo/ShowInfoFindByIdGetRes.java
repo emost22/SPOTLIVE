@@ -65,7 +65,7 @@ public class ShowInfoFindByIdGetRes {
                 .posterUrl(showInfo.getPosterUrl())
                 .price(showInfo.getPrice())
                 .runningTime(showInfo.getRunningTime())
-                .timetables(timetableList.stream().map(timetable -> TimetableRes.of(timetable)).collect(Collectors.toList()))
+                .timetables(showInfo.getTimetableList().stream().map(timetable -> TimetableRes.of(timetable)).collect(Collectors.toList()))
                 .userRes(UserRes.ofWithoutFollowShowInfoReservationVideo(showInfo.getUser()))
                 .build();
     }

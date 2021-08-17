@@ -16,12 +16,12 @@
     <div class="profile-info">
       <div><img :src="createdProfileData.myProfile.profileImageUrl" class="profile-big-img"></div>
       <div class="profile-detail d-flex flex-column justify-content-evenly">
-        <div class="profile-txt"> <span class="txtcolor-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
+        <div class="profile-txt"> <span class="txtcolor-white-nyellow"> {{ createdProfileData.myProfile.profileNickname }}</span> 님</div>
         <div class="profile-txt"> {{ createdProfileData.myProfile.profileDescription }} </div>
         <div divclass="profile-txt"> {{ createdProfileData.myProfile.accountEmail }} </div>
       </div>
       <div class="follow-number">
-        <p>FOLLOWING </p>
+        <p>FOLLOWING</p>
         <p>{{ createdProfileData.following.length }}</p>
       </div>
       <div class="follow-number">
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="mx-5">
+    <div class="mx-5 mt-5 mb-5">
       <div class="txtcolor-white-npurple main-title">나의 공연 정보</div>
       <MyShow
         :shows="createdProfileData.myShows"
@@ -79,14 +79,6 @@ export default {
       this.getProfile()
       console.log('타인프로필')
     }    
-  },
-  beforeRouteLeave (to, from, next) {
-    this.$store.dispatch("requestSetCreatedProfileData", {})
-
-    if(to.name == from.name && to.query == from.query){
-      this.$router.go(this.$router.currentroute)
-    }
-    next()
   },
   methods: {
     getUser() {

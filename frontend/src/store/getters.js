@@ -42,12 +42,6 @@ export default {
     subscribers(state) {
         return state.subscribers
     },
-    settingDialogViewId(state) {
-        return state.settingDialogViewId
-    },
-    isSettingDialogOpen(state) {
-        return state.isSettingDialogOpen
-    },
     createdVideoData(state) {
         return state.createdVideoData
     },
@@ -75,4 +69,10 @@ export default {
     createdProfileData(state) {
         return state.createdProfileData
     },
+    invalidForStart(state) {
+        return state.invalidForStart
+    },
+    loading(state) {
+        return state.loading
+    }
 }

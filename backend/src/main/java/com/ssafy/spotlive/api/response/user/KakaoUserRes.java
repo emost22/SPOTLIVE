@@ -57,7 +57,9 @@ public class KakaoUserRes {
 
     public User toUser(String accessToken, String refreshToken) {
         User user = new User();
-        user.setAccountEmail(this.kakao_account.email);
+        if(this.kakao_account.email == null || this.kakao_account.email == "") user.setAccountEmail(String.valueOf(this.id));
+        else user.setAccountEmail(this.kakao_account.email);
+
         user.setUserName(this.kakao_account.profile.nickname);
         user.setProfileImageUrl(this.kakao_account.profile.profile_image_url);
         user.setGender(this.kakao_account.gender);

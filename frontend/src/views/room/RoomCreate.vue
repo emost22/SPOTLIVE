@@ -4,9 +4,14 @@
       <video class="user-video" ref="myVideo" autoplay/>
     </div>
     <div class="btn-wrapper">
-      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog" @click="openRoomSettingDialog"> 설정 </button>
-      <button class="bdcolor-bold-npink extra-big-button start-streaming" @click="startStreaming()" :disabled="isDisabled"> 스트리밍 시작 </button>
+      <button class="bdcolor-bold-ngreen extra-big-button" data-bs-toggle="modal" data-bs-target="#roomSettingDialog"> 설정 </button>
+      <button class="bdcolor-bold-npink extra-big-button start-streaming" @click="startStreaming()" :disabled="this.invalidForStart"> 스트리밍 시작 </button>
     </div>
+          <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="2000">
+            <div class="toast-body" style="text-align: center">
+              {{toastMessage}}
+            </div>
+          </div>
   </div>
 </template>
 
@@ -16,24 +21,37 @@ import { OpenVidu } from 'openvidu-browser'
 
 export default {
   name:'RoomCreate',
-  data() {
-    return  {
-      isDisabled: false
+  data(){
+    return {
+      toastMessage: ''
     }
   },
   beforeMount() {
     this.$store.dispatch("requestSetUserOnCreateVideo", true)
   },
   beforeRouteLeave (to, from, next) {
+    this.$store.dispatch('requestSetInvalidStartStreaming', true)
     if (to.name != "RoomDetail") {
       this.$store.dispatch("requestSetUserOnCreateVideo", false)
-      this.$store.dispatch("requestSetCreatedVideoData", {})
       this.$store.dispatch("requestSetFileNameOfVideo", "")
       this.$store.dispatch('requestLeaveSession')
+      this.$store.dispatch("requestSetCreatedVideoData", {
+        categoryId: '0',
+        thumbnailImage: [],
+        videoDescription: '',
+        videoTitle: '',
+        showInfoId: '',
+        timetableId: '',
+        showTime:'',
+        mode: '공연',
+      })
     }
+
+    this.$store.dispatch('requestShowLoadingSpinner', false)
     next()
   },
   created() {
+    this.$store.dispatch('requestShowLoadingSpinner', true)
     this.initSession(new OpenVidu())
     this.doOpenviduCall()
     this.$store.dispatch("requestGetLoginUser")
@@ -52,11 +70,14 @@ export default {
           this.setAllDevices()
           this.addEventInSession()
           this.connectSession()
+          this.$store.dispatch('requestShowLoadingSpinner', false)
         }).catch((error) => {
           console.log(error)
+          this.$store.dispatch('requestShowLoadingSpinner', false)
         })         
       }).catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     setSessionIdAndTokenForOpenvidu(sessionId, token) {
@@ -74,11 +95,20 @@ export default {
     addEventInSession() {
       this.$store.dispatch("requestAddEventInSession")
     },
-    openRoomSettingDialog() {
-      this.$store.dispatch('requestSetIsOpenSettingDialog', 1)
+    toastEvent(){
+      var toast = new bootstrap.Toast(this.$refs.toast)
+      toast.show()
     },
     startStreaming () {
       let formData = this.makeFormDataForStartStreaming()
+      if(formData == 0) {
+        console.log("카테고리 선택해야함")
+        this.toastMessage = "카테고리를 선택해주세요."
+        this.toastEvent()
+        return
+      }
+      
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestStartStreaming', formData)
       .then((response) => {
         this.$store.dispatch('requestSetVideoId', response.data.videoId)
@@ -93,12 +123,14 @@ export default {
         "mode": this.createdVideoData.mode,
         "categoryId": this.createdVideoData.categoryId,
         "showInfoId": this.createdVideoData.showInfoId,
+        "timetableId": this.createdVideoData.timetableId,
         "accountEmail": this.loginUser.accountEmail,
         "sessionId": this.ovSessionId,
       }
+      
+      if (this.createdVideoData.categoryId == 0) return false
       formData.append('posterImage', this.createdVideoData.thumbnailImage)
       formData.append('videoInsertPostReq', new Blob([JSON.stringify(videoInsertPostReq)] , {type: "application/json"}))
-      console.log(formData)
       return formData
     },
     clickToast: function () {
@@ -113,7 +145,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loginUser', 'ovSessionId', 'ovToken', 'OV', 'ovSession', 'audioDevices', 'videoDevices', 'createdVideoData', 'mainStreamManager']),
+    ...mapGetters([
+      'loginUser', 
+      'ovSessionId', 
+      'ovToken', 
+      'OV', 
+      'ovSession', 
+      'audioDevices', 
+      'videoDevices', 
+      'createdVideoData', 
+      'mainStreamManager',
+      'invalidForStart'
+      ]),
   },
 }
 </script>
@@ -142,5 +185,14 @@ export default {
 .start-streaming:disabled {
   border-color: black;
   color: gray;
+}
+.toast {
+    top: 45%; 
+    right: 0;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0px);
+    z-index: 9999;
+    width: 220px;
 }
 </style>

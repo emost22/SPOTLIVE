@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <div v-if="loading" class="d-flex justify-content-center">
+      <div class="spinner-border text-light " role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
     <div class="sticky-top match-parent">
       <MainHeader v-if="isLogin"/>
       <router-view :key="$route.fullPath"></router-view>
@@ -16,7 +21,9 @@
       <TicketDialog/>
       <TicketDetailDialog/>
       <ShowInfoDialogNowPlaying/>
+      <ShowReservationDialogInMain/>
     </div>
+
   </div>
 </template>
 
@@ -34,6 +41,7 @@ import TicketDialog from './views/profile/components/TicketDialog.vue'
 import ShowReservationDialog from './views/room/components/ShowReservationDialog.vue'
 import TicketDetailDialog from './views/profile/components/TicketDetailDialog.vue'
 import ShowInfoDialogNowPlaying from './views/room/components/ShowInfoDialogNowPlaying.vue'
+import ShowReservationDialogInMain from './views/main/components/ShowReservationDialogInMain.vue'
 
 export default ({
   name: "App",
@@ -50,6 +58,7 @@ export default ({
     ShowReservationDialog,
     TicketDetailDialog,
     ShowInfoDialogNowPlaying,
+    ShowReservationDialogInMain,
   },
   data: function () {
     return {
@@ -63,6 +72,7 @@ export default ({
   computed: {
     ...mapGetters([
     'isLogin', 
+    'loading', 
     ]),
   },
   created: function () {
@@ -251,6 +261,7 @@ textarea {
   font-size: 15px;
   font-weight: bold;
   color: white;
+  cursor: pointer;
 }
 .full-wide-screen {
   margin-left: 30px;
@@ -384,5 +395,40 @@ div#deleteTicketInfo {
     margin: auto auto;
     width: 500px;
     height: 212px;
+}
+.spinner-border {
+  display: block;
+  position: fixed;
+  z-index: 10000;
+  top: 50%;
+  left: 50%;
+}
+.live-badge{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55px;
+  height: 25px;
+  border-radius: 15px;
+  background-color: none;
+  border: none;
+  background-image: url('~@/assets/icon-live-badge.png');
+  background-size: 110%;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 7px;
+}
+.time-badge{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55px;
+  height: 25px;
+  border-radius: 15px;
+  background-color: #242424;
+  color: #FFFFFF;
+  border: none;
+  margin: 7px;
+  font-size: 14px;
 }
 </style>

@@ -10,14 +10,12 @@
             <input type='radio' id='rr1' name='u' checked>
             <label for='rr1' class="tab-label-u">설정</label>
             <div class='content-u'>
-              <RoomSettingDialogForm
-                :categoryIds="categoryIds"
-                @form-data="form => videoData = form"
-                :showInfoList="showInfoList"
-                :showInUpdate="showInUpdate"
-                :createdVideoData="createdVideoData"
-                :closing="closing"
-              />
+              <ValidationObserver ref="settingUpdateDialogObserver" @change="changeInput()">
+                <RoomSettingUpdateDialogForm
+                  :categoryIds="categoryIds"
+                  :closing="closing"
+                />
+              </ValidationObserver>
             </div>
             <input type='radio' id='rr2' name='u'>
             <label for='rr2' class="tab-label-u">카메라</label>
@@ -28,90 +26,105 @@
           </div>
         </div>
         <div class="modal-footer-m">
-          <button type="button" class="bdcolor-npink small-button" @click="roomSettingUpdateDialogButton()">확인</button>
+          <button type="button" class="bdcolor-ngreen small-button setting-button" :disabled="invalid" @click="roomSettingUpdateDialogButton()">확인</button>
         </div>
       </div>
     </div>
-    <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
-    <div class="offcanvas-header">
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <h5 class="popUpTitle">공연을 추가하기 위해 프로필로 이동해주세요</h5>
-      등록된 공연이 없다면<br>
-      <strong>프로필 > 공연 생성</strong> 버튼 클릭하여<br>
-      상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
-      <div class="d-flex justify-content-center mt-4">
-        <div><button type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas" @click="routeToProfile()">프로필로 가기</button></div>
-      </div>
-    </div>
-  </div>
   </div>
 </template>
 
 <script scoped>
 import { mapGetters } from "vuex"
-import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
+import RoomSettingUpdateDialogForm from './RoomSettingUpdateDialogForm.vue'
 import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
+import { ValidationObserver } from 'vee-validate';
 export default {
   name: 'RoomSettingUpdateDialog',
   components: {
-    RoomSettingDialogForm,
-    RoomSettingDialogCameraForm
+    RoomSettingUpdateDialogForm,
+    RoomSettingDialogCameraForm,
+    ValidationObserver,
   },
   data: function () {
     return {
       categoryIds: [],
+      showInfoList : '',
       videoData: {},
-      showInUpdate: false,
       closing: true,
+      invalid: true,
     }
   }, 
   methods: {
-    checkMode: function() {
-       if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
-        delete this.videoData.showTime
-        if (this.videoData.mode == '소통') {
-          delete this.videoData.showInfoId
-        }
-      } 
-    },
     makeFormDataForUpdateDialog() {
       let formData = new FormData()
       let videoUpdateByIdPatchReq = {
-        "videoTitle": this.videoData.videoTitle,
-        "videoDescription": this.videoData.videoDescription,
-        "categoryId": this.videoData.categoryId,
+        "videoTitle": this.createdVideoData.videoTitle,
+        "videoDescription": this.createdVideoData.videoDescription,
+        "categoryId": this.createdVideoData.categoryId,
       }
-      formData.append('thumbnailImage', this.videoData.thumbnailImage)
+      formData.append('thumbnailImage', this.createdVideoData.thumbnailImage)
       formData.append('videoUpdateByIdPatchReq', new Blob([JSON.stringify(videoUpdateByIdPatchReq)] , {type: "application/json"}))
+
       return formData
     },
-    roomSettingUpdateDialogButton: function () {
-      // 버튼 누르면 데이터 업데이트하는 로직 탐
-      // 성공하면 vuex에 저장되어있는 created 데이터 갱신됨.
-      // videoId는 현재 켜져있는 라이브의 videoId임 -> 라이브 끌 때 초기화 해줘.
-      this.checkMode()
-      var videoData = this.makeFormDataForUpdateDialog()
-      console.log("====================================")
-      console.log(videoData)
-      this.$store.dispatch('requestUpdateSettingDialog', this.videoId, videoData)
-      .then(res => {
-        console.log(res)
-        // 제대로 갱신돼 비디오데이터에 있을거 다있음 근데 FileName에 왜 아무것도없는지 모르겠음
-        this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
-        var roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
-        roomSettingUpdateDialog.hide()
-      })
-      .catch(err =>{
-        alert('라이브 영상 수정을 하다 오류가 났어요! 다시 시도해주세요!')
-      })
+    changeInput: function () {
+      if (this.$refs.settingUpdateDialogObserver.flags.invalid) {
+        console.log(true)
+        this.invalid = true
+      } else {
+        console.log(false)
+        this.invalid = false
+      }
     },
-    routeToProfile: function () {
-      var roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
-      roomSettingModal.hide()
-      this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
-    }
+    async roomSettingUpdateDialogButton() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
+      let videoData = this.makeFormDataForUpdateDialog()
+      let payload = {
+        videoData: videoData,
+        videoId: this.videoId
+      }
+      console.log(payload)
+      await this.$store.dispatch('requestUpdateSettingDialog', payload)
+      .then(res => {
+        this.$store.dispatch('requestShowLoadingSpinner', false)
+      })
+      .catch(err => {
+        alert('라이브 영상 수정을 하다 오류가 났어요! 다시 시도해주세요!')
+        this.$store.dispatch('requestShowLoadingSpinner', false)
+      })
+
+      await this.$store.dispatch('requestGetRoomDetail', this.videoId)
+      .then((response) => {
+        console.log(response)
+        this.videoDescription = response.data.videoDescription
+        this.category = response.data.categoryRes.categoryName
+        this.videoTitle = response.data.videoTitle
+        this.startTime = response.data.startTime
+        this.hit = response.data.hit
+        this.profileImageUrl = response.data.userRes.profileImageUrl
+        let videoData = {
+          categoryId: response.data.categoryRes.categoryId,
+          thumbnailImage: response.data.thumbnailUrl,
+          videoDescription: this.videoDescription,
+          videoTitle: this.videoTitle,
+          showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+          showTime: response.data.showInfoRes != null ? response.data.showInfoRes.showTime : '',
+          timetableRes: response.data.timetableRes != null ? response.data.timetableRes : '',
+          mode: response.data.mode,
+        }
+        console.log(videoData)
+        this.$store.dispatch('requestSetCreatedVideoData', videoData)
+      }).catch(err => {
+        alert('수정된 데이터를 가져오지 못했어요! 다시 시도해주세요!')
+      })
+
+      let roomSettingUpdateDialog = bootstrap.Modal.getInstance(this.$refs.roomSettingUpdateDialog)
+      this.sendUpdateVideo()
+      roomSettingUpdateDialog.hide()
+    },
+    sendUpdateVideo() {
+      this.$store.dispatch("requestSendUpdateVideo")
+    },
   },
   computed: {
     ...mapGetters([
@@ -121,27 +134,17 @@ export default {
     ]),
   },
   mounted() {
-    // 오픈되었을 때 업데이트에서 켜졌다고 form에 알려줌 -> form에서 현재 켜져있는 라이브 데이터 가져와서 넣어줌, 
-    // 클로즈 되었을 때 closing되었다고 form에 알려줌 -> form이 자기자신 초기화함
-    var modal= this.$refs.roomSettingUpdateDialog
-    var _this = this
+    let modal= this.$refs.roomSettingUpdateDialog
+    let _this = this
     modal.addEventListener('show.bs.modal', function (event) {
-      _this.showInUpdate = true
       _this.closing = false
-      console.log('RoomsettingUpdateDialog show')
     })
     modal.addEventListener('hidden.bs.modal', function (event) {
       _this.closing = true
-      console.log('RoomsettingUpdateDialog hidden')
     })
     this.$store.dispatch('requestGetCategoryIds')
     .then((response) => {
       this.categoryIds = response.data
-    })
-    this.$store.dispatch('requestGetShowInfoIds')
-    .then(response => {
-      console.log(response)
-      this.showInfoList = response.data
     })
   },
 }
@@ -222,5 +225,9 @@ label:hover {
 }
 .btn-close:hover {
   background-image: url('~@/assets/icon-x.png');
+}
+.setting-button:disabled {
+  border-color: black;
+  color: gray;
 }
 </style>

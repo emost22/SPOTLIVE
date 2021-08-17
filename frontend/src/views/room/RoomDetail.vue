@@ -6,7 +6,7 @@
       </div> 
       <div class="d-flex flex-row mt-3">
         <div class="d-flex flex-column justify-content-center align-items-center">
-          <img :src="this.userThumbnail" class="profile-img bdcolor-npink">
+          <img :src="this.profileImageUrl" class="profile-img bdcolor-npink">
           <img src="~@/assets/icon-live-badge.png" class="badge-design">
         </div>
         <div class="d-flex flex-row justify-content-between detail-top ms-3">
@@ -87,7 +87,7 @@ export default {
       category: "",
       videoTitle: "",
       startTime: "",
-      userThumbnail: "",
+      profileImageUrl: "",
       takenTime: {
         h: '',
         m: '',
@@ -98,11 +98,12 @@ export default {
       chatList: [],
       recordName: "",
       recordURL: "",
-      isRecord: true,
+      isRecord: false,
     }
   },
   methods: {
     closeStreaming() {
+      this.$store.dispatch("requestShowLoadingSpinner", true)
       this.$router.push({ name: 'Main' })
     },
     startTimer() {
@@ -192,6 +193,7 @@ export default {
       })
     },
     updateVideoInfo() {
+      console.log("updateVideoInfo() RUN...")
       this.$store.dispatch('requestGetRoomDetail', this.videoId)
       .then((response) => {
         console.log(response)
@@ -203,18 +205,18 @@ export default {
       })
     },
     initCreateVideoDataInVuex() {
-    let initData = {
-          categoryId: '1',
-          thumbnailImage: [], // 파일이 들어감
-          videoDescription: '',
-          videoTitle: '',
-          showInfoId: '',
-          showTime:'',
-          mode: '공연',
-        }
-    this.$store.dispatch("requestSetCreatedVideoData", initData)
-    this.$store.dispatch("requestSetFileNameOfVideo", "")
-    this.$store.dispatch("requestSetUserOnCreateVideo", false)
+      let initData = {
+        categoryId: '0',
+        thumbnailImage: [], // 파일이 들어감
+        videoDescription: '',
+        videoTitle: '',
+        showInfoId: '',
+        showTime:'',
+        mode: '공연',
+      }
+      this.$store.dispatch("requestSetCreatedVideoData", initData)
+      this.$store.dispatch("requestSetFileNameOfVideo", "")
+      this.$store.dispatch("requestSetUserOnCreateVideo", false)
     }
   },
   beforeMount() {
@@ -230,14 +232,15 @@ export default {
       this.videoTitle = response.data.videoTitle
       this.startTime = response.data.startTime
       this.hit = response.data.hit
-      this.userThumbnail = response.data.userRes.profileImageUrl
-      var videoData = {
+      this.profileImageUrl = response.data.userRes.profileImageUrl
+      let videoData = {
         categoryId: response.data.categoryRes.categoryId,
         thumbnailImage: response.data.thumbnailUrl,
         videoDescription: this.videoDescription,
         videoTitle: this.videoTitle,
-        showInfoId: response.data.showInfoRes.showInfoId != null ? response.data.showInfoRes.showInfoId : '',
-        showTime: response.data.showInfoRes.showTime != null ? response.data.showInfoRes.showTime : '',
+        showInfoId: response.data.showInfoRes != null ? response.data.showInfoRes.showInfoId : '',
+        showTime: response.data.showInfoRes != null ? response.data.showInfoRes.showTime : '',
+        timetableRes: response.data.timetableRes != null ? response.data.timetableRes : '',
         mode: response.data.mode,
       }
       console.log(videoData)
@@ -267,7 +270,7 @@ export default {
       console.log("저장된 URL: " + this.recordURL)
       if(this.isRecord) this.insertVideoUrlAndCloseStreaming()
       else {
-        this.$store.dispatch('requestCloseVideo', this.videoId)
+        this.$store.dispatch('requestDeleteVideo', this.videoId)
         .then(res => {
           console.log(res)
           this.$store.dispatch('requestLeaveSession')
@@ -276,9 +279,11 @@ export default {
         })
       }
       next()
+      this.$store.dispatch("requestShowLoadingSpinner", false)
     }).catch(error => {
       console.log("the error in endRecoding()...")	
       console.log(error)	
+      this.$store.dispatch("requestShowLoadingSpinner", false)
 		}) 
   },
   watch: {
@@ -305,8 +310,6 @@ export default {
       'mainStreamManager', 
       'subscribers', 
       'onCreateVideoLive', 
-      'isSettingDialogOpen', 
-      'settingDialogViewId',
       'MAX_CHAT_LIST_SIZE']),
   },
 }

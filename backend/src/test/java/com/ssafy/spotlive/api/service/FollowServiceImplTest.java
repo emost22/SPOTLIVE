@@ -63,6 +63,8 @@ class FollowServiceImplTest {
         Mockito.verify(followRepository).deleteById(Mockito.any());
     }
 
+
+
     @Test
     void findArtistByFanAccountEmail() {
         //given

@@ -2,34 +2,33 @@
   <div class="modal fade" id="roomSettingDialog" ref="roomSettingDialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple modal-design">
       <div class="modal-content-m">
-        <div class="modal-header no-border">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeRoomSettingDialog()"></button>
-        </div>
-        <div class="modal-body">
-          <div class='tabs'>
-            <input type='radio' id='r1' name='t' checked>
-            <label for='r1' class="tab-label">설정</label>
-            <div class='content'>
-              <RoomSettingDialogForm
-                :categoryIds="categoryIds"
-                @form-data="form => videoData = form"
-                :showInfoList="showInfoList"
-                :showInUpdate="false"
-                :createdVideoData="createdVideoData"
-                :closing="closing"
-              />
-            </div>
-            <input type='radio' id='r2' name='t'>
-            <label for='r2' class="tab-label">카메라</label>
-            <div class='content'>
-              <RoomSettingDialogCameraForm/>
-            </div>
-            <div id='slider'></div>
+          <div class="modal-header no-border">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeRoomSettingDialog()"></button>
           </div>
-        </div>
-        <div class="modal-footer-m">
-          <button type="button" class="bdcolor-ngreen small-button" @click="roomSettingDialogButton()" data-bs-dismiss="modal">확인</button>
-        </div>
+          <div class="modal-body">
+            <div class='tabs'>
+              <input type='radio' id='r1' name='t' checked>
+              <label for='r1' class="tab-label">설정</label>
+              <div class='content'>
+                <ValidationObserver ref="settingDialogObserver" @change="changeInput()">
+                  <RoomSettingDialogForm
+                    :categoryIds="categoryIds"
+                    :showInfoList="showInfoList"
+                    :closing="closing"
+                  />
+                </ValidationObserver>
+              </div>
+              <input type='radio' id='r2' name='t'>
+              <label for='r2' class="tab-label">카메라</label>
+              <div class='content'>
+                <RoomSettingDialogCameraForm/>
+              </div>
+              <div id='slider'></div>
+            </div>
+          </div>
+          <div class="modal-footer-m">
+            <button type="button" class="bdcolor-ngreen small-button setting-button" :disabled="invalid" data-bs-dismiss="modal">확인</button>
+          </div>
       </div>
     </div>
     <div class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" tabindex="-1" id="offcanvasTop" ref="showPopup" aria-labelledby="offcanvasTopLabel">
@@ -42,7 +41,6 @@
       <strong>프로필 > 공연 생성</strong> 버튼 클릭하여<br>
       상세 공연 정보를 등록 후 스트리밍을 진행할 수 있습니다.
       <div class="d-flex justify-content-center mt-4">
-        <!-- <div><button type="button" class="bdcolor-ngreen small-button mx-3">취소</button></div> -->
         <div><button type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas" @click="routeToProfile()">프로필로 가기</button></div>
       </div>
     </div>
@@ -54,67 +52,52 @@
 import { mapGetters } from "vuex"
 import RoomSettingDialogForm from './RoomSettingDialogForm.vue'
 import RoomSettingDialogCameraForm from './RoomSettingDialogCameraForm.vue'
+import { ValidationObserver } from 'vee-validate';
 export default {
   name: 'RoomSettingDialog',
   components: {
     RoomSettingDialogForm,
-    RoomSettingDialogCameraForm
+    RoomSettingDialogCameraForm,
+    ValidationObserver,
   },
   data: function () {
     return {
       categoryIds: [],
       showInfoList: [],
-      videoData: {},
       closing: true,
+      invalid: true,
     }
   }, 
-  beforeRouteEnter(to, from, next) {
-    if (to.name != "RoomCreate") {
-      // 여기서 체크
-    }
-  },
   methods: {
-    checkMode: function() {
-       if (this.videoData.mode == '홍보' || this.videoData.mode == '소통') {
-        delete this.videoData.showTime
-        if (this.videoData.mode == '소통') {
-          delete this.videoData.showInfoId
-        }
-      } 
-    },
-    roomSettingDialogButton: function () {
-      // 확인 버튼 누르면 모드 체크하고 vuex에 저장됨 -> update에서 쓸 예정임.
-      this.checkMode()
-      this.setCreatedVideoDataInVuex()
-    },
-    setCreatedVideoDataInVuex: function () {
-      console.log(this.videoData)
-      this.$store.dispatch('requestSetCreatedVideoData', this.videoData)
-    }, 
     routeToProfile: function () {
       var roomSettingModal = bootstrap.Modal.getInstance(this.$refs.roomSettingDialog)
       roomSettingModal.hide()
       this.$router.push({name: 'Profile', query: { profileId : this.loginUser.accountEmail }})
-    }
+      this.$router.go()
+    },
+    changeInput: function () {
+      if (this.$refs.settingDialogObserver.flags.invalid) {
+        this.invalid = true
+        this.$store.dispatch('requestSetInvalidStartStreaming', this.invalid)
+      } else {
+        this.invalid = false
+        this.$store.dispatch('requestSetInvalidStartStreaming', this.invalid)
+      }
+    },
   },
   computed: {
     ...mapGetters([
     'loginUser',
-    'createdVideoData'
     ]),
   },
   mounted() {
-    // 오픈되었을 때 아무것도 안함, 
-    // 클로즈 되었을 때 closing되었다고 form에 알려줌 -> form이 자기자신 초기화함
     var modal= this.$refs.roomSettingDialog
     var _this = this
     modal.addEventListener('show.bs.modal', function (event) {
       _this.closing = false
-      console.log('RoomsettingDialog show')
     })
     modal.addEventListener('hidden.bs.modal', function (event) {
       _this.closing = true
-      console.log('RoomsettingDialog hidden')
     })
     this.$store.dispatch('requestGetCategoryIds')
     .then(response => {
@@ -122,10 +105,10 @@ export default {
     })
     this.$store.dispatch('requestGetShowInfoIds')
     .then(response => {
-      console.log(response)
       this.showInfoList = response.data
     })
   },
+  
 }
 </script>
 
@@ -204,5 +187,9 @@ label:hover {
 }
 .btn-close:hover {
   background-image: url('~@/assets/icon-x.png');
+}
+.setting-button:disabled {
+  border-color: black;
+  color: gray;
 }
 </style>

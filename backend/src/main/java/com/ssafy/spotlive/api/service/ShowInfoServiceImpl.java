@@ -81,15 +81,14 @@ public class ShowInfoServiceImpl implements ShowInfoService {
          * @작성자 : 금아현
          * @Method 설명 : 공연정보를 id로 수정
          */
-        Optional<ShowInfo> optionalShowInfo = showInfoRepository.findShowInfoByShowInfoId(id);
-        ShowInfo showInfo = null;
-        if (optionalShowInfo.isPresent()) showInfo = optionalShowInfo.get();
-        else return Boolean.FALSE;
+        ShowInfo showInfo = showInfoRepository.findShowInfoByShowInfoId(id).orElse(null);
+        if(showInfo == null) return Boolean.FALSE;
 
         if (posterImage != null && !posterImage.isEmpty()) {
             String nextPosterImageUrl = null;
             String currentPosterUrl = showInfo.getPosterUrl();
-            fileUploadService.delete(currentPosterUrl);
+            if (currentPosterUrl != null)
+                fileUploadService.delete(currentPosterUrl);
             try {
                 nextPosterImageUrl = fileUploadService.upload(posterImage);
                 showInfo.setPosterUrl(nextPosterImageUrl);
@@ -108,10 +107,9 @@ public class ShowInfoServiceImpl implements ShowInfoService {
             showInfo.setRunningTime(showInfoUpdatePatchReq.getRunningTime());
 
         if (showInfoUpdatePatchReq.getTimetableInsertPostReq() != null) {
-            ShowInfo finalShowInfo = showInfo;
-            showInfoRepository.save(finalShowInfo);
+            showInfoRepository.save(showInfo);
             timetableRepository.deleteAllByShowInfo_ShowInfoId(id);
-            showInfoUpdatePatchReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq.toTimetable(finalShowInfo)));
+            showInfoUpdatePatchReq.getTimetableInsertPostReq().forEach(timetableInsertPostReq -> timetableRepository.save(timetableInsertPostReq.toTimetable(showInfo)));
         }
         return Boolean.TRUE;
     }

@@ -6,87 +6,112 @@
           <div class="information-header mt-3 ms-3">공연 정보 수정</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body mx-3">
-            <form>
-              <div class="d-flex flex-row mb-3 ms-3">
-                <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
-                <div class="profile-small-detail">
-                  <div> {{ loginUser.profileNickname }} </div>
-                  <div> {{ loginUser.accountEmail }} </div>
+        <ValidationObserver ref="profileUpdateObserver" v-slot="{ invalid }">
+          <div class="modal-body mx-3">
+              <form>
+                <div class="d-flex flex-row mb-3 ms-3">
+                  <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
+                  <div class="profile-small-detail">
+                    <div class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</div>
+                    <div>{{ loginUser.accountEmail }}</div>
+                  </div>
                 </div>
-              </div>
 
-              <div class="d-flex flex-row">
-                <div class="file-preview-container">
-                  <div class="file-preview-wrapper">
-                    <div class="show-img" v-if="preview">
-                      <div class="show-img-box">
-                        <div class="file-close-button" @click="fileDeleteButton">
-                          x
+                <div class="d-flex flex-row">
+                  <div class="file-preview-container">
+                    <div class="file-preview-wrapper">
+                      <div class="show-img" v-if="preview">
+                        <div class="show-img-box">
+                          <div class="file-close-button" @click="fileDeleteButton">
+                            x
+                          </div>
+                          <img :src="preview" class="show-preview">
                         </div>
-                        <img :src="preview" class="show-preview">
+                      </div>
+                      <div class="camera-input-bgcolor-light-grey show-update-img-box" v-else>
+                        <ValidationProvider rules="required|image|size:1000" ref="showCreateFileBrowser">
+                          <label class="camera-input-button show-update-img" for="input-file-update"/>
+                          <input type="file" id="input-file-update" class="show-poster-input" v-on:change="handleFileChange">
+                        </ValidationProvider>
+                      </div>
+                      {{ fileErrorMessage }}
+                    </div>
+                  </div>
+
+                  <div class="show-info">
+                    <div class="mb-3">
+                      <ValidationProvider rules="required|max:20" v-slot="v">
+                        <div class="label-alignment"><label for="showUpdateFormControlInput1" class="form-label">공연명</label></div>
+                        <input type="text" class="custom-form-control" id="showUpdateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
+                    </div>
+                    <div class="mb-3 d-flex">
+                      <div class="flex-fill me-3">
+                      <ValidationProvider rules="required|max:10|numeric" v-slot="v">
+                        <div class="label-alignment"><label for="showUpdateFormControlInput2" class="form-label">티켓가격</label></div>
+                        <input type="text" class="custom-form-control" id="showUpdateFormControlInput2" v-model="price" autocomplete="off">
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
+                      </div>
+                      <div class="flex-fill">
+                      <ValidationProvider rules="required|max:10|numeric" v-slot="v">
+                        <div class="label-alignment"><label for="showUpdateFormControlInput3" class="form-label">러닝타임</label></div>
+                        <input type="text" class="custom-form-control" id="showUpdateFormControlInput4" v-model="runningTime" autocomplete="off">
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
                       </div>
                     </div>
-                    <div class="camera-input-bgcolor-light-grey show-img" v-else>
-                      <label class="camera-input-button" for="input-file-update"/>
-                      <input type="file" id="input-file-update" class="show-poster-input" v-on:change="handleChange">
+                    <div class="mb-3 d-flex">
+                      <div class="flex-fill me-3 d-flex flex-row justify-content-start">
+                        <div>
+                          <div class="label-alignment"><label for="showUpdateFormControlInput4" class="form-label">공연 시간</label></div>
+                          <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
+                        </div>
+                        <div>
+                          <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-white-npurple">입력</button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-
-                <div class="show-info">
-                  <div class="mb-3">
-                    <div class="label-alignment"><label for="showUpdateFormControlInput1" class="form-label">공연명</label></div>
-                    <input type="text" class="custom-form-control" id="showUpdateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
-                  </div>
-                  <div class="mb-3 d-flex">
-                    <div class="flex-fill me-3">
-                      <div class="label-alignment"><label for="showUpdateFormControlInput2" class="form-label">티켓가격</label></div>
-                      <input type="text" class="custom-form-control" id="showUpdateFormControlInput2" v-model="price" autocomplete="off">
-                    </div>
-                    <div class="flex-fill">
-                      <div class="label-alignment"><label for="showUpdateFormControlInput3" class="form-label">러닝타임</label></div>
-                      <input type="text" class="custom-form-control" id="showUpdateFormControlInput4" v-model="runningTime" autocomplete="off">
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex">
+                    <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <div>
-                        <div class="label-alignment"><label for="showUpdateFormControlInput4" class="form-label">공연 시간</label></div>
-                        <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
-                      </div>
-                      <div>
-                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">추가</button>
-                      </div>
+                      <ValidationProvider rules="required" v-slot="v">
+                        <select class="show-update-timetable" v-model="selected">
+                          <option value='' disabled>공연 시간 목록</option>
+                          <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
+                            {{ formatter(d.dateTime) }}
+                          </option>
+                        </select>
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
+                        <div>
+                          <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-white-ngreen">삭제</button>
+                        </div>
                     </div>
+                    
                   </div>
-                  <div class="mb-3 d-flex">
-                  <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <select class="show-update-timetable" v-model="selected">
-                        <option value='' disabled>공연 시간 목록</option>
-                        <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
-                          {{ formatter(d.dateTime) }}
-                        </option>
-                      </select>
-                      <div>
-                        <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-nyellow">삭제</button>
-                      </div>
-                  </div>
-                  
                 </div>
-              </div>
-              </div>
+                </div>
 
-              <div class="mb-3 mx-3">
-                <div class="label-alignment"><label for="showUpdateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
-                <textarea class="custom-form-control" id="showUpdateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
-              </div>
-            </form>
-        </div>
-        <div class="modal-footer-m my-3">
-          <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
-          <div><button @click="clickShowUpdateButton" type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="modal">저장</button></div>
-        </div>
+                <div class="mb-3 mx-3">
+                  <ValidationProvider rules="required|max:200" v-slot="v">
+                    <div class="label-alignment"><label for="showUpdateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
+                    <textarea class="custom-form-control" id="showUpdateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
+                    <span>{{ v.errors[0] }}</span>
+                  </ValidationProvider>
+                </div>
+              </form>
+          </div>
+          <div class="modal-footer-m my-3">
+            <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
+            <div><button @click="clickShowUpdateButton" type="button" class="bdcolor-npink small-button mx-3 setting-button" data-bs-dismiss="modal" :disabled="invalid">저장</button></div>
+          </div>
+        </ValidationObserver>
+      </div>
+    </div>
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
+      <div class="toast-body" style="text-align: center">
+        {{toastMessage}}
       </div>
     </div>
   </div>
@@ -94,9 +119,14 @@
 
 <script>
 import { mapGetters } from "vuex"
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 
 export default {
   name: 'ShowUpdateDialog',
+  components: {
+    ValidationObserver,
+    ValidationProvider
+  },
   data: function() {
     return {
       userId: '',
@@ -109,14 +139,30 @@ export default {
       datetime: '',
       timetables:[],
       selected: '',
+      toastMessage: '',
+      fileErrorMessage: ''
     }
   },
   created: function () {
     this.getUser()
-  },
+ },
   mounted(){
   },
   methods: {
+    async handleFileChange(e) {
+      const { valid } = await this.$refs.showCreateFileBrowser.validate(e);
+      if (valid) {
+        var file = e.target.files[0]
+        this.preview = window.URL.createObjectURL(file)
+        this.posterImage = file
+        this.fileErrorMessage = ''    
+        console.log('Uploaded the file...');
+      } else {
+        this.posterImage = ''
+        this.preview = ''
+        this.fileErrorMessage = this.$refs.showCreateFileBrowser.errors[0]        
+      }
+    },
     async init(showData){
       this.showInfoTitle = showData.title
       this.showInfoDescription = showData.description
@@ -124,7 +170,7 @@ export default {
       this.runningTime = showData.runningTime
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
-      // this.selected = showData.timetables[0].dateTime
+      this.selected = ''
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
@@ -145,12 +191,9 @@ export default {
         console.log(error)
       })
     },
-    handleChange(e) {
-      var file = e.target.files[0]
-      if (file && file.type.match(/^image\/(png|jpeg)$/)) {
-        this.preview = window.URL.createObjectURL(file)
-        this.posterImage = file
-      }
+    toastEvent(){
+      var toast = new bootstrap.Toast(this.$refs.toast)
+      toast.show()
     },
     fileDeleteButton(e) {
       this.preview = ''
@@ -159,12 +202,25 @@ export default {
       this.$refs.datetimePicker.open(event);
     },
     doAdd(){
-      if(this.datetime != "") this.timetables.push({dateTime: this.datetime})
+      if (this.datetime != ""){
+        this.timetables.push({dateTime: this.datetime})
+        this.toastMessage = "공연 시간이 등록되었습니다."
+      }else{
+        this.toastMessage = "공연 시간을 입력해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
+      this.datetime = ''
     },
     doRemove(){
-      let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
-      this.timetables = filtered;
+      if(this.selected != ""){
+        let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
+        this.timetables = filtered;
+        this.toastMessage = "공연 시간이 삭제되었습니다."
+      }else{
+        this.toastMessage = "삭제할 공연 시간을 선택해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
     },
     getUser() {
@@ -202,6 +258,17 @@ export default {
       console.log(this.posterImage)
       this.$store.dispatch('requestPutShow', data)
       .then((res) => {
+        // this.getMyProfile()
+        var showData = {
+          showId: this.getShowData.showId,
+          title: this.showInfoTitle,
+          description: this.showInfoDescription,
+          posterUrl: this.preview,
+          price: this.price,
+          runningTime: this.runningTime,
+          timetables: this.timetables ,
+        }
+        this.$store.dispatch('requestGetShowData', showData)
         this.getMyProfile()
       })
       .catch((err) => {
@@ -242,7 +309,7 @@ export default {
   background-position: center;
 }
 .camera-input-button{
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
@@ -253,13 +320,24 @@ export default {
   background-image: url('~@/assets/icon-camera-input.png');
   background-repeat: no-repeat;
   background-position: center;
-  margin: auto;
-  margin-top: 50%;
+}
+.show-update-img-box {
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
+}
+.show-update-img {
+  width: 100%;
+  height: 100%;
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
+  margin-right: 20px;
+  cursor: pointer;
 }
 .show-img {
-  /* min-width: 100px; */
-  /* min-height: 200px; */
-  margin-right: 20px;
   width: 100%;
   height: 100%;
 }
@@ -270,6 +348,11 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF;
 }
 .profile-small-detail{
   width: 100px;
@@ -387,7 +470,7 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
-  
+  cursor: pointer;
 }
 .btn-remove-timetable{
   display: block;
@@ -400,6 +483,7 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
+  cursor: pointer;
 }
 .show-img-box{
   width: 100%;
@@ -416,5 +500,18 @@ export default {
 .information-header {
   font-size: 20px;
   font-weight: bold;
+}
+.toast {
+    top: 9%; 
+    right: 0;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0px);
+    z-index: 9999;
+    width: 220px;
+}
+.toast-body {
+    color: white;
+    text-align: center;
 }
 </style>

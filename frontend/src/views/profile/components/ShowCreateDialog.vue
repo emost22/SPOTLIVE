@@ -6,87 +6,160 @@
           <div class="information-header mt-3 ms-3">공연 정보 생성</div>
           <button @click="clearShowCreateData" type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body mx-3">
-            <form>
-              <div class="d-flex flex-row mb-3 ms-3">
-                <div><img :src="loginUser.profileImageUrl" class="profile-small-img bdcolor-bold-npink"></div>
-                <div class="profile-small-detail">
-                  <div> {{ loginUser.profileNickname }} </div>
-                  <div> {{ loginUser.accountEmail }} </div>
+          <ValidationObserver ref="profileUpdateObserver" v-slot="{ invalid }">
+            <div class="modal-body mx-3">
+              <form>
+                <div class="d-flex flex-row mb-3 ms-3">
+                  <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
+                  <div class="profile-small-detail">
+                    <div class="txtcolor-white-nyellow">{{ loginUser.profileNickname }}</div>
+                    <div>{{ loginUser.accountEmail }}</div>
+                  </div>
                 </div>
-              </div>
 
-              <div class="d-flex flex-row">
-                <div class="file-preview-container">
-                  <div class="file-preview-wrapper">
-                    <div class="show-img" v-if="preview">
-                      <div class="show-img-box">
-                        <div class="file-close-button" @click="fileDeleteButton">
-                          x
+                <div class="d-flex flex-row">
+                  <div class="file-preview-container">
+                    <div class="file-preview-wrapper">
+                      <div class="show-img" v-if="preview">
+                        <div class="show-img-box">
+                          <div class="file-close-button" @click="fileDeleteButton">
+                            x
+                          </div>
+                          <img :src="preview" class="show-preview">
                         </div>
-                        <img :src="preview" class="show-preview">
+                      </div>
+                      <div class="camera-input-bgcolor-light-grey show-create-img-box" v-else>
+                        <ValidationProvider rules="required|image|size:1000" ref="showCreateFileBrowser">
+                          <label class="camera-input-button show-create-img" for="input-file"/>
+                          <input type="file" id="input-file" class="show-poster-input" v-on:change="handleFileChange">
+                        </ValidationProvider>
+                      </div>
+                      {{ fileErrorMessage }}
+                    </div>
+                  </div>
+
+                  <div class="show-info">
+                    <div class="mb-3">
+                      <ValidationProvider rules="required|max:20" v-slot="v">
+                        <div class="label-alignment"><label for="showCreateFormControlInput1" class="form-label">공연명</label></div>
+                        <input type="text" class="custom-form-control" id="showCreateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
+                    </div>
+                    <div class="mb-3 d-flex">
+                      <div class="flex-fill me-3">
+                      <ValidationProvider rules="required|max:10|numeric" v-slot="v">
+                        <div class="label-alignment"><label for="showCreateFormControlInput2" class="form-label">티켓가격</label></div>
+                        <input type="text" class="custom-form-control" id="showCreateFormControlInput2" v-model="price" autocomplete="off">
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
+                      </div>
+                      <div class="flex-fill">
+                      <ValidationProvider rules="required|max:10|numeric" v-slot="v">
+                        <div class="label-alignment"><label for="showCreateFormControlInput3" class="form-label">러닝타임</label></div>
+                        <input type="text" class="custom-form-control" id="showCreateFormControlInput4" v-model="runningTime" autocomplete="off">
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
                       </div>
                     </div>
-                    <div class="camera-input-bgcolor-light-grey show-img" v-else>
-                      <label class="camera-input-button" for="input-file"/>
-                      <input type="file" id="input-file" class="show-poster-input" v-on:change="handleChange">
+                    <div class="mb-3 d-flex">
+                      <div class="flex-fill me-3 d-flex flex-row justify-content-start">
+                        <div>
+                          <div class="label-alignment"><label for="showCreateFormControlInput4" class="form-label">공연 시간</label></div>
+                          <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
+                        </div>
+                        <div>
+                          <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-white-npurple">입력</button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-
-                <div class="show-info">
-                  <div class="mb-3">
-                    <div class="label-alignment"><label for="showCreateFormControlInput1" class="form-label">공연명</label></div>
-                    <input type="text" class="custom-form-control" id="showCreateFormControlInput1" v-model="showInfoTitle" autocomplete="off">
-                  </div>
-                  <div class="mb-3 d-flex">
-                    <div class="flex-fill me-3">
-                      <div class="label-alignment"><label for="showCreateFormControlInput2" class="form-label">티켓가격</label></div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput2" v-model="price" autocomplete="off">
-                    </div>
-                    <div class="flex-fill">
-                      <div class="label-alignment"><label for="showCreateFormControlInput3" class="form-label">러닝타임</label></div>
-                      <input type="text" class="custom-form-control" id="showCreateFormControlInput4" v-model="runningTime" autocomplete="off">
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex">
+                    <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <div>
-                        <div class="label-alignment"><label for="showCreateFormControlInput4" class="form-label">공연 시간</label></div>
-                        <datetime class="datetime-theme" type="datetime" ref="datetimePicker" v-model="datetime" format="yyyy년 MM월 dd일 HH:mm"></datetime>
-                      </div>
-                      <div>
-                        <button @click="doAdd" type="button" class="btn-add-timetable txtcolor-nyellow">추가</button>
-                      </div>
+                      <ValidationProvider rules="required" v-slot="v">
+                        <select class="show-create-timetable" v-model="selected">
+                          <option value='' disabled>공연 시간 목록</option>
+                          <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
+                            {{ formatter(d.dateTime) }}
+                          </option>
+                        </select>
+                        <span>{{ v.errors[0] }}</span>
+                      </ValidationProvider>
+                        <div>
+                          <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-white-ngreen">삭제</button>
+                        </div>
                     </div>
                   </div>
-                  <div class="mb-3 d-flex">
-                  <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <select class="show-create-timetable" v-model="selected">
-                        <option value='' disabled>공연 시간 목록</option>
-                        <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
-                          {{ formatter(d.dateTime) }}
-                        </option>
-                      </select>
-                      <div>
-                        <button @click="doRemove" type="button" class="btn-remove-timetable txtcolor-nyellow">삭제</button>
-                      </div>
-                  </div>
-                  
                 </div>
+                </div>
+                <div class="mb-3 mx-3">
+                  <ValidationProvider rules="required|max:200" v-slot="v">
+                    <div class="label-alignment"><label for="showCreateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
+                    <textarea class="custom-form-control" id="showCreateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
+                    <span>{{ v.errors[0] }}</span>
+                  </ValidationProvider>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer-m my-3">
+              <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
+              <div>
+                <button 
+                  type="button" 
+                  class="bdcolor-npink small-button mx-3" 
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#postShowInfo" 
+                  aria-controls="postShowInfo"
+                  @click="clickShowPostButton"
+                  :disabled="invalid"
+                >
+                  등록
+              </button>
               </div>
-              </div>
-
-              <div class="mb-3 mx-3">
-                <div class="label-alignment"><label for="showCreateFormControlTextarea1" class="form-label"> 공연 설명</label></div>
-                <textarea class="custom-form-control" id="showCreateFormControlTextarea1" rows="3" v-model="showInfoDescription"></textarea>
-              </div>
-            </form>
+            </div>
+          </ValidationObserver>
+      </div>
+    </div>
+    <!--오프캔버스-->
+    <div 
+      class="offcanvas offcanvas-top m-offcanvas m-offcanvas-top bdcolor-nyellow" 
+      tabindex="-1" 
+      id="postShowInfo" 
+      ref="showPopup" 
+      aria-labelledby="offcanvasTopLabel"
+    >
+      <div class="offcanvas-header">
+        <button 
+          type="button" 
+          class="btn-close text-reset" 
+          data-bs-dismiss="offcanvas" 
+          aria-label="Close"
+        >
+        </button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="mt-3">
+          <p class="ticket-popup-title">
+            공연이 등록되었습니다.
+          </p>
         </div>
-        <div class="modal-footer-m my-3">
-          <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
-          <div><button @click="clickShowPostButton" type="button" class="bdcolor-npink small-button mx-3" data-bs-dismiss="modal">등록</button></div>
+        <div class="d-flex justify-content-end ticket-popup-button">
+          <div>
+            <button 
+              type="button" 
+              class="bdcolor-ngreen small-button mx-3"
+              data-bs-dismiss="offcanvas"
+              @click="clickConfirm"
+            >
+              확인
+            </button>
+          </div>
         </div>
+      </div>
+    </div>
+    <!--오프캔버스-->
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
+      <div class="toast-body" style="text-align: center">
+        {{toastMessage}}
       </div>
     </div>
   </div>
@@ -94,9 +167,14 @@
 
 <script>
 import { mapGetters } from "vuex"
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 
 export default {
   name: 'ShowCreateDialog',
+  components: {
+    ValidationObserver,
+    ValidationProvider
+  },
   data: function() {
     return {
       userId: '',
@@ -110,6 +188,8 @@ export default {
       timetables:[],
       selected: '',
       timtetableReq: [],
+      toastMessage: '',
+      fileErrorMessage: ''
     }
   },
   created() {
@@ -122,6 +202,24 @@ export default {
     this.clearShowCreateData()
   },
   methods: {
+    toastEvent(){
+      var toast = new bootstrap.Toast(this.$refs.toast)
+      toast.show()
+    },
+    async handleFileChange(e) {
+      const { valid } = await this.$refs.showCreateFileBrowser.validate(e);
+      if (valid) {
+        var file = e.target.files[0]
+        this.preview = window.URL.createObjectURL(file)
+        this.posterImage = file
+        this.fileErrorMessage = ''    
+        console.log('Uploaded the file...');
+      } else {
+        this.posterImage = ''
+        this.preview = ''
+        this.fileErrorMessage = this.$refs.showCreateFileBrowser.errors[0]        
+      }
+    },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
       .then((response) => {
@@ -141,13 +239,13 @@ export default {
         console.log(error)
       })
     },
-    handleChange(e) {
-      var file = e.target.files[0]
-      if (file && file.type.match(/^image\/(png|jpeg)$/)) {
-        this.preview = window.URL.createObjectURL(file)
-        this.posterImage = file
-      }
-    },
+    // handleChange(e) {
+    //   var file = e.target.files[0]
+    //   if (file && file.type.match(/^image\/(png|jpeg)$/)) {
+    //     this.preview = window.URL.createObjectURL(file)
+    //     this.posterImage = file
+    //   }
+    // },
     fileDeleteButton(e) {
       this.preview = ''
     },
@@ -156,12 +254,25 @@ export default {
     },
     doAdd(){
       console.log(this.datetime)
-      this.timetables.push({dateTime: this.datetime})
+      if (this.datetime != ""){
+        this.timetables.push({dateTime: this.datetime})
+        this.toastMessage = "공연 시간이 등록되었습니다."
+      }else{
+        this.toastMessage = "공연 시간을 입력해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
+      this.datetime = ''
     },
     doRemove(){
-      let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
-      this.timetables = filtered;
+      if(this.selected != ""){
+        let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
+        this.timetables = filtered;
+        this.toastMessage = "공연 시간이 삭제되었습니다."
+      }else{
+        this.toastMessage = "삭제할 공연 시간을 선택해주세요!"
+      }
+      this.toastEvent()
       this.selected = ''
     },
     getUser() {
@@ -208,13 +319,17 @@ export default {
       .then((response) => {
         this.clearShowCreateData()
         this.getMyProfile()
-        this.$router.go(this.$router.currentroute)
+        
         // this.$router.push({ name: 'Profile', query: { profileId : this.loginUser.accountEmail } })
       }).catch(error => {
         console.log(error)
         this.clearShowCreateData()
       })
     },
+    clickConfirm() {
+      bootstrap.Modal.getInstance(this.$refs.showCreateModal).hide()
+      this.$router.go(this.$router.currentroute)
+    }
   },
   computed: {
     ...mapGetters(['loginUser',]),
@@ -244,7 +359,7 @@ export default {
   background-position: center;
 }
 .camera-input-button{
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
@@ -255,13 +370,22 @@ export default {
   background-image: url('~@/assets/icon-camera-input.png');
   background-repeat: no-repeat;
   background-position: center;
-  margin: auto;
-  margin-top: 50%;
+}
+.show-create-img-box {
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
+}
+.show-create-img {
+  min-width: 180px;
+  max-width: 180px;
+  min-height: 230px;
+  max-height: 230px;
+  margin-right: 20px;
+  cursor: pointer;
 }
 .show-img {
-  /* min-width: 100px; */
-  /* min-height: 200px; */
-  margin-right: 20px;
   width: 100%;
   height: 100%;
 }
@@ -272,9 +396,14 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: none;
+  box-shadow: 
+    0 0 9px #FFFFFF,
+    0 0 12px #FFFFFF,
+    0 0 20px #FFFFFF;
 }
 .profile-small-detail{
-  width: 100px;
+  width: 300px;
   height: 50px;
   margin-left: 30px;
   text-align: left;
@@ -360,13 +489,15 @@ export default {
 
 .datetime-theme .vdatetime-popup{
   background-color: #242424;
-  color: white
+  color: white;
 }
-
+.datetime-theme {
+  cursor: pointer;
+}
 .show-create-timetable {
   width: 220px;
   background-color: #595959;
-  padding: .375rem 2.25rem .375rem .75rem;
+  padding: .375rem 0.25rem .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
   color: white;
@@ -376,6 +507,7 @@ export default {
   border: 0px;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
 }
 .btn-add-timetable{
   display: block;
@@ -389,11 +521,11 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
-  
+  cursor: pointer;
 }
 .btn-remove-timetable{
   display: block;
-  width: 65px;
+  width: 6px;
   height: 37px;
   font-size: 16px;
   background-color: #595959;
@@ -402,6 +534,7 @@ export default {
   margin-left: 1rem;
   border-radius: .25rem;
   padding: .375rem .75rem;
+  cursor: pointer;
 }
 .show-img-box{
   width: 100%;
@@ -418,5 +551,22 @@ export default {
 .information-header {
   font-size: 20px;
   font-weight: bold;
+}
+.toast {
+    top: 9%; 
+    right: 0;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0px);
+    z-index: 9999;
+    width: 220px;
+}
+.toast-body {
+    color: white;
+    text-align: center;
+}
+.setting-button:disabled {
+  border-color: black;
+  color: gray;
 }
 </style>

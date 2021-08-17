@@ -5,7 +5,7 @@
       v-if="videos.length"
     >
       <div
-        class="col mx-4"
+        class="col mx-4 mb-4"
         v-for="(video, idx) in videos"
         :key="idx">
         <SearchVideoCard
