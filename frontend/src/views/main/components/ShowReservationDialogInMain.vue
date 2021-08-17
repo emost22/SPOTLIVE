@@ -9,7 +9,6 @@
             class="btn-close me-2 mt-1"
             data-bs-dismiss="modal"
             aria-label="Close"
-            @click="clearTimeTableArray()"
           ></button>
         </div>
         <div class="modal-body mx-4">
@@ -118,12 +117,13 @@ export default {
     },
     reservateShow() {
       this.$store.dispatch('requestShowIsReservated', this.getShowData.timetableId)
-      .then(({ status } ) => {
+      .then(async ({ status } ) => {
         if(status == 200) {
           this.clickToast(1)
         } else if(status == 204) { // 예약안한 공연이므로 예약 axios 한번 더 호출
           this.clickToast(2)
-          this.$store.dispatch('requestReservateShow', {timetableId : this.getShowData.timetableId})
+          await this.$store.dispatch('requestReservateShow', {timetableId : this.getShowData.timetableId})
+          this.$store.dispatch('requestSetIsReservation', true)
         } else {
           console.log("requestShowIsReservated Fail...")
         }

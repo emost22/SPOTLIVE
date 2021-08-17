@@ -276,5 +276,9 @@ export default {
 
     SHOW_LOADING_SPINNER(state, payload) {
         state.loading = payload
+    },
+
+    SET_UPDATE_ISRESERVATION(state, payload) {
+        state.isReservation = payload
     }
 }

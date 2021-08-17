@@ -180,7 +180,7 @@ export default {
       this.runningTime = showData.runningTime
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
-      this.selected = this.timetables[0].dateTime
+      if (this.timetables) this.selected = this.timetables[0].dateTime
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')

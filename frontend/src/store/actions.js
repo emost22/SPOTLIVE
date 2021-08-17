@@ -306,6 +306,16 @@ export default {
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
     },
+
+    requestGetReservationVideos(context, payload) {
+        const URL = '/main/reservation'
+
+        return $axios.get(URL)
+    },
+
+    requestSetIsReservation(context, payload){
+        context.commit('SET_UPDATE_ISRESERVATION', payload)
+    },
     
     // MainSidebar.vue
     requestGetFollowingList() {
