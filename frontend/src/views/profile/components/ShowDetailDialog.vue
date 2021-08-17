@@ -69,7 +69,7 @@
             <p class="popUpTitle">정말로 삭제하시겠습니까?</p> 
           </div>
         </div>
-        <div class="d-flex justify-content-end show-popup">
+        <div class="d-flex justify-content-center show-popup">
           <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas">취소</button></div>
           <div><button type="button" @click="deleteShow()" class="bdcolor-npink small-button mx-3" data-bs-dismiss="offcanvas">확인</button></div>
         </div>
@@ -228,9 +228,15 @@ export default {
   margin-top: 50px;
 }
 .popUpTitle {
-  text-align: left;
+  text-align: center  ;
+  font-size: 20px;
   font-weight: bold;
-  font-size: 15px;
   padding: 0 10%;
+  margin: 5px 0;
+}
+div#deleteShowInfo{
+  margin: 15px auto;
+  width: 547px;
+  height: 270px;
 }
 </style>

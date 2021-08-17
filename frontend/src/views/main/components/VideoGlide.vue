@@ -53,7 +53,7 @@ button.prev {
   height: 35px;
   left: 10px;
   bottom: 155px;
-  background: grey;
+  background: #6A6A6A;
   color: black;
   border-radius: 5px;
   padding: 8px 0;
@@ -70,7 +70,7 @@ button.next {
   height: 35px;
   right: 10px;
   bottom: 155px;
-  background: grey;
+  background: #6A6A6A;
   color: black;
   border-radius: 5px;
   padding: 8px 0;

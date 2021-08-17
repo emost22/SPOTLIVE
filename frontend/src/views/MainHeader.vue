@@ -15,12 +15,13 @@
             placeholder="검색할 내용을 입력하세요"
             @keyup.enter="clickSearchBtn"
           >
-          <button type="button"
-            class="bgcolor-mid-deep-grey txtcolor-white search-btn text-align-center" 
-            :disabled="!this.validSearch" 
-            @click="clickSearchBtn">
-            Search
-          </button>
+          <div class="div search-btn-box">
+            <button type="button"
+              class="bgcolor-mid-deep-grey txtcolor-white search-btn text-align-center" 
+              :disabled="!this.validSearch" 
+              @click="clickSearchBtn">
+            </button>
+          </div>
         </div>        
         <ul class="navbar-nav">
           <li class="nav-item header-item" v-if="this.onCreateVideoLive==false">
@@ -128,15 +129,28 @@ export default ({
   width: 400px;
   height: 25px;
   border: #6A6A6A;
+  border-radius: 4px;
 }
-.search-btn{
+.search-btn {
+  width: 100%;
+  height: 70%;
+  border: #6A6A6A;
+  background-image: url(~@/assets/icon-search-nav-bar.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.search-btn-box {
   width: 70px;
   height: 25px;
-  border: #6A6A6A;
+  background-color: #6A6A6A;
+  padding-top: 2px;
+  border-radius: 4px;
 }
 input:focus {
   box-shadow: 
     0 0 9px #ffffff,
     0 0 12px #ffffff;
 }
+
 </style>

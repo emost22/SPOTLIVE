@@ -71,10 +71,11 @@ export default {
 }
 .carousel-3d-container[data-v-07917306]  {
   padding-top: 50px;
-  padding-bottom: 50px;
-  min-height: 450px;
-  max-height: 450px;
+  padding-bottom: 30px;
+  min-height: 410px !important;
+  max-height: 410px;
   border: 0 none;
+  margin: 0;
 }
 .current{
   border: 2px solid #F84ABF;
