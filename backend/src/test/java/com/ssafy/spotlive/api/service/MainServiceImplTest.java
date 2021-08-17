@@ -1,8 +1,10 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.db.entity.Follow;
+import com.ssafy.spotlive.db.entity.Reservation;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.entity.Video;
+import com.ssafy.spotlive.db.repository.ReservationRepository;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,9 @@ class MainServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private ReservationRepository reservationRepository;
 
     @Mock
     private Page<Video> pageVideo;
@@ -163,5 +168,24 @@ class MainServiceImplTest {
         // then
         verify(videoRepository).findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword);
     }
+
+    @Test
+    void findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(){
+        // given
+        String mode = "공연";
+        Boolean isLive = true;
+        String accountEmail = "emoney96@naver.com";
+        List<Reservation> reservationList = new ArrayList<>();
+        List<Long> timetableIdList = new ArrayList<>();
+        List<Video> videoList = new ArrayList<>();
+
+        // when
+        when(reservationRepository.findReservationByUser_AccountEmail(accountEmail)).thenReturn(Optional.ofNullable(reservationList));
+        when(videoRepository.findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList)).thenReturn(Optional.ofNullable(videoList));
+        mainServiceImpl.findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(mode, isLive, accountEmail);
+
+        // then
+        verify(reservationRepository).findReservationByUser_AccountEmail(accountEmail);
+        verify(videoRepository).findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList);
     }
 }
