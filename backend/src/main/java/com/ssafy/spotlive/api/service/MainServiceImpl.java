@@ -43,7 +43,7 @@ public class MainServiceImpl implements MainService {
         VideoGetRes replayVideoGetRes = findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId);
         VideoGetRes liveVideoGetRes = findAllLiveVideoByIsLiveAndCategoryId(page, size, categoryId);
         VideoGetRes followVideoGetRes = findAllFollowVideoByCategoryId(page, size, categoryId, accountEmail);
-        List<VideoFindMainVideoRes> reservationVideoGetResList = findAllReservationVideoByModeAndIsLiveAndTimetableIdIn("공연", true, accountEmail);
+        List<VideoFindMainVideoRes> reservationVideoGetResList = findAllReservationVideoByModeAndTimetableIdIn("공연", accountEmail);
 
         return VideoFindAllGetRes.of(adVideoGetRes, talkVideoGetRes, showVideoGetRes, replayVideoGetRes, liveVideoGetRes, followVideoGetRes, reservationVideoGetResList);
     }
@@ -288,7 +288,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<VideoFindMainVideoRes> findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(String mode, Boolean isLive, String accountEmail){
+    public List<VideoFindMainVideoRes> findAllReservationVideoByModeAndTimetableIdIn(String mode, String accountEmail){
         /**
          * @Method Name : findAllReservationVideoByModeAndIsLiveAndTimetableIdIn
          * @작성자 : 강용수
@@ -297,7 +297,7 @@ public class MainServiceImpl implements MainService {
         List<Long> timetableIdList = reservationRepository.findReservationByUser_AccountEmail(accountEmail).orElse(null).stream()
                 .map(reservation -> reservation.getTimetable().getTimetableId()).collect(Collectors.toList());
 
-        return videoRepository.findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList).orElse(null).stream()
+        return videoRepository.findVideosByModeAndTimetable_TimetableIdIn(mode, timetableIdList).orElse(null).stream()
                 .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
     }
 }
