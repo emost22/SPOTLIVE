@@ -153,19 +153,15 @@ class MainServiceImplTest {
         int page = 0;
         int size = MAX;
         String keyword = "1";
-        Long categoryId1 = 6L;
-        Long categoryId2 = null;
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
         when(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword)).thenReturn(pageVideo);
-        when(videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId1, keyword, keyword)).thenReturn(pageVideo);
-        mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword, categoryId1);
-        mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword, categoryId2);
+        mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword);
 
         // then
         verify(videoRepository).findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword);
-        verify(videoRepository).findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId1, keyword, keyword);
+    }
     }
 }
