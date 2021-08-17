@@ -10,18 +10,23 @@
       <router-view :key="$route.fullPath"></router-view>
     </div>
     <div v-if="isLogin">
+      <!-- Room -->
       <RoomSettingDialog/>
       <RoomSettingUpdateDialog/>
+      <ShowReservationDialog/>
+      <ShowInfoDialogNowPlaying/>
+      <!-- Profile -->
       <ProfileUpdateDialog/>
       <ShowCreateDialog/>
       <ShowDetailDialog/>
       <ShowUpdateDialog/>
       <ShowReservationDialogInProfile/>
-      <ShowReservationDialog/>
       <TicketDialog/>
       <TicketDetailDialog/>
-      <ShowInfoDialogNowPlaying/>
+      <!-- Main -->
       <ShowReservationDialogInMain/>
+      <TicketDetailDialogInMain/>
+      
     </div>
 
   </div>
@@ -42,6 +47,7 @@ import ShowReservationDialog from './views/room/components/ShowReservationDialog
 import TicketDetailDialog from './views/profile/components/TicketDetailDialog.vue'
 import ShowInfoDialogNowPlaying from './views/room/components/ShowInfoDialogNowPlaying.vue'
 import ShowReservationDialogInMain from './views/main/components/ShowReservationDialogInMain.vue'
+import TicketDetailDialogInMain from './views/main/components/TicketDetailDialogInMain.vue'
 
 export default ({
   name: "App",
@@ -59,6 +65,7 @@ export default ({
     TicketDetailDialog,
     ShowInfoDialogNowPlaying,
     ShowReservationDialogInMain,
+    TicketDetailDialogInMain,
   },
   data: function () {
     return {
