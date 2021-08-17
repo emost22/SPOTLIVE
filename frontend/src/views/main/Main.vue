@@ -83,6 +83,8 @@ export default {
       })
       .catch((error) => {
         console.log(error)
+        alert('서버에 오류가 생겼습니다. 로그인 페이지로 이동합니다.')
+        this.$store.dispatch('requestLogout')
       })
     },
 
@@ -95,6 +97,8 @@ export default {
       })
       .catch((error) => {
         console.log(error)
+        alert('서버에 오류가 생겼습니다. 로그인 페이지로 이동합니다.')
+        this.$store.dispatch('requestLogout')
       })
     },
     
@@ -125,6 +129,8 @@ export default {
         this.reservation_videos = response.data.reservationVideoGetResList
       }).catch((error) => {
         console.log(error)
+        alert('서버에 오류가 생겼습니다. 로그인 페이지로 이동합니다.')
+        this.$store.dispatch('requestLogout')
       })
     },
     getReservationVideos() {
