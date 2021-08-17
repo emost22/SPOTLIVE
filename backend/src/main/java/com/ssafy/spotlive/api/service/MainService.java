@@ -21,5 +21,5 @@ public interface MainService {
     List<UserFindFollowGetRes> findAllFollowByFan(String accountEmail);
     List<VideoFindMainVideoRes> findAllTopVideo(String accountEmail);
     VideoGetRes findAllSearchVideoByKeywordContains(int page, int size, String keyword);
-    List<VideoFindMainVideoRes> findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(String mode, Boolean isLive, String accountEmail);
+    List<VideoFindMainVideoRes> findAllReservationVideoByModeAndTimetableIdIn(String mode, String accountEmail);
 }
