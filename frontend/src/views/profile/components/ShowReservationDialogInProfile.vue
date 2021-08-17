@@ -117,6 +117,7 @@ export default {
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     getShowInfoTimeTable(timetables) {
+      if (!timetables) return
       let length = timetables.length
       this.timetables = []
       var now = this.formatter(new Date())
