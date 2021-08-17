@@ -255,14 +255,17 @@ export default {
     openDatetime() {
       this.$refs.datetimePicker.open(event);
     },
-    doAdd(){
-      if (this.datetime != ""){
-        for(var key in this.timetables){
+    checkDuplicateDatetime(){
+      for(var key in this.timetables){
           if(this.timetables[key].dateTime==this.datetime){
             this.duplicate = true
             break
           }
         }
+    },
+    doAdd(){
+      if (this.datetime != ""){
+        this.checkDuplicateDatetime()
         if(!this.duplicate){
           this.timetables.push({dateTime: this.datetime})
           this.toastMessage = "공연 시간이 등록되었습니다."
