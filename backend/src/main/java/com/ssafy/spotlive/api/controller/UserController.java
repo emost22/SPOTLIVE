@@ -30,6 +30,8 @@ public class UserController {
     @Autowired
     AuthService authService;
 
+    private final String EMAIL_SUFFIX = "@gmail.com";
+
     @GetMapping("/kakao/showlogin")
     @ApiOperation(value = "카카오 로그인을 위한 요청 URL 전송", notes = "카카오 로그인을 위한 요청 URL을 전송한다. 해당 URL로 GET 요청을 보내면 된다.")
     @ApiResponses({
@@ -65,7 +67,7 @@ public class UserController {
         // 3. UserInfo의 내용이 회원 DB에 존재하는가?
         String accountEmailOrId = kakaoUserRes.getKakao_account().getEmail();
         if(accountEmailOrId == null || accountEmailOrId == "") {
-            accountEmailOrId = String.valueOf(kakaoUserRes.getId());
+            accountEmailOrId = String.valueOf(kakaoUserRes.getId()) + EMAIL_SUFFIX;
         }
         UserRes userResForCheck = userService.findUserByAccountEmail(accountEmailOrId);
 
