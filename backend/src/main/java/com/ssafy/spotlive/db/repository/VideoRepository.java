@@ -96,15 +96,6 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Page<Video> findVideosByVideoTitleContainsOrVideoDescriptionContains(Pageable pageable, String videoTitle, String videoDescription);
 
     /**
-     * @Method Name : findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains
      * @작성자 : 강용수
-     * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 categoryId를 기준으로 검색하는 메소드
      */
-    @Query(value = "select v from Video v where category_id=:categoryId and (video_title like %:videoTitle% or video_description like %:videoDescription%)")
-    Page<Video> findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(
-            Pageable pageable,
-            @Param("categoryId") Long categoryId,
-            @Param("videoTitle") String videoTitle,
-            @Param("videoDescription") String videoDescription
-    );
 }
