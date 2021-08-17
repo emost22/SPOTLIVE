@@ -191,7 +191,8 @@ export default {
       toastMessage: '',
       fileErrorMessage: '',
       invalid: true,
-      defaultValue: '0'
+      defaultValue: '0',
+      duplicate: false,
     }
   },
   created() {
@@ -255,17 +256,27 @@ export default {
       this.$refs.datetimePicker.open(event);
     },
     doAdd(){
-      console.log(this.datetime)
       if (this.datetime != ""){
-        this.timetables.push({dateTime: this.datetime})
-        this.toastMessage = "공연 시간이 등록되었습니다."
-        this.selected = this.datetime
-        this.datetime = ''
-        this.defaultValue = ''
+        for(var key in this.timetables){
+          if(this.timetables[key].dateTime==this.datetime){
+            this.duplicate = true
+            break
+          }
+        }
+        if(!this.duplicate){
+          this.timetables.push({dateTime: this.datetime})
+          this.toastMessage = "공연 시간이 등록되었습니다."
+          this.selected = this.datetime
+          this.datetime = ''
+          this.defaultValue = ''
+        }else{
+          this.toastMessage = "이미 등록한 시간입니다!"
+        }    
       }else{
         this.toastMessage = "공연 시간을 입력해주세요!"
       }
       this.toastEvent()
+      this.duplicate = false
     },
     doRemove(){
       if(this.selected != ""){
