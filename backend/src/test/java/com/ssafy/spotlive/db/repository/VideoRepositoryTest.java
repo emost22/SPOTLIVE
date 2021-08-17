@@ -594,7 +594,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(){
+    void findVideosByModeAndTimetable_TimetableIdIn(){
         // given
         String insertVideoTitle = "알고리즘 잘하는법";
         String insertVideoDescription = "kmk님이 알려주실겁니다";
@@ -637,11 +637,10 @@ public class VideoRepositoryTest {
         timetableIdList.add(timetable.getTimetableId());
 
         String mode = "공연";
-        Boolean isLive = true;
 
         // when
         Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
-        List<Video> videoList = videoRepository.findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList).orElse(null);
+        List<Video> videoList = videoRepository.findVideosByModeAndTimetable_TimetableIdIn(mode, timetableIdList).orElse(null);
 
         // then
         assertThat(videoList.stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
