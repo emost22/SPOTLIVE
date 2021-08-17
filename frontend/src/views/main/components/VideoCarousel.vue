@@ -51,7 +51,7 @@ export default {
 .carousel-3d-container[data-v-07917306] {
   padding-top: 50px;
   padding-bottom: 50px;
-  min-height: 450px;
+  min-height: 450px !important;
   max-height: 450px;
   border: 0 none;
 }
