@@ -5,6 +5,7 @@ import com.ssafy.spotlive.api.response.main.VideoFindAllGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
+import com.ssafy.spotlive.db.repository.ReservationRepository;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class MainServiceImpl implements MainService {
     VideoRepository videoRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ReservationRepository reservationRepository;
 
     @Override
     public VideoFindAllGetRes findAllVideo(int page, int size, Long categoryId, String accountEmail) {
@@ -40,8 +43,9 @@ public class MainServiceImpl implements MainService {
         VideoGetRes replayVideoGetRes = findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId);
         VideoGetRes liveVideoGetRes = findAllLiveVideoByIsLiveAndCategoryId(page, size, categoryId);
         VideoGetRes followVideoGetRes = findAllFollowVideoByCategoryId(page, size, categoryId, accountEmail);
+        List<VideoFindMainVideoRes> reservationVideoGetResList = findAllReservationVideoByModeAndIsLiveAndTimetableIdIn("공연", true, accountEmail);
 
-        return VideoFindAllGetRes.of(adVideoGetRes, talkVideoGetRes, showVideoGetRes, replayVideoGetRes, liveVideoGetRes, followVideoGetRes);
+        return VideoFindAllGetRes.of(adVideoGetRes, talkVideoGetRes, showVideoGetRes, replayVideoGetRes, liveVideoGetRes, followVideoGetRes, reservationVideoGetResList);
     }
 
     @Override
