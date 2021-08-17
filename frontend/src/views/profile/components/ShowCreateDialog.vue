@@ -230,6 +230,7 @@ export default {
       }
     },
     getMyProfile() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestGetMyProfile')
       .then((response) => {
         console.log("getMyProfile() SUCCESS!!")
@@ -243,9 +244,11 @@ export default {
           myReservations : response.data.reservationResList,
         }
         this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
     fileDeleteButton(e) {

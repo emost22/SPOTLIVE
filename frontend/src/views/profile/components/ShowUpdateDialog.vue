@@ -250,6 +250,7 @@ export default {
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     clickShowUpdateButton(){
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       let formData = new FormData()
       let showInfoUpdatePatchReq = {
         "showInfoTitle": this.showInfoTitle,
@@ -285,9 +286,11 @@ export default {
         }
         this.$store.dispatch('requestGetShowData', showData)
         this.getMyProfile()
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((err) => {
         console.log('fail')
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
   },
