@@ -66,8 +66,8 @@
             영상 저장하기
           </label>
         </div>
-        <div class="d-flex justify-content-center mt-4">
-          <div><button type="button" class="bdcolor-npink small-button mx-3">취소</button></div>
+        <div class="d-flex justify-content-center streaming-delete-button">
+          <div><button type="button" class="bdcolor-npink small-button mx-3 " data-bs-dismiss="offcanvas">취소</button></div>
           <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="offcanvas" @click="closeStreaming()">확인</button></div>
         </div>
       </div>
@@ -463,5 +463,12 @@ export default {
   font-size: 1.2rem;
   margin-top: 10px;
   margin-left: -1.5rem;
+}
+div#offcanvasTop {
+    height: 300px;
+    margin-top: 15px;
+}
+.streaming-delete-button{
+  margin-top: 40px;
 }
 </style>

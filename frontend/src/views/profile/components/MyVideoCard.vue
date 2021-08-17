@@ -44,7 +44,7 @@
             영상이 삭제되었습니다.
           </p>
         </div>
-        <div class="d-flex justify-content-end ticket-popup-button">
+        <div class="d-flex justify-content-center mt-5 ticket-popup-button">
           <div>
             <button 
               type="button" 
@@ -268,6 +268,10 @@ export default {
 .m-offcanvas {
   background-color: #242424;
   color: white;
+}
+div#deleteVideo {
+  width: 500px;
+  height: 230px;
   margin: 15px auto;
 }
 </style>
