@@ -593,11 +593,11 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    void findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(){
+    void findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(){
         // given
         String insertVideoTitle = "알고리즘 잘하는법";
         String insertVideoDescription = "kmk님이 알려주실겁니다";
-        String insertMode = "소통";
+        String insertMode = "공연";
         Long insertCategoryId = 2L;
         String insertAccountEmail = "emoney96@naver.com";
         String insertSessionId = "123123";
@@ -632,19 +632,17 @@ public class VideoRepositoryTest {
         videoInsertPostReq.setAccountEmail(insertAccountEmail);
         videoInsertPostReq.setSessionId(insertSessionId);
 
-        int page = 0;
-        int size = MAX;
-        Long categoryId = 2L;
-        String videoTitle = "kmk";
-        String videoDescription = "kmk";
-        Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
-        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        List<Long> timetableIdList = new ArrayList<>();
+        timetableIdList.add(timetable.getTimetableId());
+
+        String mode = "공연";
+        Boolean isLive = true;
 
         // when
         Video video = videoRepository.save(videoInsertPostReq.toVideo(insertThumbnailUrl));
-        Page<Video> pageVideo = videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, videoTitle, videoDescription);
+        List<Video> videoList = videoRepository.findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList).orElse(null);
 
         // then
-        assertThat(pageVideo.getContent().stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
+        assertThat(videoList.stream().anyMatch(newVideo -> newVideo.getVideoId() == video.getVideoId())).isEqualTo(true);
     }
 }

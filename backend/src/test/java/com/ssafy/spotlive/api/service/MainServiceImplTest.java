@@ -1,8 +1,10 @@
 package com.ssafy.spotlive.api.service;
 
 import com.ssafy.spotlive.db.entity.Follow;
+import com.ssafy.spotlive.db.entity.Reservation;
 import com.ssafy.spotlive.db.entity.User;
 import com.ssafy.spotlive.db.entity.Video;
+import com.ssafy.spotlive.db.repository.ReservationRepository;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,9 @@ class MainServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private ReservationRepository reservationRepository;
 
     @Mock
     private Page<Video> pageVideo;
@@ -153,19 +158,34 @@ class MainServiceImplTest {
         int page = 0;
         int size = MAX;
         String keyword = "1";
-        Long categoryId1 = 6L;
-        Long categoryId2 = null;
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         // when
         when(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword)).thenReturn(pageVideo);
-        when(videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId1, keyword, keyword)).thenReturn(pageVideo);
-        mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword, categoryId1);
-        mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword, categoryId2);
+        mainServiceImpl.findAllSearchVideoByKeywordContains(page, size, keyword);
 
         // then
         verify(videoRepository).findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword);
-        verify(videoRepository).findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId1, keyword, keyword);
+    }
+
+    @Test
+    void findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(){
+        // given
+        String mode = "공연";
+        Boolean isLive = true;
+        String accountEmail = "emoney96@naver.com";
+        List<Reservation> reservationList = new ArrayList<>();
+        List<Long> timetableIdList = new ArrayList<>();
+        List<Video> videoList = new ArrayList<>();
+
+        // when
+        when(reservationRepository.findReservationByUser_AccountEmail(accountEmail)).thenReturn(Optional.ofNullable(reservationList));
+        when(videoRepository.findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList)).thenReturn(Optional.ofNullable(videoList));
+        mainServiceImpl.findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(mode, isLive, accountEmail);
+
+        // then
+        verify(reservationRepository).findReservationByUser_AccountEmail(accountEmail);
+        verify(videoRepository).findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList);
     }
 }

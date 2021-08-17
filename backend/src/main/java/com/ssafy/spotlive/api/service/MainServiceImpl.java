@@ -5,6 +5,7 @@ import com.ssafy.spotlive.api.response.main.VideoFindAllGetRes;
 import com.ssafy.spotlive.api.response.main.VideoFindMainVideoRes;
 import com.ssafy.spotlive.api.response.main.VideoGetRes;
 import com.ssafy.spotlive.db.entity.Follow;
+import com.ssafy.spotlive.db.repository.ReservationRepository;
 import com.ssafy.spotlive.db.repository.UserRepository;
 import com.ssafy.spotlive.db.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class MainServiceImpl implements MainService {
     VideoRepository videoRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ReservationRepository reservationRepository;
 
     @Override
     public VideoFindAllGetRes findAllVideo(int page, int size, Long categoryId, String accountEmail) {
@@ -40,8 +43,9 @@ public class MainServiceImpl implements MainService {
         VideoGetRes replayVideoGetRes = findAllReplayVideoByIsLiveAndCategoryId(page, size, categoryId);
         VideoGetRes liveVideoGetRes = findAllLiveVideoByIsLiveAndCategoryId(page, size, categoryId);
         VideoGetRes followVideoGetRes = findAllFollowVideoByCategoryId(page, size, categoryId, accountEmail);
+        List<VideoFindMainVideoRes> reservationVideoGetResList = findAllReservationVideoByModeAndIsLiveAndTimetableIdIn("공연", true, accountEmail);
 
-        return VideoFindAllGetRes.of(adVideoGetRes, talkVideoGetRes, showVideoGetRes, replayVideoGetRes, liveVideoGetRes, followVideoGetRes);
+        return VideoFindAllGetRes.of(adVideoGetRes, talkVideoGetRes, showVideoGetRes, replayVideoGetRes, liveVideoGetRes, followVideoGetRes, reservationVideoGetResList);
     }
 
     @Override
@@ -135,19 +139,16 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public VideoGetRes findAllSearchVideoByKeywordContains(int page, int size, String keyword, Long categoryId){
+    public VideoGetRes findAllSearchVideoByKeywordContains(int page, int size, String keyword){
         /**
          * @Method Name : findAllSearchVideoByKeywordContains
          * @작성자 : 강용수
-         * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 categoryId를 기준으로 검색하는 메소드
+         * @Method 설명 : 검색 키워드가 영상 제목이나 설명에 포함된 Video를 검색하는 메소드
          */
         Sort sort = Sort.by(Sort.Direction.DESC, "videoId");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-        if (categoryId == null)
-            return VideoGetRes.of(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword), pageRequest, sort);
-        else
-            return VideoGetRes.of(videoRepository.findVideosByCategory_CategoryIdAndVideoTitleContainsOrVideoDescriptionContains(pageRequest, categoryId, keyword, keyword), pageRequest, sort);
+        return VideoGetRes.of(videoRepository.findVideosByVideoTitleContainsOrVideoDescriptionContains(pageRequest, keyword, keyword), pageRequest, sort);
     }
 
     @Override
@@ -284,5 +285,19 @@ public class MainServiceImpl implements MainService {
                 }
             }
         });
+    }
+
+    @Override
+    public List<VideoFindMainVideoRes> findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(String mode, Boolean isLive, String accountEmail){
+        /**
+         * @Method Name : findAllReservationVideoByModeAndIsLiveAndTimetableIdIn
+         * @작성자 : 강용수
+         * @Method 설명 : 본인이 예약한 라이브 공연의 videoList를 조회하는 메소드
+         */
+        List<Long> timetableIdList = reservationRepository.findReservationByUser_AccountEmail(accountEmail).orElse(null).stream()
+                .map(reservation -> reservation.getTimetable().getTimetableId()).collect(Collectors.toList());
+
+        return videoRepository.findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList).orElse(null).stream()
+                .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
     }
 }
