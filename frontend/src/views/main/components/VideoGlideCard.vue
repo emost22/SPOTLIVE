@@ -4,7 +4,7 @@
       <div 
         class="glide-card-img-box" 
         v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
-        @click="goRoomDetail"  
+        @click="goReservationConfirm"  
       >
         <div class="live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
         <div class="time-badge" v-if="!video.isLive">{{ videoLength }}</div>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default {
   name: "VideoGlideCard",
   props: {
@@ -37,6 +39,8 @@ export default {
   data: function() {
     return {
       videoLength: 0, 
+      reservation: false,
+      alert: false,
     }
   },
   created: function() {
@@ -45,19 +49,72 @@ export default {
   methods: {
     getVideoLength() {
       var seconds = Number(this.video.videoLength)
-      // var min = parseInt((seconds%3600)/60) < 10 ? '0'+ parseInt((seconds%3600)/60) : parseInt((seconds%3600)/60)
-      var min = parseInt(seconds / 60) < 10 ? '0'+ parseInt(seconds / 60) : parseInt(seconds / 60)
-      var sec = seconds % 60 < 10 ? '0' + (seconds % 60) : seconds % 60
-      this.videoLength = min + ":" + sec
-    },
-    goRoomDetail() {
-      if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
-      else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
+      var hour = parseInt(seconds / 3600)
+      var min = parseInt((seconds % 3600) / 60) < 10 ? '0'+ parseInt((seconds % 3600) / 60) : parseInt((seconds % 3600) / 60)
+      var sec = seconds % 60 < 10 ? '0'+seconds % 60 : seconds % 60
+      this.videoLength = hour + ":" + min + ":" + sec
     },
     goProfile() {
       this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })
       this.$router.go()
     },
+    goRoomDetail() {
+      if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
+      else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
+    },
+    goShowReservationDialogInMain() {
+      // Vuex
+      let showData = {
+        userId: this.video.user.accountEmail,
+        profileNickname: this.video.user.profileNickname,
+        profileImageUrl: this.video.user.profileImageUrl,
+        
+        showId: this.video.showInfoRes.showInfoId,
+        title: this.video.showInfoRes.showInfoTitle,
+        description: this.video.showInfoRes.showInfoDescription,
+        posterUrl: this.video.showInfoRes.posterUrl,
+        price: this.video.showInfoRes.price,
+        runningTime: this.video.showInfoRes.runningTime,
+
+        dateTime: this.video.timetableRes.dateTime,
+        timetableId: this.video.timetableRes.timetableId,
+      }
+      this.$store.dispatch('requestGetShowData', showData)
+
+      // ShowReservationDialogInMain.vue 
+      var showReservationInMainModalId = document.getElementById('showReservationInMainModal')
+      var showReservationInMainModal = new bootstrap.Modal(showReservationInMainModalId);
+      showReservationInMainModal.show(); 
+    },
+    goAlert() {
+      alert("예약된 공연이 아닙니다.") 
+      // 노란 팝업창 off canvas "예약된 공연이 아닙니다."
+    },
+    goReservationConfirm() {
+      if (this.video.mode == '공연') { 
+        const myReservationsList = this.loginUser.reservationResList
+        const timetableIdOfAccessVideo = this.video.timetableRes.timetableId
+        let isEnter = false
+        myReservationsList.forEach(reservation => { 
+          if(reservation.timetableFindByReservationRes.timetableId == timetableIdOfAccessVideo) 
+            isEnter = true 
+        })
+        if(isEnter) { 
+          this.goRoomDetail()
+          console.log('진입 가능 공연용')
+        } else {
+          this.goShowReservationDialogInMain()
+          console.log('진입 불가능 공연용')
+        }
+      } else {
+        this.goRoomDetail()
+        console.log('진입 가능')
+        console.log(this.video.mode)
+      }
+    },
+  },
+  computed: {
+    ...mapGetters(['loginUser', ]),
   },
 }
 </script>
@@ -95,31 +152,5 @@ export default {
   margin-bottom: 0;
   margin-left: 10px;
   text-align: start;
-}
-.live-badge{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: none;
-  border: none;
-  background-image: url('~@/assets/icon-live-badge.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  margin: 10px;
-}
-.time-badge{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: #242424;
-  color: #FFFFFF;
-  border: none;
-  margin: 10px;
 }
 </style>
