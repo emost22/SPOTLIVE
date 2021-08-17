@@ -27,7 +27,7 @@ export default {
 
     requestGetLoginUser(context, payload) {
         const URL = '/auth/user/'
-        $axios.get(URL)
+        return $axios.get(URL)
             .then((response) => {
             context.commit("GET_LOGIN_USER", response.data)
         }).catch((error) => {
@@ -305,6 +305,16 @@ export default {
         const SIZE_VALUE = payload.sizeValue
 
         return $axios.get(URL, { params: { page: PAGE_VALUE, size: SIZE_VALUE }})
+    },
+
+    requestGetReservationVideos(context, payload) {
+        const URL = '/main/reservation'
+
+        return $axios.get(URL)
+    },
+
+    requestSetIsReservation(context, payload){
+        context.commit('SET_UPDATE_ISRESERVATION', payload)
     },
     
     // MainSidebar.vue

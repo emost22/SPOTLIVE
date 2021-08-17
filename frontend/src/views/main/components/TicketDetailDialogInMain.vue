@@ -1,10 +1,10 @@
 <template>
   <div 
     class="modal fade" 
-    id="ticketDetailModal" 
-    ref="ticketDetailModal" 
+    id="ticketDetailModalInMain" 
+    ref="ticketDetailModalInMain" 
     tabindex="-1" 
-    aria-labelledby="ticketDetailModalLabel" 
+    aria-labelledby="ticketDetailModalInMainLabel" 
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-scrollable bdcolor-bold-npurple ticket-detail-modal-design">
@@ -63,10 +63,18 @@
         <div class="modal-footer-m my-3">
           <button 
             type="button" 
-            class="bdcolor-ngreen small-button" 
+            class="bdcolor-ngreen small-button mx-3" 
             data-bs-dismiss="modal"
           >
             닫기
+          </button>
+           <button 
+            type="button" 
+            class="bdcolor-npink small-button mx-3" 
+            data-bs-dismiss="modal"
+            @click="goRoomDetail"
+          >
+            입장하기
           </button>
         </div>
 
@@ -79,7 +87,7 @@
 import { mapGetters } from "vuex"
 
 export default {
-  name: 'TicketDetailDialog',
+  name: 'TicketDetailDialogInMain',
   data: function() {
     return {
       showInfoDescription : '',
@@ -101,9 +109,11 @@ export default {
       
       return `${dateTime.getMonth() >= 10 ? dateTime.getMonth() : '0' + dateTime.getMonth()}/${dateTime.getDate() >= 10 ? dateTime.getDate() : '0' + dateTime.getDate()} ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
-    getShowInfoTimeTable(timetables) {
-      if (!timetables) return
-      this.dateTime = this.formatter(timetables[0].dateTime)
+    getShowInfoTimeTable(dateTime) {
+      this.dateTime = this.formatter(dateTime)
+    },
+    goRoomDetail() {
+      this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.getShowData.videoId } })
     },
   },
   computed: {
@@ -111,8 +121,7 @@ export default {
   },
   watch: {
     getShowData(val, oldVal) {
-      this.getShowInfoTimeTable(this.getShowData.timetables)
-      // var modal= this.$refs.showDetailModal
+      this.getShowInfoTimeTable(this.getShowData.dateTime)
     }
   },
 }

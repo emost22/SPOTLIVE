@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * @FileName : VideoGetRes
  * @작성자 : 강용수
@@ -22,6 +24,7 @@ public class VideoFindAllGetRes {
     VideoGetRes replayVideoGetRes; // 다시보기
     VideoGetRes liveVideoGetRes; // 라이브
     VideoGetRes followVideoGetRes; // 팔로우
+    List<VideoFindMainVideoRes> reservationVideoGetResList; // 내가 예약한 공연
 
     public static VideoFindAllGetRes of(
             VideoGetRes adVideoGetRes,
@@ -29,7 +32,8 @@ public class VideoFindAllGetRes {
             VideoGetRes showVideoGetRes,
             VideoGetRes replayVideoGetRes,
             VideoGetRes liveVideoGetRes,
-            VideoGetRes followVideoGetRes) {
+            VideoGetRes followVideoGetRes,
+            List<VideoFindMainVideoRes> reservationVideoGetResList) {
         /**
          * @Method Name : of
          * @작성자 : 강용수
@@ -42,6 +46,7 @@ public class VideoFindAllGetRes {
                 .replayVideoGetRes(replayVideoGetRes)
                 .liveVideoGetRes(liveVideoGetRes)
                 .followVideoGetRes(followVideoGetRes)
+                .reservationVideoGetResList(reservationVideoGetResList)
                 .build();
     }
 }

@@ -6,8 +6,8 @@
           <div class="information-header mt-3 ms-3">공연 정보 생성</div>
           <button @click="clearShowCreateData" type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-          <ValidationObserver ref="profileUpdateObserver" v-slot="{ invalid }">
             <div class="modal-body mx-3">
+            <ValidationObserver ref="profileUpdateObserver" @change="changeInput()">
               <form>
                 <div class="d-flex flex-row mb-3 ms-3">
                   <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
@@ -16,7 +16,6 @@
                     <div>{{ loginUser.accountEmail }}</div>
                   </div>
                 </div>
-
                 <div class="d-flex flex-row">
                   <div class="file-preview-container">
                     <div class="file-preview-wrapper">
@@ -75,9 +74,9 @@
                     </div>
                     <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <ValidationProvider rules="required" v-slot="v">
+                      <ValidationProvider rules="excluded:0" v-slot="v">
                         <select class="show-create-timetable" v-model="selected">
-                          <option value='' disabled>공연 시간 목록</option>
+                          <option :value="defaultValue">공연 시간 목록</option>
                           <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                             {{ formatter(d.dateTime) }}
                           </option>
@@ -99,13 +98,15 @@
                   </ValidationProvider>
                 </div>
               </form>
+            </ValidationObserver>
+
             </div>
             <div class="modal-footer-m my-3">
               <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
               <div>
                 <button 
                   type="button" 
-                  class="bdcolor-npink small-button mx-3" 
+                  class="bdcolor-npink small-button mx-3 setting-button" 
                   data-bs-toggle="offcanvas"
                   data-bs-target="#postShowInfo" 
                   aria-controls="postShowInfo"
@@ -116,7 +117,6 @@
               </button>
               </div>
             </div>
-          </ValidationObserver>
       </div>
     </div>
     <!--오프캔버스-->
@@ -186,10 +186,13 @@ export default {
       preview: '',
       datetime: '',
       timetables:[],
-      selected: '',
+      selected: '0',
       timtetableReq: [],
       toastMessage: '',
-      fileErrorMessage: ''
+      fileErrorMessage: '',
+      invalid: true,
+      defaultValue: '0',
+      duplicate: false,
     }
   },
   created() {
@@ -206,6 +209,13 @@ export default {
       var toast = new bootstrap.Toast(this.$refs.toast)
       toast.show()
     },
+    changeInput: function () {
+      if (this.$refs.profileUpdateObserver.flags.invalid) {
+        this.invalid = true
+      } else {
+        this.invalid = false
+      }
+    },
     async handleFileChange(e) {
       const { valid } = await this.$refs.showCreateFileBrowser.validate(e);
       if (valid) {
@@ -221,6 +231,7 @@ export default {
       }
     },
     getMyProfile() {
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       this.$store.dispatch('requestGetMyProfile')
       .then((response) => {
         console.log("getMyProfile() SUCCESS!!")
@@ -234,46 +245,66 @@ export default {
           myReservations : response.data.reservationResList,
         }
         this.$store.dispatch('requestSetCreatedProfileData', ProfileData)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((error) => {
         console.log(error)
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
-    // handleChange(e) {
-    //   var file = e.target.files[0]
-    //   if (file && file.type.match(/^image\/(png|jpeg)$/)) {
-    //     this.preview = window.URL.createObjectURL(file)
-    //     this.posterImage = file
-    //   }
-    // },
     fileDeleteButton(e) {
       this.preview = ''
     },
     openDatetime() {
       this.$refs.datetimePicker.open(event);
     },
+    checkDuplicateDatetime(){
+      for(var key in this.timetables){
+          if(this.timetables[key].dateTime==this.modifyDatetime()){
+            this.duplicate = true
+            break
+          }
+      }
+    },
+    modifyDatetime(){
+      let newVal = new Date(this.datetime)
+      newVal.setHours(newVal.getHours() + 9)
+      newVal = newVal.toISOString().substring(0, 19)
+      return newVal
+    },
     doAdd(){
-      console.log(this.datetime)
       if (this.datetime != ""){
-        this.timetables.push({dateTime: this.datetime})
-        this.toastMessage = "공연 시간이 등록되었습니다."
+        this.checkDuplicateDatetime()
+        if(!this.duplicate){
+          this.timetables.push({dateTime: this.modifyDatetime()})
+          this.toastMessage = "공연 시간이 등록되었습니다."
+          this.selected = this.datetime
+          this.datetime = ''
+          this.defaultValue = ''
+        }else{
+          this.toastMessage = "이미 등록한 시간입니다!"
+        }    
       }else{
         this.toastMessage = "공연 시간을 입력해주세요!"
       }
       this.toastEvent()
-      this.selected = ''
-      this.datetime = ''
+      this.duplicate = false
     },
     doRemove(){
       if(this.selected != ""){
         let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
         this.timetables = filtered;
         this.toastMessage = "공연 시간이 삭제되었습니다."
+        if (this.timetables.length > 0) {
+          this.selected = this.timetables[0]
+        } else {
+          this.selected = '0'
+          this.defaultValue = '0'
+        }
       }else{
         this.toastMessage = "삭제할 공연 시간을 선택해주세요!"
       }
       this.toastEvent()
-      this.selected = ''
     },
     getUser() {
       this.userId = this.loginUser.accountEmail

@@ -62,6 +62,32 @@ export default {
       if(this.video.isLive) this.$router.push({ name: 'RoomDetailForGuest', params: { videoId : this.video.videoId } })
       else this.$router.push({ name: 'RoomDetailForReplay', params: { videoId : this.video.videoId } })
     },
+    goTicketDetailDialogInMain() {
+      // Vuex
+      let showData = {
+        userId: this.video.user.accountEmail,
+        profileNickname: this.video.user.profileNickname,
+        profileImageUrl: this.video.user.profileImageUrl,
+        
+        showId: this.video.showInfoRes.showInfoId,
+        title: this.video.showInfoRes.showInfoTitle,
+        description: this.video.showInfoRes.showInfoDescription,
+        posterUrl: this.video.showInfoRes.posterUrl,
+        price: this.video.showInfoRes.price,
+        runningTime: this.video.showInfoRes.runningTime,
+
+        dateTime: this.video.timetableRes.dateTime,
+        timetableId: this.video.timetableRes.timetableId,
+
+        videoId : this.video.videoId,
+      }
+      this.$store.dispatch('requestGetShowData', showData)
+
+      // TicketDetailDialogInMain.vue 
+      var ticketDetailModalInMainId = document.getElementById('ticketDetailModalInMain')
+      var ticketDetailModalInMain = new bootstrap.Modal(ticketDetailModalInMainId)
+      ticketDetailModalInMain.show()
+    },
     goShowReservationDialogInMain() {
       // Vuex
       let showData = {
@@ -78,20 +104,19 @@ export default {
 
         dateTime: this.video.timetableRes.dateTime,
         timetableId: this.video.timetableRes.timetableId,
+
+        videoId : this.video.videoId,
       }
       this.$store.dispatch('requestGetShowData', showData)
 
       // ShowReservationDialogInMain.vue 
       var showReservationInMainModalId = document.getElementById('showReservationInMainModal')
-      var showReservationInMainModal = new bootstrap.Modal(showReservationInMainModalId);
-      showReservationInMainModal.show(); 
+      var showReservationInMainModal = new bootstrap.Modal(showReservationInMainModalId)
+      showReservationInMainModal.show()
     },
-    goAlert() {
-      alert("예약된 공연이 아닙니다.") 
-      // 노란 팝업창 off canvas "예약된 공연이 아닙니다."
-    },
-    goReservationConfirm() {
-      if (this.video.mode == '공연') { 
+    async goReservationConfirm() {
+      await this.$store.dispatch('requestGetLoginUser',)
+      if (this.video.mode == '공연' && this.video.isLive) { 
         const myReservationsList = this.loginUser.reservationResList
         const timetableIdOfAccessVideo = this.video.timetableRes.timetableId
         let isEnter = false
@@ -100,11 +125,12 @@ export default {
             isEnter = true 
         })
         if(isEnter) { 
-          this.goRoomDetail()
-          console.log('진입 가능 공연용')
+          this.goTicketDetailDialogInMain()
+          // this.goRoomDetail()
+          console.log('진입 가능 공연용(티켓디테일모달)')
         } else {
           this.goShowReservationDialogInMain()
-          console.log('진입 불가능 공연용')
+          console.log('진입 불가능 공연용(예약모달)')
         }
       } else {
         this.goRoomDetail()
@@ -125,6 +151,7 @@ export default {
   height:250px;
   border: none;
   border-radius: 0%;
+  margin: 0 auto;
 }
 .glide-card-img-box {
   width:300px;

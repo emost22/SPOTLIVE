@@ -3,12 +3,11 @@
     <div 
       class="search-card-img-box" 
       v-bind:style="{ backgroundImage: 'url(' + video.thumbnailUrl + ')' }"
-      @click="goRoomDetail"  
+      @click="goReservationConfirm"  
     >
       <div class="live-badge bdcolor-bold-npink" v-if="video.isLive"></div>
       <div class="time-badge" v-if="!video.isLive">{{ videoLength }}</div>
     </div>
-    <!-- {{ video.startTime }} -->
   
     <div class="search-card-info-box main-bgcolor-black txtcolor-white" style="overflow:hidden;">
       <div>
@@ -25,6 +24,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default {
   name: "SearchVideoCard",
   props: {
@@ -57,6 +58,85 @@ export default {
       this.$router.push({ name: 'Profile', query: { profileId : this.video.user.accountEmail } })
       this.$router.go()
     },
+    goTicketDetailDialogInMain() {
+      // Vuex
+      let showData = {
+        userId: this.video.user.accountEmail,
+        profileNickname: this.video.user.profileNickname,
+        profileImageUrl: this.video.user.profileImageUrl,
+        
+        showId: this.video.showInfoRes.showInfoId,
+        title: this.video.showInfoRes.showInfoTitle,
+        description: this.video.showInfoRes.showInfoDescription,
+        posterUrl: this.video.showInfoRes.posterUrl,
+        price: this.video.showInfoRes.price,
+        runningTime: this.video.showInfoRes.runningTime,
+
+        dateTime: this.video.timetableRes.dateTime,
+        timetableId: this.video.timetableRes.timetableId,
+
+        videoId : this.video.videoId,
+      }
+      this.$store.dispatch('requestGetShowData', showData)
+
+      // TicketDetailDialogInMain.vue 
+      var ticketDetailModalInMainId = document.getElementById('ticketDetailModalInMain')
+      var ticketDetailModalInMain = new bootstrap.Modal(ticketDetailModalInMainId)
+      ticketDetailModalInMain.show()
+    },
+    goShowReservationDialogInMain() {
+      // Vuex
+      let showData = {
+        userId: this.video.user.accountEmail,
+        profileNickname: this.video.user.profileNickname,
+        profileImageUrl: this.video.user.profileImageUrl,
+        
+        showId: this.video.showInfoRes.showInfoId,
+        title: this.video.showInfoRes.showInfoTitle,
+        description: this.video.showInfoRes.showInfoDescription,
+        posterUrl: this.video.showInfoRes.posterUrl,
+        price: this.video.showInfoRes.price,
+        runningTime: this.video.showInfoRes.runningTime,
+
+        dateTime: this.video.timetableRes.dateTime,
+        timetableId: this.video.timetableRes.timetableId,
+
+        videoId : this.video.videoId,
+      }
+      this.$store.dispatch('requestGetShowData', showData)
+
+      // ShowReservationDialogInMain.vue 
+      var showReservationInMainModalId = document.getElementById('showReservationInMainModal')
+      var showReservationInMainModal = new bootstrap.Modal(showReservationInMainModalId)
+      showReservationInMainModal.show()
+    },
+    async goReservationConfirm() {
+      await this.$store.dispatch('requestGetLoginUser',)
+      if (this.video.mode == '공연' && this.video.isLive) { 
+        const myReservationsList = this.loginUser.reservationResList
+        const timetableIdOfAccessVideo = this.video.timetableRes.timetableId
+        let isEnter = false
+        myReservationsList.forEach(reservation => { 
+          if(reservation.timetableFindByReservationRes.timetableId == timetableIdOfAccessVideo) 
+            isEnter = true 
+        })
+        if(isEnter) { 
+          this.goTicketDetailDialogInMain()
+          // this.goRoomDetail()
+          console.log('진입 가능 공연용(티켓디테일모달)')
+        } else {
+          this.goShowReservationDialogInMain()
+          console.log('진입 불가능 공연용(예약모달)')
+        }
+      } else {
+        this.goRoomDetail()
+        console.log('진입 가능')
+        console.log(this.video.mode)
+      }
+    },
+  },
+  computed: {
+    ...mapGetters(['loginUser', ]),
   },
 }
 </script>

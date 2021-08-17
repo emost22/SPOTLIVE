@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @FileName : ReservationRepository
@@ -28,4 +30,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Reserv
      * @Method 설명 : reservation의 id로 예약 여부 확인
      */
     Boolean existsByTimetable_TimetableIdAndUser_AccountEmail(Long timetable_timetableId, String user_accountEmail);
+
+    /**
+     * @Method Name : findReservationByUser_AccountEmail
+     * @작성자 : 강용수
+     * @Method 설명 : accountEmail 기준으로 reservationList를 조회하는 메소드
+     */
+    Optional<List<Reservation>> findReservationByUser_AccountEmail(String accountEmail);
 }

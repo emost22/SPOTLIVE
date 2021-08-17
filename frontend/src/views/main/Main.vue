@@ -12,6 +12,8 @@
         />
       </div>
       <div>
+        <p class="txtcolor-white-npurple main-title" v-if="reservation_videos && reservation_videos.length"> 내가 예약한 공연용 영상</p>
+        <VideoGlide :videos="reservation_videos"/>
         <p class="txtcolor-white-ngreen main-title"> 홍보용 영상</p>
         <VideoGlide :videos="ad_videos"/>
         <p class="txtcolor-white-npink main-title"> 공연용 영상</p>
@@ -55,6 +57,7 @@ export default {
       live_videos: [],
       replay_videos: [],
       follow_videos: [],
+      reservation_videos: [],
     }
   },
   created: function () {
@@ -119,94 +122,33 @@ export default {
         this.live_videos = response.data.liveVideoGetRes.videoResList
         this.replay_videos = response.data.replayVideoGetRes.videoResList
         this.follow_videos = response.data.followVideoGetRes.videoResList
-        console.log(this.live_videos)
+        this.reservation_videos = response.data.reservationVideoGetResList
       }).catch((error) => {
         console.log(error)
       })
     },
-    
-    getAdVideos(pageValue, sizeValue) {
-      this.$store.dispatch('requestGetAdVideos', { 
-        pageValue: pageValue,
-        sizeValue: sizeValue,
-      }).then((response) => {
-        console.log("getAdVideos() SUCCESS!!")
-        console.log(response.data)
-        this.ad_videos = response.data.videoResList
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-    
-    getShowVideos(pageValue, sizeValue) {
-      this.$store.dispatch('requestGetShowVideos', { 
-        pageValue: pageValue,
-        sizeValue: sizeValue,
-      }).then((response) => {
-        console.log("getShowVideos() SUCCESS!!")
-        console.log(response.data)
-        this.show_videos = response.data.videoResList
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-
-    getTalkVideos(pageValue, sizeValue) {
-      this.$store.dispatch('requestGetTalkVideos', { 
-        pageValue: pageValue,
-        sizeValue: sizeValue,
-      }).then((response) => {
-        console.log("getTalkVideos() SUCCESS!!")
-        console.log(response.data)
-        this.talk_videos = response.data.videoResList
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-
-    getLiveVideos(pageValue, sizeValue) {
-      this.$store.dispatch('requestGetLiveVideos', { 
-        pageValue: pageValue,
-        sizeValue: sizeValue,
-      }).then((response) => {
-        console.log("getLiveVideos() SUCCESS!!")
-        console.log(response.data)
-        this.live_videos = response.data.videoResList
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-
-    getReplayVideos(pageValue, sizeValue) {
-      this.$store.dispatch('requestGetReplayVideos', { 
-        pageValue: pageValue,
-        sizeValue: sizeValue,
-      }).then((response) => {
-        console.log("getReplayVideos() SUCCESS!!")
-        console.log(response.data)
-        this.replay_videos = response.data.videoResList
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-
-    getFollowVideos(pageValue, sizeValue) {
-      this.$store.dispatch('requestGetFollowVideos', { 
-        pageValue: pageValue,
-        sizeValue: sizeValue,
-      }).then((response) => {
-        console.log("getFollowVideos() SUCCESS!!")
-        console.log(response.data)
-        this.ad_videos = response.data.videoResList
+    getReservationVideos() {
+      this.$store.dispatch('requestGetReservationVideos')
+      .then((response) => {
+        console.log("getReservationVideos() SUCCESS!!")
+        this.reservation_videos = response.data
       }).catch((error) => {
         console.log(error)
       })
     },
   },
   computed: {
-    ...mapGetters(['loginUser', 'isLogin']),
+    ...mapGetters(['loginUser', 'isLogin', 'isReservation']),
     // FilterButton.vue에서 클릭 이벤트가 일어나면 카테고리 아이디를 받아서 인자를 넣어보자
   },
+  watch: {
+    isReservation(val, oldVal){
+      if (val == false) return
+
+      this.$store.dispatch('requestSetIsReservation', false)
+      this.getReservationVideos()
+    }
+  }
 }
 </script>
 

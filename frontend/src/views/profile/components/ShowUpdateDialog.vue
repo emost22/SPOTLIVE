@@ -6,8 +6,8 @@
           <div class="information-header mt-3 ms-3">공연 정보 수정</div>
           <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <ValidationObserver ref="profileUpdateObserver" v-slot="{ invalid }">
           <div class="modal-body mx-3">
+            <ValidationObserver ref="showUpdateObserver" @change="changeInput()">
               <form>
                 <div class="d-flex flex-row mb-3 ms-3">
                   <div><img :src="loginUser.profileImageUrl" class="profile-small-img"></div>
@@ -75,9 +75,9 @@
                     </div>
                     <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <ValidationProvider rules="required" v-slot="v">
+                      <ValidationProvider rules="excluded:0" v-slot="v">
                         <select class="show-update-timetable" v-model="selected">
-                          <option value='' disabled>공연 시간 목록</option>
+                          <option :value="defaultValue">공연 시간 목록</option>
                           <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                             {{ formatter(d.dateTime) }}
                           </option>
@@ -101,12 +101,12 @@
                   </ValidationProvider>
                 </div>
               </form>
+            </ValidationObserver>
           </div>
           <div class="modal-footer-m my-3">
             <div><button type="button" class="bdcolor-ngreen small-button mx-3" data-bs-dismiss="modal">취소</button></div>
             <div><button @click="clickShowUpdateButton" type="button" class="bdcolor-npink small-button mx-3 setting-button" data-bs-dismiss="modal" :disabled="invalid">저장</button></div>
           </div>
-        </ValidationObserver>
       </div>
     </div>
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast" data-bs-delay="700">
@@ -140,7 +140,10 @@ export default {
       timetables:[],
       selected: '',
       toastMessage: '',
-      fileErrorMessage: ''
+      fileErrorMessage: '',
+      invalid: true,
+      defaultValue: '',
+      duplicate: false,
     }
   },
   created: function () {
@@ -163,6 +166,13 @@ export default {
         this.fileErrorMessage = this.$refs.showCreateFileBrowser.errors[0]        
       }
     },
+    changeInput: function () {
+      if (this.$refs.showUpdateObserver.flags.invalid) {
+        this.invalid = true
+      } else {
+        this.invalid = false
+      }
+    },
     async init(showData){
       this.showInfoTitle = showData.title
       this.showInfoDescription = showData.description
@@ -170,7 +180,7 @@ export default {
       this.runningTime = showData.runningTime
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
-      this.selected = ''
+      if (this.timetables) this.selected = this.timetables[0].dateTime
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
@@ -201,27 +211,53 @@ export default {
     openDatetime() {
       this.$refs.datetimePicker.open(event);
     },
+    checkDuplicateDatetime(){
+      for(var key in this.timetables){
+          if(this.timetables[key].dateTime==this.modifyDatetime()){
+            this.duplicate = true
+            break
+          }
+      }
+    },
+    modifyDatetime(){
+      let newVal = new Date(this.datetime)
+      newVal.setHours(newVal.getHours() + 9)
+      newVal = newVal.toISOString().substring(0, 19)
+      return newVal
+    },
     doAdd(){
       if (this.datetime != ""){
-        this.timetables.push({dateTime: this.datetime})
-        this.toastMessage = "공연 시간이 등록되었습니다."
+        this.checkDuplicateDatetime()
+        if(!this.duplicate){
+          this.timetables.push({dateTime: this.modifyDatetime()})
+          this.toastMessage = "공연 시간이 등록되었습니다."
+          this.selected = this.datetime
+          this.datetime = ''
+          this.defaultValue = ''
+        }else{
+          this.toastMessage = "이미 등록한 시간입니다!"
+        }    
       }else{
         this.toastMessage = "공연 시간을 입력해주세요!"
       }
       this.toastEvent()
-      this.selected = ''
-      this.datetime = ''
+      this.duplicate = false
     },
     doRemove(){
       if(this.selected != ""){
         let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
         this.timetables = filtered;
         this.toastMessage = "공연 시간이 삭제되었습니다."
+        if (this.timetables.length > 0) {
+          this.selected = this.timetables[0]
+        } else {
+          this.selected = '0'
+          this.defaultValue = '0'
+        }
       }else{
         this.toastMessage = "삭제할 공연 시간을 선택해주세요!"
       }
       this.toastEvent()
-      this.selected = ''
     },
     getUser() {
       this.userId = this.loginUser.accountEmail
@@ -235,6 +271,7 @@ export default {
         ${dateTime.getHours() >= 10 ? dateTime.getHours() : '0' + dateTime.getHours()}:${dateTime.getMinutes() >= 10 ? dateTime.getMinutes() : '0' + dateTime.getMinutes()}`
     },
     clickShowUpdateButton(){
+      this.$store.dispatch('requestShowLoadingSpinner', true)
       let formData = new FormData()
       let showInfoUpdatePatchReq = {
         "showInfoTitle": this.showInfoTitle,
@@ -270,9 +307,11 @@ export default {
         }
         this.$store.dispatch('requestGetShowData', showData)
         this.getMyProfile()
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
       .catch((err) => {
         console.log('fail')
+        this.$store.dispatch('requestShowLoadingSpinner', false)
       })
     },
   },
@@ -513,5 +552,9 @@ export default {
 .toast-body {
     color: white;
     text-align: center;
+}
+.setting-button:disabled {
+  border-color: black;
+  color: gray;
 }
 </style>
