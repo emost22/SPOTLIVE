@@ -406,5 +406,12 @@ export default {
     // loadingSpinner
     requestShowLoadingSpinner({ commit }, payload) {
       commit("SHOW_LOADING_SPINNER", payload)
+    },
+
+    // MyVideoCard.vue
+    requestDeleteVideo(context, payload){
+        const URL = `video/${payload}`
+
+        return $axios.delete(URL)
     }
 }
