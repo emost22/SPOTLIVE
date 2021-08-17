@@ -286,4 +286,18 @@ public class MainServiceImpl implements MainService {
             }
         });
     }
+
+    @Override
+    public List<VideoFindMainVideoRes> findAllReservationVideoByModeAndIsLiveAndTimetableIdIn(String mode, Boolean isLive, String accountEmail){
+        /**
+         * @Method Name : findAllReservationVideoByModeAndIsLiveAndTimetableIdIn
+         * @작성자 : 강용수
+         * @Method 설명 : 본인이 예약한 라이브 공연의 videoList를 조회하는 메소드
+         */
+        List<Long> timetableIdList = reservationRepository.findReservationByUser_AccountEmail(accountEmail).orElse(null).stream()
+                .map(reservation -> reservation.getTimetable().getTimetableId()).collect(Collectors.toList());
+
+        return videoRepository.findVideosByModeAndIsLiveAndTimetable_TimetableIdIn(mode, isLive, timetableIdList).orElse(null).stream()
+                .map(video -> VideoFindMainVideoRes.of(video)).collect(Collectors.toList());
+    }
 }
