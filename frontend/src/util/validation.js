@@ -31,7 +31,7 @@ extend('image', {
 })
 extend('excluded', {
   ...excluded,
-  message: '공연을 등록해주세요.'
+  message: '공연시간을 등록해주세요.'
 })
 extend('numeric', {
   ...numeric,

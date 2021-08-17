@@ -75,9 +75,9 @@
                     </div>
                     <div class="mb-3 d-flex">
                     <div class="flex-fill me-3 d-flex flex-row justify-content-start">
-                      <ValidationProvider rules="required" v-slot="v">
+                      <ValidationProvider rules="excluded:0" v-slot="v">
                         <select class="show-update-timetable" v-model="selected">
-                          <option value='' disabled>공연 시간 목록</option>
+                          <option :value="defaultValue">공연 시간 목록</option>
                           <option :key="i" :value="d.dateTime" v-for="(d, i) in timetables">
                             {{ formatter(d.dateTime) }}
                           </option>
@@ -142,6 +142,7 @@ export default {
       toastMessage: '',
       fileErrorMessage: '',
       invalid: true,
+      defaultValue: ''
     }
   },
   created: function () {
@@ -178,7 +179,7 @@ export default {
       this.runningTime = showData.runningTime
       this.preview = showData.posterUrl
       this.timetables = showData.timetables
-      this.selected = ''
+      this.selected = this.timetables[0].dateTime
     },
     getMyProfile() {
       this.$store.dispatch('requestGetMyProfile')
@@ -213,23 +214,29 @@ export default {
       if (this.datetime != ""){
         this.timetables.push({dateTime: this.datetime})
         this.toastMessage = "공연 시간이 등록되었습니다."
+        this.selected = this.datetime
+        this.datetime = ''
+        this.defaultValue = ''
       }else{
         this.toastMessage = "공연 시간을 입력해주세요!"
       }
       this.toastEvent()
-      this.selected = ''
-      this.datetime = ''
     },
     doRemove(){
       if(this.selected != ""){
         let filtered = this.timetables.filter((element) => element.dateTime !== this.selected);
         this.timetables = filtered;
         this.toastMessage = "공연 시간이 삭제되었습니다."
+        if (this.timetables.length > 0) {
+          this.selected = this.timetables[0]
+        } else {
+          this.selected = '0'
+          this.defaultValue = '0'
+        }
       }else{
         this.toastMessage = "삭제할 공연 시간을 선택해주세요!"
       }
       this.toastEvent()
-      this.selected = ''
     },
     getUser() {
       this.userId = this.loginUser.accountEmail
