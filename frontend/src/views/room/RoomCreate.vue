@@ -102,8 +102,7 @@ export default {
     startStreaming () {
       let formData = this.makeFormDataForStartStreaming()
       if(formData == 0) {
-        console.log("카테고리 선택해야함")
-        this.toastMessage = "카테고리를 선택해주세요."
+        this.toastMessage = "분류를 선택해주세요."
         this.toastEvent()
         return
       }

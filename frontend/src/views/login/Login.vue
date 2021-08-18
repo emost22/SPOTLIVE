@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     moveToKakaoLoginPage() {
-      alert(this.moveToKakaoLoginPageURL)
+      // alert(this.moveToKakaoLoginPageURL)
       window.open(this.moveToKakaoLoginPageURL, "_top")
     },
   },
