@@ -12,19 +12,19 @@
         />
       </div>
       <div>
-        <p class="txtcolor-white-npurple main-title" v-if="reservation_videos && reservation_videos.length"> 내가 예약한 공연용 영상</p>
+        <p class="txtcolor-white-npurple main-title" v-if="reservation_videos && reservation_videos.length"> 예약한 공연 놓치지 마세요!</p>
         <VideoGlide :videos="reservation_videos"/>
-        <p class="txtcolor-white-ngreen main-title"> 홍보용 영상</p>
+        <p class="txtcolor-white-ngreen main-title"> 공연을 홍보 중인데 들어가 볼까요?</p>
         <VideoGlide :videos="ad_videos"/>
-        <p class="txtcolor-white-npink main-title"> 공연용 영상</p>
+        <p class="txtcolor-white-npink main-title"> 다시보기 공연은 무료래요! (속닥속닥 🗣)</p>
         <VideoGlide :videos="show_videos"/>
-        <p class="txtcolor-white-nyellow main-title"> 소통용 영상</p>
+        <p class="txtcolor-white-nyellow main-title"> 아티스트들과 대화해볼 수 있는 기회!</p>
         <VideoGlide :videos="talk_videos"/>
-        <p class="txtcolor-white-npurple main-title"> 실시간 시청자 높은 영상</p>
+        <p class="txtcolor-white-npurple main-title"> 실시간 라이브 HOT (앗 뜨거!🔥)</p>
         <VideoGlide :videos="live_videos"/>
-        <p class="txtcolor-white-ngreen main-title"> 다시보기 조회순 높은 영상</p>
+        <p class="txtcolor-white-ngreen main-title"> 꾸준히 인기 많은 영상인데 안 보면 손해~</p>
         <VideoGlide :videos="replay_videos"/>
-        <p class="txtcolor-white-npink main-title"> 내가 팔로우 하는 사람들의 최신 영상</p>
+        <p class="txtcolor-white-npink main-title"> 앗 내 아티스트 최신 영상 올라왔는데요?</p>
         <VideoGlide :videos="follow_videos"/>
       </div>
     </div>
