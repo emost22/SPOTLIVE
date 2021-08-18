@@ -2,11 +2,11 @@ cloud:
   aws:
     s3:
       bucket:
-        name: spotlive
-        url: https://spotlive.s3.ap-northeast-2.amazonaws.com/
+        name: spotlive1
+        url: https://spotlive1.s3.ap-northeast-2.amazonaws.com/
     credentials:
-      accessKey: AKIAWEWWG6ADJ4UIA7HW
-      secretKey: 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
+      accessKey: AKIAQVMLWIPB4E53HO4M
+      secretKey: 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
 
 openvidu:
   server:
