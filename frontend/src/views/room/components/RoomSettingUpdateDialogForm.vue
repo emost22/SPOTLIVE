@@ -4,7 +4,7 @@
       <div class="mb-3">
         <ValidationProvider rules="required|max:20" v-slot="v">
           <div class="label-alignment"><label for="videoTitle" class="form-label">제목</label></div>
-          <input class="custom-form-control" id="videoTitle" v-model="form.videoTitle">
+          <input class="custom-form-control main-font-light" id="videoTitle" v-model="form.videoTitle">
           <span>{{ v.errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -12,7 +12,7 @@
         <div class="flex-fill">
         <ValidationProvider v-slot="v"  rules="required">
           <div class="label-alignment"><label class="form-label" for="categoryId">분류</label></div>
-          <select class="custon-select-control" aria-label="Default select example" v-model="form.categoryId" id="categoryId">
+          <select class="custon-select-control main-font-light" aria-label="Default select example" v-model="form.categoryId" id="categoryId">
             <option :key="i" :value="d.categoryId" v-for="(d, i) in categoryIds">{{ d.categoryName }}</option>
           </select>
           <span>{{ v.errors[0] }}</span>
@@ -22,7 +22,7 @@
       <div class="mb-3">
         <div class="label-alignment"><label for="thumbnail" class="form-label">썸네일</label></div>
         <div class="d-flex">
-          <input class="custom-form-control" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
+          <input class="custom-form-control main-font-light" v-model="this.fileName" readonly="readonly" disabled="disabled"/>
           <ValidationProvider rules="required|image|size:1000" ref="fileBrowser">
             <input type="file" class="custom-file-update-input" id="updateThumbnail" @change="updateHandleFileChange">
             <label data-browse="Browse" class="search-button" for="updateThumbnail" @change="updateHandleFileChange">
@@ -34,7 +34,7 @@
       <div class="mb-3">
         <ValidationProvider v-slot="v"  rules="max:200 |required" >
           <div class="label-alignment"><label for="videoDescription" class="form-label">설명</label></div>
-          <textarea class="custom-form-control" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
+          <textarea class="custom-form-control main-font-light" id="videoDescription" rows="3" v-model="form.videoDescription"></textarea>
           <span>{{ v.errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -144,7 +144,7 @@ form {
 }
 .search-button {
   width: 45px;
-  height: 36px;
+  height: 40px;
   margin-left: 10px;
   background-color: #595959;
   border: none;
