@@ -70,9 +70,10 @@ public class DataSample {
 
     private void setUser(){
         user.setAccountEmail(faker_eng.internet().emailAddress());
-        user.setUserName(faker_ko.name().fullName().replace(" ", ""));
+        String name = faker_ko.name().fullName().replace(" ", "");
+        user.setUserName(name);
         user.setPhoneNumber(faker_ko.phoneNumber().phoneNumber().replaceAll("-", ""));
-        user.setProfileNickname(faker_ko.animal().name());
+        user.setProfileNickname(name);
         user.setGender(faker_eng.options().option("female", "male"));
         user.setAgeRange(faker_eng.options().option("10~19","20~29","30~39","40~49"));
         user.setProfileDescription(faker_ko.company().name());
@@ -166,7 +167,6 @@ public class DataSample {
         if(mode.equals("소통")) {
             return faker_eng.options().option(
                     "https://i.ibb.co/Byw1vNs/mqdefault.jpg",
-                    "https://i.ibb.co/Km1Grmp/mqdefault.jpg",
                     "https://i.ibb.co/JK4yd1f/mqdefault.jpg",
                     "https://i.ibb.co/1nVky7y/mqdefault.jpg",
                     "https://i.ibb.co/mvFbnjq/original-1.jpg",
@@ -183,13 +183,11 @@ public class DataSample {
                     "https://i.ibb.co/NZPkHDq/original-10.jpg",
                     "https://i.ibb.co/x3yHGrX/original-11.jpg",
                     "https://i.ibb.co/SQXtdx9/original-12.jpg",
-                    "https://i.ibb.co/ykCr79p/original-13.jpg",
                     "https://i.ibb.co/S36p8Jr/original-14.jpg",
                     "https://i.ibb.co/gS7tmTF/original-15.jpg",
                     "https://i.ibb.co/Fs4ZPbL/original-16.jpg",
                     "https://i.ibb.co/GxggZz3/original-17.jpg",
                     "https://i.ibb.co/X3mxpkc/original-18.jpg",
-                    "https://i.ibb.co/MMvQhyb/original-19.jpg",
                     "https://i.ibb.co/jbQK5nw/original-20.jpg",
                     "https://i.ibb.co/mJ9yY9c/original.jpg",
                     "https://i.ibb.co/Ss90Vpt/original-1.jpg",
@@ -203,12 +201,10 @@ public class DataSample {
             Long category = video.getCategory().getCategoryId();
             if (category == 1L) {// 버스킹
                 return faker_eng.options().option(
-                        "https://i.ibb.co/w40NNhh/image.jpg",
                         "https://i.ibb.co/C8RHF0Z/W20201103-9-10.png",
                         "https://i.ibb.co/Db3fN0F/t-Ao-Kv-Hs29aeh-Viaw-Gd-Lua-B-640.jpg",
                         "https://i.ibb.co/41BGsMs/news-1581993821-869287-m-1.jpg",
                         "https://i.ibb.co/yRpsnqd/m-KZ8-Zcg-Nv-A4a-U4-Pn-Mk-ECz-W-640.jpg",
-                        "https://i.ibb.co/gvq5Cg2/c6069ed364037.jpg",
                         "https://i.ibb.co/XkQMv9m/2005141730024050.jpg",
                         "https://i.ibb.co/jTYPMCv/20200916501336.jpg",
                         "https://i.ibb.co/Wtnw0s9/360944-99472-2315.jpg",
@@ -295,8 +291,7 @@ public class DataSample {
                         "https://i.ibb.co/q5MW4Yy/2011110920232490.jpg",
                         "https://i.ibb.co/NsrdgKD/2017011619312998.jpg",
                         "https://i.ibb.co/WkNbMK2/e-VQpqgn3g-BCHz-Hhg-Sf9k-Tm-640.jpg",
-                        "https://i.ibb.co/7Wd36sx/images-1.jpg",
-                        "https://i.ibb.co/khNWQJ0/images.jpg"
+                        "https://i.ibb.co/7Wd36sx/images-1.jpg"
                 );
             }
             if (category == 8L) { // 코미디
@@ -304,13 +299,11 @@ public class DataSample {
                         "https://i.ibb.co/3FyTQZG/1.png",
                         "https://i.ibb.co/8jt6ZXR/2.png",
                         "https://i.ibb.co/HVfDXSN/3.png",
-                        "https://i.ibb.co/Y0r6pTr/4.png",
                         "https://i.ibb.co/k46cnfK/5.png",
                         "https://i.ibb.co/4KFPdW3/6.png",
                         "https://i.ibb.co/VwDvbc1/7.png",
                         "https://i.ibb.co/TRvcXSB/8.png",
-                        "https://i.ibb.co/HNnfQcj/9.png",
-                        "https://i.ibb.co/JRSxz8D/10.png"
+                        "https://i.ibb.co/HNnfQcj/9.png"
                 );
             }
             return "";
@@ -375,7 +368,6 @@ public class DataSample {
             }
             if (category == 5L) { // 연극
                 return faker_eng.options().option(
-                        "https://i.ibb.co/tcJZ1Bw/original-4.jpg",
                         "https://i.ibb.co/NCPtKNW/original-5.jpg",
                         "https://i.ibb.co/DbFWnRB/original-6.jpg",
                         "https://i.ibb.co/mqff5j7/original-7.jpg",
