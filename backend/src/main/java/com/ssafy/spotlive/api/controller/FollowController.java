@@ -71,7 +71,7 @@ public class FollowController {
          * @Method Name : unfollowArtist
          * @작성자 : 권영린
          * @Method 설명 : 이미 팔로우 되어있는 아티스트의 경우 언팔로우 버튼이 활성화 되어있는데, 그 버튼 클릭
-         *                하면 팔로우 테이블에서 삭제를 한다.
+         *                하면 팔로우 테이블에서 삭제
          */
         int vaildTokenStatusValue = authService.isValidToken(accessToken);
 
