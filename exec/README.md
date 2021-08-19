@@ -7,14 +7,14 @@
 1. 사용된 JVM: Zulu-8 (JDK)
 2. 배포 관련 정보
 
-- 사용된 Tool: Jenkins, Docker
-- 배포 자동화의 과정
-  1. Jenkins를 통한 Release branch의 webhook
-  2. webhook 감지 시, Jenkins를 통한 빌드 실행
-  3. Front의 Vue 프로젝트가 Back의 dist 폴더로 빌드
-  4. Spring boot 프로젝트가 빌드
-  5. DockerFile을 통해 Docker Image 생성
-  6. Docker 내 해당 Spring boot Docker Image를 컨테이너로 실행
+   - 사용된 Tool: Jenkins, Docker
+   - 배포 자동화의 과정
+     1. Jenkins를 통한 Release branch의 webhook
+     2. webhook 감지 시, Jenkins를 통한 빌드 실행
+     3. Front의 Vue 프로젝트가 Back의 dist 폴더로 빌드
+     4. Spring boot 프로젝트가 빌드
+     5. DockerFile을 통해 Docker Image 생성
+     6. Docker 내 해당 Spring boot Docker Image를 컨테이너로 실행
 
 3. Web Server: Spring boot 내장 Tomcat
 4. 사용한 IDE: Intellij, VSCode
